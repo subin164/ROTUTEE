@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .col-sm-12{
+            height: 300px;
+            background-color: #7AA6A3;
+        }
+        .card{
+            box-shadow: 2px 2px 2px 2px gray;
+        }
+        .card button{
+            color: azure;
+            background-color: #7AA6A3;
+        }
+        .상품추가모달{
+            display: none;
+            width: 500px;
+            height: 650px;
+            position: absolute;
+            background: white;
+            color: black;
+            margin-top: 5%;
+            margin-left: 15%;
+            margin-right: auto;
+            z-index: 2;
+            border-radius: 5%;
+            border: 1px solid black;
+            box-shadow: 2px 2px 2px 2px gray;
+
+        }
+        .test {
+            margin-top: 50px;
+            width: 400px;
+            height: 450px;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="col-sm-12" align="center">
+        <img src="img/동전.png" width="300px">
+    </div>
+</div>
+<div align="right">
+    보유 포인트 : 5000P<br>
+    <button style="border: 0px solid; background-color: white;">P룰렛</button>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col" style="margin-top: 30px;">
+            <div class="card" style="width: 18rem; height: 400px;">
+                <img src="img/쿠폰.png" class="card-img-top" alt="..." height="200px">
+                <div class="card-body">
+                    <h5 class="card-title">모든 강의 20% 할인 쿠폰</h5>
+                    <p class="card-text">1000P</p>
+                    <p class="card-text">120/999</p>
+                    <button>교환하기</button>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="margin-top: 30px;">
+            <div class="card" style="width: 18rem; height: 400px;">
+                <img src="img/쿠폰.png" class="card-img-top" alt="..." height="200px">
+                <div class="card-body">
+                    <h5 class="card-title">모든 강의 10% 할인 쿠폰</h5>
+                    <p class="card-text">2000P</p>
+                    <p class="card-text">362/999</p>
+                    <button>교환하기</button>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="margin-top: 30px;">
+            <div class="card" style="width: 18rem; height: 400px;">
+                <img src="img/쿠폰.png" class="card-img-top" alt="..." height="200px">
+                <div class="card-body">
+                    <h5 class="card-title">모든 강의 15% 할인 쿠폰</h5>
+                    <p class="card-text">3000P</p>
+                    <p class="card-text">170/300</p>
+                    <button>교환하기</button>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="margin-top: 30px;">
+            <div class="card" style="width: 18rem; height: 400px;">
+                <img src="img/쿠폰.png" class="card-img-top" alt="..." height="200px">
+                <div class="card-body">
+                    <h5 class="card-title">모든 강의 20% 할인 쿠폰</h5>
+                    <p class="card-text">4000P</p>
+                    <p class="card-text">44/100</p>
+                    <button>교환하기</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col" style="margin-top: 30px;">
+            <div class="card" style="width: 18rem; height: 400px;">
+                <img src="img/커피.png" class="card-img-top" alt="..." height="200px">
+                <div class="card-body">
+                    <h5 class="card-title">아메리카노 기프티콘</h5>
+                    <p class="card-text">3000P</p>
+                    <p class="card-text">57/100</p>
+                    <button>교환요청</button>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="margin-top: 30px;">
+            <div class="card" style="width: 18rem; height: 400px;">
+                <img src="img/다운로드.png" class="card-img-top" alt="..." height="200px">
+                <div class="card-body">
+                    <h5 class="card-title">교제 교환 상품권</h5>
+                    <p class="card-text">5000P</p>
+                    <p class="card-text">36/50</p>
+                    <button>교환요청</button>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="margin-top: 30px;">
+            <div class="card" style="width: 18rem; height: 400px;">
+                <div class="card-body">
+                    <img src="img/전자사전.png" class="card-img-top" alt="..." height="200px">
+                    <h5 class="card-title">최신형 전자사전</h5>
+                    <p class="card-text">10000P</p>
+                    <p class="card-text">3/5</p>
+                    <button>교환요청</button>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="margin-top: 30px;">
+            <div class="card" style="width: 18rem; height: 400px;">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text"></p>
+                    <p class="card-text"></p>
+                    <button id="상품추가">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="상품추가모달">
+            <div class="test">
+                <div>
+                    <table>
+                        <tr>
+                            <th><h1>상품 추가</h1></th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br>
+                                <h3>상품</h3>
+                                <select>
+                                    <option>쿠폰1</option>
+                                    <option>쿠폰2</option>
+                                    <option>쿠폰3</option>
+                                    <option>쿠폰4</option>
+                                </select>
+                                <br><br>
+                                <h3>포인트</h3>
+                                <input type="number">
+                                <br><br>
+                                <h3>판매개수</h3>
+                                <input type="number">
+                                <br><br>
+                                <h3>상품 이미지</h3>
+                                <input type="file">
+                                <br><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <button>확인</button>
+                                <button id="닫기">닫기</button>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        window.onload = function() {
+
+            function onClick() {
+                document.querySelector('.상품추가모달').style.display ='block';
+            }
+            function offClick() {
+                document.querySelector('.상품추가모달').style.display ='none';
+            }
+
+            document.getElementById('상품추가').addEventListener('click', onClick);
+            document.getElementById('닫기').addEventListener('click', offClick);
+
+        };
+    </script>
+</body>
+</html>

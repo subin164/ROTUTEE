@@ -1,4 +1,4 @@
-package com.greedy.rotutee;
+package com.greedy.rotutee.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

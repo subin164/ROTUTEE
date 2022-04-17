@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-spingsecurity5">
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--    <div th:replace="/common/topMenubar.html"></div>-->
+    <div th:include="/common/topMenubar.html"></div>
+    <th: sec:authorize="hasAnyRole('TUTEE', 'ADMIN', 'SUBADMIN')">
+        <button onclick="location.href='/point/productlist'">포인트상점</button>
+    </th:>
+</body>
+</html>
