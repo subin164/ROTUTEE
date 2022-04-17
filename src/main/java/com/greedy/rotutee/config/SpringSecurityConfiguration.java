@@ -46,11 +46,11 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
         List<String> tutorPermitList = permitListMap.get("tutorPermitList");
         List<String> memberPermitList = permitListMap.get("memberPermitList");
 
-        adminPermitList.forEach(url -> System.out.println("admin permit url = " + url));
+        /*adminPermitList.forEach(url -> System.out.println("admin permit url = " + url));
         memberPermitList.forEach(url -> System.out.println("member permit url = " + url));
         tuteePermitList.forEach(url -> System.out.println("tutee permit url = " + url));
         tutorPermitList.forEach(url -> System.out.println("tutor permit url = " + url));
-        subAdminPermitList.forEach(url -> System.out.println("subAdmin permit url = " + url));
+        subAdminPermitList.forEach(url -> System.out.println("subAdmin permit url = " + url));*/
 
         http.csrf().disable() // 머시깽이 토큰 공격을 하는걸 막는게 csrf() 이녀석이고 그걸 비활성화 하겠다 왜냐면 활성화하면 로그인할 때 마다 무언가 토큰을 적어줘야한다
                 .authorizeHttpRequests()

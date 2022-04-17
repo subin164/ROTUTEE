@@ -54,25 +54,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new UsernameNotFoundException("회원정보가 존재하지 않습니다.");
         }
 
-
         List<MemberRoleDTO> memberRoleList = loginMember.getMemberRoleList();
-
-        System.out.println("memberRoleList = " + memberRoleList);
-//
-//
-//        List<RoleMenuUrl> memberRoleList12 = authorityMenuUrl.findAuthorityMenuUrlByAuthorityNo(3);
-//
-//        List<String> url = new ArrayList<>();
-//
-//        System.out.println("싸이쯔 씨빨" + memberRoleList12.size());
-//
-//        for(int i = 0; i < memberRoleList12.size(); i++) {
-//            url.add("/" + memberRoleList12.get(i).getMenuUrl().getName() + "/" + memberRoleList12.get(i).getMenuDetail().getName());
-//        }
-//
-//        for(String test : url) {
-//            System.out.println("url = " + test);
-//        }
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         memberRoleList.forEach(memberRole -> authorities.add(new SimpleGrantedAuthority(memberRole.getAuthority().getName())));
@@ -118,11 +100,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             memberPermitList.add("/" + memberRoleList.get(i).getMenuUrl().getName() + "/" + memberRoleList.get(i).getMenuDetail().getName());
         }
 
-        System.out.println("adminRoleList = " + adminRoleList);
+/*        System.out.println("adminRoleList = " + adminRoleList);
         System.out.println("subAdminRoleList = " + subAdminRoleList);
         System.out.println("tuteeRoleList = " + tuteeRoleList);
         System.out.println("tutorRoleList = " + tutorRoleList);
-        System.out.println("memberRoleList = " + memberRoleList);
+        System.out.println("memberRoleList = " + memberRoleList);*/
 
         permitListMap.put("adminPermitList", adminPermitList);
         permitListMap.put("subAdminPermitList", subAdminPermitList);
