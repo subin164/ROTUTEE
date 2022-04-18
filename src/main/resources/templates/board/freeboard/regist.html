@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
+    <link rel ="stylesheet" type = "text/css" href = "static/css/bootstrap/css;">
+    <script src = "/static/cheditor5/cheditor.js"><</script>
+
+    <style>
+        .ck-editor_editable{
+            min-height: 300px;
+        }
+        .ck.ck-editor {
+               max-width: 500px;
+           }
+        .ck-editor__editable {
+            min-height: 300px;
+        }
+    </style>
+
+    <title>Title</title>
+
+</head>
+<body>
+
+<div class="container">
+    <h3>카테고리 수정하기</h3>
+    <form name ="frm_pm" method="POST" action="/post_modify/{{post.id}}}">
+        <div class="form-group">
+            <label for="">제목</label>
+            <input type="text" name="subject" class="form_control" >
+            <label for="">내용</label>
+            <textarea ="contents" id="editor" class="form-control" row="5"></textarea>
+            <script>
+                ClassicEditor
+                    .create(document.querySelector('#ditor') , {
+                        language: {url: 'ko', content:'ko'}
+                    })
+                    .catch(error =>{console.error(error)
+                    });
+
+
+            </script>
+            <input type="submit" value="수정하기" class="gtn-primary">
+
+    </form>
+
+</div>
+</body>
+</html>
