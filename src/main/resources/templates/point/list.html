@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html xmlns:th="https://thymeleaf.org">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,6 +47,7 @@
     </style>
 </head>
 <body>
+<div th:include="/common/topMenubar.html"></div>
 <div class="row">
     <div class="col-sm-12" align="center">
         <img src="img/동전.png" width="300px">
@@ -187,7 +187,8 @@
             </div>
         </div>
     </div>
-
+</div>
+    <div th:include="/common/footer.html"></div>
 
 
     <script>
