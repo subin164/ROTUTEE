@@ -7,9 +7,19 @@ import java.util.List;
 
 @Entity(name = "Member")
 @Table(name = "TBL_MEMBER")
+@SequenceGenerator(
+        name = "MEMBER_SEQ_GENERATOR",
+        sequenceName = "MEMBER_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class Member {
 
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "MEMBER_SEQ_GENERATOR"
+    )
     @Column(name = "MEMBER_NO")
     private int no;
 
