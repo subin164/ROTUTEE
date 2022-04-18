@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- BootStrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+
+    <!-- font tamily -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+
+        .box {
+            box-shadow: 3px 3px 3px 3px rgb(219, 219, 219);
+            width: 400px;
+            height: 250px;
+            border-radius: 10px;
+            margin: 30px;
+            text-align: center;
+            background-color: #F0F1F2;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+
+        }
+
+        .whitebox {
+            background-color: white;
+            margin: auto;
+            width: 90%;
+            height: 80%;
+            border-radius: 10px;
+            padding: 5px;
+            position: relative;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+
+
+        }
+
+        .profile {
+            display: flex;
+
+        }
+
+        /* Float button */
+        .float {
+            display: inline-block;
+            transition-duration: 0.3s;
+            transition-property: transform;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            transform: translateZ(0);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        }
+
+        .float:hover {
+            transform: translateY(-5px);
+        }
+
+        .button {
+            background-color: #D1E4FA;
+            font-size: 14px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        .btn-holder {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div th:include="../common/mypagemenubar.html"></div>
+<div class="wrap">
+    <div class="container">
+        <div class="box">
+            <div>😀프로필</div>
+            <div class="whitebox">
+                <div class="profile row" style="margin: 10px;">
+                    <div class="col-4" style="text-align: left; margin-left: 1vw;">
+                        <img src="../../../static/sy/images/profile.PNG" style=" width:100px; height: 100px; border-radius: 100%;">
+                    </div>
+                    <div class="col-7">
+                        <h5>햄찌</h5>
+                        <p>안녕햄스터. 난 귀염둥이 햄찌</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="posting box">
+            <div style="margin-bottom: 10px;">&#128172;최근 작성글</div>
+            <div class="whitebox">
+                <div class="content">
+                    <p>[커뮤니티] 안녕햄스터</p>
+                    <p>[문의] 업적 종류를 알 수 있을까요?</p>
+                    <p>[커뮤니티] 자바 너무 어렵다</p>
+                    <p>[LMS] int와 Integer의 차이점이 무엇인가요?</p>
+                </div>
+                <div class="btn-holder">
+                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="basket box">
+            <div style="margin-bottom: 10px;">📚장바구니</div>
+            <div class="whitebox">
+                <div class="content">
+                    <p>JAVA 완벽 완성</p>
+                    <p>SQL 정복</p>
+                    <p>html/css 기초</p>
+                    <p>JavaScript 시작</p>
+
+                </div>
+                <div class="btn-holder">
+                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
+                </div>
+            </div>
+        </div>
+        <div class="alram box">
+            <div style="margin-bottom: 10px;">&#128161;알림</div>
+            <div class="whitebox">
+                <div class="content">
+                    <p>답변이 등록되었습니다.</p>
+                    <p>답변이 등록되었습니다.</p>
+                    <p>답변이 등록되었습니다.</p>
+                    <p>답변이 등록되었습니다.</p>
+
+                </div>
+                <div class="btn-holder">
+                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="lately-lecture box">
+            <div style="margin-bottom: 10px;">&#127891;최근 학습중인 강의</div>
+            <div class="whitebox">
+                <div class="content">
+                    <p>JAVA 완벽완성</p>
+                </div>
+                <div class="btn-holder">
+                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
+                </div>
+            </div>
+        </div>
+        <div class="complete-lecture box">
+            <div style="margin-bottom: 10px;">&#128212;완료된 강의</div>
+            <div class="whitebox">
+                <div class="content">
+                    <p>Http 이해하기</p>
+                </div>
+                <div class="btn-holder">
+                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
