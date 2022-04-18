@@ -169,62 +169,6 @@ input[type="search"]:focus {
     border-style: none;
 }
 
-
 /* study css */
 
-.study-header{
-    background-color: gray;
-}
 
-.study-header-content{
-    width: 80%;
-    margin: 0 auto;
-}
-
-.header-title{
-    font-size: 24px;
-}
-
-.header-sub-title{
-    font-size: 16px;
-}
-
-/* css 초기화 end */
-
-.study-tag{
-    background-color: antiquewhite;
-    padding: 0.5rem;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-
-.nav-tabs{
-    border-style: none;
-}
-
-.nav-tabs .nav-link.active{
-    border-color: transparent;
-}
-
-.nav-link{
-    color: gray;
-    font-weight: bold;
-}
-
-input[type="text"]:focus{
-    box-shadow: none;
-}
-
-.side-tags-box{
-    border: solid rgb(207, 207, 207) 1px;
-    padding: 1rem;
-}
-
-.side-tag-item{
-    border-style: none;
-    background-color: rgb(232, 232, 232);
-    padding: 5px;
-    margin-bottom: 1rem;
-    margin-right: 1rem;
-}

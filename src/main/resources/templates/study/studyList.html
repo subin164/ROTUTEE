@@ -10,14 +10,111 @@
     <title>Title</title>
 </head>
 <body>
-<div th:include="/common/menubar.html"></div>
+<div th:include="/common/topMenubar.html"></div>
 
+<!-- 스터디 헤더 -->
 <section class="study-header bg-dark">
     <div class="study-header-content py-4 fs-5 fw-bold text-light">
         <h2 class="header-title">함께 배우고 성장할 사람들을 찾아보세요</h2>
         <p class="header-sub-title pt-3">공부할 파티 찾아요!!</p>
     </div>
 </section>
+
+<!-- 스터디 카테고리 탭 -->
+<section>
+    <div class="container my-lg-3">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <button class="nav-link show active" data-bs-toggle="tab" data-bs-target="#entire">전체</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#recruit">모집중</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#end-recruit">모집종료</button>
+            </li>
+        </ul>
+    </div>
+    <!-- 스터디 검색 -->
+    <div class="flex-lg-column">
+        <div class="container d-flex mb-lg-5">
+            <div class="w-75">
+                <form class="flex-lg-column">
+                    <div class="d-flex mb-lg-3">
+                        <input class="w-100" type="text" placeholder="검색내용을 입력하세요">
+                        <div>
+                            <button class="btn btn-outline-success mx-lg-3" style="width: 150px">검색</button>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <input class="w-100" type="text" placeholder="#태그를 입력하세요">
+                        <div>
+                            <button class="btn btn-outline-success mx-lg-3" style="width: 150px">
+                                <i class="bi bi-arrow-repeat"></i> 초기화
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+
+                <!-- 목록 정렬 탭 -->
+                <div class="container d-flex my-lg-3">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <button class="nav-link show active" data-bs-toggle="tab" data-bs-target="#entire">최신순
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#recruit">댓글순</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#end-recruit">조회순</button>
+                        </li>
+                    </ul>
+                    <button type="button" class="btn btn-outline-danger ms-lg-auto" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">
+                        글쓰기
+                    </button>
+                </div>
+            </div>
+            <!-- 사이드 태그박스 -->
+            <div class="w-25 bg-primary">사이드 태그박스</div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>스터디 모집 게시글 작성 입니다아아</h2>
+            </div>
+            <div class="modal-body">
+                <form action="/study/regist" method="post" id="studyRegistForm">
+                    <label>모집 종료 날짜<input type="date" name="endDate"></label>
+                    <div class="mb-lg-3">
+                        제목
+                        <input class="w-100" type="text" name="title">
+                    </div>
+                    <div class="mb-lg-3">
+                        <label>태그</label>
+                        <input class="w-100" type="text" name="tag">
+                    </div>
+                    <div>
+                        <label>내용</label>
+                        <textarea class="w-100" name="content" style="height: 400px;"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal" style="width: 200px;">취소</button>
+                <button type="submit" class="btn btn-outline-primary" form="studyRegistForm" style="width: 200px;">작성</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
