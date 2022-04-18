@@ -11,5 +11,6 @@
     <th: sec:authorize="hasAnyRole('TUTEE', 'ADMIN', 'SUBADMIN')">
         <button onclick="location.href='/point/productlist'">포인트상점</button>
     </th:>
+    <div th:include="/common/footer.html"></div>
 </body>
 </html>

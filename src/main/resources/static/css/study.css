@@ -1,0 +1,230 @@
+/* css 초기화 */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+
+/* menubar css */
+.profile{
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: bisque;
+    width: 3rem;
+    height: 3rem;
+}
+
+.profileimg{
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+}
+
+.searchbar-icon{
+    position: absolute;
+    top:50%;
+    right: 0.5rem;
+    transform: translate(-50%, -50%);
+}
+
+.lecture-serach{
+    width: 25rem;
+    border-radius: 20px;
+}
+
+
+.round{
+    border-radius: 20px;
+}
+
+input[type="search"]:focus {
+    border-style: none;
+}
+
+
+/* study css */
+
+.study-header{
+    background-color: gray;
+}
+
+.study-header-content{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.header-title{
+    font-size: 24px;
+}
+
+.header-sub-title{
+    font-size: 16px;
+}
+
+/* css 초기화 end */
+
+.study-tag{
+    background-color: antiquewhite;
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+
+.nav-tabs{
+    border-style: none;
+}
+
+.nav-tabs .nav-link.active{
+    border-color: transparent;
+}
+
+.nav-link{
+    color: gray;
+    font-weight: bold;
+}
+
+input[type="text"]:focus{
+    box-shadow: none;
+}
+
+.side-tags-box{
+    border: solid rgb(207, 207, 207) 1px;
+    padding: 1rem;
+}
+
+.side-tag-item{
+    border-style: none;
+    background-color: rgb(232, 232, 232);
+    padding: 5px;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+}
