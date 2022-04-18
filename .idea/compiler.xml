@@ -9,12 +9,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="test4" />
         <module name="rotutee" />
+        <module name="sourcetree_workspace" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="rotutee" options="-parameters" />
+      <module name="sourcetree_workspace" options="-parameters" />
       <module name="test4" options="-parameters" />
     </option>
   </component>

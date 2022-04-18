@@ -58,13 +58,19 @@
             width: 77%;
 
         }
+        . d-flex justify-content-around{
+            height: 80%;
+        }
+        .border d-inline-flex{
+            width :auto;
+        }
 
 
     </style>
 </head>
 <body>
 
-<div th:include="common/topMenubar.html"></div>
+<div th:include="/common/topMenubar.html"></div>
 
 <div class="box">
     <label class="head">게시판</label>
@@ -184,8 +190,26 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-around">
+            <div class="border d-inline-flex">
+                <div class="input-group">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <option selected>제목</option>
+                        <option value="1">카테고리</option>
+                        <option value="2">작성자</option>
+                    </select>
+                    <input type="text" class="form-control" aria-label="Text input with 2 dropdown buttons">
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                    </ul>
+                </div>
+                <button type="button" class="btn btn-primary">검색</button>
+
                 <button type="button" class="btn btn-primary">글쓰기</button>
+
             </div>
 
             <div class="d-flex justify-content-center">
@@ -299,8 +323,26 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-around">
+            <div class="border d-inline-flex">
+                <div class="input-group">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <option selected>제목</option>
+                        <option value="1">카테고리</option>
+                        <option value="2">작성자</option>
+                    </select>
+                    <input type="text" class="form-control" aria-label="Text input with 2 dropdown buttons">
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                    </ul>
+                </div>
+                <button type="button" class="btn btn-primary">검색</button>
+
                 <button type="button" class="btn btn-primary">글쓰기</button>
+
             </div>
 
             <div class="d-flex justify-content-center">
@@ -416,18 +458,14 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-around">
-
+            <div class="border d-inline-flex">
                 <div class="input-group">
                     <select class="form-select form-select-sm" aria-label=".form-select-sm example">
                         <option selected>제목</option>
                         <option value="1">카테고리</option>
                         <option value="2">작성자</option>
                     </select>
-
                     <input type="text" class="form-control" aria-label="Text input with 2 dropdown buttons">
-
-
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#">Action</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
@@ -436,9 +474,7 @@
                         <li><a class="dropdown-item" href="#">Separated link</a></li>
                     </ul>
                 </div>
-
                 <button type="button" class="btn btn-primary">검색</button>
-
 
                 <button type="button" class="btn btn-primary">글쓰기</button>
 
@@ -457,7 +493,7 @@
     </div>
 </div>
 
-<div th:include="common/footer.html"></div>
+<div th:include="/common/footer.html"></div>
 
 
 
