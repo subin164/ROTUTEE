@@ -16,7 +16,9 @@ public class StudyDTO {
     private String title;
     private java.sql.Date writeDate;
     private int limited;
-    private MemberDTO memberNo;
+    private String linked;
+    private int MemberNo;
+    private MemberDTO writer;
     private java.sql.Date startDate;
     private java.sql.Date endDate;
     private String status;

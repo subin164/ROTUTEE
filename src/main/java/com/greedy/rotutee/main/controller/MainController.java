@@ -18,10 +18,4 @@ public class MainController {
 
         return "redirect:/";
     }
-
-    @GetMapping("/study")
-    public String studyList(){
-        System.out.println("스터디 요청");
-        return "/study/studyList";
-    }
 }
