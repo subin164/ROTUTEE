@@ -1,12 +1,12 @@
 package com.greedy.rotutee.member.controller;
 
+import com.greedy.rotutee.certification.phone.PhoneConfirm;
 import com.greedy.rotutee.member.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.dto.MemberDTO;
 import com.greedy.rotutee.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -47,20 +47,12 @@ public class MemberController {
         return memberService.findLectureCategoryList();
     }
 
-    @PostMapping("/message")
-    public @ResponseBody String phoneConfirm(String phoneNum) {
+    @GetMapping("/duplicate")
+    @ResponseBody
+    public boolean duplicateEmail(@RequestParam String checkEmail) {
 
-        Random rand = new Random();
-        String numStr = "";
-
-        for(int i = 0; i < 6; i++) {
-            String ran = Integer.toString(rand.nextInt(10));
-            numStr += ran;
-        }
-
-        PhoneConfirm.certifiedPhoneNumber(phoneNum, numStr);
-
-        return "ok";
+        return memberService.duplicateEmail(checkEmail);
     }
+
 
 }

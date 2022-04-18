@@ -1,4 +1,4 @@
-package com.greedy.rotutee.email.service;
+package com.greedy.rotutee.certification.email.service;
 
 import java.util.Random;
 
@@ -25,7 +25,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(RecipientType.TO, to);//보내는 대상
-        message.setSubject("Babble회원가입 이메일 인증");//제목
+        message.setSubject("ROTUTEE 회원가입 이메일 인증");//제목
 
         String msgg="";
         msgg+= "<div style='margin:100px;'>";

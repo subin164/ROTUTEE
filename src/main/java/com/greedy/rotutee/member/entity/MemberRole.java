@@ -2,17 +2,27 @@ package com.greedy.rotutee.member.entity;
 
 import javax.persistence.*;
 
-@Entity(name = "MemberAuthority")
+@Entity(name = "MemberRole")
 @Table(name = "TBL_MEMBER_ROLE")
+@SequenceGenerator(
+        name = "MEMBER_ROLE_SEQ_GENERATOR",
+        sequenceName = "MEMBER_ROLE_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class MemberRole {
 
     @Id
     @Column(name = "MEMBER_ROLE_NO")
-    private int memberAuthorityNo;
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "MEMBER_ROLE_SEQ_GENERATOR"
+    )
+    private int memberRoleNo;
 
     @ManyToOne
     @JoinColumn(name = "ROLE_NO")
-    private Role authority;
+    private Role role;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_NO")
@@ -20,26 +30,26 @@ public class MemberRole {
 
     public MemberRole() {}
 
-    public MemberRole(int memberAuthorityNo, Role authority, Member member) {
-        this.memberAuthorityNo = memberAuthorityNo;
-        this.authority = authority;
+    public MemberRole(int memberRoleNo, Role role, Member member) {
+        this.memberRoleNo = memberRoleNo;
+        this.role = role;
         this.member = member;
     }
 
-    public int getMemberAuthorityNo() {
-        return memberAuthorityNo;
+    public int getMemberRoleNo() {
+        return memberRoleNo;
     }
 
-    public void setMemberAuthorityNo(int memberAuthorityNo) {
-        this.memberAuthorityNo = memberAuthorityNo;
+    public void setMemberRoleNo(int memberRoleNo) {
+        this.memberRoleNo = memberRoleNo;
     }
 
-    public Role getAuthority() {
-        return authority;
+    public Role getRole() {
+        return role;
     }
 
-    public void setAuthority(Role authority) {
-        this.authority = authority;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Member getMember() {
@@ -53,8 +63,8 @@ public class MemberRole {
     @Override
     public String toString() {
         return "MemberRole{" +
-                "memberAuthorityNo=" + memberAuthorityNo +
-                ", authority=" + authority +
+                "memberRoleNo=" + memberRoleNo +
+                ", role=" + role +
                 ", member=" + member +
                 '}';
     }

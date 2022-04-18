@@ -1,7 +1,7 @@
-package com.greedy.rotutee.email.controller;
+package com.greedy.rotutee.certification.email.controller;
 
-import com.greedy.rotutee.email.service.EmailService;
-import com.greedy.rotutee.email.service.EmailServiceImpl;
+import com.greedy.rotutee.certification.email.service.EmailService;
+import com.greedy.rotutee.certification.email.service.EmailServiceImpl;
 import com.greedy.rotutee.member.controller.MemberController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -28,6 +27,7 @@ public class EmailController {
         System.out.println("전달 받은 이메일 : " + email);
         emailService.sendSimpleMessage(email);
     }
+
     @PostMapping("/verifyCode")
     @ResponseBody
     public int verifyCode(@RequestParam  String checkCode) {

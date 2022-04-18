@@ -528,8 +528,12 @@
                         <input name="email" id="signup-email" type="text" placeholder="이메일"/>
                     </span>
                     <span class="cnum-btn-wrap">
+                        <button id="duplicate" type="button">중복검사</button>
+                    </span>
+                    <span class="cnum-btn-wrap">
                         <button id="cnum-btn" type="button">인증번호 받기</button>
                     </span>
+
                 </div>
                 <div style="display: flex;">
                       <span class="signup-input-c" style="width:100%; margin: 10px 0px 0px 0px">
@@ -543,7 +547,7 @@
             </div>
 
             <div style="margin-top: 35px;">
-                <h3>이메일</h3>
+                <h3>휴대폰</h3>
                 <div style="display: flex;">
                     <span class="signup-input" style="width:100%; margin: 10px 0px 0px 0px">
                         <input name="phoneNum" id="signup-phone" type="text" placeholder="전화번호"/>
@@ -554,7 +558,7 @@
                 </div>
                 <div style="display: flex;">
                       <span class="signup-input-c" style="width:100%; margin: 10px 0px 0px 0px">
-                        <input id="signup-cnum2" type="text" placeholder="인증번호 입력하세요"/>
+                        <input id="signup-cnum4" type="text" placeholder="인증번호 입력하세요"/>
                      </span>
                     <span class="cnum-btn-wrap">
                         <button id="cnum-btn4" type="button">인증 확인</button>
@@ -607,6 +611,7 @@
 <script>
 
     let emailCheck = false;
+    let phoneCheck = false;
 
     $(function() {
 
@@ -645,10 +650,15 @@
         if(!emailCheck){
             alert("이메일 인증을 해주세요");
             return false;
+        } else if(!phoneCheck) {
+              alert("휴대폰 인증을 해주세요");
+              return false;
         } else {
             alert("입력하신 정보로 회원가입을 하시겠습니까?");
             return true;
         }
+
+
     }
 
     $("#testbtn").click(function () {
@@ -666,19 +676,61 @@
         }
     });
 
+    $("#duplicate").click(function () {
+
+        let checkEmail = $("#signup-email").val();
+        alert(checkEmail);
+
+        $.ajax({
+           type: "GET",
+           url: "/member/duplicate",
+           data: {"checkEmail" : checkEmail },
+           success: function(data) {
+               if(data) {
+                   alert("사용 가능한 메일입니다.");
+               } else {
+                   alert("이미 가입된 메일입니다.");
+               }
+           }
+        });
+
+    });
+
     $("#cnum-btn3").click(function () {
 
-        let phone = $("#signup-phone").val();
+        let phoneNum = $("#signup-phone").val();
 
         $.ajax({
             type: "POST",
-            url: "/member/message",
-            data: {"phone": phone},
+            url: "/phone/message",
+            data: {"phoneNum": phoneNum},
             success: function (data) {
                 alert("인증번호를 요청했습니다. 문자를 확인해주세요.");
             }
         });
     });
+
+    $("#cnum-btn4").click(function () {
+
+        let checkCode = $("#signup-cnum4").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/phone/verifyCode",
+            data: {"checkCode" : checkCode},
+            success: function (data) {
+
+                if(data == 1) {
+                    alert("인증되었습니다.");
+                    $("#signup-cnum4").attr("disabled", true);
+                    phoneCheck = true;
+                } else {
+                    alert("인증번호를 확인해주세요.");
+                }
+            }
+
+        })
+    })
 
     $("#cnum-btn").click(function () {
 
@@ -707,6 +759,7 @@
                 if(data == 1) {
                     alert("인증되었습니다.");
                     emailCheck = true;
+                    $("#signup-cnum").attr("disabled", true);
                 } else {
                     alert("인증번호를 확인해주세요.");
                 }

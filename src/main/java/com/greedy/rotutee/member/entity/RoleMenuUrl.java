@@ -9,7 +9,7 @@ public class RoleMenuUrl {
 
     @Id
     @Column(name = "ROLE_URL_NO")
-    private int authorityMenuUrlNo;
+    private int roleMenuUrlNo;
 
     @ManyToOne
     @JoinColumn(name = "MENU_URL_NO")
@@ -21,23 +21,23 @@ public class RoleMenuUrl {
 
     @ManyToOne
     @JoinColumn(name = "ROLE_NO")
-    private Role authority;
+    private Role role;
 
     public RoleMenuUrl() {}
 
-    public RoleMenuUrl(int authorityMenuUrlNo, MenuUrl menuUrl, MenuDetail menuDetail, Role authority) {
-        this.authorityMenuUrlNo = authorityMenuUrlNo;
+    public RoleMenuUrl(int roleMenuUrlNo, MenuUrl menuUrl, MenuDetail menuDetail, Role role) {
+        this.roleMenuUrlNo = roleMenuUrlNo;
         this.menuUrl = menuUrl;
         this.menuDetail = menuDetail;
-        this.authority = authority;
+        this.role = role;
     }
 
-    public int getAuthorityMenuUrlNo() {
-        return authorityMenuUrlNo;
+    public int getRoleMenuUrlNo() {
+        return roleMenuUrlNo;
     }
 
-    public void setAuthorityMenuUrlNo(int authorityMenuUrlNo) {
-        this.authorityMenuUrlNo = authorityMenuUrlNo;
+    public void setRoleMenuUrlNo(int roleMenuUrlNo) {
+        this.roleMenuUrlNo = roleMenuUrlNo;
     }
 
     public MenuUrl getMenuUrl() {
@@ -56,21 +56,21 @@ public class RoleMenuUrl {
         this.menuDetail = menuDetail;
     }
 
-    public Role getAuthority() {
-        return authority;
+    public Role getRole() {
+        return role;
     }
 
-    public void setAuthority(Role authority) {
-        this.authority = authority;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
     public String toString() {
         return "AuthorityMenuUrl{" +
-                "authorityMenuUrlNo=" + authorityMenuUrlNo +
+                "roleMenuUrlNo=" + roleMenuUrlNo +
                 ", menuUrl=" + menuUrl +
                 ", menuDetail=" + menuDetail +
-                ", authority=" + authority +
+                ", role=" + role +
                 '}';
     }
 }

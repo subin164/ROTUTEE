@@ -1,4 +1,4 @@
-package com.greedy.rotutee.email.service;
+package com.greedy.rotutee.certification.email.service;
 
 
 public interface EmailService {

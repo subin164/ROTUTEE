@@ -5,7 +5,7 @@ import com.greedy.rotutee.member.dto.MemberDTO;
 import com.greedy.rotutee.member.dto.MemberRoleDTO;
 import com.greedy.rotutee.member.entity.RoleMenuUrl;
 import com.greedy.rotutee.member.entity.Member;
-import com.greedy.rotutee.member.repository.AuthorityMenuUrlRepository;
+import com.greedy.rotutee.member.repository.RoleMenuUrlRepository;
 import com.greedy.rotutee.member.repository.MemberRepository;
 import com.greedy.rotutee.member.repository.MemberRoleRepository;
 import org.modelmapper.ModelMapper;
@@ -27,11 +27,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final MemberRepository memberRepository;
     private final MemberRoleRepository memberRoleRepository;
-    private final AuthorityMenuUrlRepository authorityMenuUrl;
+    private final RoleMenuUrlRepository authorityMenuUrl;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public AuthenticationServiceImpl(MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, AuthorityMenuUrlRepository authorityMenuUrl, ModelMapper modelMapper) {
+    public AuthenticationServiceImpl(MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleMenuUrlRepository authorityMenuUrl, ModelMapper modelMapper) {
         this.memberRepository = memberRepository;
         this.memberRoleRepository = memberRoleRepository;
         this.authorityMenuUrl = authorityMenuUrl;
@@ -57,7 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<MemberRoleDTO> memberRoleList = loginMember.getMemberRoleList();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        memberRoleList.forEach(memberRole -> authorities.add(new SimpleGrantedAuthority(memberRole.getAuthority().getName())));
+        memberRoleList.forEach(memberRole -> authorities.add(new SimpleGrantedAuthority(memberRole.getRole().getName())));
 
         System.out.println("authorities = " + authorities);
 
@@ -74,11 +74,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<String> tutorPermitList = new ArrayList<>();
         List<String> memberPermitList = new ArrayList<>();
 
-        List<RoleMenuUrl> adminRoleList = authorityMenuUrl.findAuthorityMenuUrlByAuthorityNo(1);
-        List<RoleMenuUrl> subAdminRoleList = authorityMenuUrl.findAuthorityMenuUrlByAuthorityNo(2);
-        List<RoleMenuUrl> tuteeRoleList = authorityMenuUrl.findAuthorityMenuUrlByAuthorityNo(3);
-        List<RoleMenuUrl> tutorRoleList = authorityMenuUrl.findAuthorityMenuUrlByAuthorityNo(4);
-        List<RoleMenuUrl> memberRoleList = authorityMenuUrl.findAuthorityMenuUrlByAuthorityNo(5);
+        List<RoleMenuUrl> adminRoleList = authorityMenuUrl.findRoleMenuUrlByRoleNo(1);
+        List<RoleMenuUrl> subAdminRoleList = authorityMenuUrl.findRoleMenuUrlByRoleNo(2);
+        List<RoleMenuUrl> tuteeRoleList = authorityMenuUrl.findRoleMenuUrlByRoleNo(3);
+        List<RoleMenuUrl> tutorRoleList = authorityMenuUrl.findRoleMenuUrlByRoleNo(4);
+        List<RoleMenuUrl> memberRoleList = authorityMenuUrl.findRoleMenuUrlByRoleNo(5);
 
         for(int i = 0; i < adminRoleList.size(); i++) {
             adminPermitList.add("/" + adminRoleList.get(i).getMenuUrl().getName() + "/" + adminRoleList.get(i).getMenuDetail().getName());
