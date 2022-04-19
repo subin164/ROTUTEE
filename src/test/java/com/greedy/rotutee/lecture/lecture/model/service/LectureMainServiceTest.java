@@ -5,6 +5,5 @@ import com.greedy.rotutee.lecture.lecture.service.LectureMainService;
 
 public class LectureMainServiceTest {
 
-    private LectureMainRepository lectureMainRepository;
 
 }

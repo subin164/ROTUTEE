@@ -27,7 +27,8 @@ public class LectureMainController {
         List<LectureDTO> lectureList = lectureMainService.findAllLecture();
         System.out.println("lectureList = " + lectureList);
 
-        mv.setViewName("/lecture/main");
+        mv.addObject("lectureList", lectureList);
+        mv.setViewName("/lecture/list");
         return mv;
     }
 

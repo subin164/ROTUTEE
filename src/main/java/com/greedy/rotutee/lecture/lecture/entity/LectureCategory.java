@@ -16,4 +16,35 @@ public class LectureCategory {
     @Column(name = "LECTURE_CATEGORY_NAME")
     private String lectureCategoryName;
 
+    public LectureCategory() {
+    }
+
+    public LectureCategory(int lectureCategoryNo, String lectureCategoryName) {
+        this.lectureCategoryNo = lectureCategoryNo;
+        this.lectureCategoryName = lectureCategoryName;
+    }
+
+    public int getLectureCategoryNo() {
+        return lectureCategoryNo;
+    }
+
+    public void setLectureCategoryNo(int lectureCategoryNo) {
+        this.lectureCategoryNo = lectureCategoryNo;
+    }
+
+    public String getLectureCategoryName() {
+        return lectureCategoryName;
+    }
+
+    public void setLectureCategoryName(String lectureCategoryName) {
+        this.lectureCategoryName = lectureCategoryName;
+    }
+
+    @Override
+    public String toString() {
+        return "LectureCategory{" +
+                "lectureCategoryNo=" + lectureCategoryNo +
+                ", lectureCategoryName='" + lectureCategoryName + '\'' +
+                '}';
+    }
 }
