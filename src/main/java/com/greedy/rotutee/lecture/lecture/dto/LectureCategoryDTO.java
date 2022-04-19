@@ -1,38 +1,15 @@
 package com.greedy.rotutee.lecture.lecture.dto;
 
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
 public class LectureCategoryDTO {
 
-    private int no;
-    private String name;
-
-    public LectureCategoryDTO() {}
-
-    public LectureCategoryDTO(int no, String name) {
-        this.no = no;
-        this.name = name;
-    }
-
-    public int getNo() {
-        return no;
-    }
-
-    public void setNo(int no) {
-        this.no = no;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "LectureCategory{" +
-                "no=" + no +
-                ", name='" + name + '\'' +
-                '}';
-    }
+    private int lectureCategoryNo;
+    private String lectureCategoryName;
 }

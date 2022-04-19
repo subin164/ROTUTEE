@@ -1,0 +1,21 @@
+.offcanvas{
+    background-color: #000c17;
+}
+li{
+    list-style: none;
+}
+.btn-close-white{
+    float: right;
+}
+h3{
+    color: white;
+}
+.sidebar-menu > a{
+    font-size: 25px;
+    text-decoration: none;
+    color: white;
+}
+i{
+    font-size: 25px;
+    color: white;
+}
