@@ -27,14 +27,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final MemberRepository memberRepository;
     private final MemberRoleRepository memberRoleRepository;
-    private final RoleMenuUrlRepository authorityMenuUrl;
+    private final RoleMenuUrlRepository roleMenuUrlRepositoryl;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public AuthenticationServiceImpl(MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleMenuUrlRepository authorityMenuUrl, ModelMapper modelMapper) {
+    public AuthenticationServiceImpl(MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleMenuUrlRepository roleMenuUrlRepositoryl, ModelMapper modelMapper) {
         this.memberRepository = memberRepository;
         this.memberRoleRepository = memberRoleRepository;
-        this.authorityMenuUrl = authorityMenuUrl;
+        this.roleMenuUrlRepositoryl = roleMenuUrlRepositoryl;
         this.modelMapper = modelMapper;
     }
 
@@ -74,11 +74,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<String> tutorPermitList = new ArrayList<>();
         List<String> memberPermitList = new ArrayList<>();
 
-        List<RoleMenuUrl> adminRoleList = authorityMenuUrl.findRoleMenuUrlByRoleNo(1);
-        List<RoleMenuUrl> subAdminRoleList = authorityMenuUrl.findRoleMenuUrlByRoleNo(2);
-        List<RoleMenuUrl> tuteeRoleList = authorityMenuUrl.findRoleMenuUrlByRoleNo(3);
-        List<RoleMenuUrl> tutorRoleList = authorityMenuUrl.findRoleMenuUrlByRoleNo(4);
-        List<RoleMenuUrl> memberRoleList = authorityMenuUrl.findRoleMenuUrlByRoleNo(5);
+        List<RoleMenuUrl> adminRoleList = roleMenuUrlRepositoryl.findRoleMenuUrlByRoleNo(1);
+        List<RoleMenuUrl> subAdminRoleList = roleMenuUrlRepositoryl.findRoleMenuUrlByRoleNo(2);
+        List<RoleMenuUrl> tuteeRoleList = roleMenuUrlRepositoryl.findRoleMenuUrlByRoleNo(3);
+        List<RoleMenuUrl> tutorRoleList = roleMenuUrlRepositoryl.findRoleMenuUrlByRoleNo(4);
+        List<RoleMenuUrl> memberRoleList = roleMenuUrlRepositoryl.findRoleMenuUrlByRoleNo(5);
 
         for(int i = 0; i < adminRoleList.size(); i++) {
             adminPermitList.add("/" + adminRoleList.get(i).getMenuUrl().getName() + "/" + adminRoleList.get(i).getMenuDetail().getName());

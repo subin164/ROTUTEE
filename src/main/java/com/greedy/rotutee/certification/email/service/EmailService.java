@@ -22,7 +22,7 @@ public class EmailService {
     private MimeMessage createMessage(String to) throws Exception {
         System.out.println("보내는 대상 : "+ to);
         System.out.println("인증 번호 : " + ePw);
-        MimeMessage  message = emailSender.createMimeMessage();
+        MimeMessage message = emailSender.createMimeMessage();
 
         message.addRecipients(RecipientType.TO, to);//보내는 대상
         message.setSubject("ROTUTEE 회원가입 이메일 인증");//제목

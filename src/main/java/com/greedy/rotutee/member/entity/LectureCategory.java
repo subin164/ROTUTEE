@@ -1,4 +1,4 @@
-package com.greedy.rotutee.lecture.lecture.entity;
+package com.greedy.rotutee.member.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
