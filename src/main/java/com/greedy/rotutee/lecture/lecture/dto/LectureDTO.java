@@ -4,6 +4,7 @@ import com.greedy.rotutee.member.dto.MemberDTO;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,4 +29,7 @@ public class LectureDTO {
     private String applicationDivision;
     private int lectureCategoryNo;
     private LectureCategoryDTO category;
+
+    private List<ChapterDTO> chapterList;
+    private List<LectureReviewDTO> reviewList;
 }

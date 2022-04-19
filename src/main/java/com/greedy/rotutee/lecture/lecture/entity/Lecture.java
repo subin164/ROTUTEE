@@ -3,13 +3,24 @@ package com.greedy.rotutee.lecture.lecture.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity(name = "Lecture_Lecture")
 @Table(name = "TBL_LECTURE")
+@SequenceGenerator(
+        name = "LECTURE_LECTURE_SEQ_GENERATOR",
+        sequenceName = "BOARD_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class Lecture {
 
     @Id
     @Column(name = "LECTURE_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "LECTURE_LECTURE_SEQ_GENERATOR"
+    )
     private int lectureNo;
 
     @Column(name = "LECTURE_NAME")
@@ -49,4 +60,11 @@ public class Lecture {
     @JoinColumn(name = "LECTURE_CATEGORY_NO")
     @ManyToOne
     private LectureCategory lectureCategory;
+
+    @OneToMany(mappedBy = "lecture")
+    private List<Chapter> chapterList;
+
+    @OneToMany(mappedBy = "")
+    private List<LectureReview> lectureReviewList;
+
 }
