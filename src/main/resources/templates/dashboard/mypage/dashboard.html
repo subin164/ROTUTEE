@@ -22,6 +22,14 @@
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
+        .wrap {
+            justify-content: center;
+            text-align: center;
+        }
+        .dashboard {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 20px;
+        }
 
         .box {
             box-shadow: 3px 3px 3px 3px rgb(219, 219, 219);
@@ -47,7 +55,7 @@
         }
 
         .container {
-            display: flex;
+
             justify-content: center;
             text-align: center;
 
@@ -95,9 +103,11 @@
 
 <body>
 <div th:include="../common/mypagemenubar.html"></div>
-<div class="wrap">
-    <div class="container">
-        <div class="box">
+<div class="container dashboard">
+    <span>Dashboard</span>
+    <hr>
+    <div class="row wrap">
+        <div class="box col-6">
             <div>😀프로필</div>
             <div class="whitebox">
                 <div class="profile row" style="margin: 10px;">
@@ -111,7 +121,7 @@
                 </div>
             </div>
         </div>
-        <div class="posting box">
+        <div class="posting box col-6">
             <div style="margin-bottom: 10px;">&#128172;최근 작성글</div>
             <div class="whitebox">
                 <div class="content">
@@ -127,8 +137,8 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="basket box">
+    <div class="row wrap">
+        <div class="basket box col-6">
             <div style="margin-bottom: 10px;">📚장바구니</div>
             <div class="whitebox">
                 <div class="content">
@@ -143,7 +153,7 @@
                 </div>
             </div>
         </div>
-        <div class="alram box">
+        <div class="alram box col-6">
             <div style="margin-bottom: 10px;">&#128161;알림</div>
             <div class="whitebox">
                 <div class="content">
@@ -159,8 +169,8 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="lately-lecture box">
+    <div class="row wrap">
+        <div class="lately-lecture box col-6">
             <div style="margin-bottom: 10px;">&#127891;최근 학습중인 강의</div>
             <div class="whitebox">
                 <div class="content">
@@ -171,7 +181,7 @@
                 </div>
             </div>
         </div>
-        <div class="complete-lecture box">
+        <div class="complete-lecture box col-6">
             <div style="margin-bottom: 10px;">&#128212;완료된 강의</div>
             <div class="whitebox">
                 <div class="content">
