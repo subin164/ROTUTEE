@@ -1,7 +1,7 @@
 package com.greedy.rotutee.Authentication.dto;
 
-import com.greedy.rotutee.member.dto.MemberDTO;
-import com.greedy.rotutee.member.dto.MemberRoleDTO;
+import com.greedy.rotutee.main.controller.member.dto.MemberDTO;
+import com.greedy.rotutee.main.controller.member.dto.MemberRoleDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

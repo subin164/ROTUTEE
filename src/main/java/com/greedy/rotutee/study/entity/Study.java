@@ -1,9 +1,9 @@
 package com.greedy.rotutee.study.entity;
 
-import com.greedy.rotutee.member.entity.Member;
-
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Study")
 @Table(name = "TBL_STUDY_GROUP_BOARD")
@@ -16,14 +16,14 @@ import java.sql.Date;
 public class Study {
 
     @Id
-    @Column(name = "STUDY_NO")
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "STUDY_SEQ_GENERATOR"
     )
-    public int StudyNo;
+    @Column(name = "STUDY_NO")
+    public int studyNo;
 
-    @Column(name="STUDY_CONTENT")
+    @Column(name = "STUDY_CONTENT")
     public String content;
 
     @Column(name = "STUDY_TITLE")
@@ -35,14 +35,11 @@ public class Study {
     @Column(name = "STUDY_LIMITED_MEMBER_NUM")
     public int limited;
 
-    @Column(name="STUDY_INVITE_LINK")
+    @Column(name = "STUDY_INVITE_LINK")
     public String linked;
 
     @Column(name = "MEMBER_NO")
     public int memberNo;
-
-    @Column(name = "STUDY_RECRUITMENT_START_DATE")
-    public java.sql.Date startDate;
 
     @Column(name = "STUDY_RECRUITMENT_END_DATE")
     public java.sql.Date endDate;
@@ -51,31 +48,30 @@ public class Study {
     public String status;
 
     @Column(name = "STUDY_TAG")
-    public String tag;
+    private int tagNo;
 
     public Study() {
     }
 
-    public Study(int studyNo, String content, String title, Date writeDate, int limited, String linked, int memberNo, Date startDate, Date endDate, String status, String tag) {
-        StudyNo = studyNo;
+    public Study(int studyNo, String content, String title, Date writeDate, int limited, String linked, int memberNo, Date endDate, String status, int tagNo) {
+        this.studyNo = studyNo;
         this.content = content;
         this.title = title;
         this.writeDate = writeDate;
         this.limited = limited;
         this.linked = linked;
         this.memberNo = memberNo;
-        this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
-        this.tag = tag;
+        this.tagNo = tagNo;
     }
 
     public int getStudyNo() {
-        return StudyNo;
+        return studyNo;
     }
 
     public void setStudyNo(int studyNo) {
-        StudyNo = studyNo;
+        this.studyNo = studyNo;
     }
 
     public String getContent() {
@@ -126,14 +122,6 @@ public class Study {
         this.memberNo = memberNo;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
     public Date getEndDate() {
         return endDate;
     }
@@ -150,28 +138,27 @@ public class Study {
         this.status = status;
     }
 
-    public String getTag() {
-        return tag;
+    public int getTagNo() {
+        return tagNo;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setTagNo(int tagNo) {
+        this.tagNo = tagNo;
     }
 
     @Override
     public String toString() {
         return "Study{" +
-                "StudyNo=" + StudyNo +
+                "studyNo=" + studyNo +
                 ", content='" + content + '\'' +
                 ", title='" + title + '\'' +
                 ", writeDate=" + writeDate +
                 ", limited=" + limited +
                 ", linked='" + linked + '\'' +
                 ", memberNo=" + memberNo +
-                ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", status='" + status + '\'' +
-                ", tag='" + tag + '\'' +
+                ", tagNo=" + tagNo +
                 '}';
     }
 }

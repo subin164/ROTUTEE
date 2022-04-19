@@ -1,4 +1,4 @@
-package com.greedy.rotutee.member.dto;
+package com.greedy.rotutee.main.controller.member.dto;
 
 public class MemberRoleDTO {
 

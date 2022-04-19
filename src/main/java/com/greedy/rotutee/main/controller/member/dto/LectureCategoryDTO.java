@@ -1,25 +1,13 @@
-package com.greedy.rotutee.member.entity;
+package com.greedy.rotutee.main.controller.member.dto;
 
+public class LectureCategoryDTO {
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity(name = "MenuUrl")
-@Table(name = "TBL_MENU_URL")
-public class MenuUrl {
-
-    @Id
-    @Column(name = "MENU_URL_NO")
     private int no;
-
-    @Column(name = "MENU_URL_NAME")
     private String name;
 
-    public MenuUrl() {}
+    public LectureCategoryDTO() {}
 
-    public MenuUrl(int no, String name) {
+    public LectureCategoryDTO(int no, String name) {
         this.no = no;
         this.name = name;
     }
@@ -42,7 +30,7 @@ public class MenuUrl {
 
     @Override
     public String toString() {
-        return "MenuUrl{" +
+        return "LectureCategory{" +
                 "no=" + no +
                 ", name='" + name + '\'' +
                 '}';

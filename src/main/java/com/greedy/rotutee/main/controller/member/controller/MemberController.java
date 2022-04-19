@@ -1,12 +1,11 @@
-package com.greedy.rotutee.member.controller;
+package com.greedy.rotutee.main.controller.member.controller;
 
-import com.greedy.rotutee.member.dto.LectureCategoryDTO;
-import com.greedy.rotutee.member.dto.MemberDTO;
-import com.greedy.rotutee.member.service.MemberService;
+import com.greedy.rotutee.main.controller.member.dto.LectureCategoryDTO;
+import com.greedy.rotutee.main.controller.member.dto.MemberDTO;
+import com.greedy.rotutee.main.controller.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;

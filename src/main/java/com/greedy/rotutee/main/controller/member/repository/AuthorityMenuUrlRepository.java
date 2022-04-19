@@ -1,6 +1,6 @@
-package com.greedy.rotutee.member.repository;
+package com.greedy.rotutee.main.controller.member.repository;
 
-import com.greedy.rotutee.member.entity.RoleMenuUrl;
+import com.greedy.rotutee.main.controller.member.entity.RoleMenuUrl;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package com.greedy.rotutee.email.controller;
 
 import com.greedy.rotutee.email.service.EmailService;
 import com.greedy.rotutee.email.service.EmailServiceImpl;
-import com.greedy.rotutee.member.controller.MemberController;
+import com.greedy.rotutee.main.controller.member.controller.MemberController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller

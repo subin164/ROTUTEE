@@ -1,4 +1,4 @@
-package com.greedy.rotutee.member.controller;
+package com.greedy.rotutee.main.controller.member.controller;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;

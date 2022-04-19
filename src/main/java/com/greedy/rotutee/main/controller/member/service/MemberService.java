@@ -1,11 +1,11 @@
-package com.greedy.rotutee.member.service;
+package com.greedy.rotutee.main.controller.member.service;
 
-import com.greedy.rotutee.member.dto.LectureCategoryDTO;
-import com.greedy.rotutee.member.dto.MemberDTO;
-import com.greedy.rotutee.member.entity.LectureCategory;
-import com.greedy.rotutee.member.entity.Member;
-import com.greedy.rotutee.member.repository.LectureCategoryRepository;
-import com.greedy.rotutee.member.repository.MemberRepository;
+import com.greedy.rotutee.main.controller.member.dto.LectureCategoryDTO;
+import com.greedy.rotutee.main.controller.member.dto.MemberDTO;
+import com.greedy.rotutee.main.controller.member.entity.LectureCategory;
+import com.greedy.rotutee.main.controller.member.entity.Member;
+import com.greedy.rotutee.main.controller.member.repository.LectureCategoryRepository;
+import com.greedy.rotutee.main.controller.member.repository.MemberRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
