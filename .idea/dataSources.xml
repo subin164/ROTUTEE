@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="rotutee" uuid="f13906de-b592-4e1d-9360-18c37195f7e7">
+    <data-source source="LOCAL" name="rotutee" uuid="88b8ebdb-ea07-47ea-a21a-ebd8f3ca35fc">
       <driver-ref>oracle.19</driver-ref>
       <synchronize>true</synchronize>
       <auto-commit>false</auto-commit>
