@@ -35,8 +35,7 @@ public class DashboardBasket {
     @Column(name = "MEMBER_NO")
     private int memberNo;
 
-    @JoinColumn(name = "LECTURE_NO")
-    @ManyToOne
+    @Column(name = "LECTURE_NO")
     private int lectureNo;
 
     public DashboardBasket() {}

@@ -1,6 +1,5 @@
 package com.greedy.rotutee.lecture.lecture.dto;
 
-import com.greedy.rotutee.member.dto.MemberRoleDTO;
 import lombok.*;
 
 import java.sql.Date;

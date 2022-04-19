@@ -1,24 +1,25 @@
-package com.greedy.rotutee.main.controller.member.entity;
+package com.greedy.rotutee.member.entity;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity(name = "MenuDetail")
-@Table(name = "TBL_MENU_DETAIL")
-public class MenuDetail {
+@Entity(name = "Role")
+@Table(name = "TBL_ROLE")
+public class Role {
 
     @Id
-    @Column(name = "MENU_DETAIL_NO")
+    @Column(name = "ROLE_NO")
     private int no;
 
-    @Column(name = "MENU_DETAIL_NAME")
+    @Column(name = "ROLE_NAME")
     private String name;
 
-    public MenuDetail() {}
+    public Role() {}
 
-    public MenuDetail(int no, String name) {
+    public Role(int no, String name) {
         this.no = no;
         this.name = name;
     }
@@ -41,7 +42,7 @@ public class MenuDetail {
 
     @Override
     public String toString() {
-        return "MenuDetail{" +
+        return "Role{" +
                 "no=" + no +
                 ", name='" + name + '\'' +
                 '}';

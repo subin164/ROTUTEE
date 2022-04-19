@@ -1,6 +1,5 @@
 package com.greedy.rotutee.dashboard.mypage.entity;
 
-import com.greedy.rotutee.member.entity.MemberRole;
 
 import javax.persistence.*;
 import java.sql.Date;

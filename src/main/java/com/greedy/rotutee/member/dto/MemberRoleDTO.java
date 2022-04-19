@@ -1,4 +1,4 @@
-package com.greedy.rotutee.main.controller.member.dto;
+package com.greedy.rotutee.member.dto;
 
 import lombok.*;
 
@@ -13,5 +13,4 @@ public class MemberRoleDTO {
     private int memberRoleNo;
     private RoleDTO role;
     private MemberDTO member;
-
 }

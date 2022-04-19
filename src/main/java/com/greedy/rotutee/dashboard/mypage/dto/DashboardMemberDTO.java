@@ -1,6 +1,5 @@
 package com.greedy.rotutee.dashboard.mypage.dto;
 
-import com.greedy.rotutee.member.dto.MemberRoleDTO;
 import lombok.*;
 
 import java.sql.Date;
@@ -36,5 +35,4 @@ public class DashboardMemberDTO {
     private Date withdrawedDate;
     private String withdrawalStatusYn;
     private String rouletteChance;
-    private List<MemberRoleDTO> memberRoleList;
 }

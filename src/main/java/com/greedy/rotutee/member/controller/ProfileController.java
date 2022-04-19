@@ -2,7 +2,6 @@ package com.greedy.rotutee.member.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.member.dto.MemberDTO;
-import com.greedy.rotutee.member.service.MemberService;
 import com.greedy.rotutee.member.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

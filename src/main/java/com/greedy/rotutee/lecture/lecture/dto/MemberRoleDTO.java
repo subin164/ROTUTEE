@@ -1,7 +1,5 @@
 package com.greedy.rotutee.lecture.lecture.dto;
 
-import com.greedy.rotutee.member.dto.MemberDTO;
-
 public class MemberRoleDTO {
 
     private int memberAuthorityNo;
