@@ -25,6 +25,4 @@ public class MemberDTO {
     private String leaveStatusYn;
     private String rouletteChance;
     private List<MemberRoleDTO> memberRoleList;
-
-
 }

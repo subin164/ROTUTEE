@@ -1,7 +1,6 @@
 package com.greedy.rotutee.member.controller;
 
-import com.greedy.rotutee.certification.phone.PhoneConfirm;
-import com.greedy.rotutee.member.dto.LectureCategoryDTO;
+import com.greedy.rotutee.lecture.lecture.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.dto.MemberDTO;
 import com.greedy.rotutee.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Random;
 
 @Controller
 @RequestMapping("/member")
