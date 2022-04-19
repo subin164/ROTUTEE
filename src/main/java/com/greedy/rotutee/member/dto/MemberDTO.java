@@ -25,4 +25,21 @@ public class MemberDTO {
     private String leaveStatusYn;
     private String rouletteChance;
     private List<MemberRoleDTO> memberRoleList;
+
+    @Override
+    public String toString() {
+        return "MemberDTO{" +
+                "no=" + no +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", pwd='" + pwd + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", phoneNum='" + phoneNum + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", registrationDate=" + registrationDate +
+                ", withdrawalDate=" + withdrawalDate +
+                ", leaveStatusYn='" + leaveStatusYn + '\'' +
+                ", rouletteChance='" + rouletteChance + '\'' +
+                '}';
+    }
 }

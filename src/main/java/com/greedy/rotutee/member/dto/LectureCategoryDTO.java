@@ -1,4 +1,4 @@
-package com.greedy.rotutee.lecture.lecture.dto;
+package com.greedy.rotutee.member.dto;
 
 public class LectureCategoryDTO {
 

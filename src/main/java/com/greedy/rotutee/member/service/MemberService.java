@@ -1,11 +1,11 @@
 package com.greedy.rotutee.member.service;
 
-import com.greedy.rotutee.lecture.lecture.dto.LectureCategoryDTO;
+import com.greedy.rotutee.member.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.dto.MemberDTO;
-import com.greedy.rotutee.lecture.lecture.entity.LectureCategory;
+import com.greedy.rotutee.member.entity.LectureCategory;
 import com.greedy.rotutee.member.entity.Member;
 import com.greedy.rotutee.member.entity.MemberRole;
-import com.greedy.rotutee.lecture.lecture.repository.LectureCategoryRepository;
+import com.greedy.rotutee.member.repository.LectureCategoryRepository;
 import com.greedy.rotutee.member.repository.MemberRepository;
 import com.greedy.rotutee.member.repository.MemberRoleRepository;
 import com.greedy.rotutee.member.repository.RoleRepository;
@@ -74,5 +74,14 @@ public class MemberService {
     public boolean duplicateEmail(String checkEmail) {
 
         return memberRepository.findMemberByEmail(checkEmail) == null ? true : false;
+    }
+
+    @Transactional
+    public void findMemberPwd(MemberDTO member) {
+
+        String encodePwd = passwordEncoder.encode(member.getPwd());
+
+        Member findMember = memberRepository.findMemberByEmail(member.getEmail());
+        findMember.setPwd(encodePwd);
     }
 }

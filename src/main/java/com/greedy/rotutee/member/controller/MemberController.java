@@ -1,6 +1,6 @@
 package com.greedy.rotutee.member.controller;
 
-import com.greedy.rotutee.lecture.lecture.dto.LectureCategoryDTO;
+import com.greedy.rotutee.member.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.dto.MemberDTO;
 import com.greedy.rotutee.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +52,17 @@ public class MemberController {
         return memberService.duplicateEmail(checkEmail);
     }
 
+    @GetMapping("/findpwd")
+    public void findMemberPwd() {}
+
+    @PostMapping("/findpwd")
+    public String findMemberPwd(@ModelAttribute MemberDTO member, RedirectAttributes rttr) {
+
+        memberService.findMemberPwd(member);
+
+        rttr.addFlashAttribute("message", "비밀번호 변경에 성공하셨습니다 로그인을 해주세요");
+
+        return "redirect:/member/login";
+    }
 
 }
