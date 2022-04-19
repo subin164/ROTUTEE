@@ -4,7 +4,10 @@ import com.greedy.rotutee.study.dto.StudyDTO;
 import com.greedy.rotutee.study.entity.Study;
 import com.greedy.rotutee.study.repository.StudyRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,7 +15,6 @@ import javax.transaction.Transactional;
 @Service
 public class StudyService {
 
-    @Autowired
     private final StudyRepository studyRepository;
     private final ModelMapper modelMapper;
 
@@ -21,8 +23,23 @@ public class StudyService {
         this.modelMapper = modelMapper;
     }
 
-    @Transactional
-    public void studyRegist(StudyDTO study) {
-        studyRepository.save(modelMapper.map(study, Study.class));
+//    study 모집글 전체 조회
+    public Page<StudyDTO> findStudyList(Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("writeDate"));
+
+
+        return studyRepository.findAll(pageable).map(study -> modelMapper.map(study, StudyDTO.class));
     }
+
+//    study 모집글 작성
+    @Transactional
+    public void studyRegist(StudyDTO studyDTO) {
+
+        studyRepository.save(modelMapper.map(studyDTO, Study.class));
+
+    }
+
 }
