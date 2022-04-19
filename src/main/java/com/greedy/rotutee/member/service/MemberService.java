@@ -1,11 +1,11 @@
 package com.greedy.rotutee.member.service;
 
-import com.greedy.rotutee.member.dto.LectureCategoryDTO;
+import com.greedy.rotutee.lecture.lecture.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.dto.MemberDTO;
-import com.greedy.rotutee.member.entity.LectureCategory;
+import com.greedy.rotutee.lecture.lecture.entity.LectureCategory;
 import com.greedy.rotutee.member.entity.Member;
 import com.greedy.rotutee.member.entity.MemberRole;
-import com.greedy.rotutee.member.repository.LectureCategoryRepository;
+import com.greedy.rotutee.lecture.lecture.repository.LectureCategoryRepository;
 import com.greedy.rotutee.member.repository.MemberRepository;
 import com.greedy.rotutee.member.repository.MemberRoleRepository;
 import com.greedy.rotutee.member.repository.RoleRepository;
@@ -44,10 +44,6 @@ public class MemberService {
 
         List<LectureCategory> lectureCategoryList =  lectureCategoryRepository.findAll();
 
-        for(LectureCategory category : lectureCategoryList) {
-            System.out.println("category = " + category);
-        }
-
         return lectureCategoryList.stream().map(lectureCategory ->
                 modelMapper.map(lectureCategory, LectureCategoryDTO.class)).collect(Collectors.toList());
     }
@@ -77,8 +73,6 @@ public class MemberService {
 
     public boolean duplicateEmail(String checkEmail) {
 
-        System.out.println("memberRepository.findMemberByEmail(checkEmail) = " + memberRepository.findMemberByEmail(checkEmail));
-        
         return memberRepository.findMemberByEmail(checkEmail) == null ? true : false;
     }
 }
