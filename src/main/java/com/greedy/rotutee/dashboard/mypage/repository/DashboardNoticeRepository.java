@@ -1,9 +1,11 @@
 package com.greedy.rotutee.dashboard.mypage.repository;
 
-import org.springframework.stereotype.Repository;
+import com.greedy.rotutee.dashboard.mypage.entity.DashboardNotice;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.repository
- * fileName : MypageDashboardRepository
+ * fileName : NoticeRepository
  * author : SeoYoung
  * date : 2022-04-19
  * description :
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Repository;
  * -----------------------------------------------------------
  * 2022-04-19 SeoYoung 최초 생성
  */
-@Repository
-public class MypageDashboardRepository {
+
+
+public interface DashboardNoticeRepository extends JpaRepository<DashboardNotice, Integer> {
 }

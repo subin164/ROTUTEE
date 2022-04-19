@@ -2,6 +2,8 @@ package com.greedy.rotutee.dashboard.mypage.dto;
 
 import lombok.*;
 
+import java.sql.Date;
+
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.dto
  * fileName : MyPageDashboardAlarmDTO
@@ -20,4 +22,10 @@ import lombok.*;
 @ToString
 @Builder
 public class MyPageDashboardAlarmDTO {
+
+    private int alramNo;
+    private String alramContent;
+    private int categoryNo;
+    private int membberNo;
+    private Date noticeTime;
 }
