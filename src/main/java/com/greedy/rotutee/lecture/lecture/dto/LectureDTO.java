@@ -10,7 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class LectureDTO {
 
     private int lectureNo;
@@ -31,4 +30,29 @@ public class LectureDTO {
 
     private List<ChapterDTO> chapterList;
     private List<LectureReviewDTO> reviewList;
+    private List<AttachedFileDTO> attachedFileList;
+
+    @Override
+    public String toString() {
+        return "LectureDTO{" +
+                "lectureNo=" + lectureNo +
+                ", lectureName='" + lectureName + '\'' +
+                ", lecturePrice=" + lecturePrice +
+                ", lectureLevel='" + lectureLevel + '\'' +
+                ", lectureSummary='" + lectureSummary + '\'' +
+                ", lecturedetails='" + lecturedetails + '\'' +
+                ", revisionHistory='" + revisionHistory + '\'' +
+                ", lectureApprovalStatus='" + lectureApprovalStatus + '\'' +
+                ", lectureOpeningDate=" + lectureOpeningDate +
+                ", memberNo=" + memberNo +
+                ", tutor=" + tutor +
+                ", applicationDate=" + applicationDate +
+                ", applicationDivision='" + applicationDivision + '\'' +
+                ", lectureCategoryNo=" + lectureCategoryNo +
+                ", category=" + category +
+                ", chapterList=" + chapterList +
+                ", reviewList=" + reviewList +
+                ", attachedFileList=" + attachedFileList +
+                '}';
+    }
 }

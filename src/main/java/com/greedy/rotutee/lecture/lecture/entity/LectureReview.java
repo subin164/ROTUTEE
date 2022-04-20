@@ -29,4 +29,89 @@ public class LectureReview {
     @ManyToOne
     private Member writer;
 
+    @JoinColumn(name = "LECTURE_NO")
+    @ManyToOne
+    private Lecture lecture;
+
+    public LectureReview() {
+    }
+
+    public LectureReview(int lectureReviewNo, int lectureGrade, String lectureReviewContent, Date lectureReviewDate, String lectureReviewRemoveYN, Member writer, Lecture lecture) {
+        this.lectureReviewNo = lectureReviewNo;
+        this.lectureGrade = lectureGrade;
+        this.lectureReviewContent = lectureReviewContent;
+        this.lectureReviewDate = lectureReviewDate;
+        this.lectureReviewRemoveYN = lectureReviewRemoveYN;
+        this.writer = writer;
+        this.lecture = lecture;
+    }
+
+    public int getLectureReviewNo() {
+        return lectureReviewNo;
+    }
+
+    public void setLectureReviewNo(int lectureReviewNo) {
+        this.lectureReviewNo = lectureReviewNo;
+    }
+
+    public int getLectureGrade() {
+        return lectureGrade;
+    }
+
+    public void setLectureGrade(int lectureGrade) {
+        this.lectureGrade = lectureGrade;
+    }
+
+    public String getLectureReviewContent() {
+        return lectureReviewContent;
+    }
+
+    public void setLectureReviewContent(String lectureReviewContent) {
+        this.lectureReviewContent = lectureReviewContent;
+    }
+
+    public Date getLectureReviewDate() {
+        return lectureReviewDate;
+    }
+
+    public void setLectureReviewDate(Date lectureReviewDate) {
+        this.lectureReviewDate = lectureReviewDate;
+    }
+
+    public String getLectureReviewRemoveYN() {
+        return lectureReviewRemoveYN;
+    }
+
+    public void setLectureReviewRemoveYN(String lectureReviewRemoveYN) {
+        this.lectureReviewRemoveYN = lectureReviewRemoveYN;
+    }
+
+    public Member getWriter() {
+        return writer;
+    }
+
+    public void setWriter(Member writer) {
+        this.writer = writer;
+    }
+
+    public Lecture getLecture() {
+        return lecture;
+    }
+
+    public void setLecture(Lecture lecture) {
+        this.lecture = lecture;
+    }
+
+    @Override
+    public String toString() {
+        return "LectureReview{" +
+                "lectureReviewNo=" + lectureReviewNo +
+                ", lectureGrade=" + lectureGrade +
+                ", lectureReviewContent='" + lectureReviewContent + '\'' +
+                ", lectureReviewDate=" + lectureReviewDate +
+                ", lectureReviewRemoveYN='" + lectureReviewRemoveYN + '\'' +
+                ", writer=" + writer +
+                ", lecture=" + lecture +
+                '}';
+    }
 }

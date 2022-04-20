@@ -19,4 +19,6 @@ public class LectureReviewDTO {
     private String lectureReviewRemoveYN;
     private int memberLectureNo;
     private MemberDTO writer;
+    private int lectureNo;
+    private LectureDTO lecture;
 }

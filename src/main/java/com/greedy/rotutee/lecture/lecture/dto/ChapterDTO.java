@@ -9,7 +9,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class ChapterDTO {
 
     private int chapterNo;
@@ -18,4 +17,14 @@ public class ChapterDTO {
     private LectureDTO lecture;
     private List<ClassDTO> classList;
 
+    @Override
+    public String toString() {
+        return "ChapterDTO{" +
+                "chapterNo=" + chapterNo +
+                ", chapterName='" + chapterName + '\'' +
+                ", lectureNo=" + lectureNo +
+//                ", lecture=" + lecture +
+                ", classList=" + classList +
+                '}';
+    }
 }
