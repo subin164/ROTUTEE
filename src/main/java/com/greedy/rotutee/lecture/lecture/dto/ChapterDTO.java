@@ -14,7 +14,7 @@ public class ChapterDTO {
     private int chapterNo;
     private String chapterName;
     private int lectureNo;
-    private LectureDTO lecture;
+//    private LectureDTO lecture;
     private List<ClassDTO> classList;
 
     @Override

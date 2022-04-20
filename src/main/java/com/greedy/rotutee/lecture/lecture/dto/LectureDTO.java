@@ -28,9 +28,9 @@ public class LectureDTO {
     private int lectureCategoryNo;
     private LectureCategoryDTO category;
 
-    private List<ChapterDTO> chapterList;
+//    private List<ChapterDTO> chapterList;
     private List<LectureReviewDTO> reviewList;
-    private List<AttachedFileDTO> attachedFileList;
+//    private List<AttachedFileDTO> attachedFileList;
 
     @Override
     public String toString() {
@@ -50,9 +50,9 @@ public class LectureDTO {
                 ", applicationDivision='" + applicationDivision + '\'' +
                 ", lectureCategoryNo=" + lectureCategoryNo +
                 ", category=" + category +
-                ", chapterList=" + chapterList +
+//                ", chapterList=" + chapterList +
                 ", reviewList=" + reviewList +
-                ", attachedFileList=" + attachedFileList +
+//                ", attachedFileList=" + attachedFileList +
                 '}';
     }
 }

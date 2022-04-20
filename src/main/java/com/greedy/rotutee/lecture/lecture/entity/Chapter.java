@@ -16,9 +16,8 @@ public class Chapter {
     @Column(name = "CHAPTER_NAME")
     private String chapterName;
 
-    @JoinColumn(name = "LECTURE_NO")
-    @ManyToOne
-    private Lecture lecture;
+    @Column(name = "LECTURE_NO")
+    private int lectureNo;
 
     @OneToMany(mappedBy = "chapter")
     private List<Class> classList;
@@ -26,10 +25,10 @@ public class Chapter {
     public Chapter() {
     }
 
-    public Chapter(int chapterNo, String chapterName, Lecture lecture, List<Class> classList) {
+    public Chapter(int chapterNo, String chapterName, int lectureNo, List<Class> classList) {
         this.chapterNo = chapterNo;
         this.chapterName = chapterName;
-        this.lecture = lecture;
+        this.lectureNo = lectureNo;
         this.classList = classList;
     }
 
@@ -49,12 +48,12 @@ public class Chapter {
         this.chapterName = chapterName;
     }
 
-    public Lecture getLecture() {
-        return lecture;
+    public int getLectureNo() {
+        return lectureNo;
     }
 
-    public void setLecture(Lecture lecture) {
-        this.lecture = lecture;
+    public void setLectureNo(int lectureNo) {
+        this.lectureNo = lectureNo;
     }
 
     public List<Class> getClassList() {
@@ -70,7 +69,7 @@ public class Chapter {
         return "Chapter{" +
                 "chapterNo=" + chapterNo +
                 ", chapterName='" + chapterName + '\'' +
-                ", lecture=" + lecture +
+                ", lectureNo=" + lectureNo +
 //                ", classList=" + classList +
                 '}';
     }

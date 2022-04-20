@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="/sj/common.css">
+    <link rel="stylesheet" type="text/css" href="/sj/detail.css">
+</head>
+<body>
+    <div th:include="common/topMenubar.html"></div>
+    <main>
+        <div class="container d-flex">
+            <div>
+                <div class="lecture-detail">
+                    <br>
+                    <p style="margin-left: 75px; font-size: xx-large;" th:text="${lecture.lectureName}"></p>
+                    <br>
+                    <img src="image/banner/Java.jpg" style="width: 800px; margin-left: 75px;">
+                    <div class="lecture-intro" th:text="${lecture.lectureSummary}"></div>
+                    <p style="margin-left: 75px; margin-top: 30px; font-size: x-large;">커리큘럼</p>
+                    <div th:each="chapter : ${chapterList}">
+                        <div class="chapter mt-lg-3">
+                            <p style="margin-top:15px; margin-left:15px;" th:text="${chapter.chapterName}"></p>
+                        </div>
+<!--                        <div class="chapter">-->
+<!--                            <p style="margin-top:15px; margin-left:15px;">강의2. 응용이 어쩌고 저쩌구</p>-->
+<!--                        </div>-->
+<!--                        <div class="chapter">-->
+<!--                            <p style="margin-top:15px; margin-left:15px;">강의3. 활용이 어쩌고 저쩌구</p>-->
+<!--                        </div>-->
+<!--                        <div class="chapter">-->
+<!--                            <p style="margin-top:15px; margin-left:15px;">강의4. 활용이 어쩌고 저쩌구</p>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+                <div>
+                    <div class="lecture-review">
+                        <p style="margin-left: 30px; margin-top:30px; font-size: x-large;">강의평</p>
+                        <div class="d-flex review-area">
+                            <div class="review-info">
+                                <p style="margin-left: 75px; margin-top: 20px; font-size: x-large;">5.0</p>
+                                <div style="margin-left: 15px; margin-top:30px; font-size: xx-large;">
+                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                                </div>
+                                <p style="margin-left: 50px; margin-top: 30px; font-size: large;">20명 참여</p>
+                            </div>
+                            <div class="grade-list">
+                                <div class="progress" style="margin-top: 10px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <br>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <br>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <br>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <br>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-write">
+                            <form name="myform" id="myform" method="post" action="">
+                                <fieldset>
+                                    <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
+                                    <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
+                                    <input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
+                                    <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
+                                    <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
+                                </fieldset>
+                                <p style="margin-left: 330px; margin-top: 30px; font-size: x-large;">별점을 선택해 주세요</p>
+                                <textarea id="reviewForm" placeholder="강의평을 작성해주세요" cols="103" rows="3"></textarea>
+                                <button type="submit" class="btn btn-primary btn-sm" id="writeReview">작성</button>
+                            </form>
+                        </div>
+                        <!-- 댓글 리스트 -->
+                        <div class="review-list">
+                            <!-- 댓글 -->
+                            <div class="row review">
+                                <div class="col-1 review-image">
+                                    <img class="profileimg" src="image/logo/profileimg.jpeg" style="border-radius: 100%;">
+                                </div>
+                                <div class="col-2 review-name">
+                                    <p style="margin-left: 10px"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></p>
+                                    <p style="margin-left: 10px; margin-top: 10px;">이석재</p>
+                                </div>
+                                <div class="review-text">
+                                    <p>아이 시팔 모르겠다</p>
+                                </div>
+                            </div>
+                            <!-- 댓글 end -->
+                        </div>
+                        <!-- 댓글 리스트 end -->
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex" style="flex-direction: column;">
+                <div class="tutor-detail">
+                    <button class="btn btn-success addcart">수강 바구니에 담기</button>
+                    <p style="margin-left: 65px; margin-top: 20px;">현재 11명 수강중입니다.</p>
+                    <div class="d-flex tutor-info">
+                        <div class="tutor-image">
+                            <img src="image/banner/surreal-ga273b48a9_1920.jpg" style="width: 140px; height: 140px;">
+                        </div>
+                        <div class="tutor-name">
+                            <p style="margin-left: 30px; margin-top: 30px;">공당근</p>
+                            <p style="margin-left: 30px; margin-top: 30px;">TUTOR</p>
+                        </div>
+                    </div>
+                    <div class="tutor-intro">
+                        <p>저는 뭐 어쩌구 저쩌구</p>
+                    </div>
+                </div>
+                <div class="lecture-grade">
+                    <p style="margin-top: 20px; margin-left: 20px; font-size: x-large;">평점</p>
+                    <div style="margin-left: 65px; margin-top:30px; font-size: xx-large;">
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    </div>
+                    <p style="margin-top: 20px; margin-left: 110px;">20명 참여</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

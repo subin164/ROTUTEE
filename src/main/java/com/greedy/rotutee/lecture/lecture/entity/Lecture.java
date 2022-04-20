@@ -47,8 +47,8 @@ public class Lecture {
     @Column(name = "LECTURE_OPENING_DATE")
     private Date lectureOpeningDate;
 
-    @JoinColumn(name = "MEMBER_NO")
     @ManyToOne
+    @JoinColumn(name = "MEMBER_NO")
     private Member tutor;
 
     @Column(name = "APPLICATION_DATE")
@@ -57,24 +57,17 @@ public class Lecture {
     @Column(name = "APPLICATION_DIVISION")
     private String applicationDivision;
 
-    @JoinColumn(name = "LECTURE_CATEGORY_NO")
     @ManyToOne
+    @JoinColumn(name = "LECTURE_CATEGORY_NO")
     private LectureCategory lectureCategory;
-
-    @OneToMany(mappedBy = "lecture")
-    private List<Chapter> chapterList;
 
     @OneToMany(mappedBy = "lecture")
     private List<LectureReview> lectureReviewList;
 
-    @OneToMany(mappedBy = "lecture")
-    private List<AttachedFile> attachedFileList;
-
-
     public Lecture() {
     }
 
-    public Lecture(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lecturedetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, Member tutor, Date applicationDate, String applicationDivision, LectureCategory lectureCategory, List<Chapter> chapterList, List<LectureReview> lectureReviewList, List<AttachedFile> attachedFileList) {
+    public Lecture(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lecturedetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, Member tutor, Date applicationDate, String applicationDivision, LectureCategory lectureCategory, List<LectureReview> lectureReviewList) {
         this.lectureNo = lectureNo;
         this.lectureName = lectureName;
         this.lecturePrice = lecturePrice;
@@ -88,9 +81,7 @@ public class Lecture {
         this.applicationDate = applicationDate;
         this.applicationDivision = applicationDivision;
         this.lectureCategory = lectureCategory;
-        this.chapterList = chapterList;
         this.lectureReviewList = lectureReviewList;
-        this.attachedFileList = attachedFileList;
     }
 
     public int getLectureNo() {
@@ -197,28 +188,12 @@ public class Lecture {
         this.lectureCategory = lectureCategory;
     }
 
-    public List<Chapter> getChapterList() {
-        return chapterList;
-    }
-
-    public void setChapterList(List<Chapter> chapterList) {
-        this.chapterList = chapterList;
-    }
-
     public List<LectureReview> getLectureReviewList() {
         return lectureReviewList;
     }
 
     public void setLectureReviewList(List<LectureReview> lectureReviewList) {
         this.lectureReviewList = lectureReviewList;
-    }
-
-    public List<AttachedFile> getAttachedFileList() {
-        return attachedFileList;
-    }
-
-    public void setAttachedFileList(List<AttachedFile> attachedFileList) {
-        this.attachedFileList = attachedFileList;
     }
 
     @Override
@@ -237,9 +212,7 @@ public class Lecture {
                 ", applicationDate=" + applicationDate +
                 ", applicationDivision='" + applicationDivision + '\'' +
                 ", lectureCategory=" + lectureCategory +
-//                ", chapterList=" + chapterList +
 //                ", lectureReviewList=" + lectureReviewList +
-//                ", attachedFileList=" + attachedFileList +
                 '}';
     }
 }

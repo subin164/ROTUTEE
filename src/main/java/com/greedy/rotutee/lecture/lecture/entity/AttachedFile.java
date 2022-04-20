@@ -32,14 +32,13 @@ public class AttachedFile {
     private String fileDeletionYN;
 
     @Column(name = "MEMBER_NO")
-    private int memberNo;
+    private Integer memberNo;
 
     @Column(name = "BOARD_NO")
-    private int boardNo;
+    private Integer boardNo;
 
-    @JoinColumn(name = "LECTURE_NO")
-    @ManyToOne
-    private Lecture lecture;
+    @Column(name = "LECTURE_NO")
+    private Integer lectureNo;
 
     @Column(name = "DOCUMENT_NO")
     private Integer documentNo;
@@ -47,7 +46,7 @@ public class AttachedFile {
     public AttachedFile() {
     }
 
-    public AttachedFile(int attachedFileNo, String originalAttachedFileName, String saveAttachedFileName, String thumbnailFileName, String storageFile, String thumbnailFilePath, String division, String fileDeletionYN, int memberNo, int boardNo, Lecture lecture, Integer documentNo) {
+    public AttachedFile(int attachedFileNo, String originalAttachedFileName, String saveAttachedFileName, String thumbnailFileName, String storageFile, String thumbnailFilePath, String division, String fileDeletionYN, Integer memberNo, Integer boardNo, Integer lectureNo, Integer documentNo) {
         this.attachedFileNo = attachedFileNo;
         this.originalAttachedFileName = originalAttachedFileName;
         this.saveAttachedFileName = saveAttachedFileName;
@@ -58,7 +57,7 @@ public class AttachedFile {
         this.fileDeletionYN = fileDeletionYN;
         this.memberNo = memberNo;
         this.boardNo = boardNo;
-        this.lecture = lecture;
+        this.lectureNo = lectureNo;
         this.documentNo = documentNo;
     }
 
@@ -126,28 +125,28 @@ public class AttachedFile {
         this.fileDeletionYN = fileDeletionYN;
     }
 
-    public int getMemberNo() {
+    public Integer getMemberNo() {
         return memberNo;
     }
 
-    public void setMemberNo(int memberNo) {
+    public void setMemberNo(Integer memberNo) {
         this.memberNo = memberNo;
     }
 
-    public int getBoardNo() {
+    public Integer getBoardNo() {
         return boardNo;
     }
 
-    public void setBoardNo(int boardNo) {
+    public void setBoardNo(Integer boardNo) {
         this.boardNo = boardNo;
     }
 
-    public Lecture getLecture() {
-        return lecture;
+    public Integer getLectureNo() {
+        return lectureNo;
     }
 
-    public void setLecture(Lecture lecture) {
-        this.lecture = lecture;
+    public void setLectureNo(Integer lectureNo) {
+        this.lectureNo = lectureNo;
     }
 
     public Integer getDocumentNo() {
@@ -171,7 +170,7 @@ public class AttachedFile {
                 ", fileDeletionYN='" + fileDeletionYN + '\'' +
                 ", memberNo=" + memberNo +
                 ", boardNo=" + boardNo +
-                ", lecture=" + lecture +
+                ", lectureNo=" + lectureNo +
                 ", documentNo=" + documentNo +
                 '}';
     }
