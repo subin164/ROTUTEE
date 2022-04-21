@@ -26,7 +26,7 @@ public class LectureReview {
     private String lectureReviewRemoveYN;
 
     @JoinColumn(name = "MEMBER_NO")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member writer;
 
     @Column(name = "LECTURE_NO")

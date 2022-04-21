@@ -47,7 +47,7 @@ public class Lecture {
     @Column(name = "LECTURE_OPENING_DATE")
     private Date lectureOpeningDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_NO")
     private Member tutor;
 
@@ -57,7 +57,7 @@ public class Lecture {
     @Column(name = "APPLICATION_DIVISION")
     private String applicationDivision;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LECTURE_CATEGORY_NO")
     private LectureCategory lectureCategory;
 

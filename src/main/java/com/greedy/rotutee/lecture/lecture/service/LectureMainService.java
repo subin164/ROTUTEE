@@ -1,8 +1,6 @@
 package com.greedy.rotutee.lecture.lecture.service;
 
-import com.greedy.rotutee.lecture.lecture.dto.ChapterDTO;
-import com.greedy.rotutee.lecture.lecture.dto.LectureDTO;
-import com.greedy.rotutee.lecture.lecture.dto.LectureReviewDTO;
+import com.greedy.rotutee.lecture.lecture.dto.*;
 
 import java.util.List;
 
@@ -20,4 +18,8 @@ public interface LectureMainService {
     int findMemberCountByLectureNo(int lectureNo);
 
     int findGradeAverageByLectureNo(int lectureNo);
+
+    MemberLectureDTO findMemberInLecture(int memberNo, int lectureNo);
+
+    void registLectureReview(int rating, String content, int lectureNo, int memberNo);
 }

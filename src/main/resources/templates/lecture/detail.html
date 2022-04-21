@@ -62,6 +62,7 @@
                         </div>
                         <div class="review-write">
                             <form name="myform" id="myform" method="post" action="/lecture/writereview">
+                                <input type="hidden" name="lectureNo" th:value="${lecture.lectureNo}">
                                 <fieldset>
                                     <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
                                     <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
@@ -70,23 +71,23 @@
                                     <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
                                 </fieldset>
                                 <p style="margin-left: 330px; margin-top: 10px; font-size: x-large;">별점을 선택해 주세요</p>
-                                <textarea id="reviewForm" placeholder="강의평을 작성해주세요" cols="103" rows="3"></textarea>
+                                <textarea id="reviewForm" placeholder="강의평을 작성해주세요" cols="103" rows="3" name="content"></textarea>
                                 <button type="submit" class="btn btn-primary btn-sm" id="writeReview">작성</button>
                             </form>
                         </div>
                         <!-- 댓글 리스트 -->
                         <div class="review-list">
                             <!-- 댓글 -->
-                            <div class="row review" style="margin-top: 5px; margin-bottom: 5px; margin-left: 25px;">
+                            <div class="row review" style="margin-top: 5px; margin-bottom: 5px; margin-left: 25px;" th:each="lectureReview : ${lectureReviewList}">
                                 <div class="col-1 review-image" style="margin-top: 10px">
                                     <img class="profileimg" src="image/logo/profileimg.jpeg">
                                 </div>
                                 <div class="col-2 review-name">
                                     <p style="margin-left: 10px;"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></p>
-                                    <p style="margin-left: 10px;">이석재</p>
+                                    <p style="margin-left: 10px;" th:text="${lectureReview.writer.name}"></p>
                                 </div>
                                 <div class="review-text">
-                                    <p>아이 시팔 모르겠다</p>
+                                    <p th:text="${lectureReview.lectureReviewContent}"></p>
                                 </div>
                             </div>
                             <!-- 댓글 end -->
@@ -122,5 +123,9 @@
             </div>
         </div>
     </main>
+    <script>
+        const message = "[[${message}]]"
+        message && alert(message);
+    </script>
 </body>
 </html>

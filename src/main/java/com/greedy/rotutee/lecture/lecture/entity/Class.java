@@ -18,7 +18,7 @@ public class Class {
     private String videoPath;
 
     @JoinColumn(name = "CHAPTER_NO")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Chapter chapter;
 
     public Class() {

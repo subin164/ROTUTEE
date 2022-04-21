@@ -15,8 +15,9 @@ public interface LectureMainRepository extends JpaRepository<Lecture, Integer> {
 
     List<Lecture> findBylectureApprovalStatus(String lectureApprovalStatus);
 
-    List<Lecture> findBylectureNameContaining(String searchValue);
+    @Query(value = "select a from Lecture_Lecture a where a.lectureName like '%' || :searchValue || '%' and a.lectureApprovalStatus = '승인'", nativeQuery = false)
+    List<Lecture> findBylectureNameContaining(@Param("searchValue") String searchValue);
 
-    @Query(value = "select a from Lecture_Lecture a where a.lectureApprovalStatus = '승인' and a.tutor.name = :searchValue", nativeQuery = true)
+    @Query(value = "select a from Lecture_Lecture a where a.lectureApprovalStatus = '승인' and a.tutor.name = :searchValue", nativeQuery = false)
     List<Lecture> findLecturesByTutorName(@Param("searchValue") String searchValue);
 }

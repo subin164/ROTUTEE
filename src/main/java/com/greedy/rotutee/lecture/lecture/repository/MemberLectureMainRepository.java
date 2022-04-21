@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberLectureMainRepository extends JpaRepository<MemberLecture, Integer> {
     int countByLectureNo(int lectureNo);
+
+    MemberLecture findByMemberNoAndLectureNo(int memberNo, int lectureNo);
 }

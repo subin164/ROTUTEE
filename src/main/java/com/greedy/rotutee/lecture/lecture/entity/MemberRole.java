@@ -10,11 +10,11 @@ public class MemberRole {
     @Column(name = "MEMBER_ROLE_NO")
     private int memberAuthorityNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROLE_NO")
     private Role authority;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_NO")
     private Member member;
 
