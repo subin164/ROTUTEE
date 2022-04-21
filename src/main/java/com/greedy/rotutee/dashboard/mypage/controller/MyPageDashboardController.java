@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 
 @Controller
-@RequestMapping("/mypage")
+@RequestMapping("/dashboard")
 public class MyPageDashboardController {
 
     private MypageDashboardService mypageDashboardService;
@@ -33,12 +33,24 @@ public class MyPageDashboardController {
         this.mypageDashboardService = mypageDashboardService;
     }
 
-    @GetMapping("tuteedashboard")
+    @GetMapping("/tuteedashboard")
     public ModelAndView findTuteeDashboard(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
 
         int memberNo = customUser.getNo();
 
         MypageDashboardDTO dashboard = mypageDashboardService.findTuteeDashboard(memberNo);
+
+        mv.addObject("dashboard", dashboard);
+        mv.setViewName("dashboard/mypage/dashboard");
+        return mv;
+    }
+
+    @GetMapping("/tutordashboard")
+    public ModelAndView findTutorDashboard(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
+
+        int memberNo = customUser.getNo();
+
+        mv.setViewName("dashboard/mypage/tutordashboard");
 
         return mv;
     }

@@ -1,20 +1,17 @@
 package com.greedy.rotutee.dashboard.mypage.dto;
 
-
-
 import lombok.*;
 
-import java.util.List;
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.dto
- * fileName : MypageDashboardDTO
+ * fileName : DashboardMemberLectureDTO
  * author : SeoYoung
- * date : 2022-04-19
+ * date : 2022-04-21
  * description :
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
- * 2022-04-19 SeoYoung 최초 생성
+ * 2022-04-21 SeoYoung 최초 생성
  */
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,13 +19,8 @@ import java.util.List;
 @Setter
 @ToString
 @Builder
-public class MypageDashboardDTO {
-
+public class DashboardMemberLectureDTO {
+    private int memberLectureNo;
     private DashboardMemberDTO member;
-    private List<DashboardBoardDTO> boardList;
-    private List<DashboardBasketDTO> basketList;
-    private List<DashboardNoticeDTO> noticeList;
-    private List<DashboardLectureWatchDTO> watchList;
-    private List<DashboardLectureDTO> completedLectureInfoList;
-
+    private int lectureNo;
 }

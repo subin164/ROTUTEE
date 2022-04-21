@@ -21,11 +21,11 @@ import java.sql.Date;
 @Setter
 @ToString
 @Builder
-public class MyPageDashboardAlarmDTO {
+public class DashboardNoticeDTO {
 
-    private int alramNo;
-    private String alramContent;
+    private int noticeNo;
+    private String content;
     private int categoryNo;
-    private int membberNo;
-    private Date noticeTime;
+    private int memberNo;
+    private Date noticedTime;
 }

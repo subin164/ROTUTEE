@@ -20,6 +20,6 @@ import lombok.*;
 @Builder
  public class DashboardBasketDTO{
   private int basketNo;
-  private int lectureNo;
-  private String lectureTitle;
+  private DashboardMemberDTO member;
+  private DashboardLectureDTO lecture;
 }

@@ -25,7 +25,6 @@
         .wrap {
             justify-content: center;
             text-align: center;
-            display: flex;
         }
         .dashboard {
             font-family: 'Noto Sans KR', sans-serif;
@@ -36,6 +35,19 @@
             box-shadow: 3px 3px 3px 3px rgb(219, 219, 219);
             width: 400px;
             height: 250px;
+            border-radius: 10px;
+            margin: 30px;
+            text-align: center;
+            background-color: #F0F1F2;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+
+        }
+
+        .box2{
+            box-shadow: 3px 3px 3px 3px rgb(219, 219, 219);
+            width: 820px;
+            height: 400px;
             border-radius: 10px;
             margin: 30px;
             text-align: center;
@@ -103,21 +115,21 @@
 </head>
 
 <body>
+<div th:include="common/mypagemenubar.html"></div>
 <div class="container dashboard">
-    <div th:include="common/mypagemenubar.html"></div>
     <span>Dashboard</span>
     <hr>
     <div class="row wrap">
         <div class="box col-4">
-            <div style="margin-bottom: 10px;">😀프로필</div>
+            <div>😀프로필</div>
             <div class="whitebox">
                 <div class="profile row" style="margin: 10px;">
                     <div class="col-4" style="text-align: left; margin-left: 1vw;">
-                        <img src="../../../static/sy/images/profile.PNG" style=" width:100px; height: 100px; border-radius: 100%;">
+                        <img src="sy/images/profile.PNG" style=" width:100px; height: 100px; border-radius: 100%;">
                     </div>
                     <div class="col-7">
-                        <h5 th:text="${dashboard.member.nickname}"></h5>
-                        <p th:text="${dashboard.member.introduction}"></p>
+                        <h5>햄찌</h5>
+                        <p>안녕햄스터. 난 귀염둥이 햄찌</p>
                     </div>
                 </div>
             </div>
@@ -126,7 +138,6 @@
             <div style="margin-bottom: 10px;">&#128172;최근 작성글</div>
             <div class="whitebox">
                 <div class="content">
-                    <th:block th:each="board : ${ dashboard.boardList }"
                     <p>[커뮤니티] 안녕햄스터</p>
                     <p>[문의] 업적 종류를 알 수 있을까요?</p>
                     <p>[커뮤니티] 자바 너무 어렵다</p>
@@ -172,28 +183,18 @@
         </div>
     </div>
     <div class="row wrap">
-        <div class="lately-lecture box col-4">
-            <div style="margin-bottom: 10px;">&#127891;최근 학습중인 강의</div>
+        <div class="lately-lecture box2 col-9">
+            <div style="margin-bottom: 10px;">&#127891;정산그래프</div>
             <div class="whitebox">
                 <div class="content">
-                    <p>JAVA 완벽완성</p>
+
                 </div>
                 <div class="btn-holder">
                     <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
                 </div>
             </div>
         </div>
-        <div class="complete-lecture box col-4">
-            <div style="margin-bottom: 10px;">&#128212;완료된 강의</div>
-            <div class="whitebox">
-                <div class="content">
-                    <p>Http 이해하기</p>
-                </div>
-                <div class="btn-holder">
-                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 </body>
