@@ -151,3 +151,13 @@
 .review-name{
     margin-top: 10px;
 }
+.button-area{
+    margin-left: 50px;
+}
+.button-area > button {
+    float: right;
+}
+.reviewsBody{
+    border: none;
+    resize: none;
+}

@@ -86,8 +86,13 @@
                                     <p style="margin-left: 10px;"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></p>
                                     <p style="margin-left: 10px;" th:text="${lectureReview.writer.name}"></p>
                                 </div>
+                                <div class="col-4"></div>
+                                <div class="col-4 button-area" style="margin-top: 10px">
+                                    <button type="button" class="btn btn-danger">신고</button>
+                                    <button type="button" class="btn btn-success">수정</button>
+                                </div>
                                 <div class="review-text">
-                                    <p th:text="${lectureReview.lectureReviewContent}"></p>
+                                    <textarea th:text="${lectureReview.lectureReviewContent}" class="reviewsBody" name="reviewsBody" cols="100", rows="4" disabled></textarea>
                                 </div>
                             </div>
                             <!-- 댓글 end -->
