@@ -1,21 +1,18 @@
 package com.greedy.rotutee.dashboard.mypage.repository;
 
-import com.greedy.rotutee.dashboard.mypage.entity.DashboardLecture;
+import com.greedy.rotutee.dashboard.mypage.entity.DashboardCompletedLecture;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.repository
- * fileName : LectureRepository
+ * fileName : DashboardCompletedLectureRepository
  * author : SeoYoung
- * date : 2022-04-19
+ * date : 2022-04-20
  * description :
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
- * 2022-04-19 SeoYoung 최초 생성
+ * 2022-04-20 SeoYoung 최초 생성
  */
-
-
-public interface DashboardLectureRepository extends JpaRepository<DashboardLecture, Integer> {
-    DashboardLecture findBymemberNo(int memberNo);
+public interface DashboardCompletedLectureRepository extends JpaRepository<DashboardCompletedLecture, Integer> {
 }

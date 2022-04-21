@@ -1,6 +1,7 @@
 package com.greedy.rotutee.dashboard.mypage.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.basket.entity
@@ -32,18 +33,20 @@ public class DashboardBasket {
     )
     private int basketNo;
 
-    @Column(name = "MEMBER_NO")
-    private int memberNo;
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_NO")
+    private DashboardMember member;
 
-    @Column(name = "LECTURE_NO")
-    private int lectureNo;
+    @ManyToOne
+    @JoinColumn(name = "LECTURE_NO")
+    private DashboardLecture lecture;
 
     public DashboardBasket() {}
 
-    public DashboardBasket(int basketNo, int memberNo, int lectureNo) {
+    public DashboardBasket(int basketNo, DashboardMember member, DashboardLecture lecture) {
         this.basketNo = basketNo;
-        this.memberNo = memberNo;
-        this.lectureNo = lectureNo;
+        this.member = member;
+        this.lecture = lecture;
     }
 
     public int getBasketNo() {
@@ -54,28 +57,28 @@ public class DashboardBasket {
         this.basketNo = basketNo;
     }
 
-    public int getMemberNo() {
-        return memberNo;
+    public DashboardMember getMember() {
+        return member;
     }
 
-    public void setMemberNo(int memberNo) {
-        this.memberNo = memberNo;
+    public void setMember(DashboardMember member) {
+        this.member = member;
     }
 
-    public int getLectureNo() {
-        return lectureNo;
+    public DashboardLecture getLecture() {
+        return lecture;
     }
 
-    public void setLectureNo(int lectureNo) {
-        this.lectureNo = lectureNo;
+    public void setLecture(DashboardLecture lecture) {
+        this.lecture = lecture;
     }
 
     @Override
     public String toString() {
-        return "Basket{" +
+        return "DashboardBasket{" +
                 "basketNo=" + basketNo +
-                ", memberNo=" + memberNo +
-                ", lectureNo=" + lectureNo +
+                ", member=" + member +
+                ", lecture=" + lecture +
                 '}';
     }
 }

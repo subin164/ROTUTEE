@@ -2,6 +2,7 @@ package com.greedy.rotutee.dashboard.mypage.repository;
 
 import com.greedy.rotutee.dashboard.mypage.dto.DashboardBasketDTO;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardBasket;
+import com.greedy.rotutee.dashboard.mypage.entity.DashboardMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -21,5 +22,5 @@ import java.util.List;
 
 public interface DashboardBasketRepository extends JpaRepository<DashboardBasket, Integer> {
 
-    List<DashboardBasket> findBymemberNo(int memberNo);
+    List<DashboardBasket> findBymember(DashboardMember member);
 }

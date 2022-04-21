@@ -3,6 +3,8 @@ package com.greedy.rotutee.dashboard.mypage.repository;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardNotice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.repository
  * fileName : NoticeRepository
@@ -17,4 +19,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface DashboardNoticeRepository extends JpaRepository<DashboardNotice, Integer> {
+    List<DashboardNotice> findBymemberNo(int memberNo);
 }

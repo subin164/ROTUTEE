@@ -2,6 +2,7 @@ package com.greedy.rotutee.dashboard.mypage.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.entity
@@ -19,7 +20,7 @@ import java.sql.Date;
 @Table(name = "TBL_LECTURE")
 @SequenceGenerator(
         name = "DASHBOARD_LECTURE_SEQ_GENERATOR",
-        sequenceName = "BOARD_NO",
+        sequenceName = "LECTURE_NO",
         initialValue = 1,
         allocationSize = 1
 )
@@ -51,7 +52,7 @@ public class DashboardLecture {
     @Column(name = "REVISION_HISTORY")
     private String revisionMessage;
 
-    @Column(name = "LECTURE_APPROBAL_STATUS")
+    @Column(name = "LECTURE_APPROvAL_STATUS")
     private String approvalStatus;
 
     @Column(name = "LECTURE_OPENING_DATE")
@@ -64,14 +65,14 @@ public class DashboardLecture {
     private Date appliedDate;
 
     @Column(name = "APPLICATION_DIVISION")
-    private Date reappliedDate;
+    private String appliedStatus;
 
     @Column(name = "LECTURE_CATEGORY_NO")
     private int categoryNo;
 
     public DashboardLecture() {}
 
-    public DashboardLecture(int lectureNo, String lectureTitle, int price, String level, String summary, String details, String revisionMessage, String approvalStatus, Date openedDate, int memberNo, Date appliedDate, Date reappliedDate, int categoryNo) {
+    public DashboardLecture(int lectureNo, String lectureTitle, int price, String level, String summary, String details, String revisionMessage, String approvalStatus, Date openedDate, int memberNo, Date appliedDate, String appliedStatus, int categoryNo) {
         this.lectureNo = lectureNo;
         this.lectureTitle = lectureTitle;
         this.price = price;
@@ -83,7 +84,7 @@ public class DashboardLecture {
         this.openedDate = openedDate;
         this.memberNo = memberNo;
         this.appliedDate = appliedDate;
-        this.reappliedDate = reappliedDate;
+        this.appliedStatus = appliedStatus;
         this.categoryNo = categoryNo;
     }
 
@@ -175,12 +176,12 @@ public class DashboardLecture {
         this.appliedDate = appliedDate;
     }
 
-    public Date getReappliedDate() {
-        return reappliedDate;
+    public String getAppliedStatus() {
+        return appliedStatus;
     }
 
-    public void setReappliedDate(Date reappliedDate) {
-        this.reappliedDate = reappliedDate;
+    public void setAppliedStatus(String appliedStatus) {
+        this.appliedStatus = appliedStatus;
     }
 
     public int getCategoryNo() {
@@ -205,7 +206,7 @@ public class DashboardLecture {
                 ", openedDate=" + openedDate +
                 ", memberNo=" + memberNo +
                 ", appliedDate=" + appliedDate +
-                ", reappliedDate=" + reappliedDate +
+                ", appliedStatus='" + appliedStatus + '\'' +
                 ", categoryNo=" + categoryNo +
                 '}';
     }
