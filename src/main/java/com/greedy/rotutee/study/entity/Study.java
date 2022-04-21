@@ -2,13 +2,11 @@ package com.greedy.rotutee.study.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity(name = "Study")
+@Entity(name = "study")
 @Table(name = "TBL_STUDY_GROUP_BOARD")
 @SequenceGenerator(
-        name = "STUDY_SEQ_GENERATOR",
+        name="STUDY_NO_GENERATOR",
         sequenceName = "STUDY_NO",
         initialValue = 1,
         allocationSize = 1
@@ -16,52 +14,60 @@ import java.util.List;
 public class Study {
 
     @Id
+    @Column(name = "STUDY_NO")
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "STUDY_SEQ_GENERATOR"
+            generator = "STUDY_NO_GENERATOR"
     )
-    @Column(name = "STUDY_NO")
-    public int studyNo;
-
-    @Column(name = "STUDY_CONTENT")
-    public String content;
+    private int studyNo;
 
     @Column(name = "STUDY_TITLE")
-    public String title;
+    private String title;
+
+    @Column(name = "STUDY_CONTENT")
+    private String content;
 
     @Column(name = "STUDY_WRITE_DATE")
-    public java.sql.Date writeDate;
-
-    @Column(name = "STUDY_LIMITED_MEMBER_NUM")
-    public int limited;
-
-    @Column(name = "STUDY_INVITE_LINK")
-    public String linked;
-
-    @Column(name = "MEMBER_NO")
-    public int memberNo;
+    private java.sql.Date startDate;
 
     @Column(name = "STUDY_RECRUITMENT_END_DATE")
-    public java.sql.Date endDate;
+    private java.sql.Date endDate;
+
+    @Column(name = "MEMBER_NO")
+    private int memberNo;
+
+    @Column(name="WRITER_MEMBER_NO")
+    private String writer;
+
+    @Column(name = "STUDY_LIMITED_MEMBER_NUM")
+    private int limited;
+
+    @Column(name="STUDY_BOARD_VIEW_COUNT")
+    private int count;
+
+    @Column(name = "STUDY_INVITE_LINK")
+    private String linked;
 
     @Column(name = "STUDY_RECRUITMENT_STATUS")
-    public String status;
+    private String status;
 
-    @Column(name = "STUDY_TAG")
+    @Column(name = "STUDY_TAG_NO")
     private int tagNo;
 
     public Study() {
     }
 
-    public Study(int studyNo, String content, String title, Date writeDate, int limited, String linked, int memberNo, Date endDate, String status, int tagNo) {
+    public Study(int studyNo, String title, String content, Date startDate, Date endDate, int memberNo, String writer, int limited, int count, String linked, String status, int tagNo) {
         this.studyNo = studyNo;
-        this.content = content;
         this.title = title;
-        this.writeDate = writeDate;
-        this.limited = limited;
-        this.linked = linked;
-        this.memberNo = memberNo;
+        this.content = content;
+        this.startDate = startDate;
         this.endDate = endDate;
+        this.memberNo = memberNo;
+        this.writer = writer;
+        this.limited = limited;
+        this.count = count;
+        this.linked = linked;
         this.status = status;
         this.tagNo = tagNo;
     }
@@ -74,14 +80,6 @@ public class Study {
         this.studyNo = studyNo;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -90,28 +88,28 @@ public class Study {
         this.title = title;
     }
 
-    public Date getWriteDate() {
-        return writeDate;
+    public String getContent() {
+        return content;
     }
 
-    public void setWriteDate(Date writeDate) {
-        this.writeDate = writeDate;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public int getLimited() {
-        return limited;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setLimited(int limited) {
-        this.limited = limited;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public String getLinked() {
-        return linked;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setLinked(String linked) {
-        this.linked = linked;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public int getMemberNo() {
@@ -122,12 +120,36 @@ public class Study {
         this.memberNo = memberNo;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public String getWriter() {
+        return writer;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public int getLimited() {
+        return limited;
+    }
+
+    public void setLimited(int limited) {
+        this.limited = limited;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getLinked() {
+        return linked;
+    }
+
+    public void setLinked(String linked) {
+        this.linked = linked;
     }
 
     public String getStatus() {
@@ -150,13 +172,15 @@ public class Study {
     public String toString() {
         return "Study{" +
                 "studyNo=" + studyNo +
-                ", content='" + content + '\'' +
                 ", title='" + title + '\'' +
-                ", writeDate=" + writeDate +
-                ", limited=" + limited +
-                ", linked='" + linked + '\'' +
-                ", memberNo=" + memberNo +
+                ", content='" + content + '\'' +
+                ", startDate=" + startDate +
                 ", endDate=" + endDate +
+                ", memberNo=" + memberNo +
+                ", writer='" + writer + '\'' +
+                ", limited=" + limited +
+                ", count=" + count +
+                ", linked='" + linked + '\'' +
                 ", status='" + status + '\'' +
                 ", tagNo=" + tagNo +
                 '}';

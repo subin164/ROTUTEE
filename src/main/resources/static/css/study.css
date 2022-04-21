@@ -60,10 +60,42 @@ table {
     font-weight: bold;
 }
 
-.side-tag-box li a{
-    text-decoration: none;
+.study-recruit-status{
+    align-self: center;
+    text-align: center;
+    margin-right: 1em;
+    min-width : 60px;
+    background-color: lightgreen;
     color: white;
-    background-color: cornflowerblue;
+    font-weight: bold;
+}
 
+.study-recruit-status-end{
+    align-self: center;
+    text-align: center;
+    margin-right: 1rem;
+    padding: 0.2rem;
+    min-width : 60px;
+    background-color: darkgreen;
+    color: lightgray;
+    font-weight: bold;
+}
 
+.study-recruit-title {
+    font-weight: bold;
+    font-size: 24px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.study-recruit-content{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap:break-word;
+    line-height: 1.2em;
+    height: 2.4em;
 }

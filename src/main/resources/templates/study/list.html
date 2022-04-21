@@ -59,45 +59,47 @@
 
 
                 <!-- 목록 정렬 탭 -->
-                <div class="container d-flex my-lg-3">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <button class="nav-link show active" data-bs-toggle="tab" data-bs-target="#entire">최신순
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#recruit">댓글순</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#end-recruit">조회순</button>
-                        </li>
-                    </ul>
-                    <button type="button" class="btn btn-outline-danger ms-lg-auto" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">
-                        글쓰기
-                    </button>
-                </div>
-                <div class="container">
-                    <a class="text-decoration-none text-dark" href="#">
-                        <div class="mb-lg-5" th:each="study: ${studyList}">
-                            <div class="d-flex">
-                                <div class="align-self-center" style="max-width: 4rem;"
-                                     th:if="${study.getStatus().toString().equals('Y')}">
-                                    <span class="bg-success text-light fw-bold me-lg-2">모집중</span>
-                                </div>
-                                <div th:if="${study.getStatus().toString().equals('N')}">
-                                    <span class="bg-danger text-light fw-bold me-lg-2">모집종료</span>
-                                </div>
-                                <h2 th:text="${study.title}"></h2>
-                            </div>
-                            <div>
-                                <span th:text="${ study.content}"/>
-                            </div>
+                <div class="container my-lg-3">
+                    <div class="d-flex">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <button class="nav-link show active" data-bs-toggle="tab" data-bs-target="#entire">최신순
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#recruit">댓글순</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#end-recruit">조회순</button>
+                            </li>
+                        </ul>
+                        <button type="button" class="btn btn-outline-danger ms-lg-auto" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop">
+                            글쓰기
+                        </button>
+                    </div>
 
-                            <hr>
+                    <div class="container">
 
-                        </div>
-                    </a>
+                        <ul class="mb-md-4" th:each="study : ${ studyList }">
+                            <li class="d-flex">
+                                <div class="d-flex" th:if="${ study.status }=='Y'">
+                                    <div class="study-recruit-status">
+                                        <span>모집중</span>
+                                    </div>
+                                </div>
+                                <div class="study-recruit-status-end" th:if="${ study.status }=='N'">
+                                    <div>모집종료</div>
+                                </div>
+                                <div class="study-recruit-title" th:text="${ study.getTitle() }"></div>
+                            </li>
+                            <li class="study-recruit-content mb-md-3" th:text="${ study.getContent() }"/>
+                            <li th:text="${ study.getWriter() }" t/>
+                        </ul>
+                        <hr>
+
+                    </div>
+
                 </div>
 
             </div>
@@ -138,7 +140,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-6 shadow-sm mb-md-3">
-                                <label class="w-100 fw-bold" >모집 종료 날짜
+                                <label class="w-100 fw-bold">모집 종료 날짜
                                     <input class="w-100" type="date" name="endDate">
                                 </label>
                             </div>
@@ -157,12 +159,12 @@
                             </div>
                             <div class="col-xs-12 shadow-sm mb-md-3">
                                 <label class="fw-bold w-100">태그
-                                    <input class="w-100" type="text" name="tag" placeholder="#태그">
+                                    <input name='tagNo' value=''>
                                 </label>
                             </div>
                             <div class="col-xs-12 shadow-sm mb-md-3">
                                 <label class="fw-bold w-100">내용
-                                    <textarea class="w-100" style="height: 25rem" type="text" name="tag"></textarea>
+                                    <textarea class="w-100" type="text" name="content"></textarea>
                                 </label>
                             </div>
                         </div>
@@ -184,6 +186,25 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+
+<script>
+
+    if (document.querySelectorAll("#detaile li")) {
+        const $tds = document.querySelectorAll("#detaile li");
+        for (let i = 0; i < $tds.length; i++) {
+
+            $tds[i].onclick = function () {
+                const no = this.parentNode.children[i].children[0].innerText;
+                location.href = "/study/detail?no=" + no;
+            }
+        }
+    }
+</script>
+
+<script>
+    const successMessage = "[[${ registSuccessMessage }]]";
+    successMessage && alert(successMessage);
+</script>
 
 </body>
 </html>
