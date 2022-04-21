@@ -14,7 +14,6 @@ public class ClassDTO {
     private int classNo;
     private String className;
     private String videoPath;
-    private int chapterNo;
     private ChapterDTO chapter;
 
     @Override
@@ -23,8 +22,7 @@ public class ClassDTO {
                 "classNo=" + classNo +
                 ", className='" + className + '\'' +
                 ", videoPath='" + videoPath + '\'' +
-                ", chapterNo=" + chapterNo +
-//                ", chapter=" + chapter +
+                ", chapter=" + chapter +
                 '}';
     }
 }

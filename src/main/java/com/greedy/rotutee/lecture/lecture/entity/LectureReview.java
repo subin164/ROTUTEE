@@ -25,25 +25,24 @@ public class LectureReview {
     @Column(name = "LECTURE_REVIEW_REMOVE_YN")
     private String lectureReviewRemoveYN;
 
-    @JoinColumn(name = "MEMBER_LECTURE_NO")
+    @JoinColumn(name = "MEMBER_NO")
     @ManyToOne
     private Member writer;
 
-    @JoinColumn(name = "LECTURE_NO")
-    @ManyToOne
-    private Lecture lecture;
+    @Column(name = "LECTURE_NO")
+    private int lectureNo;
 
     public LectureReview() {
     }
 
-    public LectureReview(int lectureReviewNo, int lectureGrade, String lectureReviewContent, Date lectureReviewDate, String lectureReviewRemoveYN, Member writer, Lecture lecture) {
+    public LectureReview(int lectureReviewNo, int lectureGrade, String lectureReviewContent, Date lectureReviewDate, String lectureReviewRemoveYN, Member writer, int lectureNo) {
         this.lectureReviewNo = lectureReviewNo;
         this.lectureGrade = lectureGrade;
         this.lectureReviewContent = lectureReviewContent;
         this.lectureReviewDate = lectureReviewDate;
         this.lectureReviewRemoveYN = lectureReviewRemoveYN;
         this.writer = writer;
-        this.lecture = lecture;
+        this.lectureNo = lectureNo;
     }
 
     public int getLectureReviewNo() {
@@ -94,12 +93,12 @@ public class LectureReview {
         this.writer = writer;
     }
 
-    public Lecture getLecture() {
-        return lecture;
+    public int getLectureNo() {
+        return lectureNo;
     }
 
-    public void setLecture(Lecture lecture) {
-        this.lecture = lecture;
+    public void setLectureNo(int lectureNo) {
+        this.lectureNo = lectureNo;
     }
 
     @Override
@@ -111,7 +110,7 @@ public class LectureReview {
                 ", lectureReviewDate=" + lectureReviewDate +
                 ", lectureReviewRemoveYN='" + lectureReviewRemoveYN + '\'' +
                 ", writer=" + writer +
-                ", lecture=" + lecture +
+                ", lectureNo=" + lectureNo +
                 '}';
     }
 }

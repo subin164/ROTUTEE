@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "TBL_LECTURE")
 @SequenceGenerator(
         name = "LECTURE_LECTURE_SEQ_GENERATOR",
-        sequenceName = "BOARD_NO",
+        sequenceName = "LECTURE_NO",
         initialValue = 1,
         allocationSize = 1
 )
@@ -61,13 +61,11 @@ public class Lecture {
     @JoinColumn(name = "LECTURE_CATEGORY_NO")
     private LectureCategory lectureCategory;
 
-    @OneToMany(mappedBy = "lecture")
-    private List<LectureReview> lectureReviewList;
 
     public Lecture() {
     }
 
-    public Lecture(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lecturedetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, Member tutor, Date applicationDate, String applicationDivision, LectureCategory lectureCategory, List<LectureReview> lectureReviewList) {
+    public Lecture(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lecturedetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, Member tutor, Date applicationDate, String applicationDivision, LectureCategory lectureCategory) {
         this.lectureNo = lectureNo;
         this.lectureName = lectureName;
         this.lecturePrice = lecturePrice;
@@ -81,7 +79,6 @@ public class Lecture {
         this.applicationDate = applicationDate;
         this.applicationDivision = applicationDivision;
         this.lectureCategory = lectureCategory;
-        this.lectureReviewList = lectureReviewList;
     }
 
     public int getLectureNo() {
@@ -188,14 +185,6 @@ public class Lecture {
         this.lectureCategory = lectureCategory;
     }
 
-    public List<LectureReview> getLectureReviewList() {
-        return lectureReviewList;
-    }
-
-    public void setLectureReviewList(List<LectureReview> lectureReviewList) {
-        this.lectureReviewList = lectureReviewList;
-    }
-
     @Override
     public String toString() {
         return "Lecture{" +
@@ -212,7 +201,6 @@ public class Lecture {
                 ", applicationDate=" + applicationDate +
                 ", applicationDivision='" + applicationDivision + '\'' +
                 ", lectureCategory=" + lectureCategory +
-//                ", lectureReviewList=" + lectureReviewList +
                 '}';
     }
 }

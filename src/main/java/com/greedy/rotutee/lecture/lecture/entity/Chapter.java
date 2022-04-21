@@ -1,6 +1,5 @@
 package com.greedy.rotutee.lecture.lecture.entity;
 
-import com.greedy.rotutee.lecture.lecture.dto.ClassDTO;
 
 import javax.persistence.*;
 import java.util.List;

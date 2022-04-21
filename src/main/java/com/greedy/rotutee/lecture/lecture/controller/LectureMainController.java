@@ -2,6 +2,7 @@ package com.greedy.rotutee.lecture.lecture.controller;
 
 import com.greedy.rotutee.lecture.lecture.dto.ChapterDTO;
 import com.greedy.rotutee.lecture.lecture.dto.LectureDTO;
+import com.greedy.rotutee.lecture.lecture.dto.LectureReviewDTO;
 import com.greedy.rotutee.lecture.lecture.entity.Chapter;
 import com.greedy.rotutee.lecture.lecture.service.LectureMainService;
 import org.springframework.data.domain.Pageable;
@@ -54,13 +55,19 @@ public class LectureMainController {
 
         LectureDTO lecture = lectureMainService.findLectureByLectureNo(lectureNo);
         List<ChapterDTO> chapterList = lectureMainService.findChapterListByLectureNo(lectureNo);
+        List<LectureReviewDTO> lectureReviewList = lectureMainService.findReviewListByLectureNo(lectureNo);
+        int lectureMemberCount = lectureMainService.findMemberCountByLectureNo(lectureNo);
+        int gradeAverage = lectureMainService.findGradeAverageByLectureNo(lectureNo);
 
-        System.out.println("lecture = " + lecture);
-        System.out.println("chapterList = " + chapterList);
+        System.out.println("lectureReviewList = " + lectureReviewList);
 
+        mv.addObject("gradeAverage", gradeAverage);
+        mv.addObject("lectureMemberCount", lectureMemberCount);
+        mv.addObject("lectureReviewList", lectureReviewList);
         mv.addObject("chapterList", chapterList);
         mv.addObject("lecture", lecture);
         mv.setViewName("/lecture/detail");
+
         return mv;
     }
 }

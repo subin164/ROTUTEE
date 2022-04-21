@@ -14,7 +14,6 @@ public class ChapterDTO {
     private int chapterNo;
     private String chapterName;
     private int lectureNo;
-//    private LectureDTO lecture;
     private List<ClassDTO> classList;
 
     @Override
@@ -23,8 +22,7 @@ public class ChapterDTO {
                 "chapterNo=" + chapterNo +
                 ", chapterName='" + chapterName + '\'' +
                 ", lectureNo=" + lectureNo +
-//                ", lecture=" + lecture +
-                ", classList=" + classList +
+//                ", classList=" + classList +
                 '}';
     }
 }

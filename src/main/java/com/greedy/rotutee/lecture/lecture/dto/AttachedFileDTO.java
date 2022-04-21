@@ -19,10 +19,8 @@ public class AttachedFileDTO {
     private String division;
     private String fileDeletionYN;
     private Integer memberNo;
-    private MemberDTO member;
     private Integer boardNo;
     private Integer lectureNo;
-    private LectureDTO lecture;
     private Integer documentNo;
     
 }
