@@ -23,23 +23,28 @@ public class StudyService {
         this.modelMapper = modelMapper;
     }
 
-//    study 모집글 전체 조회
+    //    study 모집글 전체 조회
     public Page<StudyDTO> findStudyList(Pageable pageable) {
 
-        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
-                pageable.getPageSize(),
-                Sort.by("writeDate"));
-
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+                pageable.getPageSize());
 
         return studyRepository.findAll(pageable).map(study -> modelMapper.map(study, StudyDTO.class));
     }
 
-//    study 모집글 작성
+    //    study 모집글 작성
     @Transactional
     public void studyRegist(StudyDTO studyDTO) {
 
         studyRepository.save(modelMapper.map(studyDTO, Study.class));
-
     }
 
+
+    //    모집글 상세페이지 조회
+    public StudyDTO findDetailByStudyNo(int studyNo) {
+        Study study = studyRepository.findById(studyNo).get();
+
+        return modelMapper.map(study, StudyDTO.class);
+
+    }
 }
