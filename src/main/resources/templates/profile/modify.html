@@ -12,6 +12,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Document</title>
     <style>
+        input {
+            width: 300px;
+            height: 40px;
+            border-radius: 8px;
+        }
         button {
 
         }
@@ -29,84 +34,134 @@
         <div>프로필</div>
         <hr>
     </div>
-    <div class="row" style=" height: 200px; width: 1200px;">
-        <div class="col-sm-10" style="border: 1px solid;">
-            <div style=" margin-left: 50px; margin-top: 30px;">
-                <p>프로필 사진</p>
-                <img src="img/당첨.png" style="height: 100px;"> <input type="file">
+    <form action="/profile/modify" method="post" enctype="multipart/form-data">
+        <div class="row" style=" height: 200px; width: 1200px;">
+            <div class="col-sm-10" style="border: 1px solid;">
+                <div style=" margin-left: 50px; margin-top: 30px;">
+                    <p>프로필 사진</p>
+                    <img src="img/당첨.png" style="height: 100px;"> <input type="file" name="file">
+                </div>
+            </div>
+            <div align="right" class="col-sm-2">
+                <input type="submit" style="width: 150px; height: 40px; border-radius: 8px" value="완료"/>
+                <br><br>
+                <button style="width: 150px; height: 40px; border-radius: 8px">비밀번호 변경</button>
             </div>
         </div>
-        <div align="right" class="col-sm-2">
-            <button style="width: 150px; height: 40px; border-radius: 8px">변경</button>
-            <br><br>
-            <button style="width: 150px; height: 40px; border-radius: 8px">비밀번호 변경</button>
+        <br>
+        <div class="row" style="border: 1px solid; height: 220px; width: 1000px;">
+            <div style="margin-left: 50px; margin-top: 30px; ">
+                <p>
+                    이름　　　
+                    <input type="text" style="width: 300px; height: 40px; border-radius: 8px;" name="name" id="name" th:value="${ member.name }">
+                </p>
+                <p>
+                    닉네임　　
+                    <input type="text" style="width: 300px; height: 40px; border-radius: 8px;" name="nickname" id="nickname" th:value="${ member.nickname }">
+                </p>
+                <p>
+                    칭호설정　
+                    <select style="width: 300px; height: 40px; border-radius: 8px;" name="achievementName" id="achievementCategory">
+                        <option th:value="${ achievement.achievementNo }" th:text="${ achievement.achievementName }"></option>
+                    </select>
+                </p>
+            </div>
         </div>
-    </div>
+        <br>
+        <div class="row" style="border: 1px solid; height: 250px; width: 1000px;">
+            <div style="margin-left: 50px; margin-top: 30px;">
+                <p>자기소개</p>
+                <textarea name="introduction" id="introduction" style="height: 150px; width: 800px;">[[${ member.introduction }]]</textarea>
+            </div>
+        </div>
+        <br>
+        <div class="row" style="border: 1px solid; height: 170px; width: 1000px;">
+            <div style="margin-left: 50px; margin-top: 30px;">
+                <p>
+                    이메일　　
+                    <input type="text" style="width: 300px; height: 40px; border-radius: 8px;" name="email" id="email" th:value="${ member.email }" readonly>
+                </p>
+                <p>
+                    연락처　　
+                    <input type="text" style="width: 300px; height: 40px; border-radius: 8px;" name="phoneNum" id="phoneNum" th:value="${ member.phoneNum }" readonly>
+                </p>
+            </div>
+        </div>
+        <br>
+        <th: sec:authorize="hasRole('TUTOR')">
+            <div class="row" style="border: 1px solid; height: 330px; width: 1000px;">
+                <div style="margin-left: 50px; margin-top: 30px;">
+                    <p>
+                        우편번호　
+                        <input type="text" name="zipCode" id="zipCode" th:value="${ address.zipCode }" readonly>
+                        <input type="button" value="검색" class="btn btn-yg" id="searchZipCode" style="width: 100px; border: 1px solid;">
+                    </p>
+                    <p>
+                        주소　　　
+                        <input type="text" name="address1" id="address1" th:value="${ address.address1 }" readonly>
+                    </p>
+                    <p>
+                        상세주소　
+                        <input type="text" name="address2" id="address2" th:value="${ address.address2 }">
+                    </p>
+                    <p>
+                        은행　　　
+                        <select style="width: 300px; height: 40px; border-radius: 8px;" name="bankName">
+                            <option th:value="${ tutorInfo.bankName }" th:text="${ tutorInfo.bankName }"></option>
+                            <option>농협</option>
+                            <option>신한</option>
+                            <option>카카오</option>
+                        </select>
+                    </p>
+                    <p>
+                        계좌번호　
+                        <input type="text" style="width: 300px; height: 40px; border-radius: 8px;" name="accountNumber" id="accountNumber" th:value="${ tutorInfo.accountNumber }">
+                    </p>
+                </div>
+            </div>
+        </th:>
+    </form>
     <br>
-    <div class="row" style="border: 1px solid; height: 200px; width: 1000px;">
-        <div style="margin-left: 50px; margin-top: 30px; ">
-            <p>
-                이름　　　
-                <input type="text" style="width: 300px; height: 40px; border-radius: 8px;">
-            </p>
-            <p>
-                닉네임　　
-                <input type="text" style="width: 300px; height: 40px; border-radius: 8px;">
-            </p>
-            <p>
-                칭호설정　
-                <select style="width: 300px; height: 40px; border-radius: 8px;">
-                    <option>칭호1</option>
-                    <option>칭호2</option>
-                    <option>칭호3</option>
-                    <option>칭호4</option>
-                </select>
-            </p>
-        </div>
-    </div>
-    <br>
-    <div class="row" style="border: 1px solid; height: 250px; width: 1000px;">
-        <div style="margin-left: 50px; margin-top: 30px;">
-            <p>프로필 소개</p> <input type="text" style="width: 700px; height: 150px; border-radius: 10px;">
-        </div>
-    </div>
-    <br>
-    <div class="row" style="border: 1px solid; height: 250px; width: 1000px;">
-        <div style="margin-left: 50px; margin-top: 30px;">
-            <p>
-                이름　　　
-                <input type="text" style="width: 300px; height: 40px; border-radius: 8px;">　
-                <button style="width: 70px; height: 40px; border-radius: 8px">인증</button>
-            </p>
-            <p>
-                연락처　　
-                <input type="text" style="width: 300px; height: 40px; border-radius: 8px;">
-            </p>
-            <p>
-                주소　　　
-                <input type="text" style="width: 300px; height: 40px; border-radius: 8px;">
-            </p>
-        </div>
-    </div>
-    <br>
-    <div class="row" style="border: 1px solid; height: 150px; width: 1000px;">
-        <div style="margin-left: 50px; margin-top: 30px;">
-            <p>
-                은행　　　
-                <select style="width: 300px; height: 40px; border-radius: 8px;">
-                    <option>은행1</option>
-                    <option>은행2</option>
-                    <option>은행3</option>
-                    <option>은행4</option>
-                </select>
-            </p>
-            <p>
-                계좌번호　
-                <input type="number" style="width: 300px; height: 40px; border-radius: 8px;">
-            </p>
-        </div>
-    </div>
 </div>
 <div th:include="/common/footer.html"></div>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script th:inline="javascript">
+    const $searchZipCode = document.getElementById("searchZipCode");
+    const $goMain = document.getElementById("goMain");
+
+    $searchZipCode.onclick = function() {
+
+        new daum.Postcode({
+            oncomplete: function(data){
+                document.getElementById("zipCode").value = data.zonecode;
+                document.getElementById("address1").value = data.address;
+                document.getElementById("address2").focus();
+            }
+        }).open();
+    }
+
+    $goMain.onclick = function() {
+        location.href = "${ pageContext.servletContext.contextPath }";
+    }
+
+    $(function() {
+
+        $.ajax({
+            url: "/profile/achievementCategory",
+            success: function(data) {
+                const achievementCategory = $("#achievementCategory");
+                achievementCategory.html("");
+                console.log(data);
+
+                for(let index in data) {
+                    achievementCategory.append($("<option>").val(data[index].achievementNo).text(data[index].achievementName));
+                }
+            },
+            error: function(xhr) {
+                console.log(xhr);
+            }
+        });
+    });
+</script>
 </body>
 </html>
