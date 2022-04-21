@@ -13,4 +13,5 @@ public class MemberRoleDTO {
     private int memberRoleNo;
     private RoleDTO role;
     private MemberDTO member;
+
 }

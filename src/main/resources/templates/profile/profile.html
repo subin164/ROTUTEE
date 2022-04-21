@@ -11,6 +11,13 @@
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Document</title>
+    <script th:inline="javascript">
+        /* 비지니스 로직 성공 alert 메시지 처리 */
+        const message = [[${message}]];
+        if(message != null && message != '') {
+            alert(message);
+        }
+    </script>
     <style>
         button {
 
@@ -32,17 +39,17 @@
         <div class="col-sm-10" style="border: 1px solid;">
             <div style=" margin-left: 50px; margin-top: 30px;">
                 <p>프로필 사진</p>
-                <img src="img/당첨.png" style="height: 100px;">
+                <img th:src="@{../../static/sg/동전.png}">
             </div>
         </div>
         <div align="right" class="col-sm-2">
-            <button style="width: 150px; height: 40px; border-radius: 8px">변경</button>
+            <button onclick="location.href='/profile/modify'" style="width: 150px; height: 40px; border-radius: 8px">변경</button>
             <br><br>
             <button style="width: 150px; height: 40px; border-radius: 8px">비밀번호 변경</button>
         </div>
     </div>
     <br>
-    <div class="row" style="border: 1px solid; height: 200px; width: 1000px;">
+    <div class="row" style="border: 1px solid; height: 170px; width: 1000px;">
         <div style="margin-left: 50px; margin-top: 30px; ">
             <p>
                 이름　　　
@@ -53,42 +60,46 @@
                 <span th:text="${ member.nickname }"></span>
             </p>
             <p>
-                칭호
-                <span>어쩔탱</span>
+                칭호　　　
+                <span th:text="${ achievement.achievementName }"></span>
             </p>
         </div>
     </div>
     <br>
     <div class="row" style="border: 1px solid; height: 250px; width: 1000px;">
         <div style="margin-left: 50px; margin-top: 30px;">
-            <p>프로필 소개</p>
+            <p>자기소개</p>
             <p th:text="${ member.introduction }"></p>
         </div>
     </div>
     <br>
-    <div class="row" style="border: 1px solid; height: 250px; width: 1000px;">
+    <div class="row" style="border: 1px solid; height: 130px; width: 1000px;">
         <div style="margin-left: 50px; margin-top: 30px;">
+            <p>
+                이메일　　
+                <span th:text="${ member.email }"></span>
+            </p>
             <p>
                 연락처　　
                 <span th:text="${ member.phoneNum }"></span>
             </p>
-            <p>
-                주소　　　
-                <span></span>
-            </p>
         </div>
     </div>
     <br>
-    <th: sec:authorize="hasRole('TUTER')">
-    <div class="row" style="border: 1px solid; height: 150px; width: 1000px;">
+    <th: sec:authorize="hasRole('TUTOR')">
+    <div class="row" style="border: 1px solid; height: 160px; width: 1000px;">
         <div style="margin-left: 50px; margin-top: 30px;">
             <p>
-                은행
-                <span></span>
+                주소　　　
+                <span th:text="${ tutorInfo.address }"></span>
+            </p>
+            <p>
+                은행　　　
+                <span th:text="${ tutorInfo.bankName }"></span>
             </p>
             <p>
                 계좌번호　
-                <span></span>
+                <span th:text="${ tutorInfo.accountNumber }"></span>
             </p>
         </div>
     </div>
