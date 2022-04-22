@@ -22,4 +22,8 @@ public interface LectureMainService {
     MemberLectureDTO findMemberInLecture(int memberNo, int lectureNo);
 
     void registLectureReview(int rating, String content, int lectureNo, int memberNo);
+
+    void modifyReviewContent(int lectureReviewNo, String lectureReviewContent);
+
+    void removeReview(int lectureReviewNo);
 }

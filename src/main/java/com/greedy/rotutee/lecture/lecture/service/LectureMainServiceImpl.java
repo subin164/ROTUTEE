@@ -131,4 +131,24 @@ public class LectureMainServiceImpl implements  LectureMainService{
         lectureReviewMainRepository.save(modelMapper.map(lectureReview, LectureReview.class));
 
     }
+
+    @Override
+    @Transactional
+    public void modifyReviewContent(int lectureReviewNo, String lectureReviewContent) {
+
+        LectureReview foundReview = lectureReviewMainRepository.findById(lectureReviewNo).get();
+        foundReview.setLectureReviewContent(lectureReviewContent);
+
+    }
+
+    @Override
+    @Transactional
+    public void removeReview(int lectureReviewNo) {
+
+        String status = "Y";
+
+        LectureReview foundReview = lectureReviewMainRepository.findById(lectureReviewNo).get();
+        foundReview.setLectureReviewRemoveYN(status);
+
+    }
 }

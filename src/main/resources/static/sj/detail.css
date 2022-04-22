@@ -158,6 +158,7 @@
     float: right;
 }
 .reviewsBody{
+    background-color: white;
     border: none;
     resize: none;
 }

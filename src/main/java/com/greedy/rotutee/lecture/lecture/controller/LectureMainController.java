@@ -99,4 +99,25 @@ public class LectureMainController {
         mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
         return mv;
     }
+
+    @PostMapping(value = "modifyreview", produces = "application/json; charset=UTF-8")
+    public ModelAndView modifyReview(ModelAndView mv, @RequestParam int lectureReviewNo
+                                                    , @RequestParam String lectureReviewContent) {
+
+        lectureMainService.modifyReviewContent(lectureReviewNo, lectureReviewContent);
+
+        mv.setViewName("jsonView");
+        return mv;
+    }
+
+    @GetMapping("removereview")
+    public ModelAndView removeReview(ModelAndView mv, @RequestParam int lectureReviewNo
+                                                    , @RequestParam int lectureNo, RedirectAttributes rttr) {
+
+        lectureMainService.removeReview(lectureReviewNo);
+
+        rttr.addFlashAttribute("message", "강의평을 삭제하였습니다.");
+        mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
+        return mv;
+    }
 }
