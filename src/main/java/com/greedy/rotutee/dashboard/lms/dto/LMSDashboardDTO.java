@@ -1,4 +1,9 @@
 package com.greedy.rotutee.dashboard.lms.dto;
+
+import lombok.*;
+
+import java.util.List;
+
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.dto
  * fileName : LMSDashboardDTO
@@ -10,5 +15,15 @@ package com.greedy.rotutee.dashboard.lms.dto;
  * -----------------------------------------------------------
  * 2022-04-19 SeoYoung 최초 생성
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class LMSDashboardDTO {
+
+    List<LMSNoticeBoardDTO> noticeBoardList;
+    List<LMSNormalBoardDTO> normalBoardList;
+
+
 }

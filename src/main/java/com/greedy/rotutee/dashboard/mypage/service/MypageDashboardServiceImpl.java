@@ -1,6 +1,7 @@
 package com.greedy.rotutee.dashboard.mypage.service;
 
-import com.greedy.rotutee.dashboard.mypage.dto.*;
+import com.greedy.rotutee.dashboard.mypage.dto.tutee.*;
+import com.greedy.rotutee.dashboard.mypage.dto.tutor.MypageTutorDTO;
 import com.greedy.rotutee.dashboard.mypage.entity.*;
 import com.greedy.rotutee.dashboard.mypage.repository.*;
 import org.modelmapper.ModelMapper;
@@ -60,19 +61,64 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
         DashboardMemberDTO member = modelMapper.map(memberEntity, DashboardMemberDTO.class);
 
         /* 작성게시물 조회용 */
-        List<DashboardBoard> entityBoardList = boardRepository.findBymemberNo(memberNo);
-        List<DashboardBoardDTO> boardList = entityBoardList.stream().map(dashboardBoard -> modelMapper.map(dashboardBoard, DashboardBoardDTO.class)).collect(Collectors.toList());
-
+        String boardJpql = "SELECT board " +
+                "FROM dashboardBoard as board " +
+                "WHERE board.memberNo = :memberNo " +
+                "ORDER BY board.createdDate DESC ";
+        Query boardQuery = entityManager.createQuery(boardJpql, DashboardBoard.class)
+                .setParameter("memberNo", memberNo);
+        List<DashboardBoard> entityBoardList = boardQuery.getResultList();
+//        List<DashboardBoard> entityBoardList = boardRepository.findBymemberNo(memberNo);
+        List<DashboardBoardDTO> boardList = new ArrayList<>();
+        if(entityBoardList.size() > 4){
+            for(int i = 0; i < 4; i++){
+                DashboardBoard boardEntity = entityBoardList.get(i);
+                DashboardBoardDTO board = modelMapper.map(boardEntity, DashboardBoardDTO.class);
+                boardList.add(board);
+            }
+        } else if(entityBoardList.size() <= 4){
+            boardList = entityBoardList.stream().map(dashboardBoard -> modelMapper.map(dashboardBoard, DashboardBoardDTO.class)).collect(Collectors.toList());
+        }
 
         /* 수강바구니 조회용 */
-        DashboardBasket basket = new DashboardBasket();
-        basket.setMember(memberEntity);
-        List<DashboardBasket> entityBasketList = basketRepository.findBymember(memberEntity);
-        List<DashboardBasketDTO> basketList = entityBasketList.stream().map(dashboardBasket -> modelMapper.map(dashboardBasket, DashboardBasketDTO.class)).collect(Collectors.toList());
-
+        String basketJpql = "SELECT basket " +
+                "FROM dashboardBasket as basket " +
+                "WHERE basket.member.memberNo = :memberNo ";
+        Query basketQuery = entityManager.createQuery(basketJpql, DashboardBasket.class)
+                .setParameter("memberNo", memberNo);
+        List<DashboardBasket> entityBasketList = basketQuery.getResultList();
+//        DashboardBasket basket = new DashboardBasket();
+//        basket.setMember(memberEntity);
+        List<DashboardBasketDTO> basketList = new ArrayList<>();
+        if(entityBasketList.size() > 4){
+            for(int i = 0; i < 4; i++){
+                DashboardBasket basketEntity = entityBasketList.get(i);
+                DashboardBasketDTO basket = modelMapper.map(basketEntity, DashboardBasketDTO.class);
+                basketList.add(basket);
+            }
+        } else if(entityBasketList.size() <= 4){
+            basketList = entityBasketList.stream().map(dashboardBasket -> modelMapper.map(dashboardBasket, DashboardBasketDTO.class)).collect(Collectors.toList());
+        }
         /* 알림 조회용 */
-        List<DashboardNotice> noticeEntityList = noticeRepository.findBymemberNo(memberNo);
-        List<DashboardNoticeDTO> noticeList = noticeEntityList.stream().map(dashboardNotice -> modelMapper.map(dashboardNotice, DashboardNoticeDTO.class)).collect(Collectors.toList());
+        String noticeJpql = "SELECT notice " +
+                "FROM dashboardNotice as notice " +
+                "WHERE notice.memberNo = :memberNo " +
+                "ORDER BY notice.noticedTime DESC";
+        Query noticeQuery = entityManager.createQuery(noticeJpql, DashboardNotice.class)
+                .setParameter("memberNo", memberNo);
+        List<DashboardNotice> entityNoticeList = noticeQuery.getResultList();
+//        DashboardBasket basket = new DashboardBasket();
+//        basket.setMember(memberEntity);
+        List<DashboardNoticeDTO> noticeList = new ArrayList<>();
+        if(entityNoticeList.size() > 4){
+            for(int i = 0; i < 4; i++){
+                DashboardNotice noticeEntity = entityNoticeList.get(i);
+                DashboardNoticeDTO notice = modelMapper.map(noticeEntity, DashboardNoticeDTO.class);
+                noticeList.add(notice);
+            }
+        } else if(entityNoticeList.size() <= 4){
+            noticeList = entityNoticeList.stream().map(dashboardNotice -> modelMapper.map(dashboardNotice, DashboardNoticeDTO.class)).collect(Collectors.toList());
+        }
 
         /* 최근 시청강의 조회용 */
         String jpql = "SELECT watch " +
@@ -146,6 +192,82 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
             dashboard.setWatchList(watchList);
             dashboard.setCompletedLectureInfoList(completedLectureInfoList);
         }
+        return dashboard;
+    }
+
+    @Override
+    public MypageTutorDTO findTutorDashboard(int memberNo) {
+
+        MypageTutorDTO dashboard = new MypageTutorDTO();
+        /* 프로필 조회용 */
+        DashboardMember memberEntity = memberRepository.findById(memberNo).get();
+        DashboardMemberDTO member = modelMapper.map(memberEntity, DashboardMemberDTO.class);
+
+        /* 작성게시물 조회용 */
+        String boardJpql = "SELECT board " +
+                "FROM dashboardBoard as board " +
+                "WHERE board.memberNo = :memberNo " +
+                "ORDER BY board.createdDate DESC ";
+        Query boardQuery = entityManager.createQuery(boardJpql, DashboardBoard.class)
+                .setParameter("memberNo", memberNo);
+        List<DashboardBoard> entityBoardList = boardQuery.getResultList();
+//        List<DashboardBoard> entityBoardList = boardRepository.findBymemberNo(memberNo);
+        List<DashboardBoardDTO> boardList = new ArrayList<>();
+        if(entityBoardList.size() > 4){
+            for(int i = 0; i < 4; i++){
+                DashboardBoard boardEntity = entityBoardList.get(i);
+                DashboardBoardDTO board = modelMapper.map(boardEntity, DashboardBoardDTO.class);
+                boardList.add(board);
+            }
+        } else if(entityBoardList.size() <= 4){
+            boardList = entityBoardList.stream().map(dashboardBoard -> modelMapper.map(dashboardBoard, DashboardBoardDTO.class)).collect(Collectors.toList());
+        }
+
+        /* 진행중인 강의 조회용 */
+        String myLectureJpql = "SELECT lecture FROM dashboardLecture lecture " +
+                "WHERE lecture.memberNo = :memberNo " +
+                "AND lecture.approvalStatus = '승인' ";
+        Query myLecturequery = entityManager.createQuery(myLectureJpql, DashboardLecture.class)
+                .setParameter("memberNo", memberNo);
+        List<DashboardLecture> lectureEntityList = myLecturequery.getResultList();
+
+        List<DashboardLectureDTO> lectureList = new ArrayList<>();
+        if(lectureEntityList.size() > 4){
+            for(int i = 0; i < 4; i++){
+                DashboardLecture lectureEntity = lectureEntityList.get(i);
+                DashboardLectureDTO lecture = modelMapper.map(lectureEntity, DashboardLectureDTO.class);
+                lectureList.add(lecture);
+            }
+        } else if(lectureEntityList.size() <= 4){
+            lectureList = lectureEntityList.stream().map(dashboardLecture -> modelMapper.map(dashboardLecture, DashboardLectureDTO.class)).collect(Collectors.toList());
+        }
+
+        /* 알림 조회용 */
+        String noticeJpql = "SELECT notice " +
+                "FROM dashboardNotice as notice " +
+                "WHERE notice.memberNo = :memberNo " +
+                "ORDER BY notice.noticedTime DESC";
+        Query noticeQuery = entityManager.createQuery(noticeJpql, DashboardNotice.class)
+                .setParameter("memberNo", memberNo);
+        List<DashboardNotice> entityNoticeList = noticeQuery.getResultList();
+//        DashboardBasket basket = new DashboardBasket();
+//        basket.setMember(memberEntity);
+        List<DashboardNoticeDTO> noticeList = new ArrayList<>();
+        if(entityNoticeList.size() > 4){
+            for(int i = 0; i < 4; i++){
+                DashboardNotice noticeEntity = entityNoticeList.get(i);
+                DashboardNoticeDTO notice = modelMapper.map(noticeEntity, DashboardNoticeDTO.class);
+                noticeList.add(notice);
+            }
+        } else if(entityNoticeList.size() <= 4){
+            noticeList = entityNoticeList.stream().map(dashboardNotice -> modelMapper.map(dashboardNotice, DashboardNoticeDTO.class)).collect(Collectors.toList());
+        }
+
+        dashboard.setMember(member);
+        dashboard.setBoardList(boardList);
+        dashboard.setLectureList(lectureList);
+        dashboard.setNoticeList(noticeList);
+
         return dashboard;
     }
 }

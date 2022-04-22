@@ -1,6 +1,5 @@
 package com.greedy.rotutee.dashboard.mypage.repository;
 
-import com.greedy.rotutee.dashboard.mypage.dto.DashboardBasketDTO;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardBasket;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardMember;
 import org.springframework.data.jpa.repository.JpaRepository;

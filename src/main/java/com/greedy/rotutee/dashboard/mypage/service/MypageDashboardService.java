@@ -1,6 +1,7 @@
 package com.greedy.rotutee.dashboard.mypage.service;
 
-import com.greedy.rotutee.dashboard.mypage.dto.MypageDashboardDTO;
+import com.greedy.rotutee.dashboard.mypage.dto.tutee.MypageDashboardDTO;
+import com.greedy.rotutee.dashboard.mypage.dto.tutor.MypageTutorDTO;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.service
@@ -17,4 +18,6 @@ public interface MypageDashboardService {
 
 
     MypageDashboardDTO findTuteeDashboard(int memberNo);
+
+    MypageTutorDTO findTutorDashboard(int memberNo);
 }

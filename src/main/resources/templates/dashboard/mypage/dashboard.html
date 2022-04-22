@@ -56,55 +56,55 @@
         }
 
         .container {
-
             justify-content: center;
             text-align: center;
-
-
         }
 
         .profile {
             display: flex;
-
         }
 
         /* Float button */
         .float {
-            display: inline-block;
-            transition-duration: 0.3s;
-            transition-property: transform;
+            display: inline-block !important;
+            transition-duration: 0.3s !important;
+            transition-property: transform !important;
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
             transform: translateZ(0);
             box-shadow: 0 0 1px rgba(0, 0, 0, 0);
         }
-
         .float:hover {
             transform: translateY(-5px);
         }
-
-        .button {
-            background-color: #D1E4FA;
-            font-size: 14px;
+        .total {
+            background-color: #D1E4FA !important;
+            font-size: 12px !important;
+            width : 73px;
+            height: 24px;
+            padding: 0px !important;
         }
-
         p {
             margin-bottom: 10px;
         }
-
         .btn-holder {
             position: absolute;
             bottom: 0;
             right: 0;
-
         }
 
+        .notice {
+            overflow: hidden;
+        }
+        .head-title {
+            position: relative;
+        }
 
     </style>
 </head>
 
 <body>
+<div th:include="common/mypagemenubar.html"></div>
 <div class="container dashboard">
-    <div th:include="common/mypagemenubar.html"></div>
     <span>Dashboard</span>
     <hr>
     <div class="row wrap">
@@ -123,75 +123,82 @@
             </div>
         </div>
         <div class="posting box col-4">
-            <div style="margin-bottom: 10px;">&#128172;최근 작성글</div>
+            <div class="head-title" style="margin-bottom: 10px;">&#128172;최근 작성글
+                <div class="btn-holder">
+                    <button class="btn float total" style="float: right; margin-right: 15px;">전체보기</button>
+                </div>
+            </div>
             <div class="whitebox">
                 <div class="content">
-                    <th:block th:each="board : ${ dashboard.boardList }"
-                    <p>[커뮤니티] 안녕햄스터</p>
-                    <p>[문의] 업적 종류를 알 수 있을까요?</p>
-                    <p>[커뮤니티] 자바 너무 어렵다</p>
-                    <p>[LMS] int와 Integer의 차이점이 무엇인가요?</p>
+                    <th:block th:each="board : ${ dashboard.boardList }">
+                    <p th:text="${board.title}"></p>
+                    </th:block>
                 </div>
-                <div class="btn-holder">
-                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
-                </div>
-
             </div>
         </div>
     </div>
     <div class="row wrap">
         <div class="basket box col-4">
-            <div style="margin-bottom: 10px;">📚장바구니</div>
+            <div class="head-title" style="margin-bottom: 10px;">📚장바구니
+                <div class="btn-holder">
+                    <button class="btn float total" style="float: right; margin-right: 15px;">전체보기</button>
+                </div>
+            </div>
             <div class="whitebox">
                 <div class="content">
-                    <p>JAVA 완벽 완성</p>
-                    <p>SQL 정복</p>
-                    <p>html/css 기초</p>
-                    <p>JavaScript 시작</p>
+                    <th:block th:each="basket : ${ dashboard.basketList }">
+                    <p th:text="${basket.lecture.lectureTitle}"></p>
+                    </th:block>
 
                 </div>
-                <div class="btn-holder">
-                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
-                </div>
+
             </div>
         </div>
         <div class="alram box col-4">
-            <div style="margin-bottom: 10px;">&#128161;알림</div>
-            <div class="whitebox">
-                <div class="content">
-                    <p>답변이 등록되었습니다.</p>
-                    <p>답변이 등록되었습니다.</p>
-                    <p>답변이 등록되었습니다.</p>
-                    <p>답변이 등록되었습니다.</p>
-
-                </div>
+            <div class="head-title" style="margin-bottom: 10px;">&#128161;알림
                 <div class="btn-holder">
-                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
+                    <button class="btn float total" style="float: right; margin-right: 15px;">전체보기</button>
                 </div>
+            </div>
+            <div class="whitebox">
+                <div class="content notice">
+                    <th:block th:each="notice : ${ dashboard.noticeList }">
+                    <p th:text="${notice.content}"></p>
+                    </th:block>
+                </div>
+
             </div>
         </div>
     </div>
     <div class="row wrap">
         <div class="lately-lecture box col-4">
-            <div style="margin-bottom: 10px;">&#127891;최근 학습중인 강의</div>
+            <div class="head-title" style="margin-bottom: 10px;">&#127891;최근 학습중인 강의
+                <div class="btn-holder">
+                    <button class="btn float total" style="float: right; margin-right: 15px;">전체보기</button>
+                </div>
+            </div>
             <div class="whitebox">
                 <div class="content">
-                    <p>JAVA 완벽완성</p>
+                    <th:block th:each="watch : ${ dashboard.watchList }">
+                    <p th:text="${ watch.lecture.lectureTitle }"></p>
+                    </th:block>
                 </div>
-                <div class="btn-holder">
-                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
-                </div>
+
             </div>
         </div>
         <div class="complete-lecture box col-4">
-            <div style="margin-bottom: 10px;">&#128212;완료된 강의</div>
+            <div class="head-title" style="margin-bottom: 10px;">&#128212;완료된 강의
+                <div class="btn-holder">
+                    <button class="btn float total" style="float: right; margin-right: 15px;">전체보기</button>
+                </div>
+            </div>
             <div class="whitebox">
                 <div class="content">
-                    <p>Http 이해하기</p>
+                    <th:block th:each="complete : ${ dashboard.completedLectureInfoList }">
+                    <p th:text="${ complete.lectureTitle }"></p>
+                    </th:block>
                 </div>
-                <div class="btn-holder">
-                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
-                </div>
+
             </div>
         </div>
     </div>

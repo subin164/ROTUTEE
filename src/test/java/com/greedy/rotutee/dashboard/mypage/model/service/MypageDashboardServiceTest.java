@@ -3,7 +3,7 @@ package com.greedy.rotutee.dashboard.mypage.model.service;
 import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
 import com.greedy.rotutee.config.RotuteeApplication;
-import com.greedy.rotutee.dashboard.mypage.dto.*;
+import com.greedy.rotutee.dashboard.mypage.dto.tutee.*;
 import com.greedy.rotutee.dashboard.mypage.entity.*;
 import com.greedy.rotutee.dashboard.mypage.repository.*;
 import org.junit.jupiter.api.Test;
@@ -402,5 +402,34 @@ public class MypageDashboardServiceTest {
         dashboard.getNoticeList().forEach(System.out::println);
         dashboard.getWatchList().forEach(System.out::println);
         dashboard.getCompletedLectureInfoList().forEach(System.out::println);
+    }
+
+    @Test
+    public void 진행중인_강의_조회_확인() {
+        //given
+        int memberNo = 29;
+        //when
+        String myLectureJpql = "SELECT lecture FROM dashboardLecture lecture " +
+                "WHERE lecture.memberNo = :memberNo " +
+                "AND lecture.approvalStatus = '승인' ";
+        Query myLecturequery = entityManager.createQuery(myLectureJpql, DashboardLecture.class)
+                .setParameter("memberNo", memberNo);
+        List<DashboardLecture> lectureEntityList = myLecturequery.getResultList();
+
+        List<DashboardLectureDTO> lectureList = new ArrayList<>();
+        if(lectureEntityList.size() > 4){
+            for(int i = 0; i < 4; i++){
+                DashboardLecture lectureEntity = lectureEntityList.get(i);
+                DashboardLectureDTO lecture = modelMapper.map(lectureEntity, DashboardLectureDTO.class);
+                lectureList.add(lecture);
+            }
+        } else if(lectureEntityList.size() <= 4){
+            lectureList = lectureEntityList.stream().map(dashboardLecture -> modelMapper.map(dashboardLecture, DashboardLectureDTO.class)).collect(Collectors.toList());
+        }
+
+        //then
+        assertNotNull(lectureList);
+        lectureList.forEach(System.out::println);
+
     }
 }

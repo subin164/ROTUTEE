@@ -52,7 +52,7 @@ public class DashboardLecture {
     @Column(name = "REVISION_HISTORY")
     private String revisionMessage;
 
-    @Column(name = "LECTURE_APPROvAL_STATUS")
+    @Column(name = "LECTURE_APPROVAL_STATUS")
     private String approvalStatus;
 
     @Column(name = "LECTURE_OPENING_DATE")
