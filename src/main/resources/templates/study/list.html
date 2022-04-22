@@ -79,25 +79,31 @@
                         </button>
                     </div>
 
+
+                    <!-- 모집글 -->
                     <div class="container">
-
-                        <ul class="mb-md-4" th:each="study : ${ studyList }">
-                            <li class="d-flex">
-                                <div class="d-flex" th:if="${ study.status }=='Y'">
-                                    <div class="study-recruit-status">
-                                        <span>모집중</span>
+                        <div id="detailList">
+                            <ul class="mb-md-4" th:each="study : ${ studyList }">
+                                <li>
+                                    <div th:text="${study.getStudyNo()}"/>
+<!--                                    <input type="hidden" th:value="${study.getStudyNo()}">-->
+                                </li>
+                                <li class="d-flex">
+                                    <div class="d-flex" th:if="${ study.status }=='Y'">
+                                        <div class="study-recruit-status">
+                                            <span>모집중</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="study-recruit-status-end" th:if="${ study.status }=='N'">
-                                    <div>모집종료</div>
-                                </div>
-                                <div class="study-recruit-title" th:text="${ study.getTitle() }"></div>
-                            </li>
-                            <li class="study-recruit-content mb-md-3" th:text="${ study.getContent() }"/>
-                            <li th:text="${ study.getWriter() }" t/>
-                        </ul>
-                        <hr>
-
+                                    <div class="study-recruit-status-end" th:if="${ study.status }=='N'">
+                                        <div>모집종료</div>
+                                    </div>
+                                    <div class="study-recruit-title" th:text="${ study.getTitle() }"></div>
+                                </li>
+                                <li class="study-recruit-content mb-md-3" th:text="${ study.getContent() }"/>
+                                <li th:text="${ study.getWriter() }" t/>
+                            </ul>
+                            <hr>
+                        </div>
                     </div>
 
                 </div>
@@ -189,12 +195,13 @@
 
 <script>
 
-    if (document.querySelectorAll("#detaile li")) {
-        const $tds = document.querySelectorAll("#detaile li");
+    if (document.querySelectorAll("#detailList ul")) {
+        const $tds = document.querySelectorAll("#detailList ul");
         for (let i = 0; i < $tds.length; i++) {
 
             $tds[i].onclick = function () {
-                const no = this.parentNode.children[i].children[0].innerText;
+                const no = this.parentNode.children[i].children[0].textContent.trim();
+
                 location.href = "/study/detail?no=" + no;
             }
         }

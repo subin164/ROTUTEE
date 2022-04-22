@@ -75,7 +75,6 @@ public class StudyController {
         mv.addObject("studyDetail", studyDetail);
         mv.setViewName("study/detail");
 
-        System.out.println("studyDetail = " + studyDetail);
 
         return mv;
     }
