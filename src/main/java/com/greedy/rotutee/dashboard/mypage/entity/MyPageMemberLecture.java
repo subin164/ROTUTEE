@@ -13,7 +13,7 @@ import javax.persistence.*;
  * -----------------------------------------------------------
  * 2022-04-20 SeoYoung 최초 생성
  */
-@Entity(name = "Dashboard_MemberLecture")
+@Entity(name = "Mypage_MemberLecture")
 @Table(name = "TBL_MEMBER_LECTURE")
 @SequenceGenerator(
         name = "DASHBOARD_MEMBER_LECTURE_SEQ_GENERATOR",
@@ -21,7 +21,7 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-public class DashboardMemberLecture {
+public class MyPageMemberLecture {
 
     @Id
     @Column(name = "MEMBER_LECTURE_NO")
@@ -35,15 +35,16 @@ public class DashboardMemberLecture {
     @JoinColumn(name = "MEMBER_NO")
     private DashboardMember member;
 
-    @Column(name = "LECTURE_NO")
-    private int lectureNo;
+    @ManyToOne
+    @JoinColumn(name = "LECTURE_NO")
+    private DashboardLecture lecture;
 
-    public DashboardMemberLecture() {}
+    public MyPageMemberLecture() {}
 
-    public DashboardMemberLecture(int memberLectureNo, DashboardMember member, int lectureNo) {
+    public MyPageMemberLecture(int memberLectureNo, DashboardMember member, DashboardLecture lecture) {
         this.memberLectureNo = memberLectureNo;
         this.member = member;
-        this.lectureNo = lectureNo;
+        this.lecture = lecture;
     }
 
     public int getMemberLectureNo() {
@@ -62,12 +63,12 @@ public class DashboardMemberLecture {
         this.member = member;
     }
 
-    public int getLectureNo() {
-        return lectureNo;
+    public DashboardLecture getLecture() {
+        return lecture;
     }
 
-    public void setLectureNo(int lectureNo) {
-        this.lectureNo = lectureNo;
+    public void setLecture(DashboardLecture lecture) {
+        this.lecture = lecture;
     }
 
     @Override
@@ -75,7 +76,7 @@ public class DashboardMemberLecture {
         return "DashboardMemberLecture{" +
                 "memberLectureNo=" + memberLectureNo +
                 ", member=" + member +
-                ", lectureNo=" + lectureNo +
+                ", lecture=" + lecture +
                 '}';
     }
 }

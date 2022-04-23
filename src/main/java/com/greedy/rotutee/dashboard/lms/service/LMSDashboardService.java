@@ -15,4 +15,6 @@ import com.greedy.rotutee.dashboard.lms.dto.LMSDashboardDTO;
  */
 public interface LMSDashboardService {
     LMSDashboardDTO findLMSDashboard(int memberNo);
+
+
 }

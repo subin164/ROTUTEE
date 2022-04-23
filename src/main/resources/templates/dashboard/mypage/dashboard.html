@@ -103,7 +103,8 @@
 </head>
 
 <body>
-<div th:include="common/mypagemenubar.html"></div>
+<div sec:authorize="hasRole('TUTOR')" th:include="common/tutormypagemenubar.html"></div>
+<div sec:authorize="hasRole('TUTEE')" th:include="common/mypagemenubar.html"></div>
 <div class="container dashboard">
     <span>Dashboard</span>
     <hr>

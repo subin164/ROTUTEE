@@ -1,7 +1,10 @@
 package com.greedy.rotutee.dashboard.mypage.service;
 
+import com.greedy.rotutee.dashboard.mypage.dto.tutee.MyLearningDTO;
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.MypageDashboardDTO;
 import com.greedy.rotutee.dashboard.mypage.dto.tutor.MypageTutorDTO;
+
+import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.service
@@ -20,4 +23,6 @@ public interface MypageDashboardService {
     MypageDashboardDTO findTuteeDashboard(int memberNo);
 
     MypageTutorDTO findTutorDashboard(int memberNo);
+
+    List<MyLearningDTO> findLearningList(int memberNo);
 }

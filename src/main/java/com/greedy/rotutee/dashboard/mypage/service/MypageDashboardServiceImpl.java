@@ -35,6 +35,7 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     private DashboardLectureRepository lectureRepository;
     private DashboardNoticeRepository noticeRepository;
     private DashboardLectureWatchRepository lectureWatchRepository;
+    private MypageMemberLectureRepository memberLectureRepository;
     private ModelMapper modelMapper;
 
     @PersistenceContext
@@ -56,71 +57,113 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
 
         MypageDashboardDTO dashboard = new MypageDashboardDTO();
 
-        /* 프로필 조회용 */
+        DashboardMemberDTO member = getProfile(memberNo);
+
+        List<DashboardBoardDTO> boards = getBoards(memberNo);
+
+        List<DashboardBasketDTO> baskets = getBaskets(memberNo);
+
+        List<DashboardNoticeDTO> notices = getNotices(memberNo);
+
+        List<DashboardLectureWatchDTO> watchList = getWatchList(memberNo);
+
+        List<DashboardLectureDTO> completedLectures = getcompletedLectures(memberNo);
+
+
+        dashboard.setMember(member);
+        dashboard.setBoardList(boards);
+        dashboard.setBasketList(baskets);
+        dashboard.setNoticeList(notices);
+        dashboard.setWatchList(watchList);
+        dashboard.setCompletedLectureInfoList(completedLectures);
+        return dashboard;
+    }
+
+    /* 프로필 조회용 */
+    private DashboardMemberDTO getProfile(int memberNo) {
         DashboardMember memberEntity = memberRepository.findById(memberNo).get();
         DashboardMemberDTO member = modelMapper.map(memberEntity, DashboardMemberDTO.class);
 
-        /* 작성게시물 조회용 */
-        String boardJpql = "SELECT board " +
+        return member;
+    }
+    /* 작성게시물 조회용 */
+    private List<DashboardBoardDTO> getBoards(int memberNo) {
+
+        String jpql = "SELECT board " +
                 "FROM dashboardBoard as board " +
                 "WHERE board.memberNo = :memberNo " +
                 "ORDER BY board.createdDate DESC ";
-        Query boardQuery = entityManager.createQuery(boardJpql, DashboardBoard.class)
+        Query query = entityManager.createQuery(jpql, DashboardBoard.class)
                 .setParameter("memberNo", memberNo);
-        List<DashboardBoard> entityBoardList = boardQuery.getResultList();
-//        List<DashboardBoard> entityBoardList = boardRepository.findBymemberNo(memberNo);
-        List<DashboardBoardDTO> boardList = new ArrayList<>();
-        if(entityBoardList.size() > 4){
-            for(int i = 0; i < 4; i++){
-                DashboardBoard boardEntity = entityBoardList.get(i);
-                DashboardBoardDTO board = modelMapper.map(boardEntity, DashboardBoardDTO.class);
-                boardList.add(board);
-            }
-        } else if(entityBoardList.size() <= 4){
-            boardList = entityBoardList.stream().map(dashboardBoard -> modelMapper.map(dashboardBoard, DashboardBoardDTO.class)).collect(Collectors.toList());
-        }
 
-        /* 수강바구니 조회용 */
-        String basketJpql = "SELECT basket " +
+        List<DashboardBoard> entityBoards = query.getResultList();
+
+        List<DashboardBoardDTO> boards = new ArrayList<>();
+        int latelyBoardsCount = 4;
+        if(entityBoards.size() > latelyBoardsCount){
+            for(int i = 0; i < latelyBoardsCount; i++){
+                DashboardBoard boardEntity = entityBoards.get(i);
+                DashboardBoardDTO board = modelMapper.map(boardEntity, DashboardBoardDTO.class);
+                boards.add(board);
+            }
+        } else if(entityBoards.size() <= latelyBoardsCount){
+            boards = entityBoards.stream().map(dashboardBoard ->
+                            modelMapper.map(dashboardBoard, DashboardBoardDTO.class))
+                    .collect(Collectors.toList());
+        }
+        return boards;
+    }
+    /* 수강바구니 조회용 */
+    private List<DashboardBasketDTO> getBaskets(int memberNo) {
+
+        String jpql = "SELECT basket " +
                 "FROM dashboardBasket as basket " +
                 "WHERE basket.member.memberNo = :memberNo ";
-        Query basketQuery = entityManager.createQuery(basketJpql, DashboardBasket.class)
+        Query query = entityManager.createQuery(jpql, DashboardBasket.class)
                 .setParameter("memberNo", memberNo);
-        List<DashboardBasket> entityBasketList = basketQuery.getResultList();
-//        DashboardBasket basket = new DashboardBasket();
-//        basket.setMember(memberEntity);
-        List<DashboardBasketDTO> basketList = new ArrayList<>();
-        if(entityBasketList.size() > 4){
+        List<DashboardBasket> entityBaskets = query.getResultList();
+        List<DashboardBasketDTO> baskets = new ArrayList<>();
+        if(entityBaskets.size() > 4){
             for(int i = 0; i < 4; i++){
-                DashboardBasket basketEntity = entityBasketList.get(i);
+                DashboardBasket basketEntity = entityBaskets.get(i);
                 DashboardBasketDTO basket = modelMapper.map(basketEntity, DashboardBasketDTO.class);
-                basketList.add(basket);
+                baskets.add(basket);
             }
-        } else if(entityBasketList.size() <= 4){
-            basketList = entityBasketList.stream().map(dashboardBasket -> modelMapper.map(dashboardBasket, DashboardBasketDTO.class)).collect(Collectors.toList());
+        } else if(entityBaskets.size() <= 4){
+            baskets = entityBaskets.stream().map(dashboardBasket ->
+                            modelMapper.map(dashboardBasket, DashboardBasketDTO.class))
+                    .collect(Collectors.toList());
         }
-        /* 알림 조회용 */
-        String noticeJpql = "SELECT notice " +
+        return baskets;
+    }
+    /* 알림 조회용 */
+    private List<DashboardNoticeDTO> getNotices(int memberNo) {
+
+        String jpql = "SELECT notice " +
                 "FROM dashboardNotice as notice " +
                 "WHERE notice.memberNo = :memberNo " +
                 "ORDER BY notice.noticedTime DESC";
-        Query noticeQuery = entityManager.createQuery(noticeJpql, DashboardNotice.class)
+        Query query = entityManager.createQuery(jpql, DashboardNotice.class)
                 .setParameter("memberNo", memberNo);
-        List<DashboardNotice> entityNoticeList = noticeQuery.getResultList();
-//        DashboardBasket basket = new DashboardBasket();
-//        basket.setMember(memberEntity);
-        List<DashboardNoticeDTO> noticeList = new ArrayList<>();
-        if(entityNoticeList.size() > 4){
+        List<DashboardNotice> entityNotices = query.getResultList();
+        List<DashboardNoticeDTO> notices = new ArrayList<>();
+        if(entityNotices.size() > 4){
             for(int i = 0; i < 4; i++){
-                DashboardNotice noticeEntity = entityNoticeList.get(i);
+                DashboardNotice noticeEntity = entityNotices.get(i);
                 DashboardNoticeDTO notice = modelMapper.map(noticeEntity, DashboardNoticeDTO.class);
-                noticeList.add(notice);
+                notices.add(notice);
             }
-        } else if(entityNoticeList.size() <= 4){
-            noticeList = entityNoticeList.stream().map(dashboardNotice -> modelMapper.map(dashboardNotice, DashboardNoticeDTO.class)).collect(Collectors.toList());
+        } else if(entityNotices.size() <= 4){
+            notices = entityNotices.stream().map(dashboardNotice ->
+                            modelMapper.map(dashboardNotice, DashboardNoticeDTO.class))
+                    .collect(Collectors.toList());
         }
 
-        /* 최근 시청강의 조회용 */
+        return notices;
+    }
+    /* 최근 시청강의 조회용 */
+    private List<DashboardLectureWatchDTO> getWatchList(int memberNo) {
+
         String jpql = "SELECT watch " +
                 "FROM dashboardLectureWatch as watch " +
                 "WHERE watch.watchedDate in (SELECT Max(w.watchedDate) FROM dashboardLectureWatch as w " +
@@ -130,23 +173,29 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
         Query query = entityManager.createQuery(jpql, DashboardLectureWatch.class)
                 .setParameter("memberNo", memberNo);
         List<DashboardLectureWatch> watchEntityList = query.getResultList();
-        List<DashboardLectureWatchDTO> watchList = watchEntityList.stream().map(dashboardLectureWatch -> modelMapper.map(dashboardLectureWatch, DashboardLectureWatchDTO.class)).collect(Collectors.toList());
+        List<DashboardLectureWatchDTO> watchList = watchEntityList.stream().map(dashboardLectureWatch ->
+                        modelMapper.map(dashboardLectureWatch, DashboardLectureWatchDTO.class))
+                .collect(Collectors.toList());
 
-        /* 시청 완료강의 조회용 */
+        return watchList;
+    }
+    /* 시청 완료강의 조회용 */
+    private List<DashboardLectureDTO> getcompletedLectures(int memberNo) {
+
         /* 회원별 수강하고있는 강의항목 조회 */
-        String jpql1 = "SELECT memberlecture FROM Dashboard_MemberLecture memberlecture " +
+        String jpql = "SELECT memberlecture FROM Dashboard_MemberLecture memberlecture " +
                 "WHERE memberlecture.member.memberNo = :memberNo ";
-        Query query1 = entityManager.createQuery(jpql1, DashboardMemberLecture.class)
+        Query query = entityManager.createQuery(jpql, MyPageMemberLecture.class)
                 .setParameter("memberNo", memberNo);
 
-        List<DashboardMemberLecture> memberLectureEntityList = query1.getResultList();
+        List<MyPageMemberLecture> memberLectureEntities = query.getResultList();
 
-        System.out.println("memberLectureEntityList = " + memberLectureEntityList);
+        System.out.println("memberLectureEntityList = " + memberLectureEntities);
         /* 회원별 수강하고 있는 수강번호 리스트에 담음*/
         List<Integer> memberLectureNoList = new ArrayList<>();
-        for(int i = 0; i < memberLectureEntityList.size(); i++){
+        for(int i = 0; i < memberLectureEntities.size(); i++){
 
-            int memberLectureNo = memberLectureEntityList.get(i).getMemberLectureNo();
+            int memberLectureNo = memberLectureEntities.get(i).getMemberLectureNo();
             memberLectureNoList.add(memberLectureNo);
         }
 
@@ -155,50 +204,53 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
                 "WHERE complete.memberLecture.memberLectureNo = :memberLectureNo ";
 
         /* 회원별 수강번호에 따른 클래스리스트가 담겨있는 리스트*/
-        List<List> completedLectureCategoryEntityList = new ArrayList<>();
+        List<List> completedLectureCategoryEntities = new ArrayList<>();
         for(int i = 0; i < memberLectureNoList.size(); i++){
             int memberLectureNo = memberLectureNoList.get(i);
-            List<DashboardCompletedLecture> completedLectureEntityList = entityManager.createQuery(jpql2, DashboardCompletedLecture.class)
-                    .setParameter("memberLectureNo", memberLectureNo)
-                    .getResultList();
-            completedLectureCategoryEntityList.add(completedLectureEntityList);
+            List<DashboardCompletedLecture> completedLectureEntityList =
+                    entityManager.createQuery(jpql2, DashboardCompletedLecture.class)
+                            .setParameter("memberLectureNo", memberLectureNo)
+                            .getResultList();
+            completedLectureCategoryEntities.add(completedLectureEntityList);
         }
 
         /* 한 멤버가 듣고있는 강의의 수만큼 반복문 */
-        List<DashboardLectureDTO> completedLectureInfoList = new ArrayList<>();
-        for(int i = 0; i <completedLectureCategoryEntityList.size(); i++){
+        List<DashboardLectureDTO> completedLectures = new ArrayList<>();
+        for(int i = 0; i <completedLectureCategoryEntities.size(); i++){
             /* 한 강의의 클래스 리스트*/
-            List<DashboardCompletedLecture> completedLectureList = completedLectureCategoryEntityList.get(i);
+            List<DashboardCompletedLecture> completedLectureEntities = completedLectureCategoryEntities.get(i);
             /* 한 강의당 총 클래스 수 */
-            int totalClassCountOfLecture = completedLectureList.size();
+            int totalClassCountOfLecture = completedLectureEntities.size();
 
             /* 한 강의당 완료된 클래스 개수(completedStatus : Y의 총 개수) */
             int CompletedClassCount = 0;
-            for(int j = 0; j < completedLectureList.size(); j++){
-                if(completedLectureList.get(j).getWatchedStatus().equals("Y ")){
+            for(int j = 0; j < completedLectureEntities.size(); j++){
+                if(completedLectureEntities.get(j).getWatchedStatus().equals("Y ")){
                     CompletedClassCount += 1;
                 }
                 /* 클래스의 개수와 완료된 클래스의 개수가 동일할 시 시청 완료, 리스트에 넣어서 view로 return */
                 if(totalClassCountOfLecture == CompletedClassCount){
-                    DashboardLecture lectureInfoEntity = lectureRepository.findById(completedLectureList.get(j).getMemberLecture().getLectureNo()).get();
-                    DashboardLectureDTO lectureInfo = modelMapper.map(lectureInfoEntity, DashboardLectureDTO.class);
-                    completedLectureInfoList.add(lectureInfo);
+                    DashboardLecture lectureInfoEntity = lectureRepository.findById(completedLectureEntities
+                                    .get(j)
+                                    .getMemberLecture()
+                                    .getLecture()
+                                    .getLectureNo())
+                            .get();
+                    DashboardLectureDTO lectureInfo =
+                            modelMapper.map(lectureInfoEntity, DashboardLectureDTO.class);
+                    completedLectures.add(lectureInfo);
                 }
             }
-            dashboard.setMember(member);
-            dashboard.setBoardList(boardList);
-            dashboard.setBasketList(basketList);
-            dashboard.setNoticeList(noticeList);
-            dashboard.setWatchList(watchList);
-            dashboard.setCompletedLectureInfoList(completedLectureInfoList);
+
         }
-        return dashboard;
+        return completedLectures;
     }
 
     @Override
     public MypageTutorDTO findTutorDashboard(int memberNo) {
 
         MypageTutorDTO dashboard = new MypageTutorDTO();
+
         /* 프로필 조회용 */
         DashboardMember memberEntity = memberRepository.findById(memberNo).get();
         DashboardMemberDTO member = modelMapper.map(memberEntity, DashboardMemberDTO.class);
@@ -220,7 +272,10 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
                 boardList.add(board);
             }
         } else if(entityBoardList.size() <= 4){
-            boardList = entityBoardList.stream().map(dashboardBoard -> modelMapper.map(dashboardBoard, DashboardBoardDTO.class)).collect(Collectors.toList());
+            boardList = entityBoardList.stream()
+                    .map(dashboardBoard ->
+                            modelMapper.map(dashboardBoard, DashboardBoardDTO.class))
+                    .collect(Collectors.toList());
         }
 
         /* 진행중인 강의 조회용 */
@@ -241,6 +296,7 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
         } else if(lectureEntityList.size() <= 4){
             lectureList = lectureEntityList.stream().map(dashboardLecture -> modelMapper.map(dashboardLecture, DashboardLectureDTO.class)).collect(Collectors.toList());
         }
+
 
         /* 알림 조회용 */
         String noticeJpql = "SELECT notice " +
@@ -270,4 +326,17 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
 
         return dashboard;
     }
+
+    @Override
+    public List<MyLearningDTO> findLearningList(int memberNo) {
+        DashboardMember member = new DashboardMember();
+        member.setMemberNo(memberNo);
+        List<MyPageMemberLecture> learningEntities = memberLectureRepository.findBymember(member);
+
+        List<MyLearningDTO> learning = new ArrayList<>();
+
+
+        return learning;
+    }
+
 }

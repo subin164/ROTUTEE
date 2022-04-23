@@ -2,6 +2,8 @@ package com.greedy.rotutee.dashboard.lms.dto;
 
 import lombok.*;
 
+import java.sql.Date;
+
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.dto
  * fileName : LMSNoticeBoardDTO
@@ -20,4 +22,17 @@ import lombok.*;
 @ToString
 @Builder
 public class LMSNoticeBoardDTO {
+    private int no;
+    private String title;
+    private String content;
+    private Date createdDate;
+    private Date modifiedDate;
+    private Date deletedDate;
+    private String deleteStatus;
+    private int viewCount;
+    private int categoryNo;
+    private int memberNo;
+    private int reportCount;
+    private String secretStatus;
+
 }

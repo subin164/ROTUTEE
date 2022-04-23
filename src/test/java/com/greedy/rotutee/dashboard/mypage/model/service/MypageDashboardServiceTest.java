@@ -40,6 +40,8 @@ public class MypageDashboardServiceTest {
     @Autowired
     private DashboardCompletedLectureRepository completedLectureRepository;
     @Autowired
+    private MypageMemberLectureRepository memberLectureRepository;
+    @Autowired
     private ModelMapper modelMapper;
     @PersistenceContext
     private EntityManager entityManager;
@@ -51,6 +53,7 @@ public class MypageDashboardServiceTest {
         assertNotNull(boardRepository);
         assertNotNull(basketRepository);
         assertNotNull(entityManager);
+        assertNotNull(memberLectureRepository);
 
     }
 
@@ -189,12 +192,12 @@ public class MypageDashboardServiceTest {
 
         //when
         /* 회원별 수강하고있는 강의항목 조회 */
-        String jpql1 = "SELECT memberlecture FROM Dashboard_MemberLecture memberlecture " +
+        String jpql1 = "SELECT memberlecture FROM Mypage_MemberLecture memberlecture " +
                 "WHERE memberlecture.member.memberNo = :memberNo ";
-        Query query1 = entityManager.createQuery(jpql1, DashboardMemberLecture.class)
+        Query query1 = entityManager.createQuery(jpql1, MyPageMemberLecture.class)
                 .setParameter("memberNo", memberNo);
 
-        List<DashboardMemberLecture> memberLectureEntityList = query1.getResultList();
+        List<MyPageMemberLecture> memberLectureEntityList = query1.getResultList();
 
         System.out.println("memberLectureEntityList = " + memberLectureEntityList);
         /* 회원별 수강하고 있는 수강번호 리스트에 담음*/
@@ -235,7 +238,7 @@ public class MypageDashboardServiceTest {
                 }
                 /* 클래스의 개수와 완료된 클래스의 개수가 동일할 시 시청 완료, 리스트에 넣어서 view로 return */
                 if(totalClassCountOfLecture == CompletedClassCount){
-                    DashboardLecture lectureInfoEntity = lectureRepository.findById(completedLectureList.get(j).getMemberLecture().getLectureNo()).get();
+                    DashboardLecture lectureInfoEntity = lectureRepository.findById(completedLectureList.get(j).getMemberLecture().getLecture().getLectureNo()).get();
                     DashboardLectureDTO lectureInfo = modelMapper.map(lectureInfoEntity, DashboardLectureDTO.class);
                     completedLectureInfoList.add(lectureInfo);
                 }
@@ -336,12 +339,12 @@ public class MypageDashboardServiceTest {
 
         /* 시청 완료강의 조회용 */
         /* 회원별 수강하고있는 강의항목 조회 */
-        String memberLectureJpql = "SELECT memberlecture FROM Dashboard_MemberLecture memberlecture " +
+        String memberLectureJpql = "SELECT memberlecture FROM Mypage_MemberLecture memberlecture " +
                 "WHERE memberlecture.member.memberNo = :memberNo ";
-        Query query1 = entityManager.createQuery(memberLectureJpql, DashboardMemberLecture.class)
+        Query query1 = entityManager.createQuery(memberLectureJpql, MyPageMemberLecture.class)
                 .setParameter("memberNo", memberNo);
 
-        List<DashboardMemberLecture> memberLectureEntityList = query1.getResultList();
+        List<MyPageMemberLecture> memberLectureEntityList = query1.getResultList();
 
         System.out.println("memberLectureEntityList = " + memberLectureEntityList);
         /* 회원별 수강하고 있는 수강번호 리스트에 담음 */
@@ -382,7 +385,7 @@ public class MypageDashboardServiceTest {
                 }
                 /* 클래스의 개수와 완료된 클래스의 개수가 동일할 시 시청 완료, 리스트에 넣어서 view로 return */
                 if(totalClassCountOfLecture == CompletedClassCount){
-                    DashboardLecture lectureInfoEntity = lectureRepository.findById(completedLectureList.get(j).getMemberLecture().getLectureNo()).get();
+                    DashboardLecture lectureInfoEntity = lectureRepository.findById(completedLectureList.get(j).getMemberLecture().getLecture().getLectureNo()).get();
                     DashboardLectureDTO lectureInfo = modelMapper.map(lectureInfoEntity, DashboardLectureDTO.class);
                     completedLectureInfoList.add(lectureInfo);
                 }
@@ -431,5 +434,39 @@ public class MypageDashboardServiceTest {
         assertNotNull(lectureList);
         lectureList.forEach(System.out::println);
 
+    }
+
+    @Test
+    public void 수강테이블_조회_확인() {
+
+        //given
+        int memberNo = 27;
+        DashboardMember member = new DashboardMember();
+        member.setMemberNo(memberNo);
+        String query = "SELECT\n" +
+                "       A.LECTURE_NO\n" +
+                "     , A.LECTURE_NAME\n" +
+                "     , A.LECTURE_PRICE\n" +
+                "     , A.LECTURE_LEVEL\n" +
+                "     , A.LECTURE_SUMMARY\n" +
+                "     , A.LECTURE_DETAILS\n" +
+                "     , A.REVISION_HISTORY\n" +
+                "     , A.LECTURE_APPROVAL_STATUS\n" +
+                "     , A.LECTURE_OPENING_DATE\n" +
+                "     , A.MEMBER_NO\n" +
+                "     , A.APPLICATION_DATE\n" +
+                "     , A.APPLICATION_DIVISION\n" +
+                "     , A.LECTURE_CATEGORY_NO\n" +
+                "  FROM TBL_LECTURE A\n" +
+                " WHERE A.LECTURE_NO IN (SELECT\n" +
+                "                               B.LECTURE_NO\n" +
+                "                          FROM TBL_MEMBER_LECTURE B\n" +
+                "                          JOIN TBL_LECTURE C ON (C.LECTURE_NO = B.LECTURE_NO)\n" +
+                "                         WHERE B.MEMBER_NO = 27\n" +
+                "                       )";
+        Query nativeQuery = entityManager.createNativeQuery(query, "mypageMemberLectureMapping");
+        //when
+        List<DashboardLecture> learningEntities = nativeQuery.getResultList();
+        learningEntities.forEach(System.out::println);
     }
 }

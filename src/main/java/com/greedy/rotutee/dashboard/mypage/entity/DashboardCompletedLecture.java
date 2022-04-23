@@ -53,7 +53,7 @@ public class DashboardCompletedLecture {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_LECTURE_NO")
-    private DashboardMemberLecture memberLecture;
+    private MyPageMemberLecture memberLecture;
 
     public DashboardCompletedLecture() {}
 

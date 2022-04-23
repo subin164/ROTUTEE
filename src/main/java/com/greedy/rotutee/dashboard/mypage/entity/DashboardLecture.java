@@ -24,6 +24,14 @@ import java.util.List;
         initialValue = 1,
         allocationSize = 1
 )
+@SqlResultSetMappings(
+        value = {
+                @SqlResultSetMapping(
+                        name = "mypageMemberLectureMapping",
+                        entities = {@EntityResult(entityClass = DashboardLecture.class)}
+                )
+        }
+)
 public class DashboardLecture {
 
     @Id
