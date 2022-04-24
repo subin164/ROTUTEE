@@ -2,10 +2,7 @@ package com.greedy.rotutee.lecture.lecture.service;
 
 import com.greedy.rotutee.lecture.lecture.dto.*;
 import com.greedy.rotutee.lecture.lecture.entity.*;
-import com.greedy.rotutee.lecture.lecture.repository.ChapterRepository;
-import com.greedy.rotutee.lecture.lecture.repository.LectureMainRepository;
-import com.greedy.rotutee.lecture.lecture.repository.LectureReviewMainRepository;
-import com.greedy.rotutee.lecture.lecture.repository.MemberLectureMainRepository;
+import com.greedy.rotutee.lecture.lecture.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,14 +20,16 @@ public class LectureMainServiceImpl implements  LectureMainService{
     private final ChapterRepository chapterRepository;
     private final LectureReviewMainRepository lectureReviewMainRepository;
     private final MemberLectureMainRepository memberLectureMainRepository;
+    private final LectureAttachedFileRepository lectureAttachedFileRepository;
 
     @Autowired
-    public LectureMainServiceImpl(LectureMainRepository lectureMainRepository, ModelMapper modelMapper, ChapterRepository chapterRepository, LectureReviewMainRepository lectureReviewMainRepository, MemberLectureMainRepository memberLectureMainRepository) {
+    public LectureMainServiceImpl(LectureMainRepository lectureMainRepository, ModelMapper modelMapper, ChapterRepository chapterRepository, LectureReviewMainRepository lectureReviewMainRepository, MemberLectureMainRepository memberLectureMainRepository, LectureAttachedFileRepository lectureAttachedFileRepository) {
         this.lectureMainRepository = lectureMainRepository;
         this.modelMapper = modelMapper;
         this.chapterRepository = chapterRepository;
         this.lectureReviewMainRepository = lectureReviewMainRepository;
         this.memberLectureMainRepository = memberLectureMainRepository;
+        this.lectureAttachedFileRepository = lectureAttachedFileRepository;
     }
 
     @Override
@@ -40,7 +39,12 @@ public class LectureMainServiceImpl implements  LectureMainService{
 
         List<Lecture> lectureList = lectureMainRepository.findBylectureApprovalStatus(lectureApprovalStatus);
 
-        return lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+        List<LectureDTO> lectureDTOList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+        for(LectureDTO lecture : lectureDTOList) {
+            lecture.setThumbnailPath(lectureAttachedFileRepository.findThumbnailPathBylectureNo(lecture.getLectureNo()));
+        }
+
+        return lectureDTOList;
     }
 
     @Override

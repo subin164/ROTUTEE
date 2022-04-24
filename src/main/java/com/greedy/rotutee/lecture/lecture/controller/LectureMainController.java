@@ -2,14 +2,9 @@ package com.greedy.rotutee.lecture.lecture.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.lecture.lecture.dto.*;
-import com.greedy.rotutee.lecture.lecture.entity.Chapter;
 import com.greedy.rotutee.lecture.lecture.service.LectureMainService;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,17 +24,17 @@ public class LectureMainController {
         this.lectureMainService = lectureMainService;
     }
 
-    @GetMapping("list")
+    @GetMapping("/list")
     public ModelAndView findAllApproveLectures(ModelAndView mv) {
 
         List<LectureDTO> lectureList = lectureMainService.findAllLecture();
 
         mv.addObject("lectureList", lectureList);
-        mv.setViewName("/lecture/list");
+        mv.setViewName("/lecture/lecturelist");
         return mv;
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     public ModelAndView findApproveLectureBysearchObject(ModelAndView mv, @RequestParam String searchValue, @RequestParam int searchCondition) {
 
         System.out.println(searchCondition);
@@ -48,11 +43,11 @@ public class LectureMainController {
         List<LectureDTO> lectureList = lectureMainService.findApproveLectureBysearchObject(searchCondition, searchValue);
 
         mv.addObject("lectureList", lectureList);
-        mv.setViewName("/lecture/list");
+        mv.setViewName("/lecture/lecturelist");
         return mv;
     }
 
-    @GetMapping("detail")
+    @GetMapping("/detail")
     public ModelAndView findLectureByLectureNo(ModelAndView mv, @RequestParam int lectureNo) {
         System.out.println("lectureNo = " + lectureNo);
 
@@ -69,12 +64,12 @@ public class LectureMainController {
         mv.addObject("lectureReviewList", lectureReviewList);
         mv.addObject("chapterList", chapterList);
         mv.addObject("lecture", lecture);
-        mv.setViewName("/lecture/detail");
+        mv.setViewName("/lecture/lecturedetail");
 
         return mv;
     }
 
-    @PostMapping("writereview")
+    @PostMapping("/writereview")
     public ModelAndView writeReview(ModelAndView mv, @RequestParam(defaultValue = "0") int rating
                                                    , @RequestParam String content
                                                    , @RequestParam int lectureNo
@@ -100,7 +95,7 @@ public class LectureMainController {
         return mv;
     }
 
-    @PostMapping(value = "modifyreview", produces = "application/json; charset=UTF-8")
+    @PostMapping(value = "/modifyreview", produces = "application/json; charset=UTF-8")
     public ModelAndView modifyReview(ModelAndView mv, @RequestParam int lectureReviewNo
                                                     , @RequestParam String lectureReviewContent) {
 
@@ -110,7 +105,7 @@ public class LectureMainController {
         return mv;
     }
 
-    @GetMapping("removereview")
+    @GetMapping("/removereview")
     public ModelAndView removeReview(ModelAndView mv, @RequestParam int lectureReviewNo
                                                     , @RequestParam int lectureNo, RedirectAttributes rttr) {
 

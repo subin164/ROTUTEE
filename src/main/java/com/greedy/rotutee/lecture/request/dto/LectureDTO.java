@@ -1,70 +1,36 @@
-package com.greedy.rotutee.lecture.lecture.entity;
+package com.greedy.rotutee.lecture.request.dto;
 
+import com.greedy.rotutee.lecture.lecture.dto.LectureCategoryDTO;
+import com.greedy.rotutee.lecture.lecture.dto.MemberDTO;
+import lombok.*;
 
-import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
 
-@Entity(name = "Lecture_Lecture")
-@Table(name = "TBL_LECTURE")
-@SequenceGenerator(
-        name = "LECTURE_LECTURE_SEQ_GENERATOR",
-        sequenceName = "LECTURE_NO",
-        initialValue = 1,
-        allocationSize = 1
-)
-public class Lecture {
+public class LectureDTO {
 
-    @Id
-    @Column(name = "LECTURE_NO")
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "LECTURE_LECTURE_SEQ_GENERATOR"
-    )
     private int lectureNo;
-
-    @Column(name = "LECTURE_NAME")
     private String lectureName;
-
-    @Column(name = "LECTURE_PRICE")
     private int lecturePrice;
-
-    @Column(name = "LECTURE_LEVEL")
     private String lectureLevel;
-
-    @Column(name = "LECTURE_SUMMARY")
     private String lectureSummary;
-
-    @Column(name = "LECTURE_DETAILS")
     private String lecturedetails;
-
-    @Column(name = "REVISION_HISTORY")
     private String revisionHistory;
-
-    @Column(name = "LECTURE_APPROVAL_STATUS")
     private String lectureApprovalStatus;
-
-    @Column(name = "LECTURE_OPENING_DATE")
     private Date lectureOpeningDate;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_NO")
-    private Member tutor;
-
-    @Column(name = "APPLICATION_DATE")
+    private int memberNo;
+    private MemberDTO tutor;
     private Date applicationDate;
-
-    @Column(name = "APPLICATION_DIVISION")
     private String applicationDivision;
+    private int lectureCategoryNo;
+    private LectureCategoryDTO category;
+    private String originalPath;
+    private String thumbnailPath;
+    private String bannerPath;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "LECTURE_CATEGORY_NO")
-    private LectureCategory lectureCategory;
-
-    public Lecture() {
+    public LectureDTO() {
     }
 
-    public Lecture(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lecturedetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, Member tutor, Date applicationDate, String applicationDivision, LectureCategory lectureCategory) {
+    public LectureDTO(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lecturedetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, int memberNo, MemberDTO tutor, Date applicationDate, String applicationDivision, int lectureCategoryNo, LectureCategoryDTO category, String originalPath, String thumbnailPath, String bannerPath) {
         this.lectureNo = lectureNo;
         this.lectureName = lectureName;
         this.lecturePrice = lecturePrice;
@@ -74,10 +40,15 @@ public class Lecture {
         this.revisionHistory = revisionHistory;
         this.lectureApprovalStatus = lectureApprovalStatus;
         this.lectureOpeningDate = lectureOpeningDate;
+        this.memberNo = memberNo;
         this.tutor = tutor;
         this.applicationDate = applicationDate;
         this.applicationDivision = applicationDivision;
-        this.lectureCategory = lectureCategory;
+        this.lectureCategoryNo = lectureCategoryNo;
+        this.category = category;
+        this.originalPath = originalPath;
+        this.thumbnailPath = thumbnailPath;
+        this.bannerPath = bannerPath;
     }
 
     public int getLectureNo() {
@@ -152,11 +123,19 @@ public class Lecture {
         this.lectureOpeningDate = lectureOpeningDate;
     }
 
-    public Member getTutor() {
+    public int getMemberNo() {
+        return memberNo;
+    }
+
+    public void setMemberNo(int memberNo) {
+        this.memberNo = memberNo;
+    }
+
+    public MemberDTO getTutor() {
         return tutor;
     }
 
-    public void setTutor(Member tutor) {
+    public void setTutor(MemberDTO tutor) {
         this.tutor = tutor;
     }
 
@@ -176,17 +155,49 @@ public class Lecture {
         this.applicationDivision = applicationDivision;
     }
 
-    public LectureCategory getLectureCategory() {
-        return lectureCategory;
+    public int getLectureCategoryNo() {
+        return lectureCategoryNo;
     }
 
-    public void setLectureCategory(LectureCategory lectureCategory) {
-        this.lectureCategory = lectureCategory;
+    public void setLectureCategoryNo(int lectureCategoryNo) {
+        this.lectureCategoryNo = lectureCategoryNo;
+    }
+
+    public LectureCategoryDTO getCategory() {
+        return category;
+    }
+
+    public void setCategory(LectureCategoryDTO category) {
+        this.category = category;
+    }
+
+    public String getOriginalPath() {
+        return originalPath;
+    }
+
+    public void setOriginalPath(String originalPath) {
+        this.originalPath = originalPath;
+    }
+
+    public String getThumbnailPath() {
+        return thumbnailPath;
+    }
+
+    public void setThumbnailPath(String thumbnailPath) {
+        this.thumbnailPath = thumbnailPath;
+    }
+
+    public String getBannerPath() {
+        return bannerPath;
+    }
+
+    public void setBannerPath(String bannerPath) {
+        this.bannerPath = bannerPath;
     }
 
     @Override
     public String toString() {
-        return "Lecture{" +
+        return "LectureDTO{" +
                 "lectureNo=" + lectureNo +
                 ", lectureName='" + lectureName + '\'' +
                 ", lecturePrice=" + lecturePrice +
@@ -196,10 +207,15 @@ public class Lecture {
                 ", revisionHistory='" + revisionHistory + '\'' +
                 ", lectureApprovalStatus='" + lectureApprovalStatus + '\'' +
                 ", lectureOpeningDate=" + lectureOpeningDate +
+                ", memberNo=" + memberNo +
                 ", tutor=" + tutor +
                 ", applicationDate=" + applicationDate +
                 ", applicationDivision='" + applicationDivision + '\'' +
-                ", lectureCategory=" + lectureCategory +
+                ", lectureCategoryNo=" + lectureCategoryNo +
+                ", category=" + category +
+                ", originalPath='" + originalPath + '\'' +
+                ", thumbnailPath='" + thumbnailPath + '\'' +
+                ", bannerPath='" + bannerPath + '\'' +
                 '}';
     }
 }

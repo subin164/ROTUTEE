@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class LectureMainRepositoryTest {
     }
 
     @Test
-    public void 현재_진행중인_모든_강의_조회() {
+    public void 현재_진행중인_모든_강의_조회_테스트() {
 
         //given
         String lectureApprovalStatus = "승인";
@@ -40,5 +41,28 @@ public class LectureMainRepositoryTest {
         lectureList.forEach(System.out::println);
     }
 
+    @Test
+    @Transactional
+    public void 강의_이름_검색_테스트() {
 
+        //given
+        String lectureName = "완성";
+        //when
+        List<Lecture> lectureList = lectureMainRepository.findBylectureNameContaining(lectureName);
+        //then
+        assertNotNull(lectureList);
+        lectureList.forEach(System.out::println);
+    }
+
+    @Test
+    @Transactional
+    public void 튜터_이름_검색_테스트() {
+        //given
+        String name = "이석재";
+        //when
+        List<Lecture> lectureList = lectureMainRepository.findLecturesByTutorName(name);
+        //then
+        assertNotNull(lectureList);
+        lectureList.forEach(System.out::println);
+    }
 }

@@ -80,9 +80,9 @@
 }
 .chapter-name{
     margin-left: 5px;
-    margin-top: 3px;
+    margin-top: 2px;
     border: none;
-    width: 50%;
+    width: 95%;
     height: 40px;
 }
 .lecture-plus{
@@ -99,7 +99,6 @@
 }
 .video-quiz{
     width: 95%;
-    border: 1px solid;
     margin-top: 10px;
     margin-left: 30px;
 }
@@ -108,7 +107,7 @@
     margin-top: 10;
 }
 .video{
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 10px;
 }
 .quiz-area{
@@ -140,4 +139,18 @@
 .explaination{
     margin-top: 30px;
     margin-left: 105px;
+}
+.class-name-area{
+    border: 1px solid black;
+    margin-top: 10px;
+    margin-left: 10px;
+    height: 50px;
+    width: 95%;
+}
+.class-name{
+    margin-left: 5px;
+    margin-top: 2px;
+    border: none;
+    width: 95%;
+    height: 40px;
 }

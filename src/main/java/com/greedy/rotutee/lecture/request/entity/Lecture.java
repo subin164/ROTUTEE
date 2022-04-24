@@ -1,11 +1,10 @@
-package com.greedy.rotutee.lecture.lecture.entity;
+package com.greedy.rotutee.lecture.request.entity;
 
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
 
-@Entity(name = "Lecture_Lecture")
+@Entity(name = "Request_Lecture")
 @Table(name = "TBL_LECTURE")
 @SequenceGenerator(
         name = "LECTURE_LECTURE_SEQ_GENERATOR",
@@ -60,6 +59,7 @@ public class Lecture {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LECTURE_CATEGORY_NO")
     private LectureCategory lectureCategory;
+
 
     public Lecture() {
     }
