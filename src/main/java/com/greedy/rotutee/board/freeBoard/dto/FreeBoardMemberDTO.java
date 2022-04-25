@@ -1,8 +1,7 @@
-package com.greedy.rotutee.board.dto;
+package com.greedy.rotutee.board.freeBoard.dto;
 
 import lombok.*;
 
-import javax.persistence.Column;
 import java.sql.Date;
 
 /**
@@ -22,7 +21,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class MemberDTO {
+public class FreeBoardMemberDTO {
 
     private int memberNo;
 

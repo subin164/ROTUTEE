@@ -1,4 +1,4 @@
-package com.greedy.rotutee.board.entity;
+package com.greedy.rotutee.board.freeBoard.entity;
 
 import javax.persistence.*;
 import java.sql.Date;

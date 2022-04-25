@@ -1,4 +1,4 @@
-package com.greedy.rotutee.board.dto;
+package com.greedy.rotutee.board.freeBoard.dto;
 
 import lombok.*;
 
@@ -17,11 +17,11 @@ public class FreeBoardDTO {
     private Date boardCreationDate;
     private Date boardModifiedDate;
     private Date boardDeletionDate;
-    private String boardDeleteYN;
+    private char boardDeleteYN;
     private int boardViewCount;
-    private int boardCategoryNo;
-    private int  memberNo;
+    private FreeBoardCategoryDTO freeBoardCategory;
+    private FreeBoardMemberDTO  freeBoardMember;
     private int boardReportCount;
-    private String bulletinBoardSecretYN;
-
+    private char bulletinBoardSecretYN;
+    private FreeBoardAnswerDTO freeBoardAnswerList;
 }

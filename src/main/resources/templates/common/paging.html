@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+</head>
+<body>
+<div class="pagingArea row" align="center">
+    <!-- 맨 앞으로 이동 버튼 -->
+    <th:block th:if="${ selectCriteria.pageNo <= 1 }">
+        <button disabled><<</button>
+    </th:block>
+    <th:block th:if="${ selectCriteria.pageNo > 1 }">
+        <button id="startPage"><<</button>
+    </th:block>
+
+
+    <!-- 이전 페이지 버튼 -->
+    <th:block th:if="${ selectCriteria.pageNo <= 1 }">
+        <button disabled><</button>
+    </th:block>
+    <th:block th:if="${ selectCriteria.pageNo > 1 }">
+        <button id="prevPage"><</button>
+    </th:block>
+    <!-- 페이징 버튼 자리 -->
+    <th:block th:each="num : ${ #numbers.sequence(selectCriteria.startPage, selectCriteria.endPage) }">
+        <th:block th:if="${ selectCriteria.pageNo == num }">
+            <button th:text="${ num }" disabled></button>
+        </th:block>
+        <th:block th:if="${ selectCriteria.pageNo != num }">
+            <button th:text="${ num }" onclick=pageButtonAction(this)></button>
+        </th:block>
+    </th:block>
+
+
+    <!-- 다음 페이지 버튼 -->
+    <th:block th:if="${ selectCriteria.pageNo >= selectCriteria.maxPage }">
+        <button disabled>></button>
+    </th:block>
+    <th:block th:if="${ selectCriteria.pageNo < selectCriteria.maxPage }">
+        <button id="nextPage">></button>
+    </th:block>
+    <!-- 마지막 페이지로 이동 버튼 -->
+    <th:block th:if="${ selectCriteria.pageNo >= selectCriteria.maxPage }">
+        <button disabled>>></button>
+    </th:block>
+    <th:block th:if="${ selectCriteria.pageNo < selectCriteria.maxPage }">
+        <button id="maxPage">>></button>
+    </th:block>
+</div>
+
+<script th:inline="javascript">
+
+    const link = [[${ intent }]];
+    let searchText = "";
+    if([[${ selectCriteria.searchCondition != null}]]) {
+        searchText += "&searchCondition=" + [[${ selectCriteria.searchCondition }]];
+    }
+
+    if([[${ selectCriteria.searchValue!= null }]]) {
+        searchText += "&searchValue=" + [[${ selectCriteria.searchValue }]];
+    }
+
+    if(document.getElementById("startPage")) {
+        const $startPage = document.getElementById("startPage");
+        $startPage.onclick = function() {
+            location.href = link + "?currentPage=1" + searchText;
+        }
+    }
+
+    if(document.getElementById("prevPage")) {
+        const $prevPage = document.getElementById("prevPage");
+        $prevPage.onclick = function() {
+            location.href = link + "?currentPage=" + [[${ selectCriteria.pageNo - 1 }]] + searchText;
+        }
+    }
+
+    if(document.getElementById("nextPage")) {
+        const $nextPage = document.getElementById("nextPage");
+        $nextPage.onclick = function() {
+            location.href = link + "?currentPage=" + [[${ selectCriteria.pageNo + 1 }]] + searchText;
+        }
+    }
+
+    if(document.getElementById("maxPage")) {
+        const $maxPage = document.getElementById("maxPage");
+        $maxPage.onclick = function() {
+            location.href = link + "?currentPage=" + [[${ selectCriteria.maxPage }]] + searchText;
+        }
+    }
+
+    function pageButtonAction(x) {
+        location.href = link + "?currentPage=" + x.innerText + searchText;
+    }
+
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="https://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <title>Table </title>
     <meta charset="UTF-8">
@@ -70,7 +71,7 @@
 </head>
 <body>
 
-<div th:include="/common/topMenubar.html"></div>
+<div th:include="common/mypagemenubar.html"></div>
 
 <div class="box">
     <label class="head">게시판</label>
@@ -113,75 +114,12 @@
                             <div class="table100-body">
                                 <table>
                                     <tbody>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">1</td>
-                                        <td class="cell100 column2">커뮤니티샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">2</td>
-                                        <td class="cell100 column2">커뮤니티샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">3</td>
-                                        <td class="cell100 column2">커뮤니티샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">4</td>
-                                        <td class="cell100 column2">커뮤니티샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">5</td>
-                                        <td class="cell100 column2">커뮤니티샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">6</td>
-                                        <td class="cell100 column2">커뮤니티샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">7</td>
-                                        <td class="cell100 column2">커뮤니티샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">8</td>
-                                        <td class="cell100 column2">커뮤니티샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">9</td>
-                                        <td class="cell100 column2">커뮤니티샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">10</td>
-                                        <td class="cell100 column2">커뮤니티샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
+                                    <tr class="row100 body" th:each="boardList : ${boardList}">
+                                        <td class="cell100 column1" th:text="boardList.boardNo"></td>
+                                        <td class="cell100 column2" th:text="boardList.boardTitle">커뮤니티샘플</td>
+                                        <td class="cell100 column3" th:text="boardList.freeBoardCategory.boardCategoryName">기타</td>
+                                        <td class="cell100 column4" th:text="boardList.boardCreationDate">2022-04-14</td>
+                                        <td class="cell100 column5" th:text="boardList.freeBoardMember">김서영</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -246,69 +184,6 @@
                                 <table>
                                     <tbody>
                                     <tr class="row100 body">
-                                        <td class="cell100 column1">1</td>
-                                        <td class="cell100 column2">고객센터샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">2</td>
-                                        <td class="cell100 column2">고객센터샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">3</td>
-                                        <td class="cell100 column2">고객센터샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">4</td>
-                                        <td class="cell100 column2">고객센터샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">5</td>
-                                        <td class="cell100 column2">고객센터샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">6</td>
-                                        <td class="cell100 column2">고객센터샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">7</td>
-                                        <td class="cell100 column2">고객센터샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">8</td>
-                                        <td class="cell100 column2">고객센터샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">9</td>
-                                        <td class="cell100 column2">고객센터샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
                                         <td class="cell100 column1">10</td>
                                         <td class="cell100 column2">고객센터샘플</td>
                                         <td class="cell100 column3">기타</td>
@@ -322,7 +197,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="border d-inline-flex">
                 <div class="input-group">
                     <select class="form-select form-select-sm" aria-label=".form-select-sm example">
@@ -382,69 +256,6 @@
                                     <tbody>
                                     <tr class="row100 body">
                                         <td class="cell100 column1">1</td>
-                                        <td class="cell100 column2">강의게시판 샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">2</td>
-                                        <td class="cell100 column2">강의게시판 샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">3</td>
-                                        <td class="cell100 column2">강의게시판 샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">4</td>
-                                        <td class="cell100 column2">강의게시판 샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">5</td>
-                                        <td class="cell100 column2">강의게시판 샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">6</td>
-                                        <td class="cell100 column2">강의게시판 샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">7</td>
-                                        <td class="cell100 column2">강의게시판 샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">8</td>
-                                        <td class="cell100 column2">강의게시판 샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">9</td>
-                                        <td class="cell100 column2">강의게시판 샘플</td>
-                                        <td class="cell100 column3">기타</td>
-                                        <td class="cell100 column4">2022-04-14</td>
-                                        <td class="cell100 column5">김서영</td>
-                                    </tr>
-                                    <tr class="row100 body">
-                                        <td class="cell100 column1">10</td>
                                         <td class="cell100 column2">강의게시판 샘플</td>
                                         <td class="cell100 column3">기타</td>
                                         <td class="cell100 column4">2022-04-14</td>
