@@ -35,7 +35,6 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     private DashboardLectureRepository lectureRepository;
     private DashboardNoticeRepository noticeRepository;
     private DashboardLectureWatchRepository lectureWatchRepository;
-    private MypageMemberLectureRepository memberLectureRepository;
     private ModelMapper modelMapper;
 
     @PersistenceContext
@@ -183,7 +182,7 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     private List<DashboardLectureDTO> getcompletedLectures(int memberNo) {
 
         /* 회원별 수강하고있는 강의항목 조회 */
-        String jpql = "SELECT memberlecture FROM Dashboard_MemberLecture memberlecture " +
+        String jpql = "SELECT memberlecture FROM Mypage_MemberLecture memberlecture " +
                 "WHERE memberlecture.member.memberNo = :memberNo ";
         Query query = entityManager.createQuery(jpql, MyPageMemberLecture.class)
                 .setParameter("memberNo", memberNo);
@@ -327,16 +326,6 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
         return dashboard;
     }
 
-    @Override
-    public List<MyLearningDTO> findLearningList(int memberNo) {
-        DashboardMember member = new DashboardMember();
-        member.setMemberNo(memberNo);
-        List<MyPageMemberLecture> learningEntities = memberLectureRepository.findBymember(member);
 
-        List<MyLearningDTO> learning = new ArrayList<>();
-
-
-        return learning;
-    }
 
 }

@@ -1,7 +1,6 @@
 package com.greedy.rotutee.dashboard.mypage.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
-import com.greedy.rotutee.dashboard.mypage.dto.tutee.MyLearningDTO;
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.MypageDashboardDTO;
 import com.greedy.rotutee.dashboard.mypage.dto.tutor.MypageTutorDTO;
 import com.greedy.rotutee.dashboard.mypage.service.MypageDashboardService;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.controller
@@ -50,13 +47,6 @@ public class MyPageDashboardController {
         return mv;
     }
 
-    @GetMapping("/mylearning")
-    public ModelAndView findMyLearningList(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
-
-        int memberNo = customUser.getNo();
-        List<MyLearningDTO> learningList = mypageDashboardService.findLearningList(memberNo);
-        return mv;
-    }
 
     @GetMapping("/tutordashboard")
     public ModelAndView findTutorDashboard(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
@@ -64,7 +54,6 @@ public class MyPageDashboardController {
         int memberNo = customUser.getNo();
 
         MypageTutorDTO dashboard = mypageDashboardService.findTutorDashboard(memberNo);
-
         mv.addObject("dashboard", dashboard);
         mv.setViewName("dashboard/mypage/tutordashboard");
 

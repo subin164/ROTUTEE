@@ -436,37 +436,5 @@ public class MypageDashboardServiceTest {
 
     }
 
-    @Test
-    public void 수강테이블_조회_확인() {
 
-        //given
-        int memberNo = 27;
-        DashboardMember member = new DashboardMember();
-        member.setMemberNo(memberNo);
-        String query = "SELECT\n" +
-                "       A.LECTURE_NO\n" +
-                "     , A.LECTURE_NAME\n" +
-                "     , A.LECTURE_PRICE\n" +
-                "     , A.LECTURE_LEVEL\n" +
-                "     , A.LECTURE_SUMMARY\n" +
-                "     , A.LECTURE_DETAILS\n" +
-                "     , A.REVISION_HISTORY\n" +
-                "     , A.LECTURE_APPROVAL_STATUS\n" +
-                "     , A.LECTURE_OPENING_DATE\n" +
-                "     , A.MEMBER_NO\n" +
-                "     , A.APPLICATION_DATE\n" +
-                "     , A.APPLICATION_DIVISION\n" +
-                "     , A.LECTURE_CATEGORY_NO\n" +
-                "  FROM TBL_LECTURE A\n" +
-                " WHERE A.LECTURE_NO IN (SELECT\n" +
-                "                               B.LECTURE_NO\n" +
-                "                          FROM TBL_MEMBER_LECTURE B\n" +
-                "                          JOIN TBL_LECTURE C ON (C.LECTURE_NO = B.LECTURE_NO)\n" +
-                "                         WHERE B.MEMBER_NO = 27\n" +
-                "                       )";
-        Query nativeQuery = entityManager.createNativeQuery(query, "mypageMemberLectureMapping");
-        //when
-        List<DashboardLecture> learningEntities = nativeQuery.getResultList();
-        learningEntities.forEach(System.out::println);
-    }
 }

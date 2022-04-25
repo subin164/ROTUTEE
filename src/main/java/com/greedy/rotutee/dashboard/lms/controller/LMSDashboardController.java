@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.controller
  * fileName : LMSDashboardController
@@ -33,12 +35,14 @@ public class LMSDashboardController {
     }
 
     @GetMapping("/dashboard")
-    public ModelAndView findLMSDashboard(ModelAndView mv,@AuthenticationPrincipal CustomUser customUser){
+    public ModelAndView findLMSDashboard(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser, HttpServletRequest request){
 
         int memberNo = customUser.getNo();
+        int lectureNo = Integer.parseInt(request.getParameter("no"));
 
         LMSDashboardDTO dashboard = lmsDashboardService.findLMSDashboard(memberNo);
 
+        mv.setViewName("dashboard/lms/dashboard");
         return mv;
     }
 }
