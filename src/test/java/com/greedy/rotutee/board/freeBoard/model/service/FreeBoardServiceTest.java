@@ -1,4 +1,4 @@
-package com.greedy.rotutee.board.freeboard.model.service;
+package com.greedy.rotutee.board.freeBoard.model.service;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

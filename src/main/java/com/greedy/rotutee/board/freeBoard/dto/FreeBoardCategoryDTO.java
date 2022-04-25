@@ -1,4 +1,4 @@
-package com.greedy.rotutee.board.dto;
+package com.greedy.rotutee.board.freeBoard.dto;
 
 import lombok.*;
 
@@ -19,10 +19,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CategoryDTO {
+public class FreeBoardCategoryDTO {
     private int boardCategoryNo;
     private String boardCategoryName;
     private int upperCategoryNo;
-
-
 }

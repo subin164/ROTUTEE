@@ -1,7 +1,8 @@
-package com.greedy.rotutee.board.entity;
+package com.greedy.rotutee.board.freeBoard.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity(name = "FreeBoard")
 @Table(name = "TBL_BOARD")
@@ -17,16 +18,16 @@ public class FreeBoard {
             strategy = GenerationType.SEQUENCE,
             generator = "BOARD_SEQ_GENERATOR"
     )
-    @Column(name = "BOARD_NO", nullable = false)
+    @Column(name = "BOARD_NO")
     private int boardNo;
 
-    @Column(name = "BOARD_TITLE", nullable = false)
+    @Column(name = "BOARD_TITLE")
     private String boardTitle;
 
-    @Column(name = "BOARD_CONTENT", nullable = false)
+    @Column(name = "BOARD_CONTENT")
     private String boardContent;
 
-    @Column(name = "BOARD_CREATION_DATE", nullable = false)
+    @Column(name = "BOARD_CREATION_DATE")
     private Date boardCreationDate;
 
     @Column(name = "BOARD_MODIFIED_DATE")
@@ -35,29 +36,36 @@ public class FreeBoard {
     @Column(name = "BOARD_DELETION_DATE")
     private Date boardDeletionDate;
 
-    @Column(name = "BOARD_DELETE_YN", nullable = false)
-    private String boardDeleteYN;
+    @Column(name = "BOARD_DELETE_YN")
+    private char boardDeleteYN;
 
-    @Column(name = "BOARD_VIEW_COUNT", nullable = false)
+    @Column(name = "BOARD_VIEW_COUNT")
     private int boardViewCount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BOARD_CATEGORY_NO", nullable = false)
-    private FreeBoardCategory boardCategoryNo;
+    @ManyToOne
+    @JoinColumn(name = "BOARD_CATEGORY_NO")
+    private FreeBoardCategory freeBoardCategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "MEMBER_NO")
-    private FreeBoardMember memberNo;
+    private FreeBoardMember freeBoardMember;
 
     @Column(name = "BOARD_REPORT_COUNT")
     private int boardReportCount;
 
-    @Column(name = "BULLETIN_BOARD_SECRET_YN", nullable = false)
-    private String bulletinBoardSecretYN;
+    @Column(name = "BULLETIN_BOARD_SECRET_YN")
+    private char bulletinBoardSecretYN;
+
+
+    @OneToMany(mappedBy = "freeBoard")
+    private List<FreeBoardAnswer> freeBoardAnswerList;
 
     public FreeBoard(){}
 
-    public FreeBoard(int boardNo, String boardTitle, String boardContent, Date boardCreationDate, Date boardModifiedDate, Date boardDeletionDate, String boardDeleteYN, int boardViewCount, FreeBoardCategory boardCategoryNo, FreeBoardMember memberNo, int boardReportCount, String bulletinBoardSecretYN) {
+    public FreeBoard(int boardNo, String boardTitle, String boardContent, Date boardCreationDate, Date boardModifiedDate,
+                     Date boardDeletionDate, char boardDeleteYN, int boardViewCount,
+                     FreeBoardCategory freeBoardCategory, FreeBoardMember freeBoardMember, int boardReportCount,
+                     char bulletinBoardSecretYN, List<FreeBoardAnswer> freeBoardAnswerList) {
         this.boardNo = boardNo;
         this.boardTitle = boardTitle;
         this.boardContent = boardContent;
@@ -66,10 +74,11 @@ public class FreeBoard {
         this.boardDeletionDate = boardDeletionDate;
         this.boardDeleteYN = boardDeleteYN;
         this.boardViewCount = boardViewCount;
-        this.boardCategoryNo = boardCategoryNo;
-        this.memberNo = memberNo;
+        this.freeBoardCategory = freeBoardCategory;
+        this.freeBoardMember = freeBoardMember;
         this.boardReportCount = boardReportCount;
         this.bulletinBoardSecretYN = bulletinBoardSecretYN;
+        this.freeBoardAnswerList = freeBoardAnswerList;
     }
 
     public int getBoardNo() {
@@ -120,11 +129,11 @@ public class FreeBoard {
         this.boardDeletionDate = boardDeletionDate;
     }
 
-    public String getBoardDeleteYN() {
+    public char getBoardDeleteYN() {
         return boardDeleteYN;
     }
 
-    public void setBoardDeleteYN(String boardDeleteYN) {
+    public void setBoardDeleteYN(char boardDeleteYN) {
         this.boardDeleteYN = boardDeleteYN;
     }
 
@@ -136,20 +145,20 @@ public class FreeBoard {
         this.boardViewCount = boardViewCount;
     }
 
-    public FreeBoardCategory getBoardCategoryNo() {
-        return boardCategoryNo;
+    public FreeBoardCategory getFreeBoardCategory() {
+        return freeBoardCategory;
     }
 
-    public void setBoardCategoryNo(FreeBoardCategory boardCategoryNo) {
-        this.boardCategoryNo = boardCategoryNo;
+    public void setFreeBoardCategory(FreeBoardCategory freeBoardCategory) {
+        this.freeBoardCategory = freeBoardCategory;
     }
 
-    public FreeBoardMember getMemberNo() {
-        return memberNo;
+    public FreeBoardMember getFreeBoardMember() {
+        return freeBoardMember;
     }
 
-    public void setMemberNo(FreeBoardMember memberNo) {
-        this.memberNo = memberNo;
+    public void setFreeBoardMember(FreeBoardMember freeBoardMember) {
+        this.freeBoardMember = freeBoardMember;
     }
 
     public int getBoardReportCount() {
@@ -160,12 +169,20 @@ public class FreeBoard {
         this.boardReportCount = boardReportCount;
     }
 
-    public String getBulletinBoardSecretYN() {
+    public char getBulletinBoardSecretYN() {
         return bulletinBoardSecretYN;
     }
 
-    public void setBulletinBoardSecretYN(String bulletinBoardSecretYN) {
+    public void setBulletinBoardSecretYN(char bulletinBoardSecretYN) {
         this.bulletinBoardSecretYN = bulletinBoardSecretYN;
+    }
+
+    public List<FreeBoardAnswer> getFreeBoardAnswerList() {
+        return freeBoardAnswerList;
+    }
+
+    public void setFreeBoardAnswerList(List<FreeBoardAnswer> freeBoardAnswerList) {
+        this.freeBoardAnswerList = freeBoardAnswerList;
     }
 
     @Override
@@ -177,12 +194,12 @@ public class FreeBoard {
                 ", boardCreationDate=" + boardCreationDate +
                 ", boardModifiedDate=" + boardModifiedDate +
                 ", boardDeletionDate=" + boardDeletionDate +
-                ", boardDeleteYN='" + boardDeleteYN + '\'' +
+                ", boardDeleteYN=" + boardDeleteYN +
                 ", boardViewCount=" + boardViewCount +
-                ", boardCategoryNo=" + boardCategoryNo +
-                ", memberNo=" + memberNo +
+                ", freeBoardCategory=" + freeBoardCategory +
+                ", freeBoardMember=" + freeBoardMember +
                 ", boardReportCount=" + boardReportCount +
-                ", bulletinBoardSecretYN='" + bulletinBoardSecretYN + '\'' +
+                ", bulletinBoardSecretYN=" + bulletinBoardSecretYN +
                 '}';
     }
 }
