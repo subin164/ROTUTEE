@@ -99,3 +99,34 @@ table {
     line-height: 1.2em;
     height: 2.4em;
 }
+
+
+
+
+.tag-input{
+ flex: auto;
+}
+
+
+
+
+ul li.tag-item {
+    font-size: 16px;
+    color: lightgray;
+    font-weight: bold;
+    margin: 3px;
+    background-color: gray;
+}
+
+.tag-item:hover {
+    color: white;
+    background-color: lightgreen;
+}
+
+.del-btn {
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 8px;
+    padding: 5px;
+}

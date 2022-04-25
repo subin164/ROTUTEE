@@ -11,7 +11,7 @@ import lombok.*;
 public class TagDTO {
 
     private int tagNo;
-    private int StudyNo;
+    private StudyDTO studyNo;
     private String tagName;
 
 }
