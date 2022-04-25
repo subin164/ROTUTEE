@@ -30,20 +30,17 @@ public class LectureMainController {
         List<LectureDTO> lectureList = lectureMainService.findAllLecture();
 
         mv.addObject("lectureList", lectureList);
-        mv.setViewName("/lecture/lecturelist");
+        mv.setViewName("lecture/lecturelist");
         return mv;
     }
 
     @GetMapping("/search")
     public ModelAndView findApproveLectureBysearchObject(ModelAndView mv, @RequestParam String searchValue, @RequestParam int searchCondition) {
 
-        System.out.println(searchCondition);
-        System.out.println(searchValue);
-
         List<LectureDTO> lectureList = lectureMainService.findApproveLectureBysearchObject(searchCondition, searchValue);
 
         mv.addObject("lectureList", lectureList);
-        mv.setViewName("/lecture/lecturelist");
+        mv.setViewName("lecture/lecturelist");
         return mv;
     }
 
@@ -64,7 +61,7 @@ public class LectureMainController {
         mv.addObject("lectureReviewList", lectureReviewList);
         mv.addObject("chapterList", chapterList);
         mv.addObject("lecture", lecture);
-        mv.setViewName("/lecture/lecturedetail");
+        mv.setViewName("lecture/lecturedetail");
 
         return mv;
     }

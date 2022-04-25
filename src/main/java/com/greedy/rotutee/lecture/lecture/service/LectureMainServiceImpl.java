@@ -50,16 +50,23 @@ public class LectureMainServiceImpl implements  LectureMainService{
     @Override
     public List<LectureDTO> findApproveLectureBysearchObject(int searchCondition, String searchValue) {
 
-        List<Lecture> lectureList = new ArrayList<>();
-
+        List<Lecture> lectureList = null;
+        List<LectureDTO> lectureDTOList = null;
         if(searchCondition == 1) {
             lectureList = lectureMainRepository.findBylectureNameContaining(searchValue);
-
+            lectureDTOList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+            for(LectureDTO lecture : lectureDTOList) {
+                lecture.setThumbnailPath(lectureAttachedFileRepository.findThumbnailPathBylectureNo(lecture.getLectureNo()));
+            }
         } else if(searchCondition == 2) {
             lectureList = lectureMainRepository.findLecturesByTutorName(searchValue);
+            lectureDTOList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+            for(LectureDTO lecture : lectureDTOList) {
+                lecture.setThumbnailPath(lectureAttachedFileRepository.findThumbnailPathBylectureNo(lecture.getLectureNo()));
+            }
         }
 
-        return lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+        return lectureDTOList;
     }
 
     @Override
