@@ -1,14 +1,13 @@
 package com.greedy.rotutee.lecture.request.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
-import com.greedy.rotutee.lecture.request.dto.LectureDTO;
+import com.greedy.rotutee.lecture.request.dto.*;
+import com.greedy.rotutee.lecture.request.entity.ViewQuiz;
 import com.greedy.rotutee.lecture.request.service.LectureRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -45,8 +44,18 @@ public class LectureRequestController {
     }
 
     @PostMapping("/lecture")
-    public ModelAndView registLectureOpeningApplication(ModelAndView mv) {
+    public ModelAndView registLectureOpeningApplication(ModelAndView mv, @ModelAttribute LectureDTO newLecture
+                                                                       , @ModelAttribute List<ChapterDTO> chapterList
+                                                                       , @ModelAttribute List<ClassDTO> classDTOList
+                                                                       , @ModelAttribute List<QuizDTO> quizList
+                                                                       , @ModelAttribute List<ViewQuizDTO> viewQuizList
+                                                                       , @AuthenticationPrincipal CustomUser customUser) {
 
+        System.out.println("newLecture = " + newLecture);
+        System.out.println("chapterList = " + chapterList);
+        System.out.println("classDTOList = " + classDTOList);
+        System.out.println("quizList = " + quizList);
+        System.out.println("viewQuizList = " + viewQuizList);
 
         mv.addObject("redirect:/request/list");
         return mv;

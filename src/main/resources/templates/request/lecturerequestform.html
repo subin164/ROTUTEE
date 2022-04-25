@@ -10,247 +10,248 @@
 <body>
     <div th:include="common/mypagemenubar.html"></div>
     <main>
-        <div class="container">
-            <p style="margin-top: 30px; font-size: x-large;">강의 신청</p>
-            <hr>
-            <div class="row">
-                <div class="col-4">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="info1-tab" data-bs-toggle="tab" data-bs-target="#info1" type="button" role="tab" aria-controls="info1" aria-selected="true">강의 정보</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="info2-tab" data-bs-toggle="tab" data-bs-target="#info2" type="button" role="tab" aria-controls="info2" aria-selected="false">상세 소개</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="curriculum-tab" data-bs-toggle="tab" data-bs-target="#curriculum" type="button" role="tab" aria-controls="curriculum" aria-selected="false">커리큘럼</button>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-8">
-                    <div class="btn-group" role="group" aria-label="Basic mixed styles example" style="float: right;">
-                        <button type="button" class="btn btn-danger">취소하기</button>
-                        <button type="button" class="btn btn-warning">임시저장</button>
-                        <button type="button" class="btn btn-success">신청하기</button>
+        <form id="lecture-regist-form" method="post" action="/request/lecture">
+            <div class="container">
+                <p style="margin-top: 30px; font-size: x-large;">강의 신청</p>
+                <hr>
+                <div class="row">
+                    <div class="col-4">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="info1-tab" data-bs-toggle="tab" data-bs-target="#info1" type="button" role="tab" aria-controls="info1" aria-selected="true">강의 정보</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="info2-tab" data-bs-toggle="tab" data-bs-target="#info2" type="button" role="tab" aria-controls="info2" aria-selected="false">상세 소개</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="curriculum-tab" data-bs-toggle="tab" data-bs-target="#curriculum" type="button" role="tab" aria-controls="curriculum" aria-selected="false">커리큘럼</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-8">
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example" style="float: right;">
+                            <button type="button" class="btn btn-danger">취소하기</button>
+                            <button type="button" class="btn btn-warning">임시저장</button>
+                            <button type="submit" class="btn btn-success">신청하기</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <form id="lecture-regist-form" method="post" action="/request/lecture">
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="info1" role="tabpanel" aria-labelledby="info1-tab">
-                        <div class="info1-area">
-                            <p style="font-size: x-large; margin-top: 30px; margin-left: 30px;">강의 제목</p>
-                            <p style="font-size: small; margin-left: 30px; margin-top: 10px">(강의 제목은 간결하게 정해주세요! 특수문자는 금지됩니다.)</p>
-                            <input type="text" id="title-input" name="lectureName" placeholder="제목을 입력하세요" required>
-                            <p style="font-size: x-large; margin-left: 30px; margin-top: 30px;">카테고리</p>
-                            <div class="category-buttons-1">
-                                <input type="checkbox" class="btn-check" id="btn-category1" autocomplete="off" name="categoryNo" value="1">
-                                <label class="btn btn-outline-primary" for="btn-category1">Python</label>
-                                <input type="checkbox" class="btn-check" id="btn-category2" autocomplete="off" name="categoryNo" value="2">
-                                <label class="btn btn-outline-primary" for="btn-category2">JAVA</label>
-                                <input type="checkbox" class="btn-check" id="btn-category3" autocomplete="off" name="categoryNo" value="3">
-                                <label class="btn btn-outline-primary" for="btn-category3">Node.js</label>
-                                <input type="checkbox" class="btn-check" id="btn-category4" autocomplete="off" name="categoryNo" value="4">
-                                <label class="btn btn-outline-primary" for="btn-category4">Kotlin</label>
-                                <input type="checkbox" class="btn-check" id="btn-category5" autocomplete="off" name="categoryNo" value="5">
-                                <label class="btn btn-outline-primary" for="btn-category5">Spring</label>
-                                <input type="checkbox" class="btn-check" id="btn-category6" autocomplete="off" name="categoryNo" value="6">
-                                <label class="btn btn-outline-primary" for="btn-category6">DBMS</label>
-                            </div>
-                            <div class="category-buttons-2">
-                                <input type="checkbox" class="btn-check" id="btn-category7" autocomplete="off" name="categoryNo" value="7">
-                                <label class="btn btn-outline-primary" for="btn-category7">JavaScript</label>
-                                <input type="checkbox" class="btn-check" id="btn-category8" autocomplete="off" name="categoryNo" value="8">
-                                <label class="btn btn-outline-primary" for="btn-category8">React</label>
-                                <input type="checkbox" class="btn-check" id="btn-category9" autocomplete="off" name="categoryNo" value="9">
-                                <label class="btn btn-outline-primary" for="btn-category9">HTML</label>
-                                <input type="checkbox" class="btn-check" id="btn-category10" autocomplete="off" name="categoryNo" value="10">
-                                <label class="btn btn-outline-primary" for="btn-category11">CSS</label>
-                                <input type="checkbox" class="btn-check" id="btn-category11" autocomplete="off" name="categoryNo" value="11">
-                                <label class="btn btn-outline-primary" for="btn-category12">Swift</label>
-                                <input type="checkbox" class="btn-check" id="btn-category12" autocomplete="off" name="categoryNo" value="12">
-                                <label class="btn btn-outline-primary" for="btn-category10">기타</label>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="info1" role="tabpanel" aria-labelledby="info1-tab">
+                            <div class="info1-area">
+                                <p style="font-size: x-large; margin-top: 30px; margin-left: 30px;">강의 제목</p>
+                                <p style="font-size: small; margin-left: 30px; margin-top: 10px">(강의 제목은 간결하게 정해주세요! 특수문자는 금지됩니다.)</p>
+                                <input type="text" id="title-input" name="lectureName" placeholder="제목을 입력하세요" required>
+                                <p style="font-size: x-large; margin-left: 30px; margin-top: 30px;">카테고리</p>
+                                <div class="category-buttons-1">
+                                    <input type="checkbox" class="btn-check" id="btn-category1" autocomplete="off" name="categoryNo" value="1">
+                                    <label class="btn btn-outline-primary" for="btn-category1">Python</label>
+                                    <input type="checkbox" class="btn-check" id="btn-category2" autocomplete="off" name="categoryNo" value="2">
+                                    <label class="btn btn-outline-primary" for="btn-category2">JAVA</label>
+                                    <input type="checkbox" class="btn-check" id="btn-category3" autocomplete="off" name="categoryNo" value="3">
+                                    <label class="btn btn-outline-primary" for="btn-category3">Node.js</label>
+                                    <input type="checkbox" class="btn-check" id="btn-category4" autocomplete="off" name="categoryNo" value="4">
+                                    <label class="btn btn-outline-primary" for="btn-category4">Kotlin</label>
+                                    <input type="checkbox" class="btn-check" id="btn-category5" autocomplete="off" name="categoryNo" value="5">
+                                    <label class="btn btn-outline-primary" for="btn-category5">Spring</label>
+                                    <input type="checkbox" class="btn-check" id="btn-category6" autocomplete="off" name="categoryNo" value="6">
+                                    <label class="btn btn-outline-primary" for="btn-category6">DBMS</label>
+                                </div>
+                                <div class="category-buttons-2">
+                                    <input type="checkbox" class="btn-check" id="btn-category7" autocomplete="off" name="categoryNo" value="7">
+                                    <label class="btn btn-outline-primary" for="btn-category7">JavaScript</label>
+                                    <input type="checkbox" class="btn-check" id="btn-category8" autocomplete="off" name="categoryNo" value="8">
+                                    <label class="btn btn-outline-primary" for="btn-category8">React</label>
+                                    <input type="checkbox" class="btn-check" id="btn-category9" autocomplete="off" name="categoryNo" value="9">
+                                    <label class="btn btn-outline-primary" for="btn-category9">HTML</label>
+                                    <input type="checkbox" class="btn-check" id="btn-category10" autocomplete="off" name="categoryNo" value="10">
+                                    <label class="btn btn-outline-primary" for="btn-category11">CSS</label>
+                                    <input type="checkbox" class="btn-check" id="btn-category11" autocomplete="off" name="categoryNo" value="11">
+                                    <label class="btn btn-outline-primary" for="btn-category12">Swift</label>
+                                    <input type="checkbox" class="btn-check" id="btn-category12" autocomplete="off" name="categoryNo" value="12">
+                                    <label class="btn btn-outline-primary" for="btn-category10">기타</label>
 
-                            </div>
-                            <p style="font-size: x-large; margin-left: 30px; margin-top: 30px;">강의 수준</p>
-                            <div class="lecture-level">
-                                <input type="checkbox" class="btn-check" id="btn-level1" autocomplete="off" name="lectureLevel" value="입문">
-                                <label class="btn btn-outline-primary" for="btn-level1">입문</label>
-                                <input type="checkbox" class="btn-check" id="btn-level2" autocomplete="off" name="lectureLevel" value="초급">
-                                <label class="btn btn-outline-primary" for="btn-level2">초급</label>
-                                <input type="checkbox" class="btn-check" id="btn-level3" autocomplete="off" name="lectureLevel" value="중급">
-                                <label class="btn btn-outline-primary" for="btn-level3">중급</label>
-                                <input type="checkbox" class="btn-check" id="btn-level4" autocomplete="off" name="lectureLevel" value="마스터">
-                                <label class="btn btn-outline-primary" for="btn-level4">마스터</label>
-                            </div>
-                            <p style="font-size: x-large; margin-left: 30px; margin-top: 30px;">가격 설정</p>
-                            <input type="number" placeholder="가격을 입력하세요" id="price-input" name="lecturePrice" min="1000" step="1000" required>
-                            <div class="price-guide">
-                                <p><span style="color: red;">주의!</span>가격 설정 후 변경이 불가능합니다.</p>
-                                <p>부가세 미포함 가격입니다. 튜티에게는 10% 합산된 가격으로 표시됩니다.</p>
-                                <p>가격 측정이 어려울 시 고객센터로 연락주세요</p>
-                            </div>
-                            <div class="thumbnail-guide">
-                                <p>강의 썸네일<span style="color: red;">(필수)</span></p>
-                                <p style="margin-top: 20px;">권장크기는 <span style="color: red;">440 X 290, 30mb</span> 이하 입니다.</p>
-                                <div class="thumbnail-upload-area">
-                                    <div>
-                                        <input type="file" name="lectureThumbnail" multiple/>
-                                        <input type="reset" value="취소">
+                                </div>
+                                <p style="font-size: x-large; margin-left: 30px; margin-top: 30px;">강의 수준</p>
+                                <div class="lecture-level">
+                                    <input type="checkbox" class="btn-check" id="btn-level1" autocomplete="off" name="lectureLevel" value="입문">
+                                    <label class="btn btn-outline-primary" for="btn-level1">입문</label>
+                                    <input type="checkbox" class="btn-check" id="btn-level2" autocomplete="off" name="lectureLevel" value="초급">
+                                    <label class="btn btn-outline-primary" for="btn-level2">초급</label>
+                                    <input type="checkbox" class="btn-check" id="btn-level3" autocomplete="off" name="lectureLevel" value="중급">
+                                    <label class="btn btn-outline-primary" for="btn-level3">중급</label>
+                                    <input type="checkbox" class="btn-check" id="btn-level4" autocomplete="off" name="lectureLevel" value="마스터">
+                                    <label class="btn btn-outline-primary" for="btn-level4">마스터</label>
+                                </div>
+                                <p style="font-size: x-large; margin-left: 30px; margin-top: 30px;">가격 설정</p>
+                                <input type="number" placeholder="가격을 입력하세요" id="price-input" name="lecturePrice" min="1000" step="1000" required>
+                                <div class="price-guide">
+                                    <p><span style="color: red;">주의!</span>가격 설정 후 변경이 불가능합니다.</p>
+                                    <p>부가세 미포함 가격입니다. 튜티에게는 10% 합산된 가격으로 표시됩니다.</p>
+                                    <p>가격 측정이 어려울 시 고객센터로 연락주세요</p>
+                                </div>
+                                <div class="thumbnail-guide">
+                                    <p>강의 썸네일<span style="color: red;">(필수)</span></p>
+                                    <p style="margin-top: 20px;">권장크기는 <span style="color: red;">440 X 290, 30mb</span> 이하 입니다.</p>
+                                    <div class="thumbnail-upload-area">
+                                        <div>
+                                            <input type="file" name="lectureThumbnail" multiple/>
+                                            <input type="reset" value="취소">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="banner-guide">
+                                    <p>강의 배너<span style="color: red;">(선택)</span></p>
+                                    <p>메인화면 상단에 보여질 배너입니다. 배너를 업로드 할 시 선호 카테고리에 무작위로 선정되어 보여질 수 있습니다.</p>
+                                    <p><span style="color: red;">주의!</span> 업로드하지 않을 시 보여지지 않습니다.</p>
+                                    <p>권장크기는 <span style="color: red;">2000 X 360</span> 입니다.</p>
+                                    <div class="banner-upload-area">
+                                        <div>
+                                            <input type="file" name="lectureBanner" multiple/>
+                                            <input type="reset" value="취소">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="banner-guide">
-                                <p>강의 배너<span style="color: red;">(선택)</span></p>
-                                <p>메인화면 상단에 보여질 배너입니다. 배너를 업로드 할 시 선호 카테고리에 무작위로 선정되어 보여질 수 있습니다.</p>
-                                <p><span style="color: red;">주의!</span> 업로드하지 않을 시 보여지지 않습니다.</p>
-                                <p>권장크기는 <span style="color: red;">2000 X 360</span> 입니다.</p>
-                                <div class="banner-upload-area">
-                                    <div>
-                                        <input type="file" name="lectureBanner" multiple/>
-                                        <input type="reset" value="취소">
-                                    </div>
+                        </div>
+                        <div class="tab-pane fade" id="info2" role="tabpanel" aria-labelledby="info2-tab">
+                            <div class="info2-area">
+                                <p style="margin-left: 30px; margin-top: 50px; font-size: x-large;">상세 소개</p>
+                                <p style="margin-left: 30px; margin-top: 30px;">강의 요약(강의 상단에 보여집니다.)</p>
+                                <textarea cols="130" rows="10" name="lectureSummary" style="margin-left: 30px; margin-top: 10px;"></textarea>
+                                <p style="margin-left: 30px; margin-top: 30px;">강의 상세 내용(강의 상세 내용에 보입니다.)</p>
+                                <div id="editor">
+                                    <textarea cols="130" rows="30" name="lectureDetails" style="margin-left: 30px; margin-top: 10px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
+                            <div class="curriculum-area">
+                                <p style="font-size: x-large; margin-left: 30px; margin-top: 50px;">커리큘럼</p>
+                                <button id="chapter-plus"><i class="bi bi-plus-circle" style="color: black;"></i>챕터 추가</button>
+                                <div class="chapter-area">
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="info2" role="tabpanel" aria-labelledby="info2-tab">
-                        <div class="info2-area">
-                            <p style="margin-left: 30px; margin-top: 50px; font-size: x-large;">상세 소개</p>
-                            <p style="margin-left: 30px; margin-top: 30px;">강의 요약(강의 상단에 보여집니다.)</p>
-                            <textarea cols="130" rows="10" name="lectureSummary" style="margin-left: 30px; margin-top: 10px;"></textarea>
-                            <p style="margin-left: 30px; margin-top: 30px;">강의 상세 내용(강의 상세 내용에 보입니다.)</p>
-                            <div id="editor">
-                                <textarea cols="130" rows="30" name="lectureDetails" style="margin-left: 30px; margin-top: 10px;"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
-                        <div class="curriculum-area">
-                            <p style="font-size: x-large; margin-left: 30px; margin-top: 50px;">커리큘럼</p>
-                            <button id="chapter-plus"><i class="bi bi-plus-circle" style="color: black;"></i>챕터 추가</button>
-                            <div class="chapter-area">
-
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
+        </form>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
         $("#chapter-plus").click(function() {
             $(".chapter-area").append('<div class="chapter" style="border: 1px solid; width: 95%; height: 50px; margin-top: 20px; margin-left: 30px;">\
                                           <div class="chapter-name">\
-                                            <input type="text" placeholder="챕터명을 입력하세요" class="chapter-name">\
+                                            <input type="text" placeholder="챕터명을 입력하세요" class="chapter-name" name="chapterName">\
                                           </div>\
                                         </div>\
                                         <div class="video-quiz">\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="className">\
                                             </div>\
                                             <input type="file" class="video" accept="video/*">\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="quizProblem">\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="quizAnswer">\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="problemContent1">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="problemContent2">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="problemContent3">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="problemContent4">\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="answerExplain">\
                                               </div>\
                                             </div>\
                                           </div>\
                                           <br>\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="className">\
                                             </div>\
                                             <input type="file" class="video" accept="video/*">\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="quizProblem">\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="quizAnswer">\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="problemContent1">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="problemContent2">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="problemContent3">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="problemContent4">\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="answerExplain">\
                                               </div>\
                                             </div>\
                                           </div>\
                                           <br>\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="className">\
                                             </div>\
                                             <input type="file" class="video" accept="video/*">\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="quizProblem">\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="quizAnswer">\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="problemContent1">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="problemContent2">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="problemContent3">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="problemContent4">\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="answerExplain">\
                                               </div>\
                                             </div>\
                                           </div>\
                                           <br>\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="className">\
                                             </div>\
                                             <input type="file" class="video" accept="video/*">\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="quizProblem">\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="quizAnswer">\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="problemContent1">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="problemContent2">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="problemContent3">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="problemContent4">\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="answerExplain">\
                                               </div>\
                                             </div>\
                                           </div>\

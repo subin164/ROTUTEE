@@ -2,6 +2,8 @@ package com.greedy.rotutee.lecture.request.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor

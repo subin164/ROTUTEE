@@ -5,6 +5,7 @@ import com.greedy.rotutee.lecture.lecture.dto.MemberDTO;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 public class LectureDTO {
 

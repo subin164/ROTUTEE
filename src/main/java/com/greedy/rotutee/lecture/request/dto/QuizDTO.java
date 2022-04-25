@@ -1,5 +1,7 @@
 package com.greedy.rotutee.lecture.request.dto;
 
+import java.util.List;
+
 /**
  * packageName      : com.greedy.rotutee.lecture.request.dto
  * fileName         : QuizDTO
@@ -18,6 +20,7 @@ public class QuizDTO {
     private String quizAnswer;
     private String quizType;
     private int classNo;
+
 
     public QuizDTO() {
     }
