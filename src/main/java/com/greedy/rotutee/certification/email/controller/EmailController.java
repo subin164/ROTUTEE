@@ -1,7 +1,7 @@
 package com.greedy.rotutee.certification.email.controller;
 
 import com.greedy.rotutee.certification.email.service.EmailService;
-import com.greedy.rotutee.member.controller.MemberController;
+import com.greedy.rotutee.member.member.controller.MemberController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,7 +5,7 @@ import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.Authentication.service.AuthenticationService;
 import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
-import com.greedy.rotutee.member.dto.MemberDTO;
+import com.greedy.rotutee.member.member.dto.MemberDTO;
 import com.greedy.rotutee.study.dto.StudyDTO;
 import com.greedy.rotutee.study.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
