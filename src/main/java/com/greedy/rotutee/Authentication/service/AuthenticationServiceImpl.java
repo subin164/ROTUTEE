@@ -2,13 +2,13 @@ package com.greedy.rotutee.Authentication.service;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 
-import com.greedy.rotutee.member.dto.MemberDTO;
-import com.greedy.rotutee.member.dto.MemberRoleDTO;
-import com.greedy.rotutee.member.entity.RoleMenuUrl;
-import com.greedy.rotutee.member.entity.Member;
-import com.greedy.rotutee.member.repository.RoleMenuUrlRepository;
-import com.greedy.rotutee.member.repository.MemberRepository;
-import com.greedy.rotutee.member.repository.MemberRoleRepository;
+import com.greedy.rotutee.member.member.dto.MemberDTO;
+import com.greedy.rotutee.member.member.dto.MemberRoleDTO;
+import com.greedy.rotutee.member.member.entity.Member;
+import com.greedy.rotutee.member.member.entity.RoleMenuUrl;
+import com.greedy.rotutee.member.member.repository.RoleMenuUrlRepository;
+import com.greedy.rotutee.member.member.repository.MemberRepository;
+import com.greedy.rotutee.member.member.repository.MemberRoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

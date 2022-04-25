@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style>
+    th {
+        background-color: #b9bbbe;
+    }
+</style>
+<body>
+    <form action="/request/request" method="post" enctype="multipart/form-data">
+        <p><h1>튜터 신청서</h1></p>
+        <table border="1px">
+            <tr>
+                <th width="30px" rowspan="2">인적사항</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>휴대폰</th>
+                <th>주소</th>
+            </tr>
+            <tr>
+                <td width="150px" height="40px"><input type="text" th:value="${ member.name }" name="name"></td>
+                <td width="200px" ><input type="text" th:value="${ member.email }" name="email"></td>
+                <td width="200px"><input type="text" th:value="${ member.phoneNum }" name="phoneNum"></td>
+                <td width="350px"><input type="text" name="address"></td>
+            </tr>
+        </table>
+        <br>
+        <button type="button" id="registCareer">추가</button>
+        <table border="1px" id="career">
+            <tr>
+                <th width="30px" rowspan="6">경력사항</th>
+                <th colspan="2">근무 기간</th>
+                <th>근무처</th>
+                <th>직급</th>
+                <th>담당업무</th>
+            </tr>
+        </table>
+        <br>
+        <button type="button" id="registQualification">추가</button>
+        <table border="1px" id="qualification">
+            <tr>
+                <th width="30px" rowspan="6">자격사항</th>
+                <th>취득 일자</th>
+                <th>자격 및 교육명</th>
+                <th>등급</th>
+            </tr>
+        </table>
+        <p><h3>첨부파일</h3></p>
+        <table border="1px">
+            <tr>
+                <th width="475px">증빙서류제출</th>
+            </tr>
+            <tr>
+                <td><input type="file" multiple="multiple" name="proofFiles"></td>
+            </tr>
+        </table>
+        <input type="submit">
+    </form>
+    <script>
+
+        let careerCount = 0;
+        let qualificationCount = 0;
+
+        $("#registCareer").click(function() {
+
+            const $table = $("#career");
+            const $tr = $("<tr>");
+            const $td1 = $("<td><input type='date' name='careerList[" + careerCount + "].startDate'></td>");
+            const $td2 = $("<td><input type='date' name='careerList[" + careerCount + "].endDate'></td>");
+            const $td3 = $("<td><input type='text' name='careerList[" + careerCount + "].position'></td>");
+            const $td4 = $("<td><input type='text' name='careerList[" + careerCount + "].company'></td>");
+            const $td5 = $("<td><input type='text' name='careerList[" + careerCount + "].responsibilities'></td>");
+
+            $tr.append($td1);
+            $tr.append($td2);
+            $tr.append($td3);
+            $tr.append($td4);
+            $tr.append($td5);
+
+            $table.append($tr);
+
+            careerCount++;
+        });
+
+        $("#registQualification").click(function() {
+
+            const $table = $("#qualification");
+            const $tr = $("<tr>");
+            const $td1 = $("<td><input type='date' name='qualificationList[" + qualificationCount + "].acquisitionDate'></td>");
+            const $td2 = $("<td><input type='date' name='qualificationList[" + qualificationCount + "].name'></td>");
+            const $td3 = $("<td><input type='text' name='qualificationList[" + qualificationCount + "].rating'></td>");
+
+            $tr.append($td1);
+            $tr.append($td2);
+            $tr.append($td3);
+
+            $table.append($tr);
+
+            qualificationCount++;
+        });
+    </script>
+</body>
+</html>

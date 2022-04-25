@@ -1,9 +1,13 @@
-<!doctype HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>로그인</title>
+    <title>회원가입</title>
     <link rel="stylesheet" href="style.css">
+    <script src="login.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script th:inline="javascript">
         /* 비지니스 로직 성공 alert 메시지 처리 */
         const message = [[${message}]];
@@ -11,64 +15,190 @@
             alert(message);
         }
     </script>
-    <script src="https://kit.fontawesome.com/51db22a717.js" crossorigin="anonymous"></script>
     <style>
-        :root{
-            --body-background-color: #f5f6f7;
-            --font-color: #4e4e4e;
-            --border-gray-color : #dadada;
-            --naver-green-color: #04c75a;
-            --naver-green-border-color: #06b350;
+        body {
+            background-color: #f5f6f7;
         }
-        *{
-            margin:0;
-            padding:0;
-        }
-        body{
-            background:var(--body-background-color);
-        }
-        .main-container{
-            width:100%;
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            margin-top: 21px;
-        }
-        .main-container .main-wrap{
-            width:768px;
-
-        }
-        .main-container .main-wrap .sel-lang-wrap .lang-select
-        {
-            width: 96px;
-            height: 30px;
-            color: var(--font-color);
-            border: solid 1px var(--border-gray-color);
-        }
-        .main-container .main-wrap .logo-wrap{
-            padding-top:55px;
-        }
-        .main-container .main-wrap .logo-wrap img
-        {
-            width: 231px;
-            height: 44px;
+        select {
+            width: 85px;
+            height: 25px;
+            outline: none;
+            background: #f5f6f7;
+            border: 1px solid #999;
         }
 
-        .main-container .main-wrap header .sel-lang-wrap{
-            display:flex;
-            justify-content:flex-end;
+        a {
+            color: black;
+            text-decoration: none;
         }
 
-        .main-container .main-wrap header .logo-wrap{
-            display:flex;
-            flex-direction: column;
-            align-items: center;
+        input {
+            cursor: pointer
         }
-        .login-input-section-wrap{
-            padding-top: 60px;
+
+        /*로그인상태유지 체크박스*/
+        .stay-check input[type="checkbox"] {
+            /*기존 체크박스 숨기기*/
+            position: absolute;
+            width: 0px;
+            position: absolute;
+        }
+
+        .stay-check input[type="checkbox"] + label {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .stay-check input[type="checkbox"] + label::before {
+            content: ' ';
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            line-height: 18px;
+            margin: -2px 8px 0 0;
+            text-align: center;
+            vertical-align: middle;
+            background: #fafafa;
+            border: 1px solid #cacece;
+            border-radius: 50%;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+        }
+
+        .stay-check input[type="checkbox"]:checked + label::before {
+            content: '\2713';
+            color: white;
+            text-shadow: 1px 1px white;
+            background: #03c75a;
+            border-color: #03c75a;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+        }
+
+        /*더욱 간편한 로그인 이미지-en모드*/
+        .easy-login-box-en img {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 10px 0 10px;
+        }
+
+        /*찾기 및 회원가입 글자 희미하게 바꾸기*/
+        .find-signup-wrap a {
+            color: rgb(150, 150, 150);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .find-signup-wrap span {
+            color: rgb(150, 150, 150);
+            font-weight: 500;
+        }
+
+
+        /*저작권 표시X*/
+        footer {
+            display: none;
+        }
+
+
+        /*가로 800px 이상일때*/
+        @media (min-width: 800px) {
+            .main {
+                width: 460px;
+                margin: auto;
+            }
+
+            /*언어설정*/
+            .select-lang {
+                margin-top: 20px;
+                width: 550px;
+                padding-right: 10px;
+            }
+
+            /*네이버 로고설정*/
+            .image {
+                margin-top: 40px;
+                height: 44px;
+                padding: 20px;
+            }
+
+            /*IP보안 표시*/
+            #ip-check {
+                margin-right: 7px;
+                float: right;
+                display: block;
+            }
+
+            /*저작권 표시*/
+            footer {
+                display: block;
+            }
+
+        }
+
+        /*회원가입 부분*/
+        .main-signup {
+            text-align: center;
+            width: 460px;
+            margin: auto;
+        }
+
+        h3 {
+            margin: 19px 0px 8px;
+            text-align: left;
+            font-size: 14px;
+            font-family: Dotum, '돋움', Helvetica, sans-serif;
+        }
+
+        .signup-input {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            /* margin: 0px 10px 8px 10px; */
+            padding: 10px;
+            border: solid 1px #dadada;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .signup-input-c {
+            display: flex;
+            /* margin: 0px 10px 8px 10px; */
+            padding: 10px;
+            border: solid 1px #dadada;
+            background: #f5f6f7;
+            cursor: pointer;
+        }
+
+        .signup-input-c input {
+            background: #f5f6f7;
+        }
+
+        .pw-lock {
+            /* content: ''; */
+            /* display: inline-block; */
+            top: 50%;
+            right: 13px;
+            width: 24px;
+            height: 24px;
+            margin-top: 5px;
+            background-image: url(https://static.nid.naver.com/images/ui/join/m_icon_pw_step.png);
+            background-size: 125px 75px;
+            cursor: pointer;
+        }
+
+        .pww-lock {
+            /* content: ''; */
+            /* display: inline-block; */
+            top: 50%;
+            right: 13px;
+            width: 24px;
+            height: 24px;
+            margin-top: 5px;
+            background-image: url(https://static.nid.naver.com/images/ui/join/m_icon_pw_step.png);
+            background-size: 125px 75px;
+            cursor: pointer;
         }
 
         #member-pw, #modify-pw, #modify-pwc {
@@ -78,110 +208,138 @@
             outline: none;
         }
 
-        .login-input-wrap input{
-            border: none;
-            width:430px;
-            margin-top: 10px;
-            font-size: 14px;
-            margin-left: 10px;
-            height:30px;
-        }
-        .login-button-wrap {
-            padding-top: 13px;
-        }
-        .login-button-wrap button{
-            width: 465px;
-            height :48px;
-            font-size: 18px;
-            background: rgb(125, 172, 228);
-            color: white;
-            border: solid 1px rgb(125, 172, 228);;
-        }
-        .login-stay-sign-in i{
-            font-size: 25px;
-            color: #9ba1a3;
-        }
-        .login-stay-sign-in span{
-            padding-left: 5px;
-            line-height: 25px;
-        }
-        footer{
-            padding-top: 95px;
-            padding-bottom: 15px;
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            width:768px;
-        }
-        .copyright-wrap{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 15px;
-        }
-        footer .copyright-wrap span img{
-            width: 59px;
-            height: 11px;
-        }
-        footer .copyright-wrap span{
+        .choice span {
+            margin-top: 20px;
+            color: rgb(150, 150, 150);
             font-size: 13px;
-            line-height: 15px;
+            font-family: Dotum, '돋움', Helvetica, sans-serif;
         }
-        .forget-msg{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 40px;
-            color:var(--font-color);
-            font-size: 14px;
-            padding-top: 10px;
+
+        /*회원가입버튼박스*/
+        .signup-btn-wrap {
+            height: 52px;
+            line-height: 55px;
+            margin: 10px 0px 50px 0px;
+            border: solid 1px rgba(0, 0, 0, .1);
+            background-color: rgb(125, 172, 228);
+            color: #fff;
+            cursor: pointer;
         }
-        .findPwd{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 15px;
-            color:var(--font-color);
+
+        /*회원가입버튼*/
+        #signup-btn {
+            width: 100px;
+            height: 40px;
+            background-color: rgb(125, 172, 228);
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /*인증번호버튼박스*/
+        .cnum-btn-wrap {
+            height: 52px;
+            line-height: 55px;
+            margin: 10px 0px 0px 10px;
+            border: solid 1px rgb(125, 172, 228);
+            background-color: rgb(125, 172, 228);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /*인증번호버튼*/
+        #email-cnum-btn, #phone-cnum-btn, #duplicate {
+            width: 115px;
+            background-color: rgb(125, 172, 228);
+            border: none;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .관심분야 button {
+            width: 80px;
+            height: 25px;
+            line-height: 20px;
+            margin: 10px 0px 0px 10px;
+            border: solid 1px #999;
+            background-color: #999;
+            border-radius: 30%;
+            font-size: xx-small;
+            color: #fff;
+            cursor: pointer;
         }
     </style>
 </head>
+
 <body>
-<div class="main-container">
-    <div class="main-wrap">
-        <header>
-            <div class="logo-wrap">
-                <!-- <img src="img/logo.png"> -->
-                <h1>FUCKING ROTUTEE</h1>
-            </div>
-        </header>
-        <form id="loginForm" action="/member/modifypwd" method="post">
-            <section class="login-input-section-wrap">
+
+<div class="main-signup">
+    <!--웹페이지 상단-->
+    <header>
+        <!--NAVER LOGO-->
+        <div class="logo">
+            <h1>FUCKING ROTUTEE</h1>
+        </div>
+    </header>
+
+    <!--회원가입 부분-->
+    <section class="signup-wrap">
+        <div>
+            <h2>비밀번호 변경</h2>
+        </div>
+        <form action="/member/modifypwd" method="post">
                 <h3>현재 비밀번호</h3>
                 <span class="signup-input">
-                    <input name="pwd" id="member-pw" type="password"/>
+                    <input name="password" id="member-pw" type="password" required/>
                     <span class="pw-lock"></span>
                 </span>
 
                 <h3>변경 비밀번호</h3>
                 <span class="signup-input">
-                    <input id="modify-pw" type="password"/>
+                    <input name="modifyPassword" id="modify-pw" type="password" required/>
                     <span class="pww-lock"></span>
                 </span>
-                <h3>변경 비밀번호 재확인</h3>
+                <h3>변경 비밀번호 확인</h3>
                 <span class="signup-input">
-                    <input id="modify-pwc" type="password"/>
+                    <input id="modify-pwc" type="password" required/>
                     <span class="pww-lock"></span>
                 </span>
-                <div class="login-button-wrap">
-                    <input type="submit" value="변경하기">
+            <br>
+            <div>
+                <div class="signup-btn-wrap">
+                    <input id="signup-btn" type="submit" value="변경하기"/>
                 </div>
-            </section>
-        </form>
-        <footer>
-            <div class="copyright-wrap">
-                <span><img src="img/logo.png">greedy © rotutee Corp. All Rights Reserved.</span>
             </div>
-        </footer>
-    </div>
+        </form>
+    </section>
+    <!--저작권 정보-->
+    <footer>
+        <div class="copyright-wrap" style="font-size: 12px;">
+            <span>이용약관 | 개인정보처리방침 | 책임의 한계와 고지 | 회원정보 고객센터</span>
+            <div>© rotutee Corp.</div>
+        </div>
+    </footer>
+
 </div>
+<script>
+    $(function() {
+
+        $('#modify-pwc').blur(function () {
+            if ($('#modify-pw').val() != $('#modify-pwc').val()) {
+                if ($('#modify-pwc').val() != '') {
+                    alert("비밀번호가 일치하지 않습니다.");
+                    $('#modify-pwc').val('');
+                    $('#modify-pwc').focus();
+                }
+            }
+        })
+
+    })
+</script>
 </body>
+
+</html>
