@@ -26,30 +26,7 @@ public class StudyRepositoryTest{
     @Test
     public void 모집글_전체_목록_조회(){
 
-        //given
 
-        Study study = new Study();
-
-        study.setStudyNo(1);
-        study.setTitle("모집글1호");
-        study.setContent("모집글1호 입니다.");
-        study.setStartDate(Date.valueOf("2022-04-21"));
-        study.setEndDate(Date.valueOf("2022-05-05"));
-        study.setMemberNo(13);
-        study.setWriter("공당근");
-        study.setLimited(5);
-        study.setCount(1);
-        study.setLinked("discod.12312.cd");
-        study.setStatus("Y");
-        study.setTagNo(5);
-
-        //when
-
-
-
-        //then
-        assertNotNull(study);
-        System.out.println(study);
 
     }
 

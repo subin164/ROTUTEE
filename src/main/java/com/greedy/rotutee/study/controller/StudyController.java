@@ -7,6 +7,7 @@ import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import com.greedy.rotutee.member.dto.MemberDTO;
 import com.greedy.rotutee.study.dto.StudyDTO;
+import com.greedy.rotutee.study.dto.TagDTO;
 import com.greedy.rotutee.study.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -18,15 +19,13 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -44,7 +43,7 @@ public class StudyController {
         this.messageSource = messageSource;
     }
 
-    //    모집글 전체 조회
+    //    모집글 조회
     @GetMapping("/list")
     public ModelAndView studyList(ModelAndView mv, @PageableDefault Pageable pageable) {
 
@@ -52,9 +51,12 @@ public class StudyController {
 
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(studyList);
 
+        List<TagDTO> studyTagList = studyService.findStudyTagList();
+
 
         mv.addObject("studyList", studyList);
         mv.addObject("paging", paging);
+        mv.addObject("studyTagList", studyTagList);
 
         mv.setViewName("study/list");
 
@@ -63,7 +65,7 @@ public class StudyController {
 
     //    모집글 상세페이지
     @GetMapping("/detail")
-    public ModelAndView detailPage(ModelAndView mv, HttpServletRequest request, StudyDTO studyDTO, MemberDTO memberDTO) {
+    public ModelAndView detailPage(ModelAndView mv, HttpServletRequest request, StudyDTO studyDTO) {
 
         int studyNo = Integer.parseInt(request.getParameter("no"));
 
@@ -75,13 +77,14 @@ public class StudyController {
         mv.addObject("studyDetail", studyDetail);
         mv.setViewName("study/detail");
 
-        System.out.println("studyDetail = " + studyDetail);
 
         return mv;
     }
 
+    //    모집글 작성
     @PostMapping("/regist")
-    public ModelAndView studyRegist(ModelAndView mv, StudyDTO studyDTO, RedirectAttributes rttr, HttpServletRequest request) {
+    @ResponseBody
+    public ModelAndView studyRegist(ModelAndView mv, StudyDTO studyDTO, String inputTag) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -89,28 +92,41 @@ public class StudyController {
 
         CustomUser user = (CustomUser) authenticationService.loadUserByUsername(loaduser.getUsername());
 
-        Date nowDate = new Date(System.currentTimeMillis());
+        List<String> addTagList = new ArrayList<>();
 
+        MemberDTO memberDTO = new MemberDTO();
 
-        int memberNo = user.getNo();
-
-        String nickname = user.getNickname();
-
-        studyDTO.setStartDate(Date.valueOf("2022-05-05"));
-        studyDTO.setMemberNo(memberNo);
-        studyDTO.setWriter(nickname);
-        studyDTO.setCount(0);
+        memberDTO.setNo(user.getNo());
+        studyDTO.setStartDate(new Date(System.currentTimeMillis()));
         studyDTO.setStatus("Y");
-        studyDTO.setTagNo(1);
 
-        System.out.println(studyDTO);
+        String tagArray[] = inputTag.split("#");
 
-        studyService.studyRegist(studyDTO);
+        System.out.println("tagaaa" + tagArray);
 
+        for (int i = 0; i < tagArray.length; i++) {
+            addTagList.add(tagArray[i]);
+        }
 
-        rttr.addFlashAttribute("registSuccessMessage", "모집글 등록에 성공하셨습니다!");
+        System.out.println("adfffffffffff" + addTagList);
 
         mv.setViewName("redirect:/study/list");
+
+        studyService.studyRegist(studyDTO, addTagList, memberDTO);
+
+        return mv;
+    }
+
+
+    // 모집글 삭제
+    @GetMapping("/remove")
+    public ModelAndView studyRemove(ModelAndView mv, HttpServletRequest request) {
+
+        int studyNo = Integer.parseInt(request.getParameter("no"));
+
+        studyService.studyRemove(studyNo);
+
+        mv.setViewName("/study/list");
 
         return mv;
     }

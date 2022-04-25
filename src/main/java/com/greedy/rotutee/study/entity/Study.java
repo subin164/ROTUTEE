@@ -1,7 +1,10 @@
 package com.greedy.rotutee.study.entity;
 
+import com.greedy.rotutee.member.entity.Member;
+
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity(name = "study")
 @Table(name = "TBL_STUDY_GROUP_BOARD")
@@ -11,6 +14,7 @@ import java.sql.Date;
         initialValue = 1,
         allocationSize = 1
 )
+
 public class Study {
 
     @Id
@@ -33,16 +37,14 @@ public class Study {
     @Column(name = "STUDY_RECRUITMENT_END_DATE")
     private java.sql.Date endDate;
 
-    @Column(name = "MEMBER_NO")
-    private int memberNo;
-
-    @Column(name="WRITER_MEMBER_NO")
-    private String writer;
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_NO")
+    private Member writer;
 
     @Column(name = "STUDY_LIMITED_MEMBER_NUM")
     private int limited;
 
-    @Column(name="STUDY_BOARD_VIEW_COUNT")
+    @Column(name = "STUDY_BOARD_VIEW_COUNT")
     private int count;
 
     @Column(name = "STUDY_INVITE_LINK")
@@ -51,25 +53,24 @@ public class Study {
     @Column(name = "STUDY_RECRUITMENT_STATUS")
     private String status;
 
-    @Column(name = "STUDY_TAG_NO")
-    private int tagNo;
+    @OneToMany(mappedBy = "studyNo")
+    private List<StudyTag> studyTag;
 
     public Study() {
     }
 
-    public Study(int studyNo, String title, String content, Date startDate, Date endDate, int memberNo, String writer, int limited, int count, String linked, String status, int tagNo) {
+    public Study(int studyNo, String title, String content, Date startDate, Date endDate, Member writer, int limited, int count, String linked, String status, List<StudyTag> studyTag) {
         this.studyNo = studyNo;
         this.title = title;
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.memberNo = memberNo;
         this.writer = writer;
         this.limited = limited;
         this.count = count;
         this.linked = linked;
         this.status = status;
-        this.tagNo = tagNo;
+        this.studyTag = studyTag;
     }
 
     public int getStudyNo() {
@@ -112,19 +113,11 @@ public class Study {
         this.endDate = endDate;
     }
 
-    public int getMemberNo() {
-        return memberNo;
-    }
-
-    public void setMemberNo(int memberNo) {
-        this.memberNo = memberNo;
-    }
-
-    public String getWriter() {
+    public Member getWriter() {
         return writer;
     }
 
-    public void setWriter(String writer) {
+    public void setWriter(Member writer) {
         this.writer = writer;
     }
 
@@ -160,12 +153,12 @@ public class Study {
         this.status = status;
     }
 
-    public int getTagNo() {
-        return tagNo;
+    public List<StudyTag> getStudyTag() {
+        return studyTag;
     }
 
-    public void setTagNo(int tagNo) {
-        this.tagNo = tagNo;
+    public void setStudyTag(List<StudyTag> studyTag) {
+        this.studyTag = studyTag;
     }
 
     @Override
@@ -176,13 +169,11 @@ public class Study {
                 ", content='" + content + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", memberNo=" + memberNo +
-                ", writer='" + writer + '\'' +
+                ", writer=" + writer +
                 ", limited=" + limited +
                 ", count=" + count +
                 ", linked='" + linked + '\'' +
                 ", status='" + status + '\'' +
-                ", tagNo=" + tagNo +
                 '}';
     }
 }
