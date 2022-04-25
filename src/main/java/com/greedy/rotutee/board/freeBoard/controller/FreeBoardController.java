@@ -138,7 +138,7 @@ public class FreeBoardController {
 
     @PostMapping(value = "/regist")
     public ModelAndView FreeBoardmRegistPage(@ModelAttribute FreeBoardDTO freeBoard, @AuthenticationPrincipal CustomUser customUser
-                                            , RedirectAttributes rttr ,HttpServletRequest request, ModelAndView mv){
+            , RedirectAttributes rttr ,HttpServletRequest request, ModelAndView mv){
 
         int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
 

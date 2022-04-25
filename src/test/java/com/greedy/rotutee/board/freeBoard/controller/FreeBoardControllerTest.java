@@ -1,4 +1,4 @@
-package com.greedy.rotutee.board.freeBoard.controller;
+package com.greedy.rotutee.board.freeboard.controller;
 
 import com.greedy.rotutee.board.freeBoard.controller.FreeBoardController;
 import com.greedy.rotutee.config.BeanConfiguration;

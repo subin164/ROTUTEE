@@ -33,7 +33,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/request")
+@RequestMapping("/tutorApply")
 public class TutorRequestController {
 
     private final MemberService memberService;

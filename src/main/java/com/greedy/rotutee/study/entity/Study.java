@@ -1,6 +1,7 @@
 package com.greedy.rotutee.study.entity;
 
-import com.greedy.rotutee.member.entity.Member;
+
+import com.greedy.rotutee.member.member.entity.Member;
 
 import javax.persistence.*;
 import java.sql.Date;

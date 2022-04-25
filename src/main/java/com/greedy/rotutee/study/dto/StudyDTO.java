@@ -1,6 +1,6 @@
 package com.greedy.rotutee.study.dto;
 
-import com.greedy.rotutee.member.dto.MemberDTO;
+import com.greedy.rotutee.member.member.dto.MemberDTO;
 import lombok.*;
 
 import java.util.List;

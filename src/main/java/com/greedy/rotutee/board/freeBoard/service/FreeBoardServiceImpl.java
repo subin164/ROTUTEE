@@ -62,9 +62,11 @@ public class FreeBoardServiceImpl implements FreeBoardService{
                 Sort.by("boardNo").descending());
 
         FreeBoardCategory freeBoardCategory = categoryRepository.findById(categoryNo).get();
-        List<FreeBoard> freeBoard = (List<FreeBoard>) freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(freeBoardCategory,'Y',pageable);
+//        List<FreeBoard> freeBoard = (List<FreeBoard>) freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(freeBoardCategory,'Y',pageable);
 
-        return (Page<FreeBoardDTO>) freeBoard.stream().map(FreeBoard -> modelMapper.map(FreeBoard, FreeBoardDTO.class)).collect(Collectors.toList());
+//        return (Page<FreeBoardDTO>) freeBoard.stream().map(FreeBoard -> modelMapper.map(FreeBoard, FreeBoardDTO.class)).collect(Collectors.toList());
+
+        return null;
     }
     @Override
     public Page<FreeBoardDTO> findSearchBoardList(Pageable pageable, int categoryNo, String searchValue, String searchCondition) {

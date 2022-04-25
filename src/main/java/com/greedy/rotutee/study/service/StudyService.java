@@ -1,8 +1,8 @@
 package com.greedy.rotutee.study.service;
 
-import com.greedy.rotutee.member.dto.MemberDTO;
-import com.greedy.rotutee.member.entity.Member;
-import com.greedy.rotutee.member.repository.MemberRepository;
+import com.greedy.rotutee.member.member.dto.MemberDTO;
+import com.greedy.rotutee.member.member.entity.Member;
+import com.greedy.rotutee.member.member.repository.MemberRepository;
 import com.greedy.rotutee.study.dto.StudyDTO;
 import com.greedy.rotutee.study.dto.TagDTO;
 import com.greedy.rotutee.study.entity.Study;
