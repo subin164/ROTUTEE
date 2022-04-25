@@ -21,11 +21,16 @@
 
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         .wrap {
             justify-content: center;
             text-align: center;
         }
+
         .dashboard {
             font-family: 'Noto Sans KR', sans-serif;
             font-size: 20px;
@@ -44,7 +49,7 @@
 
         }
 
-        .box2{
+        .box2 {
             box-shadow: 3px 3px 3px 3px rgb(219, 219, 219);
             width: 820px;
             height: 400px;
@@ -68,135 +73,166 @@
         }
 
         .container {
-
             justify-content: center;
             text-align: center;
-
-
         }
 
         .profile {
             display: flex;
-
         }
 
         /* Float button */
         .float {
-            display: inline-block;
-            transition-duration: 0.3s;
-            transition-property: transform;
+            display: inline-block !important;
+            transition-duration: 0.3s !important;
+            transition-property: transform !important;
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
             transform: translateZ(0);
             box-shadow: 0 0 1px rgba(0, 0, 0, 0);
         }
-
         .float:hover {
             transform: translateY(-5px);
         }
-
         .button {
-            background-color: #D1E4FA;
-            font-size: 14px;
+            background-color: #D1E4FA !important;
+            font-size: 12px !important;
+            width : 73px;
+            height: 24px;
+            padding: 0px !important;
         }
-
+        .chartbtn {
+            background-color: #D1E4FA !important;
+            font-size: 12px !important;
+        }
         p {
             margin-bottom: 10px;
         }
-
         .btn-holder {
             position: absolute;
             bottom: 0;
             right: 0;
-
         }
-
-
+        .head-title {
+            position: relative;
+        }
+        .charts{
+            margin: auto;
+            justify-content: center;
+        }
     </style>
 </head>
 
 <body>
-<div th:include="common/mypagemenubar.html"></div>
+<div th:include="common/tutormypagemenubar.html"></div>
 <div class="container dashboard">
     <span>Dashboard</span>
     <hr>
     <div class="row wrap">
         <div class="box col-4">
-            <div>😀프로필</div>
+            <div style="margin-bottom: 10px;">😀프로필</div>
             <div class="whitebox">
                 <div class="profile row" style="margin: 10px;">
                     <div class="col-4" style="text-align: left; margin-left: 1vw;">
-                        <img src="sy/images/profile.PNG" style=" width:100px; height: 100px; border-radius: 100%;">
+                        <img src="../../../static/sy/images/profile.PNG" style=" width:100px; height: 100px; border-radius: 100%;">
                     </div>
                     <div class="col-7">
-                        <h5>햄찌</h5>
-                        <p>안녕햄스터. 난 귀염둥이 햄찌</p>
+                        <h5 th:text="${dashboard.member.nickname}"></h5>
+                        <p th:text="${dashboard.member.introduction}"></p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="posting box col-4">
-            <div style="margin-bottom: 10px;">&#128172;최근 작성글</div>
-            <div class="whitebox">
-                <div class="content">
-                    <p>[커뮤니티] 안녕햄스터</p>
-                    <p>[문의] 업적 종류를 알 수 있을까요?</p>
-                    <p>[커뮤니티] 자바 너무 어렵다</p>
-                    <p>[LMS] int와 Integer의 차이점이 무엇인가요?</p>
-                </div>
+            <div class="head-title" style="margin-bottom: 10px;">&#128172;최근 작성글
                 <div class="btn-holder">
                     <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
                 </div>
-
+            </div>
+            <div class="whitebox">
+                <div class="content">
+                    <th:block th:each="board : ${ dashboard.boardList }">
+                        <p th:text="${board.title}"></p>
+                    </th:block>
+                </div>
             </div>
         </div>
     </div>
     <div class="row wrap">
-        <div class="basket box col-4">
-            <div style="margin-bottom: 10px;">📚장바구니</div>
-            <div class="whitebox">
-                <div class="content">
-                    <p>JAVA 완벽 완성</p>
-                    <p>SQL 정복</p>
-                    <p>html/css 기초</p>
-                    <p>JavaScript 시작</p>
-
-                </div>
+        <div class="mylecture box col-4">
+            <div class="head-title" style="margin-bottom: 10px;">📚나의 강의
                 <div class="btn-holder">
                     <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
+                </div>
+            </div>
+            <div class="whitebox">
+                <div class="content">
+                    <th:block th:each="lecture : ${ dashboard.lectureList }">
+                        <p th:text="${lecture.lectureTitle}"></p>
+                    </th:block>
                 </div>
             </div>
         </div>
         <div class="alram box col-4">
-            <div style="margin-bottom: 10px;">&#128161;알림</div>
-            <div class="whitebox">
-                <div class="content">
-                    <p>답변이 등록되었습니다.</p>
-                    <p>답변이 등록되었습니다.</p>
-                    <p>답변이 등록되었습니다.</p>
-                    <p>답변이 등록되었습니다.</p>
-
-                </div>
+            <div class="head-title" style="margin-bottom: 10px;">&#128161;알림
                 <div class="btn-holder">
                     <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
+                </div>
+            </div>
+            <div class="whitebox">
+                <div class="content">
+                    <th:block th:each="notice : ${ dashboard.noticeList }">
+                        <p th:text="${notice.content}"></p>
+                    </th:block>
                 </div>
             </div>
         </div>
     </div>
     <div class="row wrap">
-        <div class="lately-lecture box2 col-9">
+        <div class="lately-lecture box2 col-8">
             <div style="margin-bottom: 10px;">&#127891;정산그래프</div>
             <div class="whitebox">
-                <div class="content">
-
+                <div class="content charts" style="width: 690px;">
+                    <canvas id="myChart"></canvas>
                 </div>
                 <div class="btn-holder">
-                    <button class="btn float button" style="float: right; margin-right: 15px;">전체보기</button>
+                    <button class="btn float chartbtn" style="float: right; margin-right: 10px;">전체보기</button>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+<script>
+    const labels = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+    ];
+
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Dataset',
+            backgroundColor: 'rgb(141, 182, 231)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [250, 180, 150, 200, 300, 450, 450],
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {}
+    };
+
+    const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+
+</script>
 </body>
 
 </html>

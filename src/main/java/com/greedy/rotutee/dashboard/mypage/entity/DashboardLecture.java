@@ -24,6 +24,14 @@ import java.util.List;
         initialValue = 1,
         allocationSize = 1
 )
+@SqlResultSetMappings(
+        value = {
+                @SqlResultSetMapping(
+                        name = "mypageMemberLectureMapping",
+                        entities = {@EntityResult(entityClass = DashboardLecture.class)}
+                )
+        }
+)
 public class DashboardLecture {
 
     @Id
@@ -52,7 +60,7 @@ public class DashboardLecture {
     @Column(name = "REVISION_HISTORY")
     private String revisionMessage;
 
-    @Column(name = "LECTURE_APPROvAL_STATUS")
+    @Column(name = "LECTURE_APPROVAL_STATUS")
     private String approvalStatus;
 
     @Column(name = "LECTURE_OPENING_DATE")

@@ -3,7 +3,7 @@ package com.greedy.rotutee.dashboard.mypage.model.service;
 import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
 import com.greedy.rotutee.config.RotuteeApplication;
-import com.greedy.rotutee.dashboard.mypage.dto.*;
+import com.greedy.rotutee.dashboard.mypage.dto.tutee.*;
 import com.greedy.rotutee.dashboard.mypage.entity.*;
 import com.greedy.rotutee.dashboard.mypage.repository.*;
 import org.junit.jupiter.api.Test;
@@ -40,6 +40,8 @@ public class MypageDashboardServiceTest {
     @Autowired
     private DashboardCompletedLectureRepository completedLectureRepository;
     @Autowired
+    private MypageMemberLectureRepository memberLectureRepository;
+    @Autowired
     private ModelMapper modelMapper;
     @PersistenceContext
     private EntityManager entityManager;
@@ -51,6 +53,7 @@ public class MypageDashboardServiceTest {
         assertNotNull(boardRepository);
         assertNotNull(basketRepository);
         assertNotNull(entityManager);
+        assertNotNull(memberLectureRepository);
 
     }
 
@@ -189,12 +192,12 @@ public class MypageDashboardServiceTest {
 
         //when
         /* 회원별 수강하고있는 강의항목 조회 */
-        String jpql1 = "SELECT memberlecture FROM Dashboard_MemberLecture memberlecture " +
+        String jpql1 = "SELECT memberlecture FROM Mypage_MemberLecture memberlecture " +
                 "WHERE memberlecture.member.memberNo = :memberNo ";
-        Query query1 = entityManager.createQuery(jpql1, DashboardMemberLecture.class)
+        Query query1 = entityManager.createQuery(jpql1, MyPageMemberLecture.class)
                 .setParameter("memberNo", memberNo);
 
-        List<DashboardMemberLecture> memberLectureEntityList = query1.getResultList();
+        List<MyPageMemberLecture> memberLectureEntityList = query1.getResultList();
 
         System.out.println("memberLectureEntityList = " + memberLectureEntityList);
         /* 회원별 수강하고 있는 수강번호 리스트에 담음*/
@@ -235,7 +238,7 @@ public class MypageDashboardServiceTest {
                 }
                 /* 클래스의 개수와 완료된 클래스의 개수가 동일할 시 시청 완료, 리스트에 넣어서 view로 return */
                 if(totalClassCountOfLecture == CompletedClassCount){
-                    DashboardLecture lectureInfoEntity = lectureRepository.findById(completedLectureList.get(j).getMemberLecture().getLectureNo()).get();
+                    DashboardLecture lectureInfoEntity = lectureRepository.findById(completedLectureList.get(j).getMemberLecture().getLecture().getLectureNo()).get();
                     DashboardLectureDTO lectureInfo = modelMapper.map(lectureInfoEntity, DashboardLectureDTO.class);
                     completedLectureInfoList.add(lectureInfo);
                 }
@@ -336,12 +339,12 @@ public class MypageDashboardServiceTest {
 
         /* 시청 완료강의 조회용 */
         /* 회원별 수강하고있는 강의항목 조회 */
-        String memberLectureJpql = "SELECT memberlecture FROM Dashboard_MemberLecture memberlecture " +
+        String memberLectureJpql = "SELECT memberlecture FROM Mypage_MemberLecture memberlecture " +
                 "WHERE memberlecture.member.memberNo = :memberNo ";
-        Query query1 = entityManager.createQuery(memberLectureJpql, DashboardMemberLecture.class)
+        Query query1 = entityManager.createQuery(memberLectureJpql, MyPageMemberLecture.class)
                 .setParameter("memberNo", memberNo);
 
-        List<DashboardMemberLecture> memberLectureEntityList = query1.getResultList();
+        List<MyPageMemberLecture> memberLectureEntityList = query1.getResultList();
 
         System.out.println("memberLectureEntityList = " + memberLectureEntityList);
         /* 회원별 수강하고 있는 수강번호 리스트에 담음 */
@@ -382,7 +385,7 @@ public class MypageDashboardServiceTest {
                 }
                 /* 클래스의 개수와 완료된 클래스의 개수가 동일할 시 시청 완료, 리스트에 넣어서 view로 return */
                 if(totalClassCountOfLecture == CompletedClassCount){
-                    DashboardLecture lectureInfoEntity = lectureRepository.findById(completedLectureList.get(j).getMemberLecture().getLectureNo()).get();
+                    DashboardLecture lectureInfoEntity = lectureRepository.findById(completedLectureList.get(j).getMemberLecture().getLecture().getLectureNo()).get();
                     DashboardLectureDTO lectureInfo = modelMapper.map(lectureInfoEntity, DashboardLectureDTO.class);
                     completedLectureInfoList.add(lectureInfo);
                 }
@@ -403,4 +406,35 @@ public class MypageDashboardServiceTest {
         dashboard.getWatchList().forEach(System.out::println);
         dashboard.getCompletedLectureInfoList().forEach(System.out::println);
     }
+
+    @Test
+    public void 진행중인_강의_조회_확인() {
+        //given
+        int memberNo = 29;
+        //when
+        String myLectureJpql = "SELECT lecture FROM dashboardLecture lecture " +
+                "WHERE lecture.memberNo = :memberNo " +
+                "AND lecture.approvalStatus = '승인' ";
+        Query myLecturequery = entityManager.createQuery(myLectureJpql, DashboardLecture.class)
+                .setParameter("memberNo", memberNo);
+        List<DashboardLecture> lectureEntityList = myLecturequery.getResultList();
+
+        List<DashboardLectureDTO> lectureList = new ArrayList<>();
+        if(lectureEntityList.size() > 4){
+            for(int i = 0; i < 4; i++){
+                DashboardLecture lectureEntity = lectureEntityList.get(i);
+                DashboardLectureDTO lecture = modelMapper.map(lectureEntity, DashboardLectureDTO.class);
+                lectureList.add(lecture);
+            }
+        } else if(lectureEntityList.size() <= 4){
+            lectureList = lectureEntityList.stream().map(dashboardLecture -> modelMapper.map(dashboardLecture, DashboardLectureDTO.class)).collect(Collectors.toList());
+        }
+
+        //then
+        assertNotNull(lectureList);
+        lectureList.forEach(System.out::println);
+
+    }
+
+
 }

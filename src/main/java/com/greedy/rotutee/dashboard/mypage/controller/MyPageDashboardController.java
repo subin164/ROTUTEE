@@ -1,7 +1,8 @@
 package com.greedy.rotutee.dashboard.mypage.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
-import com.greedy.rotutee.dashboard.mypage.dto.MypageDashboardDTO;
+import com.greedy.rotutee.dashboard.mypage.dto.tutee.MypageDashboardDTO;
+import com.greedy.rotutee.dashboard.mypage.dto.tutor.MypageTutorDTO;
 import com.greedy.rotutee.dashboard.mypage.service.MypageDashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -42,14 +43,18 @@ public class MyPageDashboardController {
 
         mv.addObject("dashboard", dashboard);
         mv.setViewName("dashboard/mypage/dashboard");
+
         return mv;
     }
+
 
     @GetMapping("/tutordashboard")
     public ModelAndView findTutorDashboard(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
 
         int memberNo = customUser.getNo();
 
+        MypageTutorDTO dashboard = mypageDashboardService.findTutorDashboard(memberNo);
+        mv.addObject("dashboard", dashboard);
         mv.setViewName("dashboard/mypage/tutordashboard");
 
         return mv;

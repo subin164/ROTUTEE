@@ -1,4 +1,4 @@
-package com.greedy.rotutee.dashboard.mypage.dto;
+package com.greedy.rotutee.dashboard.mypage.dto.tutee;
 
 
 

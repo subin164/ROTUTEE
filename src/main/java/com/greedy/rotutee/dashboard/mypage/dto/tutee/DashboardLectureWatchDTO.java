@@ -1,4 +1,4 @@
-package com.greedy.rotutee.dashboard.mypage.dto;
+package com.greedy.rotutee.dashboard.mypage.dto.tutee;
 
 import lombok.*;
 
@@ -6,14 +6,14 @@ import java.sql.Date;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.dto
- * fileName : DashboardCompletedLectureDTO
+ * fileName : DashboardLectureWatchDTO
  * author : SeoYoung
- * date : 2022-04-21
+ * date : 2022-04-20
  * description :
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
- * 2022-04-21 SeoYoung 최초 생성
+ * 2022-04-20 SeoYoung 최초 생성
  */
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,10 +21,11 @@ import java.sql.Date;
 @Setter
 @ToString
 @Builder
-public class DashboardCompletedLectureDTO {
+public class DashboardLectureWatchDTO {
 
-    private int timeNo;
-    private String watchedStatus;
-    private Date completedDate;
-    private DashboardMemberLectureDTO memberLecture;
+    private int watchNo;
+    private Date watchedDate;
+    private DashboardLectureDTO lecture;
+    private int memberNo;
+
 }

@@ -1,10 +1,9 @@
-package com.greedy.rotutee.dashboard.mypage.dto;
+package com.greedy.rotutee.dashboard.mypage.dto.tutee;
 
 import lombok.*;
-
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.dto
- * fileName : DashboardLectureDTO
+ * fileName : DashboardBoardDTO
  * author : SeoYoung
  * date : 2022-04-19
  * description :
@@ -19,8 +18,9 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
-public class DashboardLectureDTO {
- private int lectureNo;
- private String lectureTitle;
+public class DashboardBoardDTO {
 
+    private int boardNo;
+    private String title;
+    private int categoryNo;
 }
