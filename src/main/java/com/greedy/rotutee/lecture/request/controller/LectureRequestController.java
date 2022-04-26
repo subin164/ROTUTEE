@@ -65,4 +65,11 @@ public class LectureRequestController {
         mv.setViewName("redirect:/request/list");
         return mv;
     }
+
+    @GetMapping("lecturelist")
+    public ModelAndView findLectureRequestList(ModelAndView mv) {
+
+        mv.setViewName("request/adminlecturerequestlist");
+        return mv;
+    }
 }
