@@ -1,17 +1,15 @@
 package com.greedy.rotutee.study.dto;
 
 import lombok.*;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Builder
-public class TagDTO {
+public class StudyByTagDTO {
 
-    private int tagNo;
-    private String tagName;
-
-
+    private int StudyByTagNo;
+    private StudyDTO studyNo;
+    private TagDTO tagNo;
 }

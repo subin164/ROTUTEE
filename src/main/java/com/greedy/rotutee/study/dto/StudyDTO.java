@@ -23,21 +23,5 @@ public class StudyDTO {
     private int count;                  //조회수
     private String linked;              //신청링크
     private String status;              //모집상태
-    private List<TagDTO> tagList;       //태그 번호
 
-    @Override
-    public String toString() {
-        return "StudyDTO{" +
-                "studyNo=" + studyNo +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", writer=" + writer +
-                ", limited=" + limited +
-                ", count=" + count +
-                ", linked='" + linked + '\'' +
-                ", status='" + status + '\'' +
-                '}';
-    }
 }
