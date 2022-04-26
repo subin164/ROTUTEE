@@ -1,8 +1,11 @@
 package com.greedy.rotutee.lecture.request.entity;
 
 
+import com.greedy.rotutee.lecture.request.dto.ChapterDTO;
+
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity(name = "Request_Lecture")
 @Table(name = "TBL_LECTURE")
@@ -35,7 +38,7 @@ public class Lecture {
     private String lectureSummary;
 
     @Column(name = "LECTURE_DETAILS")
-    private String lecturedetails;
+    private String lectureDetails;
 
     @Column(name = "REVISION_HISTORY")
     private String revisionHistory;
@@ -60,17 +63,19 @@ public class Lecture {
     @JoinColumn(name = "LECTURE_CATEGORY_NO")
     private LectureCategory lectureCategory;
 
+    @OneToMany(mappedBy = "lecture", cascade = CascadeType.PERSIST)
+    private List<Chapter> chapterList;
 
     public Lecture() {
     }
 
-    public Lecture(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lecturedetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, Member tutor, Date applicationDate, String applicationDivision, LectureCategory lectureCategory) {
+    public Lecture(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lectureDetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, Member tutor, Date applicationDate, String applicationDivision, LectureCategory lectureCategory, List<Chapter> chapterList) {
         this.lectureNo = lectureNo;
         this.lectureName = lectureName;
         this.lecturePrice = lecturePrice;
         this.lectureLevel = lectureLevel;
         this.lectureSummary = lectureSummary;
-        this.lecturedetails = lecturedetails;
+        this.lectureDetails = lectureDetails;
         this.revisionHistory = revisionHistory;
         this.lectureApprovalStatus = lectureApprovalStatus;
         this.lectureOpeningDate = lectureOpeningDate;
@@ -78,6 +83,7 @@ public class Lecture {
         this.applicationDate = applicationDate;
         this.applicationDivision = applicationDivision;
         this.lectureCategory = lectureCategory;
+        this.chapterList = chapterList;
     }
 
     public int getLectureNo() {
@@ -120,12 +126,12 @@ public class Lecture {
         this.lectureSummary = lectureSummary;
     }
 
-    public String getLecturedetails() {
-        return lecturedetails;
+    public String getLectureDetails() {
+        return lectureDetails;
     }
 
-    public void setLecturedetails(String lecturedetails) {
-        this.lecturedetails = lecturedetails;
+    public void setLectureDetails(String lectureDetails) {
+        this.lectureDetails = lectureDetails;
     }
 
     public String getRevisionHistory() {
@@ -184,6 +190,14 @@ public class Lecture {
         this.lectureCategory = lectureCategory;
     }
 
+    public List<Chapter> getChapterList() {
+        return chapterList;
+    }
+
+    public void setChapterList(List<Chapter> chapterList) {
+        this.chapterList = chapterList;
+    }
+
     @Override
     public String toString() {
         return "Lecture{" +
@@ -192,7 +206,7 @@ public class Lecture {
                 ", lecturePrice=" + lecturePrice +
                 ", lectureLevel='" + lectureLevel + '\'' +
                 ", lectureSummary='" + lectureSummary + '\'' +
-                ", lecturedetails='" + lecturedetails + '\'' +
+                ", lectureDetails='" + lectureDetails + '\'' +
                 ", revisionHistory='" + revisionHistory + '\'' +
                 ", lectureApprovalStatus='" + lectureApprovalStatus + '\'' +
                 ", lectureOpeningDate=" + lectureOpeningDate +
@@ -200,6 +214,7 @@ public class Lecture {
                 ", applicationDate=" + applicationDate +
                 ", applicationDivision='" + applicationDivision + '\'' +
                 ", lectureCategory=" + lectureCategory +
+//                ", chapterList=" + chapterList +
                 '}';
     }
 }

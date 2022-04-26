@@ -1,8 +1,7 @@
 package com.greedy.rotutee.lecture.request.dto;
 
-import com.greedy.rotutee.lecture.lecture.dto.LectureCategoryDTO;
-import com.greedy.rotutee.lecture.lecture.dto.MemberDTO;
-import lombok.*;
+import com.greedy.rotutee.lecture.request.dto.LectureCategoryDTO;
+import com.greedy.rotutee.lecture.request.dto.MemberDTO;
 
 import java.sql.Date;
 import java.util.List;
@@ -14,7 +13,7 @@ public class LectureDTO {
     private int lecturePrice;
     private String lectureLevel;
     private String lectureSummary;
-    private String lecturedetails;
+    private String lectureDetails;
     private String revisionHistory;
     private String lectureApprovalStatus;
     private Date lectureOpeningDate;
@@ -28,16 +27,26 @@ public class LectureDTO {
     private String thumbnailPath;
     private String bannerPath;
 
+    private List<ChapterDTO> chapterList;
+
+    public List<ChapterDTO> getChapterList() {
+        return chapterList;
+    }
+
+    public void setChapterList(List<ChapterDTO> chapterList) {
+        this.chapterList = chapterList;
+    }
+
     public LectureDTO() {
     }
 
-    public LectureDTO(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lecturedetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, int memberNo, MemberDTO tutor, Date applicationDate, String applicationDivision, int lectureCategoryNo, LectureCategoryDTO category, String originalPath, String thumbnailPath, String bannerPath) {
+    public LectureDTO(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lectureDetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, int memberNo, MemberDTO tutor, Date applicationDate, String applicationDivision, int lectureCategoryNo, LectureCategoryDTO category, String originalPath, String thumbnailPath, String bannerPath) {
         this.lectureNo = lectureNo;
         this.lectureName = lectureName;
         this.lecturePrice = lecturePrice;
         this.lectureLevel = lectureLevel;
         this.lectureSummary = lectureSummary;
-        this.lecturedetails = lecturedetails;
+        this.lectureDetails = lectureDetails;
         this.revisionHistory = revisionHistory;
         this.lectureApprovalStatus = lectureApprovalStatus;
         this.lectureOpeningDate = lectureOpeningDate;
@@ -92,12 +101,12 @@ public class LectureDTO {
         this.lectureSummary = lectureSummary;
     }
 
-    public String getLecturedetails() {
-        return lecturedetails;
+    public String getLectureDetails() {
+        return lectureDetails;
     }
 
-    public void setLecturedetails(String lecturedetails) {
-        this.lecturedetails = lecturedetails;
+    public void setLectureDetails(String lectureDetails) {
+        this.lectureDetails = lectureDetails;
     }
 
     public String getRevisionHistory() {
@@ -204,7 +213,7 @@ public class LectureDTO {
                 ", lecturePrice=" + lecturePrice +
                 ", lectureLevel='" + lectureLevel + '\'' +
                 ", lectureSummary='" + lectureSummary + '\'' +
-                ", lecturedetails='" + lecturedetails + '\'' +
+                ", lectureDetails='" + lectureDetails + '\'' +
                 ", revisionHistory='" + revisionHistory + '\'' +
                 ", lectureApprovalStatus='" + lectureApprovalStatus + '\'' +
                 ", lectureOpeningDate=" + lectureOpeningDate +
@@ -217,6 +226,7 @@ public class LectureDTO {
                 ", originalPath='" + originalPath + '\'' +
                 ", thumbnailPath='" + thumbnailPath + '\'' +
                 ", bannerPath='" + bannerPath + '\'' +
+//                ", chapterList='" + chapterList + '\'' +
                 '}';
     }
 }

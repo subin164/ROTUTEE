@@ -1,33 +1,46 @@
 package com.greedy.rotutee.lecture.request.entity;
 
 
+import com.greedy.rotutee.lecture.request.dto.LectureDTO;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity(name = "Request_Chapter")
 @Table(name = "TBL_CHAPTER")
+@SequenceGenerator(
+        name = "REQUEST_CHAPTER_SEQ_GENERATOR",
+        sequenceName = "CHAPTER_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class Chapter {
 
     @Id
     @Column(name = "CHAPTER_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "REQUEST_CHAPTER_SEQ_GENERATOR"
+    )
     private int chapterNo;
 
     @Column(name = "CHAPTER_NAME")
     private String chapterName;
 
-    @Column(name = "LECTURE_NO")
-    private int lectureNo;
+    @JoinColumn(name = "LECTURE_NO")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Lecture lecture;
 
-    @OneToMany(mappedBy = "chapter")
+    @OneToMany(mappedBy = "chapter", cascade = CascadeType.PERSIST)
     private List<Class> classList;
 
     public Chapter() {
     }
 
-    public Chapter(int chapterNo, String chapterName, int lectureNo, List<Class> classList) {
+    public Chapter(int chapterNo, String chapterName, Lecture lecture, List<Class> classList) {
         this.chapterNo = chapterNo;
         this.chapterName = chapterName;
-        this.lectureNo = lectureNo;
+        this.lecture = lecture;
         this.classList = classList;
     }
 
@@ -47,12 +60,12 @@ public class Chapter {
         this.chapterName = chapterName;
     }
 
-    public int getLectureNo() {
-        return lectureNo;
+    public Lecture getLecture() {
+        return lecture;
     }
 
-    public void setLectureNo(int lectureNo) {
-        this.lectureNo = lectureNo;
+    public void setLecture(Lecture lecture) {
+        this.lecture = lecture;
     }
 
     public List<Class> getClassList() {
@@ -68,7 +81,7 @@ public class Chapter {
         return "Chapter{" +
                 "chapterNo=" + chapterNo +
                 ", chapterName='" + chapterName + '\'' +
-                ", lectureNo=" + lectureNo +
+                ", lecture=" + lecture +
 //                ", classList=" + classList +
                 '}';
     }

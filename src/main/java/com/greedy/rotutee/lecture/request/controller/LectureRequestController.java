@@ -2,7 +2,6 @@ package com.greedy.rotutee.lecture.request.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.lecture.request.dto.*;
-import com.greedy.rotutee.lecture.request.entity.ViewQuiz;
 import com.greedy.rotutee.lecture.request.service.LectureRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,11 +23,10 @@ public class LectureRequestController {
     }
 
 
-    @GetMapping("/list")
+    @GetMapping("list")
     public ModelAndView findMyLectureList(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
 
         int memberNo = customUser.getNo();
-        System.out.println("memberNo = " + memberNo);
         List<LectureDTO> lectureList = lectureRequestService.findLectureListBytutorNo(memberNo);
 
         mv.addObject("lectureList", lectureList);
@@ -37,27 +35,34 @@ public class LectureRequestController {
         return mv;
     }
 
-    @GetMapping("/lecture")
+    @GetMapping("lecture")
     public String lectureRegistForm() {
 
-        return "/request/lecturerequestform";
+        return "request/lecturerequestform";
     }
 
-    @PostMapping("/lecture")
+    @PostMapping("lecture")
     public ModelAndView registLectureOpeningApplication(ModelAndView mv, @ModelAttribute LectureDTO newLecture
-                                                                       , @ModelAttribute List<ChapterDTO> chapterList
-                                                                       , @ModelAttribute List<ClassDTO> classDTOList
-                                                                       , @ModelAttribute List<QuizDTO> quizList
-                                                                       , @ModelAttribute List<ViewQuizDTO> viewQuizList
+                                                                       , @RequestParam int categoryNo
                                                                        , @AuthenticationPrincipal CustomUser customUser) {
 
+        List<ChapterDTO> chapterList = newLecture.getChapterList();
         System.out.println("newLecture = " + newLecture);
         System.out.println("chapterList = " + chapterList);
-        System.out.println("classDTOList = " + classDTOList);
-        System.out.println("quizList = " + quizList);
-        System.out.println("viewQuizList = " + viewQuizList);
+        for(ChapterDTO chapter : chapterList) {
+            List<ClassDTO> classList = chapter.getClassList();
+            System.out.println("classList = " + classList);
 
-        mv.addObject("redirect:/request/list");
+            for(ClassDTO classDTO : classList) {
+                List<QuizDTO> quizList = classDTO.getQuizList();
+                System.out.println("quizList = " + quizList);
+            }
+        }
+
+        int memberNo = customUser.getNo();
+        lectureRequestService.registLectureOpeningApplication(newLecture, categoryNo, memberNo);
+
+        mv.setViewName("redirect:/request/list");
         return mv;
     }
 }

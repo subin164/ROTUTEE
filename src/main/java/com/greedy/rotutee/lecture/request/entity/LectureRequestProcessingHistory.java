@@ -19,11 +19,11 @@ public class LectureRequestProcessingHistory {
     private String processingStatus;
 
     @JoinColumn(name = "LECTURE_REJECTION_REASON_NO")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private LectureRejectionReason reason;
 
     @JoinColumn(name = "LECTURE_NO")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Lecture lecture;
 
     public LectureRequestProcessingHistory() {}

@@ -65,11 +65,11 @@
                                     <input type="checkbox" class="btn-check" id="btn-category9" autocomplete="off" name="categoryNo" value="9">
                                     <label class="btn btn-outline-primary" for="btn-category9">HTML</label>
                                     <input type="checkbox" class="btn-check" id="btn-category10" autocomplete="off" name="categoryNo" value="10">
-                                    <label class="btn btn-outline-primary" for="btn-category11">CSS</label>
+                                    <label class="btn btn-outline-primary" for="btn-category10">CSS</label>
                                     <input type="checkbox" class="btn-check" id="btn-category11" autocomplete="off" name="categoryNo" value="11">
-                                    <label class="btn btn-outline-primary" for="btn-category12">Swift</label>
+                                    <label class="btn btn-outline-primary" for="btn-category11">Swift</label>
                                     <input type="checkbox" class="btn-check" id="btn-category12" autocomplete="off" name="categoryNo" value="12">
-                                    <label class="btn btn-outline-primary" for="btn-category10">기타</label>
+                                    <label class="btn btn-outline-primary" for="btn-category12">기타</label>
 
                                 </div>
                                 <p style="font-size: x-large; margin-left: 30px; margin-top: 30px;">강의 수준</p>
@@ -128,7 +128,7 @@
                         <div class="tab-pane fade" id="curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
                             <div class="curriculum-area">
                                 <p style="font-size: x-large; margin-left: 30px; margin-top: 50px;">커리큘럼</p>
-                                <button id="chapter-plus"><i class="bi bi-plus-circle" style="color: black;"></i>챕터 추가</button>
+                                <button type="button" id="chapter-plus"><i class="bi bi-plus-circle" style="color: black;"></i>챕터 추가</button>
                                 <div class="chapter-area">
 
                                 </div>
@@ -141,122 +141,124 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
+        let index = 0;
         $("#chapter-plus").click(function() {
             $(".chapter-area").append('<div class="chapter" style="border: 1px solid; width: 95%; height: 50px; margin-top: 20px; margin-left: 30px;">\
                                           <div class="chapter-name">\
-                                            <input type="text" placeholder="챕터명을 입력하세요" class="chapter-name" name="chapterName">\
+                                            <input type="text" placeholder="챕터명을 입력하세요" class="chapter-name" name="chapterList['+ index +'].chapterName">\
                                           </div>\
                                         </div>\
                                         <div class="video-quiz">\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="className">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[0].className">\
                                             </div>\
                                             <input type="file" class="video" accept="video/*">\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="quizProblem">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="chapterList['+ index +'].classList[0].quizList[0].quizProblem"">\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="quizAnswer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="chapterList['+ index +'].classList[0].quizList[0].quizAnswer">\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="problemContent1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="chapterList['+ index +'].classList[0].quizList[0].quizOption1">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="problemContent2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="chapterList['+ index +'].classList[0].quizList[0].quizOption2">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="problemContent3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="chapterList['+ index +'].classList[0].quizList[0].quizOption3">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="problemContent4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="chapterList['+ index +'].classList[0].quizList[0].quizOption4">\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="answerExplain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="chapterList['+ index +'].classList[0].quizList[0].quizAnswerExplain">\
                                               </div>\
                                             </div>\
                                           </div>\
                                           <br>\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="className">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[1].className">\
                                             </div>\
                                             <input type="file" class="video" accept="video/*">\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="quizProblem">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="chapterList['+ index +'].classList[1].quizList[0].quizProblem">\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="quizAnswer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="chapterList['+ index +'].classList[1].quizList[0].quizAnswer">\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="problemContent1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="chapterList['+ index +'].classList[1].quizList[0].quizOption1">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="problemContent2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="chapterList['+ index +'].classList[1].quizList[0].quizOption2">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="problemContent3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="chapterList['+ index +'].classList[1].quizList[0].quizOption3">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="problemContent4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="chapterList['+ index +'].classList[1].quizList[0].quizOption4">\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="answerExplain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="chapterList['+ index +'].classList[1].quizList[0].quizAnswerExplain">\
                                               </div>\
                                             </div>\
                                           </div>\
                                           <br>\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="className">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[2].className">\
                                             </div>\
                                             <input type="file" class="video" accept="video/*">\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="quizProblem">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="chapterList['+ index +'].classList[2].quizList[0].quizProblem"">\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="quizAnswer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="chapterList['+ index +'].classList[2].quizList[0].quizAnswer">\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="problemContent1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="chapterList['+ index +'].classList[2].quizList[0].quizOption1">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="problemContent2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="chapterList['+ index +'].classList[2].quizList[0].quizOption2">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="problemContent3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="chapterList['+ index +'].classList[2].quizList[0].quizOption3">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="problemContent4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="chapterList['+ index +'].classList[2].quizList[0].quizOption4">\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="answerExplain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="chapterList['+ index +'].classList[2].quizList[0].quizAnswerExplain">\
                                               </div>\
                                             </div>\
                                           </div>\
                                           <br>\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="className">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[3].className">\
                                             </div>\
                                             <input type="file" class="video" accept="video/*">\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="quizProblem">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" id="quiztitle" name="chapterList['+ index +'].classList[3].quizList[0].quizProblem"">\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="quizAnswer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" id="answer" name="chapterList['+ index +'].classList[3].quizList[0].quizAnswer">\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="problemContent1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" id="example1" name="chapterList['+ index +'].classList[3].quizList[0].quizOption1">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="problemContent2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" id="example2" name="chapterList['+ index +'].classList[3].quizList[0].quizOption2">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="problemContent3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" id="example3" name="chapterList['+ index +'].classList[3].quizList[0].quizOption3">\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="problemContent4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" id="example4" name="chapterList['+ index +'].classList[3].quizList[0].quizOption4">\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="answerExplain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" id="explain" name="chapterList['+ index +'].classList[3].quizList[0].quizAnswerExplain">\
                                               </div>\
                                             </div>\
                                           </div>\
                                         </div>\
                                         <hr>')
+            index++;
             })
     </script>
 </body>

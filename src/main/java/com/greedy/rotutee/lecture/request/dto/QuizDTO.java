@@ -1,5 +1,7 @@
 package com.greedy.rotutee.lecture.request.dto;
 
+import com.greedy.rotutee.lecture.request.entity.Class;
+
 import java.util.List;
 
 /**
@@ -19,18 +21,28 @@ public class QuizDTO {
     private String quizProblem;
     private String quizAnswer;
     private String quizType;
-    private int classNo;
+    private String quizAnswerExplain;
+    private String quizOption1;
+    private String quizOption2;
+    private String quizOption3;
+    private String quizOption4;
+    private ClassDTO classEntity;
 
 
     public QuizDTO() {
     }
 
-    public QuizDTO(int quizNo, String quizProblem, String quizAnswer, String quizType, int classNo) {
+    public QuizDTO(int quizNo, String quizProblem, String quizAnswer, String quizType, String quizAnswerExplain, String quizOption1, String quizOption2, String quizOption3, String quizOption4, ClassDTO classEntity) {
         this.quizNo = quizNo;
         this.quizProblem = quizProblem;
         this.quizAnswer = quizAnswer;
         this.quizType = quizType;
-        this.classNo = classNo;
+        this.quizAnswerExplain = quizAnswerExplain;
+        this.quizOption1 = quizOption1;
+        this.quizOption2 = quizOption2;
+        this.quizOption3 = quizOption3;
+        this.quizOption4 = quizOption4;
+        this.classEntity = classEntity;
     }
 
     public int getQuizNo() {
@@ -65,12 +77,52 @@ public class QuizDTO {
         this.quizType = quizType;
     }
 
-    public int getClassNo() {
-        return classNo;
+    public String getQuizAnswerExplain() {
+        return quizAnswerExplain;
     }
 
-    public void setClassNo(int classNo) {
-        this.classNo = classNo;
+    public void setQuizAnswerExplain(String quizAnswerExplain) {
+        this.quizAnswerExplain = quizAnswerExplain;
+    }
+
+    public String getQuizOption1() {
+        return quizOption1;
+    }
+
+    public void setQuizOption1(String quizOption1) {
+        this.quizOption1 = quizOption1;
+    }
+
+    public String getQuizOption2() {
+        return quizOption2;
+    }
+
+    public void setQuizOption2(String quizOption2) {
+        this.quizOption2 = quizOption2;
+    }
+
+    public String getQuizOption3() {
+        return quizOption3;
+    }
+
+    public void setQuizOption3(String quizOption3) {
+        this.quizOption3 = quizOption3;
+    }
+
+    public String getQuizOption4() {
+        return quizOption4;
+    }
+
+    public void setQuizOption4(String quizOption4) {
+        this.quizOption4 = quizOption4;
+    }
+
+    public ClassDTO getClassEntity() {
+        return classEntity;
+    }
+
+    public void setClassEntity(ClassDTO classEntity) {
+        this.classEntity = classEntity;
     }
 
     @Override
@@ -80,7 +132,12 @@ public class QuizDTO {
                 ", quizProblem='" + quizProblem + '\'' +
                 ", quizAnswer='" + quizAnswer + '\'' +
                 ", quizType='" + quizType + '\'' +
-                ", classNo=" + classNo +
+                ", quizAnswerExplain='" + quizAnswerExplain + '\'' +
+                ", quizOption1='" + quizOption1 + '\'' +
+                ", quizOption2='" + quizOption2 + '\'' +
+                ", quizOption3='" + quizOption3 + '\'' +
+                ", quizOption4='" + quizOption4 + '\'' +
+                ", classEntity=" + classEntity +
                 '}';
     }
 }

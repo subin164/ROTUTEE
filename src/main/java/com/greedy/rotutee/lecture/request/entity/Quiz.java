@@ -2,10 +2,7 @@ package com.greedy.rotutee.lecture.request.entity;
 
 import org.springframework.stereotype.Controller;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * packageName      : com.greedy.rotutee.lecture.request.entity
@@ -20,10 +17,20 @@ import javax.persistence.Table;
  */
 @Entity(name = "Request_Quiz")
 @Table(name = "TBL_QUIZ")
+@SequenceGenerator(
+        name = "REQUEST_QUIZ_SEQ_GENERATOR",
+        sequenceName = "QUIZ_NO",
+        allocationSize = 1,
+        initialValue = 1
+)
 public class Quiz {
 
     @Id
     @Column(name = "QUIZ_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "REQUEST_QUIZ_SEQ_GENERATOR"
+    )
     private int quizNo;
 
     @Column(name = "QUIZ_PROBLEM")
@@ -35,18 +42,39 @@ public class Quiz {
     @Column(name = "QUIZ_TYPE")
     private String quizType;
 
-    @Column(name = "CLASS_NO")
-    private int classNo;
+    @Column(name = "QUIZ_ANSWER_EXPLAIN")
+    private String quizAnswerExplain;
+
+    @Column(name = "QUIZ_OPTION_1")
+    private String quizOption1;
+
+    @Column(name = "QUIZ_OPTION_2")
+    private String quizOption2;
+
+    @Column(name = "QUIZ_OPTION_3")
+    private String quizOption3;
+
+    @Column(name = "QUIZ_OPTION_4")
+    private String quizOption4;
+
+    @JoinColumn(name = "CLASS_NO")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Class classEntity;
 
     public Quiz() {
     }
 
-    public Quiz(int quizNo, String quizProblem, String quizAnswer, String quizType, int classNo) {
+    public Quiz(int quizNo, String quizProblem, String quizAnswer, String quizType, String quizAnswerExplain, String quizOption1, String quizOption2, String quizOption3, String quizOption4, Class classEntity) {
         this.quizNo = quizNo;
         this.quizProblem = quizProblem;
         this.quizAnswer = quizAnswer;
         this.quizType = quizType;
-        this.classNo = classNo;
+        this.quizAnswerExplain = quizAnswerExplain;
+        this.quizOption1 = quizOption1;
+        this.quizOption2 = quizOption2;
+        this.quizOption3 = quizOption3;
+        this.quizOption4 = quizOption4;
+        this.classEntity = classEntity;
     }
 
     public int getQuizNo() {
@@ -81,11 +109,67 @@ public class Quiz {
         this.quizType = quizType;
     }
 
-    public int getClassNo() {
-        return classNo;
+    public String getQuizAnswerExplain() {
+        return quizAnswerExplain;
     }
 
-    public void setClassNo(int classNo) {
-        this.classNo = classNo;
+    public void setQuizAnswerExplain(String quizAnswerExplain) {
+        this.quizAnswerExplain = quizAnswerExplain;
+    }
+
+    public String getQuizOption1() {
+        return quizOption1;
+    }
+
+    public void setQuizOption1(String quizOption1) {
+        this.quizOption1 = quizOption1;
+    }
+
+    public String getQuizOption2() {
+        return quizOption2;
+    }
+
+    public void setQuizOption2(String quizOption2) {
+        this.quizOption2 = quizOption2;
+    }
+
+    public String getQuizOption3() {
+        return quizOption3;
+    }
+
+    public void setQuizOption3(String quizOption3) {
+        this.quizOption3 = quizOption3;
+    }
+
+    public String getQuizOption4() {
+        return quizOption4;
+    }
+
+    public void setQuizOption4(String quizOption4) {
+        this.quizOption4 = quizOption4;
+    }
+
+    public Class getClassEntity() {
+        return classEntity;
+    }
+
+    public void setClassEntity(Class classEntity) {
+        this.classEntity = classEntity;
+    }
+
+    @Override
+    public String toString() {
+        return "Quiz{" +
+                "quizNo=" + quizNo +
+                ", quizProblem='" + quizProblem + '\'' +
+                ", quizAnswer='" + quizAnswer + '\'' +
+                ", quizType='" + quizType + '\'' +
+                ", quizAnswerExplain='" + quizAnswerExplain + '\'' +
+                ", quizOption1='" + quizOption1 + '\'' +
+                ", quizOption2='" + quizOption2 + '\'' +
+                ", quizOption3='" + quizOption3 + '\'' +
+                ", quizOption4='" + quizOption4 + '\'' +
+                ", classEntity=" + classEntity +
+                '}';
     }
 }

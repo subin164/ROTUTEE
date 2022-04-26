@@ -1,13 +1,24 @@
 package com.greedy.rotutee.lecture.request.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "Request_Class")
 @Table(name = "TBL_CLASS")
+@SequenceGenerator(
+        name = "REQUEST_CLASS_SEQ_GENERATOR",
+        sequenceName = "CLASS_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class Class {
 
     @Id
     @Column(name = "CLASS_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "REQUEST_CLASS_SEQ_GENERATOR"
+    )
     private int classNo;
 
     @Column(name = "CLASS_NAME")
@@ -20,14 +31,18 @@ public class Class {
     @ManyToOne(fetch = FetchType.LAZY)
     private Chapter chapter;
 
+    @OneToMany(mappedBy = "classEntity", cascade = CascadeType.PERSIST)
+    private List<Quiz> quizList;
+
     public Class() {
     }
 
-    public Class(int classNo, String className, String videoPath, Chapter chapter) {
+    public Class(int classNo, String className, String videoPath, Chapter chapter, List<Quiz> quizList) {
         this.classNo = classNo;
         this.className = className;
         this.videoPath = videoPath;
         this.chapter = chapter;
+        this.quizList = quizList;
     }
 
     public int getClassNo() {
@@ -60,6 +75,14 @@ public class Class {
 
     public void setChapter(Chapter chapter) {
         this.chapter = chapter;
+    }
+
+    public List<Quiz> getQuizList() {
+        return quizList;
+    }
+
+    public void setQuizList(List<Quiz> quizList) {
+        this.quizList = quizList;
     }
 
     @Override
