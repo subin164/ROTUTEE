@@ -44,7 +44,7 @@
                     <div class="d-flex mb-lg-3">
                         <input class="w-100" type="text" name="searchCondition" placeholder="검색내용을 입력하세요">
                         <div>
-                            <button class="btn btn-outline-success mx-lg-3"  style="width: 150px">검색</button>
+                            <button class="btn btn-outline-success mx-lg-3" style="width: 150px">검색</button>
                         </div>
                     </div>
                     <div class="d-flex">
@@ -78,41 +78,20 @@
                             글쓰기
                         </button>
                     </div>
-
-
                     <!-- 모집글 -->
-                    <div class="container">
-                        <div id="detailList">
-                            <ul class="mb-md-4" th:each="study : ${ studyList }">
-                                <li>
-                                    <div th:text="${ study.getStudyNo()}"/>
-                                </li>
-                                <li class="d-flex">
-                                    <div class="d-flex" th:if="${ study.status }=='Y'">
-                                        <div class="study-recruit-status">
-                                            <span>모집중</span>
-                                        </div>
-                                    </div>
-                                    <div class="study-recruit-status-end" th:if="${ study.status }=='N'">
-                                        <div>모집종료</div>
-                                    </div>
-                                    <div class="study-recruit-title" th:text="${ study.getTitle() }"></div>
-                                </li>
-                                <li class="study-recruit-content mb-md-3" th:text="${ study.getContent() }"></li>
-                                <li class="d-flex">
-                                    <div th:each="studyTag : ${studyTagList}">
-                                        <div th:if="${study.getStudyNo()} == ${studyTag.getStudyNo().getStudyNo() }">
-                                            <div th:text="${studyTag.getTagName()}"></div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div th:text="${study.getWriter().getNickname()}"></div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
+                    <ul th:each="studyList :${studyList}">
+                        <li class="d-flex">
+                            <div th:if="${studyList.study.getStatus()} =='Y'">
+                                <div>모집중</div>
+                            </div>
+                            <div th:if="${studyList.study.getStatus()} =='N'">
+                                <div>모집종료</div>
+                            </div>
+                            <div th:text="${studyList.study.getTitle()}"></div>
+                        </li>
+<!--                        <li th:text="${studyList.}"></li>-->
+                        </span>
+                    </ul>
                 </div>
 
             </div>
@@ -214,7 +193,7 @@
         crossorigin="anonymous"></script>
 
 <script>
-
+    <!-- 스터디 디테일 조회요청-->
     if (document.querySelectorAll("#detailList ul")) {
         const $tds = document.querySelectorAll("#detailList ul");
         for (let i = 0; i < $tds.length; i++) {

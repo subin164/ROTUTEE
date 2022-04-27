@@ -10,6 +10,6 @@ import lombok.*;
 public class StudyByTagDTO {
 
     private int StudyByTagNo;
-    private StudyDTO studyNo;
-    private TagDTO tagNo;
+    private StudyDTO study;
+    private TagDTO tag;
 }

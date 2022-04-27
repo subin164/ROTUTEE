@@ -57,25 +57,19 @@ public class StudyService {
      * content : 스터디 모집 조회 서비스 처리 하여 DB에서 조회 결과를 반환
      * */
 
-    public Page<StudyDTO> findByStudyList(String searchCondition, String searchTag, Pageable pageable) {
+    public Page<StudyByTagDTO> findByStudyList(Pageable pageable) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
                 pageable.getPageSize());
 
-        Page<Study> studyList = null;
+//        Page<StudyByTag> studyList = null;
+//
+//        studyList = studyByTagRepository.findAll(pageable);
+//
 
-        if (searchCondition != null && !"".equals(searchCondition)) {
 
-            studyList = studyRepository.findByTitleContainingAndStatus(searchCondition, "Y", pageable);
-        } else {
-            studyList = studyRepository.findByStatus("Y", pageable);
-        }
 
-        List<StudyByTag> studyTagList = studyByTagRepository.findAll();
-
-        System.out.println("StudyByTagLi : " + studyTagList);
-
-        return studyList.map(study -> modelMapper.map(study, StudyDTO.class));
+        return studyRepository.findAll(pageable).map(study ->  modelMapper.map(study, StudyByTagDTO.class));
     }
 
     /*
@@ -108,20 +102,27 @@ public class StudyService {
                     tagDTO.setTagName(tagList.get(i));
 
                     duplicated = true;
+
+                    studyByTagDTO.setTag(duplicatedTag);
+
                 }
             }
             if (duplicated == false) {
                 tagDTO.setTagName(tagList.get(i));
                 StudyTag studyTag = studyTagRepository.save(modelMapper.map(tagDTO, StudyTag.class));
+
+                studyByTagDTO.setTag(modelMapper.map(studyTag, TagDTO.class));
+
             }
-//
-//            studyByTagDTO.setStudyNo(modelMapper.map(study,StudyDTO.class));
-//            studyByTagDTO.setTagNo(modelMapper.map(studyTag));
-//
-//            studyByTagRepository.save(modelMapper.map(studyByTagDTO, StudyByTag.class));
+
+            studyByTagDTO.setStudy(modelMapper.map(study, StudyDTO.class));
+
+            studyByTagRepository.save(modelMapper.map(studyByTagDTO, StudyByTag.class));
         }
 
     }
+
+
 }
 
 

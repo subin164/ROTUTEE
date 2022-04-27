@@ -6,8 +6,10 @@ import com.greedy.rotutee.Authentication.service.AuthenticationService;
 import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
+import com.greedy.rotutee.study.dto.StudyByTagDTO;
 import com.greedy.rotutee.study.dto.StudyDTO;
 import com.greedy.rotutee.study.dto.TagDTO;
+import com.greedy.rotutee.study.entity.StudyByTag;
 import com.greedy.rotutee.study.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -53,10 +55,10 @@ public class StudyController {
     @GetMapping("list")
     public ModelAndView StudyList(ModelAndView mv, HttpServletRequest request, Pageable pageable) {
 
-        String searchCondition = request.getParameter("searchCondition");
-        String searchTag = request.getParameter("searchTag");
+//        String searchCondition = request.getParameter("searchCondition");
+//        String searchTag = request.getParameter("searchTag");
 
-        Page<StudyDTO> studyList = studyService.findByStudyList(searchCondition, searchTag, pageable);
+        Page<StudyByTagDTO> studyList = studyService.findByStudyList(pageable);
 
         mv.addObject("studyList", studyList);
 
@@ -107,5 +109,15 @@ public class StudyController {
 
         return mv;
     }
+
+    @GetMapping("/detail")
+    public ModelAndView studyDetail(ModelAndView mv){
+
+        mv.setViewName("/study/detail");
+
+        return mv;
+    }
+
+
 
 }
