@@ -1,7 +1,6 @@
 package com.greedy.rotutee.study.entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity(name="studyTag")
 @Table(name = "TBL_STUDY_GROUP_BOARD_TAG")
@@ -20,25 +19,25 @@ public class StudyTag {
             generator = "STUDY_TAG_GENERATOR"
     )
 
-    private int tagNo;
+    private int studyTagNo;
 
-    @Column(name="TAG_NAME")
+    @Column(name="STUDY_TAG_NAME")
     public String tagName;
 
     public StudyTag() {
     }
 
-    public StudyTag(int tagNo, String tagName) {
-        this.tagNo = tagNo;
+    public StudyTag(int studyTagNo, String tagName) {
+        this.studyTagNo = studyTagNo;
         this.tagName = tagName;
     }
 
-    public int getTagNo() {
-        return tagNo;
+    public int getStudyTagNo() {
+        return studyTagNo;
     }
 
-    public void setTagNo(int tagNo) {
-        this.tagNo = tagNo;
+    public void setStudyTagNo(int studyTagNo) {
+        this.studyTagNo = studyTagNo;
     }
 
     public String getTagName() {
@@ -52,7 +51,7 @@ public class StudyTag {
     @Override
     public String toString() {
         return "StudyTag{" +
-                "tagNo=" + tagNo +
+                "studyTagNo=" + studyTagNo +
                 ", tagName='" + tagName + '\'' +
                 '}';
     }

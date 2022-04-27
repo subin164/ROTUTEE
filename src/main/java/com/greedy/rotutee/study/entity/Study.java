@@ -54,13 +54,10 @@ public class Study {
     @Column(name = "STUDY_RECRUITMENT_STATUS")
     private String status;
 
-    @OneToMany(mappedBy = "studyNo")
-    private List<StudyTag> studyTag;
-
     public Study() {
     }
 
-    public Study(int studyNo, String title, String content, Date startDate, Date endDate, Member writer, int limited, int count, String linked, String status, List<StudyTag> studyTag) {
+    public Study(int studyNo, String title, String content, Date startDate, Date endDate, Member writer, int limited, int count, String linked, String status) {
         this.studyNo = studyNo;
         this.title = title;
         this.content = content;
@@ -71,7 +68,6 @@ public class Study {
         this.count = count;
         this.linked = linked;
         this.status = status;
-        this.studyTag = studyTag;
     }
 
     public int getStudyNo() {
@@ -152,14 +148,6 @@ public class Study {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public List<StudyTag> getStudyTag() {
-        return studyTag;
-    }
-
-    public void setStudyTag(List<StudyTag> studyTag) {
-        this.studyTag = studyTag;
     }
 
     @Override

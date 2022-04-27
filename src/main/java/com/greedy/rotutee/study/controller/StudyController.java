@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -43,91 +44,68 @@ public class StudyController {
         this.messageSource = messageSource;
     }
 
-    //    모집글 조회
-    @GetMapping("/list")
-    public ModelAndView studyList(ModelAndView mv, @PageableDefault Pageable pageable) {
+    /*
+     * writer : 김형경
+     * writeDate : 22/04/18 ~ 22/04/26
+     * title : 모집글 조회
+     * content : 스터디 모집글 작성 컨트롤러 요청으로 들어온 입력값을 서비스로 보냄
+     * */
+    @GetMapping("list")
+    public ModelAndView StudyList(ModelAndView mv, HttpServletRequest request, Pageable pageable) {
 
-        Page<StudyDTO> studyList = studyService.findStudyList(pageable);
+        String searchCondition = request.getParameter("searchCondition");
+        String searchTag = request.getParameter("searchTag");
 
-        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(studyList);
-
-        List<TagDTO> studyTagList = studyService.findStudyTagList();
-
+        Page<StudyDTO> studyList = studyService.findByStudyList(searchCondition, searchTag, pageable);
 
         mv.addObject("studyList", studyList);
-        mv.addObject("paging", paging);
-        mv.addObject("studyTagList", studyTagList);
-
-        mv.setViewName("study/list");
-
-        return mv;
-    }
-
-    //    모집글 상세페이지
-    @GetMapping("/detail")
-    public ModelAndView detailPage(ModelAndView mv, HttpServletRequest request, StudyDTO studyDTO) {
-
-        int studyNo = Integer.parseInt(request.getParameter("no"));
-
-        studyDTO.setStudyNo(studyNo);
-
-        StudyDTO studyDetail = studyService.findDetailByStudyNo(studyNo);
-
-
-        mv.addObject("studyDetail", studyDetail);
-        mv.setViewName("study/detail");
-
-
-        return mv;
-    }
-
-    //    모집글 작성
-    @PostMapping("/regist")
-    @ResponseBody
-    public ModelAndView studyRegist(ModelAndView mv, StudyDTO studyDTO, String inputTag) {
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        User loaduser = (User) principal;
-
-        CustomUser user = (CustomUser) authenticationService.loadUserByUsername(loaduser.getUsername());
-
-        List<String> addTagList = new ArrayList<>();
-
-        MemberDTO memberDTO = new MemberDTO();
-
-        memberDTO.setNo(user.getNo());
-        studyDTO.setStartDate(new Date(System.currentTimeMillis()));
-        studyDTO.setStatus("Y");
-
-        String tagArray[] = inputTag.split("#");
-
-        System.out.println("tagaaa" + tagArray);
-
-        for (int i = 0; i < tagArray.length; i++) {
-            addTagList.add(tagArray[i]);
-        }
-
-        System.out.println("adfffffffffff" + addTagList);
-
-        mv.setViewName("redirect:/study/list");
-
-        studyService.studyRegist(studyDTO, addTagList, memberDTO);
-
-        return mv;
-    }
-
-
-    // 모집글 삭제
-    @GetMapping("/remove")
-    public ModelAndView studyRemove(ModelAndView mv, HttpServletRequest request) {
-
-        int studyNo = Integer.parseInt(request.getParameter("no"));
-
-        studyService.studyRemove(studyNo);
 
         mv.setViewName("/study/list");
 
         return mv;
     }
+
+    /*
+     * writer : 김형경
+     * writeDate : 22/04/18 ~ 22/04/26
+     * title : 모집글 작성
+     * content : 스터디 모집글 작성 컨트롤러 요청으로 들어온 입력값을 서비스로 보냄
+     * */
+    @PostMapping("/regist")
+    public ModelAndView studyRegist(ModelAndView mv, StudyDTO studyDTO, String inputTag) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user = (User) principal;
+
+        CustomUser customUser = (CustomUser) authenticationService.loadUserByUsername(user.getUsername());
+
+        MemberDTO memberDTO = new MemberDTO();
+
+        memberDTO.setNo(customUser.getNo());
+
+        studyDTO.setStartDate(new Date(System.currentTimeMillis()));
+        studyDTO.setWriter(memberDTO);
+        studyDTO.setCount(0);
+        studyDTO.setStatus("Y");
+
+        String[] tagArray = inputTag.split("#");
+
+
+        List<String> tagList = new ArrayList<>();
+
+        for (int i = 1; i < tagArray.length; i++) {
+            tagList.add(tagArray[i].trim());
+        }
+
+        System.out.println("tagList = " + tagList);
+        System.out.println("studyDTO 값 확인 : " + studyDTO);
+
+        studyService.studyRegist(studyDTO, tagList);
+
+        mv.setViewName("/study/list");
+
+        return mv;
+    }
+
 }
