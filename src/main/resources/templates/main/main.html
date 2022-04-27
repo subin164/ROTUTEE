@@ -12,7 +12,7 @@
     <div th:include="/common/topMenubar.html"></div>
     <th: sec:authorize="hasAnyRole('TUTEE', 'ADMIN', 'SUBADMIN')">
         <button onclick="location.href='/point/productlist'">포인트상점</button>
-        <button onclick="location.href='/request/request'">튜터신청</button>
+        <button onclick="location.href='/tutorApply/request'">튜터신청</button>
     </th:>
     <div th:include="/common/footer.html"></div>
 

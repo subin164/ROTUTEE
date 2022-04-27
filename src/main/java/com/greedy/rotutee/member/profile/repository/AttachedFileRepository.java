@@ -1,5 +1,6 @@
 package com.greedy.rotutee.member.profile.repository;
 
+import com.greedy.rotutee.member.member.entity.Member;
 import com.greedy.rotutee.member.profile.entity.AttachedFile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AttachedFileRepository extends JpaRepository<AttachedFile, Integer> {
 
+    AttachedFile findByMemberNo(int memeberNo);
+
+    AttachedFile findByMemberNoAndDivision(int memeberNo, String division);
+
+//    void deleteByMemberNo(Member member);
 }

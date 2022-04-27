@@ -74,15 +74,10 @@ public class ProfileService {
     }
 
     /* 프로필 사진 업로드용 메서드 */
-    public void profileUpload(List<AttachedFile> attachedFiles) throws Exception {
+    @Transactional
+    public void profileUpload(AttachedFile attachedFiles) throws Exception {
 
-        if(attachedFiles.isEmpty()) {
-            throw new Exception();
-        }
-
-        for(AttachedFile file : attachedFiles) {
-            attachedFileRepository.save(file);
-        }
+        attachedFileRepository.save(attachedFiles);
     }
 
     /*  */
@@ -121,5 +116,18 @@ public class ProfileService {
             foundTutorInfo.setAccountNumber(tutorInfo.getAccountNumber());
             foundTutorInfo.setBankName(tutorInfo.getBankName());
         }
+    }
+
+    public AttachedFileDTO findMemberProfile(int memeberNo) {
+
+        String division = "프로필";
+
+        AttachedFile attachedFile = attachedFileRepository.findByMemberNoAndDivision(memeberNo, division);
+
+        if(attachedFile != null) {
+            return modelMapper.map(attachedFile, AttachedFileDTO.class);
+        }
+
+        return new AttachedFileDTO();
     }
 }

@@ -12,9 +12,12 @@ import com.greedy.rotutee.member.profile.entity.TutorInfo;
 import com.greedy.rotutee.member.profile.repository.TutorInfoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -101,6 +104,20 @@ public class MemberRepositoryTests {
         assertEquals(foundMember.getIntroduction(), member.getIntroduction());
         assertEquals(foundMember.getNickname(), member.getNickname());
         assertEquals(foundMember.getName(), member.getName());
+    }
+
+    @Test
+    public void 전체_회원_조회_테스트_메서드() {
+
+        //given
+
+        //when
+        List<Member> memberList = memberRepository.findAll();
+
+        //then
+        assertNotNull(memberList);
+        memberList.forEach(System.out::println);
+
     }
 
 //    /* 모든 강의 카테고리 정보 조회용 메서드 */

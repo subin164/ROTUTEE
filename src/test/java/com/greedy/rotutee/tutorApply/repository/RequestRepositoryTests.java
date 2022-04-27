@@ -1,4 +1,4 @@
-package com.greedy.rotutee.request.repository;
+package com.greedy.rotutee.tutorApply.repository;
 
 import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
@@ -79,5 +79,20 @@ public class RequestRepositoryTests {
 
             System.out.println("career = " + career);
         }
+    }
+
+    @Test
+    @Transactional
+    public void 튜터_신청_처리_내역_조회_테스트_메서드() {
+
+        //given
+        String status = "대기";
+
+        //when
+//        List<TutorApply> tutorApplyList = tutorApplyRepository.findByApplyYnNot(status);
+
+        //then
+//        assertNotNull(tutorApplyList);
+
     }
 }

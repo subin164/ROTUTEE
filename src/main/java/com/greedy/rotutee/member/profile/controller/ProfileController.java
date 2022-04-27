@@ -6,7 +6,7 @@ import com.greedy.rotutee.member.profile.dto.AchievementDTO;
 import com.greedy.rotutee.member.profile.dto.AddressDTO;
 import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
 import com.greedy.rotutee.member.profile.dto.TutorInfoDTO;
-import com.greedy.rotutee.member.profile.service.FileHandler;
+import com.greedy.rotutee.member.profile.service.ProfileFileHandler;
 import com.greedy.rotutee.member.profile.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -35,12 +36,12 @@ import java.util.List;
 public class ProfileController {
 
     private final ProfileService profileService;
-    private final FileHandler fileHandler;
+    private final ProfileFileHandler profileFileHandler;
 
     @Autowired
-    public ProfileController(ProfileService profileService, FileHandler fileHandler) {
+    public ProfileController(ProfileService profileService, ProfileFileHandler profileFileHandler) {
         this.profileService = profileService;
-        this.fileHandler = fileHandler;
+        this.profileFileHandler = profileFileHandler;
     }
 
     @GetMapping("/profile")
@@ -49,7 +50,7 @@ public class ProfileController {
         int memberNo = customUser.getNo();
 
         MemberDTO memeber = profileService.memberProfile(memberNo);
-        AttachedFileDTO attachedFile = profileService.imgTest(0);
+        AttachedFileDTO attachedFile = profileService.findMemberProfile(memberNo);
         AchievementDTO achievement = profileService.findMemberAchievement(memberNo);
 
         if(customUser.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
@@ -74,7 +75,7 @@ public class ProfileController {
         int memberNo = customUser.getNo();
 
         MemberDTO memeber = profileService.memberProfile(memberNo);
-        AttachedFileDTO attachedFile = profileService.imgTest(0);
+        AttachedFileDTO attachedFile = profileService.findMemberProfile(memberNo);
         AchievementDTO achievement = profileService.findMemberAchievement(memberNo);
 
         if(customUser.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
@@ -109,8 +110,8 @@ public class ProfileController {
     }
 
     @PostMapping("/modify")
-    public String modifyProfile(@RequestParam("file") List<MultipartFile> files, @AuthenticationPrincipal CustomUser loginMember,
-                                @ModelAttribute MemberDTO member, @ModelAttribute TutorInfoDTO tutorInfo, @ModelAttribute AddressDTO address,
+    public String modifyProfile(@AuthenticationPrincipal CustomUser loginMember, @ModelAttribute MemberDTO member,
+                                 @ModelAttribute TutorInfoDTO tutorInfo, @ModelAttribute AddressDTO address,
                                 RedirectAttributes rttr) throws Exception {
 
         tutorInfo.setAddress(address.getZipCode() + "&" + address.getAddress1() + "&" + address.getAddress2());
@@ -120,6 +121,20 @@ public class ProfileController {
         rttr.addFlashAttribute("message", "프로필 변경에 성공하셨습니다.");
 
         return "redirect:/profile/profile";
+    }
+
+    @GetMapping("/imgmodify")
+    public void imgModifyPage() {}
+
+    @PostMapping("/imgmodify")
+    public String modifyProfileImg(@RequestParam("uploadFile") MultipartFile uploadFile, RedirectAttributes rttr,
+                                   @AuthenticationPrincipal CustomUser loginMember) throws Exception {
+
+        profileService.profileUpload(profileFileHandler.profileFileUpload(uploadFile, loginMember.getNo()));
+
+        rttr.addFlashAttribute("message", "사진 변경에 성공하셨습니다.");
+
+        return "redirect:/profile/modify";
     }
 
     @GetMapping("/img")

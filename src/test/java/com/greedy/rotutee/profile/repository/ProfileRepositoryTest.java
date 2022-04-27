@@ -3,12 +3,14 @@ package com.greedy.rotutee.profile.repository;
 import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
 import com.greedy.rotutee.config.RotuteeApplication;
+import com.greedy.rotutee.member.member.entity.Member;
 import com.greedy.rotutee.member.member.repository.MemberRepository;
 import com.greedy.rotutee.member.profile.entity.Achievement;
 import com.greedy.rotutee.member.profile.entity.AttachedFile;
 import com.greedy.rotutee.member.profile.entity.TutorInfo;
 import com.greedy.rotutee.member.profile.repository.AchievementHistoryRepository;
 import com.greedy.rotutee.member.profile.repository.AchievementRepository;
+import com.greedy.rotutee.member.profile.repository.AttachedFileRepository;
 import com.greedy.rotutee.member.profile.repository.TutorInfoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * packageName : com.greedy.rotutee.profile.repository
@@ -43,16 +46,18 @@ public class ProfileRepositoryTest {
     private final AchievementHistoryRepository achievementHistoryRepository;
     private final AchievementRepository achievementRepository;
     private final TutorInfoRepository tutorInfoRepository;
+    private final AttachedFileRepository attachedFileRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public ProfileRepositoryTest(MemberRepository memberRepository, AchievementHistoryRepository achievementHistoryRepository, AchievementRepository achievementRepository, TutorInfoRepository tutorInfoRepository) {
+    public ProfileRepositoryTest(MemberRepository memberRepository, AchievementHistoryRepository achievementHistoryRepository, AchievementRepository achievementRepository, TutorInfoRepository tutorInfoRepository, AttachedFileRepository attachedFileRepository) {
         this.memberRepository = memberRepository;
         this.achievementHistoryRepository = achievementHistoryRepository;
         this.achievementRepository = achievementRepository;
         this.tutorInfoRepository = tutorInfoRepository;
+        this.attachedFileRepository = attachedFileRepository;
     }
 
     @Test
@@ -118,5 +123,20 @@ public class ProfileRepositoryTest {
         //when
         assertNotNull(achievementList);
         achievementList.forEach(System.out::println);
+    }
+
+    @Test
+    public void 사용자_프로필_파일_삭제_테스트_메서드() {
+
+        //given
+        int memberNo = 14;
+        String division = "프로필";
+
+        //when
+        AttachedFile attachedFile = attachedFileRepository.findByMemberNoAndDivision(memberNo, division);
+
+        //then
+        assertNotNull(attachedFile);
+
     }
 }

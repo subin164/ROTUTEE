@@ -56,7 +56,7 @@ public class AttachedFile {
     private String fileDeletionYn;
 
     @JoinColumn(name = "MEMBER_NO")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
     public AttachedFile() {}

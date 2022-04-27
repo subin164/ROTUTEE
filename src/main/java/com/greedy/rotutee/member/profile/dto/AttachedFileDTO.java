@@ -1,6 +1,6 @@
 package com.greedy.rotutee.member.profile.dto;
 
-import com.greedy.rotutee.member.member.entity.Member;
+import com.greedy.rotutee.member.member.dto.MemberDTO;
 import lombok.*;
 
 
@@ -30,6 +30,7 @@ public class AttachedFileDTO {
     private String thumbnailAttachedFileName;
     private String storagePath;
     private String thumbnailFilePath;
+    private String division;
     private String fileDeletionYn;
-    private Member member;
+    private MemberDTO member;
 }
