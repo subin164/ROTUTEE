@@ -1,6 +1,7 @@
 package com.greedy.rotutee.dashboard.lms.service;
 
 import com.greedy.rotutee.dashboard.lms.dto.LMSDashboardDTO;
+import com.greedy.rotutee.dashboard.lms.dto.ToDoDTO;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.service
@@ -14,7 +15,8 @@ import com.greedy.rotutee.dashboard.lms.dto.LMSDashboardDTO;
  * 2022-04-19 SeoYoung 최초 생성
  */
 public interface LMSDashboardService {
-    LMSDashboardDTO findLMSDashboard(int memberNo);
+    LMSDashboardDTO findLMSDashboard(ToDoDTO todo);
+
 
 
 }

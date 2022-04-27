@@ -3,17 +3,18 @@
   <component name="JavaDocConfiguration">
     <GENERAL>
       <MODE>UPDATE</MODE>
-      <OVERRIDDEN_METHODS>false</OVERRIDDEN_METHODS>
+      <OVERRIDDEN_METHODS>true</OVERRIDDEN_METHODS>
       <SPLITTED_CLASS_NAME>true</SPLITTED_CLASS_NAME>
       <LEVELS>
+        <LEVEL>TYPE</LEVEL>
         <LEVEL>METHOD</LEVEL>
         <LEVEL>FIELD</LEVEL>
-        <LEVEL>TYPE</LEVEL>
       </LEVELS>
       <VISIBILITIES>
-        <VISIBILITY>DEFAULT</VISIBILITY>
-        <VISIBILITY>PROTECTED</VISIBILITY>
         <VISIBILITY>PUBLIC</VISIBILITY>
+        <VISIBILITY>PROTECTED</VISIBILITY>
+        <VISIBILITY>DEFAULT</VISIBILITY>
+        <VISIBILITY>PRIVATE</VISIBILITY>
       </VISIBILITIES>
     </GENERAL>
     <TEMPLATES>
@@ -78,6 +79,8 @@
           <KEY>^.*(public|protected|private)*\s*.*(\w(\s*&lt;.+&gt;)*)+\s+get\w+\s*\(.*\).+</KEY>
           <VALUE>/**\n
  * Gets ${partName}.\n
+* author : SeoYoung Kim\n
+* description   : \n
 &lt;#if element.typeParameters?has_content&gt;         * \n
 &lt;/#if&gt;
 &lt;#list element.typeParameters as typeParameter&gt;
@@ -148,29 +151,32 @@
         <METHOD>
           <KEY>.+</KEY>
           <VALUE>/**\n
- * ${name}&lt;#if isNotVoid&gt; ${return}&lt;/#if&gt;.\n
-&lt;#if element.typeParameters?has_content&gt;         * \n
+* methodName 	        : ${element.getName()}\n
+* author                   : SeoYoung Kim\n
+* description             : \n
+ &lt;#if element.typeParameters?has_content&gt;
+* \n
 &lt;/#if&gt;
 &lt;#list element.typeParameters as typeParameter&gt;
-         * @param &lt;${typeParameter.name}&gt; the type parameter\n
+	* @param &lt;${typeParameter.name}&gt; the type parameter\n
 &lt;/#list&gt;
 &lt;#if element.parameterList.parameters?has_content&gt;
-         *\n
+	*\n
 &lt;/#if&gt;
 &lt;#list element.parameterList.parameters as parameter&gt;
-         * @param ${parameter.name} the ${paramNames[parameter.name]}\n
+	* @param ${paramNames[parameter.name]}\n
 &lt;/#list&gt;
 &lt;#if isNotVoid&gt;
-         *\n
-         * @return the ${return}\n
+	*\n
+	* @return ${return}\n
 &lt;/#if&gt;
 &lt;#if element.throwsList.referenceElements?has_content&gt;
-         *\n
+	*\n
 &lt;/#if&gt;
 &lt;#list element.throwsList.referenceElements as exception&gt;
-         * @throws ${exception.referenceName} the ${exceptionNames[exception.referenceName]}\n
+	* @throws ${exception.referenceName} the ${exceptionNames[exception.referenceName]}\n
 &lt;/#list&gt;
- */</VALUE>
+*/</VALUE>
         </METHOD>
       </METHODS>
       <FIELDS>

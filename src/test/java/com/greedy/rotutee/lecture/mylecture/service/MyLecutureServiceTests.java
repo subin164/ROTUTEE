@@ -3,6 +3,9 @@ package com.greedy.rotutee.lecture.mylecture.service;
 import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
 import com.greedy.rotutee.config.RotuteeApplication;
+import com.greedy.rotutee.dashboard.lms.dto.LMSLatelyViewDTO;
+import com.greedy.rotutee.dashboard.lms.entity.LMSLatelyViewClass;
+import com.greedy.rotutee.dashboard.lms.repository.LMSLatelyViewRepository;
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.DashboardLectureDTO;
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.DashboardMemberLectureDTO;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardCompletedLecture;
@@ -47,6 +50,8 @@ public class MyLecutureServiceTests {
     private ModelMapper modelMapper;
     @Autowired
     private DashboardLectureRepository lectureRepository;
+    @Autowired
+    private LMSLatelyViewRepository lmsLatelyViewRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -137,6 +142,9 @@ public class MyLecutureServiceTests {
         }
         //then
         assertNotNull(learning);
+        for (DashboardLectureDTO dashboardLectureDTO : learning) {
+            System.out.println("dashboardLectureDTO = " + dashboardLectureDTO);
+        }
 
             
 
@@ -149,7 +157,7 @@ public class MyLecutureServiceTests {
         int memberNo = 27;
 
 
-
-
     }
+
+
 }

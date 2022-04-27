@@ -6,33 +6,31 @@ import java.sql.Date;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.dto
- * fileName : LMSNoticeBoardDTO
+ * fileName : ToDoDTO
  * author : SeoYoung
- * date : 2022-04-22
+ * date : 2022-04-25
  * description :
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
- * 2022-04-22 SeoYoung 최초 생성
+ * 2022-04-25 SeoYoung 최초 생성
  */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@Builder
-public class LMSNoticeBoardDTO {
-    private int boardNo;
-    private String title;
+public class ToDoDTO {
+
+    private int todoNo;
     private String content;
-    private Date createdDate;
-    private Date modifiedDate;
-    private Date deletedDate;
-    private String deleteStatus;
-    private int count;
-    private int categoryNo;
+    private Date registedDate;
+    private String achievementStatus;
+    private int lectureNo;
+    private int memberLectureNo;
     private int memberNo;
-    private int reportCount;
-    private String secretStatus;
+    private int dailyProgress;
+    private int weekProgress;
+    private int monthProgress;
 
 }

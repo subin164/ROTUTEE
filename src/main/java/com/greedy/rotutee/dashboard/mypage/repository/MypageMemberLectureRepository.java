@@ -18,5 +18,8 @@ import java.util.List;
  * 2022-04-24 SeoYoung 최초 생성
  */
 public interface MypageMemberLectureRepository extends JpaRepository<MyPageMemberLecture, Integer> {
- List<MyPageMemberLecture> findBymember(DashboardMember member);
+
+    List<MyPageMemberLecture> findBymember(DashboardMember member);
+
+    MyPageMemberLecture findByLectureLectureNoAndMemberMemberNo(int lectureNo, int memberNo);
 }

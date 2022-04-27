@@ -1,5 +1,7 @@
 package com.greedy.rotutee.dashboard.lms.dto;
 
+import com.greedy.rotutee.dashboard.mypage.dto.tutee.DashboardLectureWatchDTO;
+import com.greedy.rotutee.dashboard.mypage.dto.tutee.DashboardMemberDTO;
 import lombok.*;
 
 import java.util.List;
@@ -22,8 +24,11 @@ import java.util.List;
 @ToString
 public class LMSDashboardDTO {
 
-    List<LMSNoticeBoardDTO> noticeBoardList;
-    List<LMSNormalBoardDTO> normalBoardList;
+    private List<ToDoDTO> todos;
+    private List<LMSNoticeBoardDTO> noticeBoards;
+    private List<LMSNormalBoardDTO> normalBoards;
+    private List<LMSLatelyViewDTO> watching;
+    private DashboardMemberDTO member;
 
 
 }

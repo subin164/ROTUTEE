@@ -1,10 +1,498 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 
+    <!-- font-family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+    <!-- font-awesome -->
+    <script src="https://kit.fontawesome.com/621489de5f.js" crossorigin="anonymous"></script>
+
+    <!-- button -->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/css/button.css}">
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Lato:300);
+
+
+        .wrap {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+
+        }
+
+        .container2 {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .container3 {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .todo {
+            box-shadow: 3px 3px 3px 3px rgb(219, 219, 219);
+            width: 350px;
+            height: 520px;
+            margin: 20px;
+            position: relative;
+            text-align: center;
+
+        }
+
+        .addtodo {
+            position: absolute;
+            bottom: 0;
+        }
+
+        .add-input {
+            border: solid 1px rgb(219, 219, 219);
+            width: 250px;
+            height: 25px;
+            margin-right: 0;
+        }
+
+        .board {
+            box-shadow: 3px 3px 3px 3px rgb(219, 219, 219);
+            width: 500px;
+            height: 250px;
+            margin: 20px;
+            margin-bottom: 0px;
+        }
+
+        .all-board {
+            position: absolute;
+            z-index: 1;
+            left: 57%;
+        }
+
+        .profile {
+            box-shadow: 3px 3px 3px 3px rgb(219, 219, 219);
+            width: 350px;
+            height: 520px;
+            margin: 20px;
+            margin-bottom: 10px;
+        }
+
+        .todo-progress {
+            box-shadow: 3px 3px 3px 3px rgb(219, 219, 219);
+            width: 350px;
+            height: 310px;
+            margin: 20px;
+            margin-top: 0px;
+        }
+
+        .progressbar {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #3583D3;
+
+        }
+
+        .progress-category {
+            margin-top: 10px;
+            display: block;
+        }
+
+        #progress {
+            appearance: none;
+            margin: 10px;
+        }
+
+        #progress::-webkit-progress-bar {
+            background: #f0f0f0;
+            border-radius: 10px;
+            box-shadow: inset 3px 3px 10px #ccc;
+        }
+
+        #progress::-webkit-progress-value {
+            border-radius: 10px;
+            background: #5b97f1;
+            background: -webkit-linear-gradient(to right, #b1cbf1, #5b97f1);
+            background: linear-gradient(to right, #b1cbf1, #5b97f1);
+        }
+
+        .current-lecture {
+
+            box-shadow: 3px 3px 3px 3px rgb(219, 219, 219);
+            width: 500px;
+            height: 310px;
+            margin: 20px;
+            margin-top: 0px;
+
+        }
+
+        /* Calendar CSS */
+        .calendar {
+
+            width: 350px;
+            height: 310px;
+            margin: 20px;
+            margin-top: 0px;
+        }
+
+        #calendar {
+            width: 350px;
+            margin: 0 auto;
+            background: #ccc;
+            font-family: Lato, sans-serif;
+            font-weight: 300;
+        }
+
+        #calendar h2 {
+            line-height: 100px;
+            margin: 0;
+            font-weight: 300;
+            color: #fff;
+            background: #4f93c8;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        #calendar table {
+            width: 100%;
+            margin-top: -42px;
+            border-collapse: collapse;
+        }
+
+        #calendar .week-days {
+            color: #fff;
+
+        }
+
+        #calendar .day {
+            width: 70px;
+            height: 40px;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        #calendar .week .day {
+            background: #eee;
+        }
+
+        #calendar .other-month {
+            opacity: 0.5;
+        }
+
+        .line {
+
+            background-color: #3583D3 !important;
+            width: 80%;
+            border: 0;
+            margin: auto;
+
+
+        }
+
+        input[type=date]::-webkit-datetime-edit {
+            -webkit-appearance: none;
+            display: none;
+        }
+
+        .date {
+            margin-left: 10px;
+        }
+
+        input {
+            border: none;
+            margin: 10px;
+        }
+
+        .profileInfo {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 14px;
+        }
+
+        .header {
+            margin: auto;
+            text-align: center;
+        }
+
+        /* Float button */
+        .float {
+            display: inline-block;
+            transition-duration: 0.3s;
+            transition-property: transform;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            transform: translateZ(0);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        }
+
+        .float:hover {
+            transform: translateY(-5px);
+        }
+
+        .todo-content {
+            width: 100%;
+            height: 80%;
+            overflow: auto;
+            margin-top: 15px;
+        }
+
+        .content {
+            margin-top: 15px;
+        }
+
+        .head {
+            margin: 15px;
+        }
+    </style>
+</head>
+
+<body>
+<div th:include="common/lmssidebar.html"></div>
+<div class="wrap">
+    <div class="container">
+        <div class="todo">
+            <div class="header">
+                <div class="head">
+                    <span style="color: #3583D3;"> Daily ToDo List </span>
+                    <input class="date" type="date"/>
+                </div>
+                <hr class="line">
+            </div>
+            <div class="todo-content">
+                <div th:each="todo : ${ dashboard.todos }">
+                    <input style="margin: 10px;" type="checkbox" name="todo" th:text="${todo.content}">
+                </div>
+            </div>
+            <div class="addtodo">
+                <input class="add-input" type="text">
+                <!-- <button class="button float">추가</button> -->
+                <button class="w-btn w-btn-gra1 add-btn">
+                    BUTTON
+                </button>
+            </div>
+        </div>
+        <div class="container2">
+            <div class="board">
+                <div class="header">
+                    <div class="head">
+                        <span style="color: #3583D3; margin-bottom: 15px;">공지사항</span>
+                        <button class="w-btn w-btn-gra1 w-btn-gra-anim all-board">
+                            전체보기
+                        </button>
+                    </div>
+                    <hr class="line">
+                </div>
+                <div class="content">
+                    <th:block th:each="notice : ${dashboard.noticeBoards}">
+                        <p th:text="${notice.title}"></p>
+                    </th:block>
+                </div>
+            </div>
+            <div class="board">
+                <div class="header">
+                    <div class="head">
+                        <span style="color: #3583D3;">일반게시판</span>
+                        <button class="w-btn w-btn-gra1 w-btn-gra-anim all-board">
+                            전체보기
+                        </button>
+                    </div>
+                    <hr class="line">
+                </div>
+                <div class="content">
+                    <th:block th:each="normal : ${dashboard.normalBoards}">
+                        <p th:text="${normal.title}"></p>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+        <div class="profile">
+            <div class="header">
+                <span style="color: #3583D3;">Profile</span>
+                <hr class="line">
+            </div>
+            <div class="content">
+                <img th:src="@{/sy/images/profile.PNG}" style="width: 250px; height: 200px;">
+            </div>
+            <div style="text-align: left; padding-left: 50px;">
+                <div class="profileInfo">
+                    <span>닉네임 : </span>
+                    <span name="nickname" th:text="${dashboard.member.nickname}"></span><br>
+                </div>
+                <div class="profileInfo">
+                    <span>이메일 : </span>
+                    <span name="email" th:text="${dashboard.member.email}">abcdefg@naver.com</span><br>
+                </div>
+                <div class="profileInfo">
+                    <span>자기소개 : </span>
+                    <span name="info" th:text="${dashboard.member.introduction}"></span><br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container3">
+        <div class="todo-progress">
+            <div class="header">
+                <div class="head">
+                    <div class="head">
+                        <span style="color: #3583D3;">ToDo Progress</span>
+                    </div>
+                    <hr class="line">
+                </div>
+            </div>
+            <div class="progressbar">
+                <div class="progress-title">
+                    <span class="progress-category">Daily</span>
+                    <progress class="progressbar" value="100" min="0" max="100"></progress>
+                </div>
+                <div class="progress-title">
+                    <span class="progress-category">Week</span>
+                    <progress class="progressbar" value="70" min="0" max="100"></progress>
+                </div>
+
+                <div class="progress-title">
+                    <span class="progress-category">Month</span>
+                    <progress class="progressbar" value="50" min="0" max="100"></progress>
+                </div>
+            </div>
+        </div>
+        <div class="current-lecture">
+            <div class="header">
+                <div class="head">
+                    <span style="color: #3583D3;">최근 강의</span>
+                    <button class="w-btn w-btn-gra1 w-btn-gra-anim all-board">
+                        전체보기
+                    </button>
+                </div>
+                <hr class="line">
+            </div>
+            <div class="content">
+                <th:block th:each="watch : ${dashboard.watching}">
+                    <p th:text="${watch.lmsClass.className}"></p>
+                </th:block>
+            </div>
+        </div>
+        <div class="calendar">
+            <div id="calendar">
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    function Calendar(month, year) {
+        var now = new Date();
+
+        // labels for week days and months
+        var days_labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            months_labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                'October', 'November', 'December'
+            ];
+
+        // test if input date is correct, instead use current month
+        this.month = (isNaN(month) || month == null) ? now.getMonth() + 1 : month;
+        this.year = (isNaN(year) || year == null) ? now.getFullYear() : year;
+
+        var logical_month = this.month - 1;
+
+        // get first day of month and first week day
+        var first_day = new Date(this.year, logical_month, 1),
+            first_day_weekday = first_day.getDay() == 0 ? 7 : first_day.getDay();
+
+        // find number of days in month
+        var month_length = new Date(this.year, this.month, 0).getDate(),
+            previous_month_length = new Date(this.year, logical_month, 0).getDate();
+
+        // calendar header
+        var html = '<h2>' + months_labels[logical_month] + ' ' + this.year + '</h2>';
+
+        // calendar content
+        html += '<table class="calendar-table">';
+
+        // week days labels row
+        html += '<thead>';
+        html += '<tr class="week-days">';
+        for (var i = 0; i <= 6; i++) {
+            html += '<th class="day">';
+            html += days_labels[i];
+            html += '</th>';
+        }
+        html += '</tr>';
+        html += '</thead>';
+
+        // define default day variables
+        var day = 1, // current month days
+            prev = 1, // previous month days
+            next = 1; // next month days
+
+        html += '<tbody>';
+        html += '<tr class="week">';
+        // weeks loop (rows)
+        for (var i = 0; i < 9; i++) {
+            // weekdays loop (cells)
+            for (var j = 1; j <= 7; j++) {
+                if (day <= month_length && (i > 0 || j >= first_day_weekday)) {
+                    // current month
+                    html += '<td class="day">';
+                    html += day;
+                    html += '</td>';
+                    day++;
+                } else {
+                    if (day <= month_length) {
+                        // previous month
+                        html += '<td class="day other-month">';
+                        html += previous_month_length - first_day_weekday + prev + 1;
+                        html += '</td>';
+                        prev++;
+                    } else {
+                        // next month
+                        html += '<td class="day other-month">';
+                        html += next;
+                        html += '</td>';
+                        next++;
+                    }
+                }
+            }
+
+            // stop making rows if it's the end of month
+            if (day > month_length) {
+                html += '</tr>';
+                break;
+            } else {
+                html += '</tr><tr class="week">';
+            }
+        }
+        html += '</tbody>';
+        html += '</table>';
+
+        return html;
+    }
+
+    // document.getElementById('calendar').innerHTML = Calendar(12, 2015);
+    document.getElementById('calendar').innerHTML = Calendar();
+
+
+    let todos = /*[[ ${dashboard.todos} ]]*/ "";
+
+    console.log(todos);
+
+    for (let i = 0; i < todos.length; i++) {
+        const checkStatus = todos[i].achievementStatus;
+
+        console.log(checkStatus);
+    }
+
+
+</script>
 </body>
+
 </html>
