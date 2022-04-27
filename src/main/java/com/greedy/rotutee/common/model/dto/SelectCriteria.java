@@ -1,4 +1,4 @@
-package com.greedy.rotutee.common.paging;
+package com.greedy.rotutee.common.model.dto;
 
 /**
  * packageName : com.greedy.rotutee.common.paging

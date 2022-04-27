@@ -1,12 +1,9 @@
 package com.greedy.rotutee.board.freeBoard.service;
 
 
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardAnswerDTO;
 import com.greedy.rotutee.board.freeBoard.dto.FreeBoardDTO;
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoardAnswer;
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoardCategory;
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoardMember;
 import com.greedy.rotutee.board.freeBoard.repository.FreeBoardCategoryRepository;
 import com.greedy.rotutee.board.freeBoard.repository.FreeBoardRepository;
 import com.greedy.rotutee.board.freeBoard.repository.FreeBoardAnswerRepository;
@@ -17,9 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,29 +49,48 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         this.modelMapper = modelMapper;
     }
 
-
-
     @Override
-    public Page<FreeBoardDTO> findCategoryBoardList(Pageable pageable, int categoryNo) {
+    public Page<FreeBoardDTO> findCategoryBoardList(@PageableDefault Pageable pageable, int categoryNo) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,                        // pageing 정보들을 담아
                 pageable.getPageSize(),
                 Sort.by("boardNo").descending());
-
+        System.out.println("##"+pageable);
         FreeBoardCategory freeBoardCategory = categoryRepository.findById(categoryNo).get();
-//        List<FreeBoard> freeBoard = (List<FreeBoard>) freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(freeBoardCategory,'Y',pageable);
 
-//        return (Page<FreeBoardDTO>) freeBoard.stream().map(FreeBoard -> modelMapper.map(FreeBoard, FreeBoardDTO.class)).collect(Collectors.toList());
+        System.out.println("$$$" + freeBoardCategory);
+        Page<FreeBoardDTO> pageFreeBoards =freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(freeBoardCategory,'N',pageable).map(FreeBoard -> modelMapper.map(FreeBoard,FreeBoardDTO.class));
+        System.out.println("$$$" + pageFreeBoards);
+        List<FreeBoard> freeBoardDTOList = freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(freeBoardCategory, 'N');
+        System.out.println("&&&" + freeBoardDTOList);
 
-        return null;
+        return pageFreeBoards;
     }
     @Override
     public Page<FreeBoardDTO> findSearchBoardList(Pageable pageable, int categoryNo, String searchValue, String searchCondition) {
-        return null;
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(), Sort.by("boardNo").descending());
+
+        FreeBoardCategory freeBoardCategory = categoryRepository.findById(categoryNo).get();
+
+        Page<FreeBoard> freeBoards = null;
+
+        if(searchCondition.equals("title")){
+            freeBoards = freeBoardRepository.findByBoardTitleContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'Y',pageable);
+        }else if (searchCondition.equals("writer")){
+            freeBoards = freeBoardRepository.findByFreeBoardMemberContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'Y',pageable);
+
+        }else if(searchCondition.equals("content")){
+            freeBoards = freeBoardRepository.findByBoardContentContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'Y',pageable);
+        }
+
+        freeBoards.forEach(System.out::println);
+
+        return freeBoards.map(FreeBoard -> modelMapper.map(FreeBoard, FreeBoardDTO.class));
     }
 
     @Override
-
     public FreeBoardDTO selectBoardDetail(int boardNo){
 
         FreeBoard freeBoard = freeBoardRepository.findById(boardNo).get();
@@ -86,7 +102,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         return boardDTO;
     }
 
-    @Override
+   /* @Override
     public FreeBoardDTO selectBoardModify(int boardNo) {
         FreeBoard freeBoard = freeBoardRepository.findById(boardNo).get();
         FreeBoardDTO boardDTO = modelMapper.map(freeBoard, FreeBoardDTO.class);
@@ -194,6 +210,6 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         newRegistAnswer.setFreeBoardMember(freeBoardMember);
 
         freeBoardAnswerRepository.save(newRegistAnswer);
-    }
+    }*/
 
 }
