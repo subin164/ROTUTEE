@@ -1,11 +1,7 @@
 package com.greedy.rotutee.board.freeBoard.controller;
 
-import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.Authentication.service.AuthenticationService;
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardAnswerDTO;
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardCategoryDTO;
 import com.greedy.rotutee.board.freeBoard.dto.FreeBoardDTO;
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardMemberDTO;
 import com.greedy.rotutee.board.freeBoard.service.FreeBoardService;
 import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
@@ -14,14 +10,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.board.freeBoard.controller
@@ -35,60 +28,37 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("freeBoard")
+@RequestMapping("/freeBoard")
 public class FreeBoardController {
 
-
-    private FreeBoardService freeBoardService;
+    private final FreeBoardService freeBoardService;
     private final MessageSource messageSource;
     private final AuthenticationService authenticationService;
 
     @Autowired
-    public FreeBoardController(FreeBoardService freeBoardService, MessageSource messageSource, AuthenticationService authenticationService) {
+    public FreeBoardController(FreeBoardService freeBoardService, MessageSource messageSource,
+                               AuthenticationService authenticationService) {
         this.freeBoardService = freeBoardService;
         this.messageSource = messageSource;
         this.authenticationService= authenticationService;
     }
 
-    @GetMapping(value = "/list")//, produces = "application/json; charset=UTF-8"
-    public ModelAndView FreeBoardSelectList(ModelAndView mv, @PageableDefault Pageable pageable){
 
-        Page<FreeBoardDTO> boardList = freeBoardService.findCategoryBoardList(pageable,6);
-
-        System.out.println( "list"+ boardList);
-        mv.addObject("boardList", boardList);
-        mv.setViewName("board/freeBoard/list");
-        return mv;
-
-    }
-
-    @GetMapping(value = "/list/{categoryNo}")//
+    @GetMapping(value = "/list")
     public ModelAndView CategoryFreeBoardList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable)  {
-
+        int categoryNo = Integer.parseInt(request.getParameter("category"));
         String searchCondition = request.getParameter("searchCondition");
         String searchValue = request.getParameter("searchValue");
 
-        int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
 
-        System.out.println(categoryNo);
-        //Todo 뷰에서 값을 받아오면  밑에 값을 지운다. categoryNo = 4;
         Page<FreeBoardDTO> boardList = null;
         if(searchCondition != null && !"".equals(searchCondition)) {
             boardList = freeBoardService.findSearchBoardList(pageable, categoryNo,searchValue, searchCondition);
         }else{
             boardList = freeBoardService.findCategoryBoardList(pageable, categoryNo);
         }
-        System.out.println("조회한 내용 목록  : " + boardList.getContent());
-        System.out.println("총 페이지 수 : " + boardList.getTotalPages());
-        System.out.println("총 메누 수 : " + boardList.getTotalElements());
-        System.out.println("해당 페이지에 표시될 요소 수 : " + boardList.getSize());
-        System.out.println("해당 페이지의 실제 요소 수 : " + boardList.getNumberOfElements());
-        System.out.println("첫 페이지ㅣ 여부  : " + boardList.isFirst());
-        System.out.println("마지막 페이지 여부 : " + boardList.isLast());
-        System.out.println("정렬 방식 : " + boardList.getSort());
-        System.out.println("여러 페이지 중 현재 인텍스 : "+ boardList.getNumber());
 
-
+        System.out.println(boardList);
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(boardList);
 
         mv.addObject("paging", paging);
@@ -98,12 +68,12 @@ public class FreeBoardController {
 
         mv.addObject("boardList", boardList);
 
-        mv.setViewName("board/freeBoard/list");
+        mv.setViewName("board/freeboard/boardList");
 
         return mv;
     }
 
-    @GetMapping(value = "/detail/{boardNo}")
+    /*@GetMapping(value = "/detail/{boardNo}")
     public ModelAndView FreeBoardDetail(HttpServletRequest request, ModelAndView mv){
         int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 
@@ -228,5 +198,5 @@ public class FreeBoardController {
         mv.setViewName("redirect:/freeBoard/detail?"+ boardNo);
 
         return mv;
-    }
+    }*/
 }

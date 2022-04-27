@@ -1,5 +1,6 @@
 package com.greedy.rotutee.board.freeBoard.model.repository;
 
+import com.greedy.rotutee.board.freeBoard.dto.FreeBoardDTO;
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoardCategory;
 import com.greedy.rotutee.board.freeBoard.repository.FreeBoardCategoryRepository;
@@ -8,8 +9,15 @@ import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
 import com.greedy.rotutee.config.RotuteeApplication;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
@@ -36,6 +44,10 @@ public class FreeBoardRepositoryTest {
     @Autowired
     private FreeBoardCategoryRepository categoryRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
+
     @Test
     public void 레퍼지토리_의존성_테스트(){
         assertNotNull(freeBoardRepository);
@@ -50,16 +62,28 @@ public class FreeBoardRepositoryTest {
     public void 커뮤니티_카테고리_목록_조회() {
 
         //given 값을 넣어주는 곳
-        Integer categoryNo = 6;     // 6 : 공지사항, 5: 질문과 답변, 4:자유
+        Integer categoryNo = 6;     // 6 : 공지사항, 5: 질문과 답변, 4:자유\
+
+       Pageable pageable = PageRequest.of(0, 5);
+
 
         //when 값을 넣어준것에 대한 로직처리
         FreeBoardCategory categoryEntry = categoryRepository.findById(categoryNo).get();
-        System.out.println("!!!"+categoryEntry);
 
-        List<FreeBoard> freeBoardEnityList = freeBoardRepository.findByfreeBoardCategory(categoryEntry);
+        Page<FreeBoardDTO> pageFreeBoards =freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(categoryEntry,'N',pageable)
+                .map(FreeBoard -> modelMapper.map(FreeBoard,FreeBoardDTO.class));
+
 
         //then 결과
-        assertNotNull(freeBoardEnityList);
-        freeBoardEnityList.forEach(System.out::println);
+        System.out.println("카테고리 엔티티 : "+ categoryEntry);
+        System.out.println("@@ 페이징 게시판 : " + pageFreeBoards);
+
+        pageFreeBoards.forEach(System.out::println);
+        assertNotNull(pageFreeBoards);
+    }
+
+    @Test
+    public void 커뮤니티_카테고리_목록_상세_조회(){
+
     }
 }

@@ -22,7 +22,7 @@ public interface FreeBoardService {
 
    Page<FreeBoardDTO> findCategoryBoardList(Pageable pageable, int categoryNo);
 
-   FreeBoardDTO selectBoardDetail(int boardNo);
+   /*FreeBoardDTO selectBoardDetail(int boardNo);
 
    FreeBoardDTO selectBoardModify(int boardNo);
 
@@ -36,7 +36,9 @@ public interface FreeBoardService {
 
    void updateAnswer(FreeBoardAnswerDTO modifyAnswer);
 
-   void insertAnswer(FreeBoardAnswerDTO registAnswer);
+   void insertAnswer(FreeBoardAnswerDTO registAnswer);*/
 
    Page<FreeBoardDTO> findSearchBoardList(Pageable pageable, int categoryNo, String searchValue, String searchCondition);
+
+   FreeBoardDTO selectBoardDetail(int boardNo);
 }

@@ -3,6 +3,7 @@ package com.greedy.rotutee.board.freeBoard.repository;
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
 
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoardCategory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -23,8 +24,20 @@ import java.util.List;
 @Repository
 public interface FreeBoardRepository extends JpaRepository<FreeBoard, Integer> {
 
-     List<FreeBoard> findByfreeBoardCategory(FreeBoardCategory freeBoardCategory);
 
-     List<FreeBoard> findByFreeBoardCategoryAndBoardDeleteYN(FreeBoardCategory freeBoardCategory, char boardDeleteYN, Pageable pageable);
+    Page<FreeBoard> findByFreeBoardCategoryAndBoardDeleteYN(FreeBoardCategory freeBoardCategory, char boardDeleteYN, Pageable pageable);
+
+    Page<FreeBoard> findByBoardTitleContainingAndFreeBoardCategoryAndBoardDeleteYN(String searchValue, FreeBoardCategory freeBoardCategory, char y, Pageable pageable);
+
+    Page<FreeBoard> findByFreeBoardMemberContainingAndFreeBoardCategoryAndBoardDeleteYN(String searchValue, FreeBoardCategory freeBoardCategory, char y, Pageable pageable);
+
+    Page<FreeBoard> findByBoardContentContainingAndFreeBoardCategoryAndBoardDeleteYN(String searchValue, FreeBoardCategory freeBoardCategory, char y, Pageable pageable);
+
+
+
+
+    List<FreeBoard> findByFreeBoardCategoryAndBoardDeleteYN(FreeBoardCategory categoryEntry, char boardDeleteYN);
+
+    List<FreeBoard> findByBoardDeleteYN(char y);
 }
 
