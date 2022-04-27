@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script th:inline="javascript">
+    /* 비지니스 로직 성공 alert 메시지 처리 */
+    const message = [[${message}]];
+    if(message != null && message != '') {
+        alert(message);
+    }
+</script>
+<style>
+    th {
+        background-color: #f5c6cb;
+    }
+</style>
+<form action="/tutorApply/filesupload" method="post" enctype="multipart/form-data">
+    <h2>첨부파일
+        <button type="button" id="registFiles">파일 추가</button>
+        <button type="button" id="deleteFiles">파일 삭제</button>
+    </h2>
+    <table border="1px" id="files" style="width: 600px">
+        <thead>
+            <tr>
+                <th width="475px">증빙서류제출</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type='file' multiple='multiple' name='proofFiles' required></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <hr align="left" width="600px">
+    <input type="submit" style="width: 50px"><input type="button" id="endBtn" value="없음" style="width: 50px" onclick="location.href='/'"/>
+</form>
+</body>
+</html>

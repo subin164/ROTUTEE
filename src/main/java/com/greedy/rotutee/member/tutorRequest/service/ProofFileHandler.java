@@ -78,7 +78,7 @@ public class ProofFileHandler {
                 attachedFile.setThumbnailAttachedFileName(thumbnailFileName);                            // 썸네일 이름
                 attachedFile.setThumbnailFilePath(thumbnailDirectory);                                                 // 썸네일 저장경로
                 attachedFile.setStoragePath(fileUploadDirectory);                                               // 저장 경로
-                attachedFile.setDivision("프로필");                                                                // 구분
+                attachedFile.setDivision("서류");                                                                // 구분
                 attachedFile.setMember(member);                                                                  // 회원 정보
                 attachedFile.setFileDeletionYn("N");                                                            // 삭제 여부
 

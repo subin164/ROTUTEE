@@ -2,8 +2,9 @@ package com.greedy.rotutee.member.tutorRequest.service;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.member.member.entity.Member;
+import com.greedy.rotutee.member.member.entity.Role;
 import com.greedy.rotutee.member.member.repository.MemberRepository;
-import com.greedy.rotutee.member.profile.dto.AchievementDTO;
+import com.greedy.rotutee.member.member.repository.RoleRepository;
 import com.greedy.rotutee.member.profile.entity.AttachedFile;
 import com.greedy.rotutee.member.profile.repository.AttachedFileRepository;
 import com.greedy.rotutee.member.tutorRequest.dto.CareerDTO;
@@ -17,12 +18,15 @@ import com.greedy.rotutee.member.tutorRequest.repository.QualificationRepository
 import com.greedy.rotutee.member.tutorRequest.repository.TutorApplyRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * packageName : com.greedy.rotutee.member.tutorRequest.service
@@ -45,18 +49,21 @@ public class TutorRequestService {
     private final TutorApplyRepository tutorApplyRepository;
     private final MemberRepository memberRepository;
     private final ModelMapper modelMapper;
+    private final RoleRepository roleRepository;
 
 
     @Autowired
-    public TutorRequestService(AttachedFileRepository attachedFileRepository, CareerRepository careerRepository, QualificationRepository qualificationRepository, TutorApplyRepository tutorApplyRepository, MemberRepository memberRepository, ModelMapper modelMapper) {
+    public TutorRequestService(AttachedFileRepository attachedFileRepository, CareerRepository careerRepository, QualificationRepository qualificationRepository, TutorApplyRepository tutorApplyRepository, MemberRepository memberRepository, ModelMapper modelMapper, RoleRepository roleRepository) {
         this.attachedFileRepository = attachedFileRepository;
         this.careerRepository = careerRepository;
         this.qualificationRepository = qualificationRepository;
         this.tutorApplyRepository = tutorApplyRepository;
         this.memberRepository = memberRepository;
         this.modelMapper = modelMapper;
+        this.roleRepository = roleRepository;
     }
 
+    @Transactional
     public void proofFileUpload(List<AttachedFile> attachedFiles) throws Exception {
 
         if(attachedFiles.isEmpty()) {
@@ -108,15 +115,46 @@ public class TutorRequestService {
         tutorApplyRepository.save(saveTutorApply);
     }
 
-    public List<TutorApplyDTO> findTutorRequestList() {
+    public Page<TutorApplyDTO> findTutorRequestBeforeList(String status, Pageable pageable) {
 
-        List<TutorApply> tutorApplyList = tutorApplyRepository.findAll();
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("applyHistoryNo").descending());
 
-        return tutorApplyList.stream().map(tutorApply -> modelMapper.map(tutorApply, TutorApplyDTO.class)).collect(Collectors.toList());
+        return tutorApplyRepository.findByApplyYn(status, pageable).map(tutorApply -> modelMapper.map(tutorApply, TutorApplyDTO.class));
+    }
+
+    public Page<TutorApplyDTO> findTutorRequestAfterList(String status, Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("applyHistoryNo").descending());
+
+        return tutorApplyRepository.findByApplyYnNot(status, pageable).map(tutorApply -> modelMapper.map(tutorApply, TutorApplyDTO.class));
     }
 
     public TutorApplyDTO findTutorRequestDetail(int historyNo) {
 
         return modelMapper.map(tutorApplyRepository.findById(historyNo).get(), TutorApplyDTO.class);
+    }
+
+
+    @Transactional
+    public void rejectTutorApply(int historyNo) {
+
+        TutorApply tutorApply = tutorApplyRepository.findById(historyNo).get();
+
+        tutorApply.setApplyYn("거절");
+    }
+
+    @Transactional
+    public void approvedTutorApply(int historyNo) {
+
+        TutorApply tutorApply = tutorApplyRepository.findById(historyNo).get();
+        Member member = memberRepository.findById(tutorApply.getMember().getNo()).get();
+        Role role = roleRepository.findById(4).get();
+
+        member.getMemberRoleList().get(0).setRole(role);
+        tutorApply.setApplyYn("승인");
     }
 }

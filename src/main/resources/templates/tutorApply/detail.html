@@ -7,35 +7,41 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <style>
+    input {
+        width: 90%;
+        border: none;
+    }
+    table {
+
+    }
     th {
-        background-color: #b9bbbe;
+        background-color: #f5c6cb;
     }
 </style>
 <body>
     <p><h1>튜터 신청서</h1></p>
-    <table border="1px">
+    <br><hr align="left" width="40%">
+    <h2>인적사항</h2>
+    <table border="1px" width="600px">
         <tr>
-            <th width="30px" rowspan="2">인적사항</th>
             <th>이름</th>
             <th>이메일</th>
             <th>휴대폰</th>
-            <th>주소</th>
         </tr>
         <tr>
-            <td width="150px" height="40px" th:text="${ tutorApply.member.name }"></td>
+            <td width="150px" th:text="${ tutorApply.member.name }"></td>
             <td width="200px" th:text="${ tutorApply.member.email }"></td>
             <td width="200px" th:text="${ tutorApply.member.phoneNum }"></td>
         </tr>
     </table>
-    <br>
-    <button type="button" id="registCareer">추가</button>
-    <table border="1px" id="career">
+    <br><hr align="left" width="40%">
+    <h2>경력사항</h2>
+    <table border="1px" id="career" width="600px">
         <tr>
-            <th width="30px" rowspan="6">경력사항</th>
-            <th colspan="2">근무 기간</th>
-            <th>근무처</th>
-            <th>직급</th>
-            <th>담당업무</th>
+            <th colspan="2" width="30%">근무 기간</th>
+            <th width="30%">근무처</th>
+            <th width="15%">직급</th>
+            <th width="25">담당업무</th>
         </tr>
         <tr th:each="career : ${ tutorApply.careerList }">
             <td th:text=" ${ career.startDate }"></td>
@@ -45,13 +51,12 @@
             <td th:text=" ${ career.responsibilities }"></td>
         </tr>
     </table>
-    <br>
-    <button type="button" id="registQualification">추가</button>
-    <table border="1px" id="qualification">
+    <br><hr align="left" width="40%">
+    <h2>자격사항</h2>
+    <table border="1px" id="qualification" width="600px">
         <tr>
-            <th width="30px" rowspan="6">자격사항</th>
-            <th>취득 일자</th>
-            <th>자격 및 교육명</th>
+            <th width="30%">취득 일자</th>
+            <th width="50%">자격 및 교육명</th>
             <th>등급</th>
         </tr>
         <tr th:each="qualification : ${ tutorApply.qualificationList }">
@@ -60,7 +65,24 @@
             <td th:text="${ qualification.rating }"></td>
         </tr>
     </table>
-<script>
+    <br><hr align="left" width="600px">
+    <button id="approvedBtn">승인하기</button> <button id="rejectBtn">거절하기</button>
+
+<script th:inline="javascript">
+
+    $("#approvedBtn").click(function() {
+
+        let historyNo = "[[${ tutorApply.applyHistoryNo }]]";
+
+        location.href="/tutorApply/approved/" + historyNo;
+    });
+
+    $("#rejectBtn").click(function() {
+
+        let historyNo = "[[${ tutorApply.applyHistoryNo }]]";
+
+        location.href="/tutorApply/reject/" + historyNo;
+    });
 
 </script>
 </body>
