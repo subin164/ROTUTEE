@@ -1,8 +1,9 @@
 package com.greedy.rotutee.dashboard.lms.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
-import com.greedy.rotutee.dashboard.lms.dto.LMSDashboardDTO;
+import com.greedy.rotutee.dashboard.lms.dto.*;
 import com.greedy.rotutee.dashboard.lms.service.LMSDashboardService;
+import com.greedy.rotutee.dashboard.mypage.dto.tutee.DashboardLectureWatchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.controller
@@ -34,14 +36,45 @@ public class LMSDashboardController {
         this.lmsDashboardService = lmsDashboardService;
     }
 
-    @GetMapping("/dashboard")
+    /**
+     * methodName : findLMSDashboard
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param mv
+     * @param customUser
+     * @param request
+     * @return model and view
+     */
+    @GetMapping("/dashboardlist")
     public ModelAndView findLMSDashboard(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser, HttpServletRequest request){
 
         int memberNo = customUser.getNo();
         int lectureNo = Integer.parseInt(request.getParameter("no"));
 
-        LMSDashboardDTO dashboard = lmsDashboardService.findLMSDashboard(memberNo);
+        ToDoDTO todo = new ToDoDTO();
+        todo.setMemberNo(memberNo);
+        todo.setLectureNo(lectureNo);
 
+        LMSDashboardDTO dashboard = lmsDashboardService.findLMSDashboard(todo);
+
+        List<ToDoDTO> todos = dashboard.getTodos();
+        for (ToDoDTO toDoDTO : todos) {
+            System.out.println("toDoDTO = " + toDoDTO);
+        }
+        List<LMSNoticeBoardDTO> notices = dashboard.getNoticeBoards();
+        for (LMSNoticeBoardDTO notice : notices) {
+            System.out.println("notice = " + notice);
+        }
+        List<LMSNormalBoardDTO> normals = dashboard.getNormalBoards();
+        for (LMSNormalBoardDTO normal : normals) {
+            System.out.println("normal = " + normal);
+        }
+        List<LMSLatelyViewDTO> watch = dashboard.getWatching();
+        for (LMSLatelyViewDTO lMSLatelyViewDTO : watch) {
+            System.out.println("dashboardLectureWatchDTO = " + lMSLatelyViewDTO);
+        }
+        mv.addObject("dashboard", dashboard);
         mv.setViewName("dashboard/lms/dashboard");
         return mv;
     }

@@ -23,14 +23,14 @@ import java.sql.Date;
 @Builder
 public class LMSNormalBoardDTO {
 
-    private int no;
+    private int boardNo;
     private String title;
     private String content;
     private Date createdDate;
     private Date modifiedDate;
     private Date deletedDate;
     private String deleteStatus;
-    private int viewCount;
+    private int count;
     private int categoryNo;
     private int memberNo;
     private int reportCount;

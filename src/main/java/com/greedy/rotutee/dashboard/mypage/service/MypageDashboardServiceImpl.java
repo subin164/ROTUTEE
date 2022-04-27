@@ -78,13 +78,29 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
         return dashboard;
     }
 
-    /* 프로필 조회용 */
+    /**
+     * Gets profile.
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param memberNo the member no
+     * @return the profile
+     */
     private DashboardMemberDTO getProfile(int memberNo) {
         DashboardMember memberEntity = memberRepository.findById(memberNo).get();
         DashboardMemberDTO member = modelMapper.map(memberEntity, DashboardMemberDTO.class);
 
         return member;
     }
+
+    /**
+     * Gets boards.
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param memberNo the member no
+     * @return the boards
+     */
     /* 작성게시물 조회용 */
     private List<DashboardBoardDTO> getBoards(int memberNo) {
 
@@ -112,6 +128,15 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
         }
         return boards;
     }
+
+    /**
+     * Gets baskets.
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param memberNo the member no
+     * @return the baskets
+     */
     /* 수강바구니 조회용 */
     private List<DashboardBasketDTO> getBaskets(int memberNo) {
 
@@ -135,6 +160,15 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
         }
         return baskets;
     }
+
+    /**
+     * Gets notices.
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param memberNo the member no
+     * @return the notices
+     */
     /* 알림 조회용 */
     private List<DashboardNoticeDTO> getNotices(int memberNo) {
 
@@ -160,6 +194,15 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
 
         return notices;
     }
+
+    /**
+     * Gets watch list.
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param memberNo the member no
+     * @return the watch list
+     */
     /* 최근 시청강의 조회용 */
     private List<DashboardLectureWatchDTO> getWatchList(int memberNo) {
 
@@ -178,6 +221,15 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
 
         return watchList;
     }
+
+    /**
+     * Gets lectures.
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param memberNo the member no
+     * @return the lectures
+     */
     /* 시청 완료강의 조회용 */
     private List<DashboardLectureDTO> getcompletedLectures(int memberNo) {
 
@@ -245,6 +297,14 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
         return completedLectures;
     }
 
+    /**
+     * methodName : findTutorDashboard
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param memberNo
+     * @return mypage tutor dto
+     */
     @Override
     public MypageTutorDTO findTutorDashboard(int memberNo) {
 
