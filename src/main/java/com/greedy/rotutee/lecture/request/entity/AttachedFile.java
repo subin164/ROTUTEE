@@ -1,9 +1,6 @@
 package com.greedy.rotutee.lecture.request.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity(name = "Request_AttachedFile")
 @Table(name = "TBL_ATTACHED_FILE")
@@ -34,22 +31,22 @@ public class AttachedFile {
     @Column(name = "FILE_DELETION_YN")
     private String fileDeletionYN;
 
-    @Column(name = "MEMBER_NO")
-    private Integer memberNo;
+    @JoinColumn(name = "MEMBER_NO")
+    @ManyToOne
+    private Member member;
 
-    @Column(name = "BOARD_NO")
-    private Integer boardNo;
+    @JoinColumn(name = "LECTURE_NO")
+    @ManyToOne
+    private Lecture lecture;
 
-    @Column(name = "LECTURE_NO")
-    private Integer lectureNo;
-
-    @Column(name = "DOCUMENT_NO")
-    private Integer documentNo;
+    @JoinColumn(name = "CLASS_NO")
+    @ManyToOne
+    private Class classes;
 
     public AttachedFile() {
     }
 
-    public AttachedFile(int attachedFileNo, String originalAttachedFileName, String saveAttachedFileName, String thumbnailFileName, String storageFile, String thumbnailFilePath, String division, String fileDeletionYN, Integer memberNo, Integer boardNo, Integer lectureNo, Integer documentNo) {
+    public AttachedFile(int attachedFileNo, String originalAttachedFileName, String saveAttachedFileName, String thumbnailFileName, String storageFile, String thumbnailFilePath, String division, String fileDeletionYN, Member member, Lecture lecture, Class classes) {
         this.attachedFileNo = attachedFileNo;
         this.originalAttachedFileName = originalAttachedFileName;
         this.saveAttachedFileName = saveAttachedFileName;
@@ -58,10 +55,9 @@ public class AttachedFile {
         this.thumbnailFilePath = thumbnailFilePath;
         this.division = division;
         this.fileDeletionYN = fileDeletionYN;
-        this.memberNo = memberNo;
-        this.boardNo = boardNo;
-        this.lectureNo = lectureNo;
-        this.documentNo = documentNo;
+        this.member = member;
+        this.lecture = lecture;
+        this.classes = classes;
     }
 
     public int getAttachedFileNo() {
@@ -128,36 +124,20 @@ public class AttachedFile {
         this.fileDeletionYN = fileDeletionYN;
     }
 
-    public Integer getMemberNo() {
-        return memberNo;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberNo(Integer memberNo) {
-        this.memberNo = memberNo;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
-    public Integer getBoardNo() {
-        return boardNo;
+    public Class getClasses() {
+        return classes;
     }
 
-    public void setBoardNo(Integer boardNo) {
-        this.boardNo = boardNo;
-    }
-
-    public Integer getLectureNo() {
-        return lectureNo;
-    }
-
-    public void setLectureNo(Integer lectureNo) {
-        this.lectureNo = lectureNo;
-    }
-
-    public Integer getDocumentNo() {
-        return documentNo;
-    }
-
-    public void setDocumentNo(Integer documentNo) {
-        this.documentNo = documentNo;
+    public void setClasses(Class classes) {
+        this.classes = classes;
     }
 
     @Override
@@ -171,10 +151,17 @@ public class AttachedFile {
                 ", thumbnailFilePath='" + thumbnailFilePath + '\'' +
                 ", division='" + division + '\'' +
                 ", fileDeletionYN='" + fileDeletionYN + '\'' +
-                ", memberNo=" + memberNo +
-                ", boardNo=" + boardNo +
-                ", lectureNo=" + lectureNo +
-                ", documentNo=" + documentNo +
+                ", member=" + member +
+                ", lecture=" + lecture +
+                ", classes=" + classes +
                 '}';
+    }
+
+    public Lecture getLecture() {
+        return lecture;
+    }
+
+    public void setLecture(Lecture lecture) {
+        this.lecture = lecture;
     }
 }

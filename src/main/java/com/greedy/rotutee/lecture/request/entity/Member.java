@@ -53,11 +53,14 @@ public class Member {
     private String rouletteChance;
 
     @OneToMany(mappedBy = "member")
-    List<MemberRole> memberRoleList;
+    private List<MemberRole> memberRoleList;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST)
+    private List<AttachedFile> fileList;
 
     public Member() {}
 
-    public Member(int no, String name, String email, String pwd, String nickname, String phoneNum, String introduction, Date registrationDate, Date withdrawalDate, String leaveStatusYn, String rouletteChance, List<MemberRole> memberRoleList) {
+    public Member(int no, String name, String email, String pwd, String nickname, String phoneNum, String introduction, Date registrationDate, Date withdrawalDate, String leaveStatusYn, String rouletteChance, List<MemberRole> memberRoleList, List<AttachedFile> fileList) {
         this.no = no;
         this.name = name;
         this.email = email;
@@ -70,6 +73,7 @@ public class Member {
         this.leaveStatusYn = leaveStatusYn;
         this.rouletteChance = rouletteChance;
         this.memberRoleList = memberRoleList;
+        this.fileList = fileList;
     }
 
     public int getNo() {
@@ -166,6 +170,14 @@ public class Member {
 
     public void setMemberRoleList(List<MemberRole> memberRoleList) {
         this.memberRoleList = memberRoleList;
+    }
+
+    public List<AttachedFile> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<AttachedFile> fileList) {
+        this.fileList = fileList;
     }
 
     @Override

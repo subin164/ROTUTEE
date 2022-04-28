@@ -10,4 +10,10 @@ import java.util.List;
 @Repository
 public interface RequestLectureRepository extends JpaRepository<Lecture, Integer> {
     List<Lecture> findByTutor(Member tutor);
+
+    List<Lecture> findByLectureApprovalStatus(String status);
+
+    List<Lecture> findByLectureApprovalStatusOrLectureApprovalStatus(String status1, String status2);
+
+    Lecture findByLectureNo(int lectureNo);
 }

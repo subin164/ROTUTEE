@@ -26,7 +26,7 @@
                 <div class="card-list d-flex">
                     <div class="card" style="width: 20rem;" th:each="lecture : ${lectureList}">
                         <input type="hidden" id="lectureNo" name="lectureNo" th:value="${lecture.lectureNo}">
-                        <img th:src="${lecture.thumbnailPath}" class="card-img-top" alt="...">
+                        <img th:src="${lecture}" class="card-img-top" alt="...">
                         <p style="font-size: large; margin-top: 10px; margin-left: 10px;" th:text="${lecture.lectureName}"></p>
                         <div class="card-body">
                             <th:block th:if="${lecture.lectureApprovalStatus == '승인'}">

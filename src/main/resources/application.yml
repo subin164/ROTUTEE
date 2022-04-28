@@ -12,10 +12,10 @@ spring:
     hikari:
       auto-commit: false
 
-    servlet:
-      multipart:
-        max-file-size: 50MB
-        max-request-size: 500MB
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 500MB
 # jpa config
   jpa:
     generate-ddl: false

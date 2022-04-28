@@ -7,9 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/request")
@@ -46,21 +50,23 @@ public class LectureRequestController {
                                                                        , @RequestParam int categoryNo
                                                                        , @AuthenticationPrincipal CustomUser customUser) {
 
+        System.out.println(newLecture.getFileList());
         List<ChapterDTO> chapterList = newLecture.getChapterList();
-        System.out.println("newLecture = " + newLecture);
-        System.out.println("chapterList = " + chapterList);
         for(ChapterDTO chapter : chapterList) {
             List<ClassDTO> classList = chapter.getClassList();
-            System.out.println("classList = " + classList);
 
             for(ClassDTO classDTO : classList) {
-                List<QuizDTO> quizList = classDTO.getQuizList();
-                System.out.println("quizList = " + quizList);
+                List<MultipartFile> fileList = classDTO.getFileList();
+
+                for(MultipartFile file : fileList) {
+
+                }
             }
         }
 
+
         int memberNo = customUser.getNo();
-        lectureRequestService.registLectureOpeningApplication(newLecture, categoryNo, memberNo);
+//      lectureRequestService.registLectureOpeningApplication(newLecture, categoryNo, memberNo);
 
         mv.setViewName("redirect:/request/list");
         return mv;
@@ -69,7 +75,33 @@ public class LectureRequestController {
     @GetMapping("lecturelist")
     public ModelAndView findLectureRequestList(ModelAndView mv) {
 
+        List<LectureDTO> requestList = lectureRequestService.findStatusOfLectureIsWaiting();
+        List<LectureDTO> recordList = lectureRequestService.findStatusOfLectureIsNotWaiting();
+
+        mv.addObject("requestList",requestList);
+        mv.addObject("recordList", recordList);
         mv.setViewName("request/adminlecturerequestlist");
+        return mv;
+    }
+
+    @GetMapping("lecturedetail")
+    public ModelAndView findRequestLetureDetail(ModelAndView mv, @RequestParam int lectureNo) {
+
+        LectureDTO lecture = lectureRequestService.findLectureByLectureNo(lectureNo);
+        List<ChapterDTO> chapterList = lecture.getChapterList();
+
+        mv.addObject("chapterList", chapterList);
+        mv.addObject("lecture", lecture);
+        mv.setViewName("request/lecturerequestdetail");
+        return mv;
+    }
+
+    @PostMapping("approve")
+    public ModelAndView approveRequestLecture(ModelAndView mv, @RequestParam int lectureNo) {
+
+        lectureRequestService.modifyLectureApprovalStatus(lectureNo);
+
+        mv.setViewName("redirect:/request/lecturelist");
         return mv;
     }
 }

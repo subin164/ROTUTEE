@@ -44,13 +44,14 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         List<Lecture> lectureList = requestLectureRepository.findByTutor(tutor);
 
         List<LectureDTO> lectureDTOList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
-        System.out.println("lectureDTOList = " + lectureDTOList);
         for(LectureDTO lecture : lectureDTOList) {
-            AttachedFile file = requestAttachedFileRepository.findLectureThumbnail(lecture.getLectureNo());
+            String deletion = "N";
+            String division = "강의";
+            Lecture lectureEntity = modelMapper.map(lecture, Lecture.class);
+            AttachedFile file = requestAttachedFileRepository.findByLectureAndFileDeletionYNAndDivision(lectureEntity, deletion, division);
 
             if(file != null) {
             AttachedFileDTO fileDTO = modelMapper.map(file, AttachedFileDTO.class);
-            lecture.setThumbnailPath(fileDTO.getThumbnailFilePath());
             }
         }
 
@@ -95,4 +96,40 @@ public class LectureRequestServiceImpl implements LectureRequestService{
 
 
     }
+
+    @Override
+    public List<LectureDTO> findStatusOfLectureIsWaiting() {
+
+        String status = "대기";
+        List<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatus(status);
+
+        return lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LectureDTO> findStatusOfLectureIsNotWaiting() {
+
+        String status1 = "승인";
+        String status2 = "거절";
+        List<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatusOrLectureApprovalStatus(status1, status2);
+
+        return lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public LectureDTO findLectureByLectureNo(int lectureNo) {
+
+        Lecture lectuer = requestLectureRepository.findByLectureNo(lectureNo);
+
+        return modelMapper.map(lectuer, LectureDTO.class);
+    }
+
+    @Override
+    @Transactional
+    public void modifyLectureApprovalStatus(int lectureNo) {
+
+        Lecture lecture = requestLectureRepository.findByLectureNo(lectureNo);
+        lecture.setLectureApprovalStatus("승인");
+    }
+
 }

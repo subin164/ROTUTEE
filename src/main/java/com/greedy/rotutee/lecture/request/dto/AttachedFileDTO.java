@@ -18,9 +18,8 @@ public class AttachedFileDTO {
     private String thumbnailFilePath;
     private String division;
     private String fileDeletionYN;
-    private Integer memberNo;
-    private Integer boardNo;
-    private Integer lectureNo;
-    private Integer documentNo;
-    
+    private MemberDTO member;
+    private LectureDTO lecture;
+    private ClassDTO classes;
+
 }
