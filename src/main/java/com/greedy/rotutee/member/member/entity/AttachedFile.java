@@ -1,5 +1,7 @@
 package com.greedy.rotutee.member.member.entity;
 
+import com.greedy.rotutee.member.member.entity.Member;
+
 import javax.persistence.*;
 
 /**

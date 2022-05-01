@@ -5,6 +5,8 @@ import com.greedy.rotutee.member.member.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
 import com.greedy.rotutee.member.member.dto.ReasonsDTO;
 import com.greedy.rotutee.member.member.entity.*;
+import com.greedy.rotutee.member.member.entity.AttachedFile;
+import com.greedy.rotutee.member.member.entity.MemberRole;
 import com.greedy.rotutee.member.member.repository.*;
 import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
 import org.modelmapper.ModelMapper;
@@ -195,14 +197,6 @@ public class MemberService {
         return memberRepository.findByMemberRoleListRoleNo(4, pageable).map(member -> modelMapper.map(member, MemberDTO.class));
     }
 
-    public Page<MemberDTO> findAllAdmin(Pageable pageable) {
-
-        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
-                pageable.getPageSize(),
-                Sort.by("no").descending());
-
-        return memberRepository.findByMemberRoleListRoleNo(2, pageable).map(member -> modelMapper.map(member, MemberDTO.class));
-    }
 
 
     public String findMemberStatus(int memberNo) {
@@ -251,35 +245,6 @@ public class MemberService {
         memberStatusHistory.setHistoryDate(date);
 
         memberStatusHistoryRepository.save(memberStatusHistory);
-    }
-
-    @Transactional
-    public void registAdmin(String adminEmail) {
-
-        Member member = memberRepository.findMemberByEmail(adminEmail);
-        Role adminRole = roleRepository.findById(2).get();
-
-        member.getMemberRoleList().get(0).setRole(adminRole);
-    }
-
-    @Transactional
-    public void removeAdmin(String adminEmail) {
-
-        Member member = memberRepository.findMemberByEmail(adminEmail);
-        Role adminRole = roleRepository.findById(3).get();
-
-        member.getMemberRoleList().get(0).setRole(adminRole);
-    }
-
-    public MemberDTO findSearchMember(String searchValue) {
-
-        Member saerchMember = memberRepository.findMemberByEmail(searchValue);
-
-        if(saerchMember == null) {
-            saerchMember = new Member();
-        }
-
-        return modelMapper.map(saerchMember, MemberDTO.class);
     }
 
     public List<AttachedFileDTO> findMemberAttachedFileList(int memberNo) {

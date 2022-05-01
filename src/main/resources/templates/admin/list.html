@@ -187,13 +187,13 @@
         let searchValue = $("#searchEmail").val();
 
         $.ajax({
-           url: "/member/adminregist",
+           url: "/admin/regist",
            type: "post",
             data: {"searchValue" : searchValue},
             success: function(data) {
                 alert("관리자 등록에 성공하셨습니다.");
 
-                location.href="/member/adminlist";
+                location.href="/admin/list";
             }
         });
     });
@@ -203,13 +203,13 @@
         let searchValue = $("#searchEmail").val();
 
         $.ajax({
-            url: "/member/adminremove",
+            url: "/admin/remove",
             type: "post",
             data: {"searchValue" : searchValue},
             success: function(data) {
                 alert("관리자 해임에 성공하셨습니다.");
 
-                location.href="/member/adminlist";
+                location.href="/admin/list";
             }
         });
     });
@@ -219,7 +219,7 @@
         let searchValue = $("#searchValue").val();
 
         $.ajax({
-            url: "/member/searchlist",
+            url: "/admin/search",
             type: "get",
             data: {"searchValue" : searchValue},
             success: function(data) {

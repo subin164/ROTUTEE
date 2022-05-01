@@ -1,10 +1,10 @@
-package com.greedy.rotutee.member.member.repository;
+package com.greedy.rotutee.member.admin.repository;
 
-import com.greedy.rotutee.member.member.entity.Role;
+import com.greedy.rotutee.member.admin.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository(value = "Member_RoleRepository")
+@Repository(value = "Admin_RoleRepository")
 public interface RoleRepository extends JpaRepository<Role, Integer> {
 
     Role findRoleByNo(Integer no);

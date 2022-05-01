@@ -2,12 +2,13 @@ package com.greedy.rotutee.member.profile.service;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.member.member.entity.Member;
+import com.greedy.rotutee.member.profile.repository.TutorInfo;
 import com.greedy.rotutee.member.member.repository.MemberRepository;
 import com.greedy.rotutee.member.profile.entity.*;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
-import com.greedy.rotutee.member.profile.dto.AchievementDTO;
+import com.greedy.rotutee.member.member.dto.AchievementDTO;
 import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
-import com.greedy.rotutee.member.profile.dto.TutorInfoDTO;
+import com.greedy.rotutee.member.profile.entity.TutorInfoDTO;
 import com.greedy.rotutee.member.profile.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

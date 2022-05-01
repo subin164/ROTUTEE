@@ -1,4 +1,4 @@
-package com.greedy.rotutee.member.profile.dto;
+package com.greedy.rotutee.member.member.dto;
 
 import lombok.*;
 

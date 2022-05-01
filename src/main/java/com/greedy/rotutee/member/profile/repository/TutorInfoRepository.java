@@ -1,6 +1,5 @@
 package com.greedy.rotutee.member.profile.repository;
 
-import com.greedy.rotutee.member.profile.entity.TutorInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
