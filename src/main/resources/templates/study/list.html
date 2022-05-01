@@ -79,19 +79,34 @@
                         </button>
                     </div>
                     <!-- 모집글 -->
-                    <ul th:each="studyList :${studyList}">
-                        <li class="d-flex">
-                            <div th:if="${studyList.study.getStatus()} =='Y'">
-                                <div>모집중</div>
-                            </div>
-                            <div th:if="${studyList.study.getStatus()} =='N'">
-                                <div>모집종료</div>
-                            </div>
-                            <div th:text="${studyList.study.getTitle()}"></div>
-                        </li>
-<!--                        <li th:text="${studyList.}"></li>-->
-                        </span>
-                    </ul>
+                    <div id="detailList">
+                        <ul class="my-md-5" th:each="study :${studyList}">
+                            <li style="display: none" th:text="${study.getStudyNo()}"></li>
+                            <li class="d-flex">
+                                <div class="d-flex me-md-3" th:if="${study.getRecruitStatus()} == 'Y'">
+                                    <span class="study-status" th:text="모집중"/>
+                                </div>
+                                <div th:if="${study.getRecruitStatus()} == 'N'">
+                                    <span class="study-status" th:text="모집종료"/>
+                                </div>
+                                <span class="study-title" th:text="${study.getTitle()}"></span>
+                            </li>
+                            <li class="my-md-2">
+                                <span class="study-content" th:text="${study.getContent()}"></span>
+                            </li>
+                            <li class="d-flex">
+                                <div class="ms-md-2 my-md-3" th:each="studyTagList : ${studyTagList}"
+                                     th:if=" ${studyTagList.getStudy().getStudyNo()}== ${study.getStudyNo()}">
+                                    <span class="study-tag" th:text="${studyTagList.getTag().getTagName()}"></span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="fw-bold" th:text="${study.getWriter().getNickname()}"></span>
+                            </li>
+
+                            <hr>
+                        </ul>
+                    </div>
                 </div>
 
             </div>
@@ -162,14 +177,16 @@
                             <div class="col-md-12 shadow-sm mb-md-3">
                                 <label class="fw-bold">#태그</label>
                                 <ul class="d-flex flex-wrap" id="tag-list">
-                                    <input class="tag-input" type="text" id="tag" size="20" placeholder="#태그">
+                                    <input class="tag-input" onkeydown="noSpaceTag(event)" type="text" id="tag"
+                                           size="20"
+                                           placeholder="#태그">
                                 </ul>
                             </div>
                         </div>
 
                         <div class="col-xs-12 shadow-sm mb-md-3">
                             <label class="fw-bold w-100">내용
-                                <textarea class="w-100" type="text" name="content"></textarea>
+                                <textarea class="w-100" type="text" name="content" style="height: 400px;"></textarea>
                             </label>
                         </div>
                     </div>
@@ -185,8 +202,8 @@
             </div>
         </div>
     </div>
-
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -200,15 +217,21 @@
 
             $tds[i].onclick = function () {
                 const no = this.parentNode.children[i].children[0].textContent.trim();
-                alert(no);
+
                 location.href = "/study/detail?no=" + no;
             }
         }
     }
 
 
-    $(document)
-        .ready(function () {
+    function noSpaceTag(event) {
+
+        if (event.keyCode == 32) {
+            event.preventDefault();
+        }
+    }
+
+    $(document).ready(function () {
 
             const tagList = {};
             let counter = 0;
@@ -229,36 +252,40 @@
 
             $("#tag")
                 .on("keyup", function (e) {
-                    const self = $(this);
-                    console.log("keypress");
+                        const self = $(this);
+                        console.log("keypress");
 
-                    // input 에 focus 되있을 때 엔터 및 스페이스바 입력시 구동
-                    if (e.key === "Enter" || e.keyCode == 32) {
 
-                        const tagValue = self.val(); // 값 가져오기
+                        // input 에 focus 되있을 때 엔터 및 스페이스바 입력시 구동
+                        if (e.key === "Enter") {
 
-                        // 값이 없으면 동작 안합니다.
-                        if (tagValue !== "") {
+                            const tagValue = self.val(); // 값 가져오기
 
-                            // 같은 태그가 있는지 검사한다. 있다면 해당값이 array 로 return 된다.
-                            const result = Object.values(tag)
-                                .filter(function (word) {
-                                    return word === tagValue;
-                                })
+                            // 값이 없으면 동작 안합니다.
+                            if (tagValue !== "" || tagValue != null) {
 
-                            // 태그 중복 검사
-                            if (result.length == 0) {
-                                $("#tag-list")
-                                    .prepend("<li class='tag-item d-flex' id='tag-id'>" + '#' + tagValue + "<span class='del-btn' idx='" + counter + "'><i class=\"bi bi-x\"></i>\n</span></li>");
-                                addTag(tagValue);
-                                self.val("");
-                            } else {
-                                alert("태그값이 중복됩니다.");
+                                // 같은 태그가 있는지 검사한다. 있다면 해당값이 array 로 return 된다.
+                                const result = Object.values(tag)
+                                    .filter(function (word) {
+                                        return word === tagValue;
+                                    })
+
+                                // 태그 중복 검사
+                                if (result.length == 0) {
+                                    $("#tag-list")
+                                        .prepend("<li class='tag-item d-flex' id='tag-id'>" + "#" + tagValue + "<span class='del-btn' idx='" + counter + "'><i class=\"bi bi-x\"></i></span> </li>");
+
+                                    addTag(tagValue);
+                                    self.val("");
+                                } else {
+                                    alert("태그값이 중복됩니다.");
+                                }
                             }
+                            e.preventDefault(); // SpaceBar 시 빈공간이 생기지 않도록 방지
                         }
-                        e.preventDefault(); // SpaceBar 시 빈공간이 생기지 않도록 방지
                     }
-                });
+                )
+            ;
 
             // 삭제 버튼
             // 삭제 버튼은 비동기적 생성이므로 document 최초 생성시가 아닌 검색을 통해 이벤트를 구현시킨다.

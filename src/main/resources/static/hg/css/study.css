@@ -53,80 +53,59 @@ table {
     border-spacing: 0;
 }
 
-/* -- css 초기화 end -- */
+/* -- Study Header -- */
 
 .study-header * {
     margin-left: 2rem;
     font-weight: bold;
 }
 
-.study-recruit-status{
-    align-self: center;
-    text-align: center;
-    margin-right: 1em;
-    min-width : 60px;
-    background-color: lightgreen;
+/* 모집글 상세페이지 본문 */
+.study-status{
+    background-color: darkgreen;
+    padding: 3px 5px;
     color: white;
     font-weight: bold;
-}
-
-.study-recruit-status-end{
     align-self: center;
-    text-align: center;
-    margin-right: 1rem;
-    padding: 0.2rem;
-    min-width : 60px;
-    background-color: darkgreen;
-    color: lightgray;
-    font-weight: bold;
 }
 
-.study-recruit-title {
-    font-weight: bold;
+.study-title{
     font-size: 24px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+    font-weight: bold;
+
 }
 
-.study-recruit-content{
+.study-content{
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* 라인수 */
+    -webkit-line-clamp: 3; /* 라인수 */
     -webkit-box-orient: vertical;
     word-wrap:break-word;
     line-height: 1.2em;
-    height: 2.4em;
+    height: 3.6em; /* 라인높이 * 라인수 */
+    white-space: pre-line;
 }
 
-
-
-
-.tag-input{
- flex: auto;
-}
-
-
-
-
-ul li.tag-item {
-    font-size: 16px;
-    color: lightgray;
+/* 태그 */
+.study-tag{
+    background-color: rgba(135, 206, 235, 0.2);
+    padding: 3px 5px;
+    border-radius: 5px;
+    color: orangered;
     font-weight: bold;
-    margin: 3px;
-    background-color: gray;
+    box-shadow: 1px 1px 3px 1px rgba(135, 206, 235, 0.2);
 }
 
-.tag-item:hover {
-    color: white;
-    background-color: lightgreen;
-}
 
-.del-btn {
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-left: 8px;
-    padding: 5px;
+
+
+
+
+
+
+/* 모집글 상세페이지 댓글 */
+.study-detail-content{
+    width: 100%;
+    max-width: 800px;
 }

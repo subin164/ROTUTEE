@@ -1,6 +1,5 @@
 package com.greedy.rotutee.study.controller;
 
-
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.Authentication.service.AuthenticationService;
 import com.greedy.rotutee.common.paging.Pagenation;
@@ -8,15 +7,12 @@ import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
 import com.greedy.rotutee.study.dto.StudyByTagDTO;
 import com.greedy.rotutee.study.dto.StudyDTO;
-import com.greedy.rotutee.study.dto.TagDTO;
-import com.greedy.rotutee.study.entity.StudyByTag;
 import com.greedy.rotutee.study.service.StudyService;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Suspendable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -27,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -55,12 +50,19 @@ public class StudyController {
     @GetMapping("list")
     public ModelAndView StudyList(ModelAndView mv, HttpServletRequest request, Pageable pageable) {
 
-//        String searchCondition = request.getParameter("searchCondition");
-//        String searchTag = request.getParameter("searchTag");
+        String searchCondition = request.getParameter("searchCondition");
+        String searchTag = request.getParameter("searchTag");
 
-        Page<StudyByTagDTO> studyList = studyService.findByStudyList(pageable);
+        Page<StudyDTO> studyList = studyService.findByStudyList(searchCondition, searchTag, pageable);
+
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(studyList);
+
+        List<StudyByTagDTO> studyTagList = studyService.finByStudyTagList();
+
 
         mv.addObject("studyList", studyList);
+        mv.addObject("paging", paging);
+        mv.addObject("studyTagList", studyTagList);
 
         mv.setViewName("/study/list");
 
@@ -89,9 +91,15 @@ public class StudyController {
         studyDTO.setStartDate(new Date(System.currentTimeMillis()));
         studyDTO.setWriter(memberDTO);
         studyDTO.setCount(0);
-        studyDTO.setStatus("Y");
+        studyDTO.setRecruitStatus("Y");
+        studyDTO.setPostStatus("N");
+
+        System.out.println("inputTag = " + inputTag.trim());
 
         String[] tagArray = inputTag.split("#");
+        for (int i = 0; i < inputTag.length(); i++) {
+
+        }
 
 
         List<String> tagList = new ArrayList<>();
@@ -110,14 +118,65 @@ public class StudyController {
         return mv;
     }
 
+    /*
+     * writer : 김형경
+     * writeDate : 22/04/28 ~ 22/04/28
+     * title : 모집글 상세페이지 조회
+     * content : 선택한 모집글에 대한 상세페이지 요청
+     * */
     @GetMapping("/detail")
-    public ModelAndView studyDetail(ModelAndView mv){
+    public ModelAndView studyDetail(ModelAndView mv, HttpServletRequest request) {
+
+        int no = Integer.parseInt(request.getParameter("no"));
+
+        StudyDTO studyDetail = studyService.findStudyDetail(no);
+        List<StudyByTagDTO> studyByTagList = studyService.modifyStudyDetailTagList(no);
+
+        mv.addObject("studyDetail", studyDetail);
+        mv.addObject("studyByTagList", studyByTagList);
 
         mv.setViewName("/study/detail");
 
         return mv;
     }
 
+    /*
+     * writer : 김형경
+     * writeDate : 22/04/29 ~ 22/05/01
+     * title : 모집글 상세페이지 수정
+     * content : 작성한 모집글 수정 요청
+     * */
+    @PostMapping("/modify")
+    public String studyMddify(HttpServletRequest request, StudyDTO studyDTO, String inputTag) {
+
+        MemberDTO member = new MemberDTO();
+
+        studyDTO.setModifyDate(new Date(System.currentTimeMillis()));
+        studyDTO.setWriter(member);
+
+        System.out.println("수정된 모집글 : " + studyDTO);
+        System.out.println(inputTag);
+        studyService.studyModify(studyDTO);
+
+        return "redirect:/study/list";
+
+    }
+
+    /*
+     * writer : 김형경
+     * writeDate : 22/04/28 ~ 22/04/28
+     * title : 모집글 상세페이지 삭제
+     * content : 상세페이지 삭제 요청
+     * */
+    @GetMapping("/remove")
+    public String studyRemove(HttpServletRequest request) {
+
+        int no = Integer.parseInt(request.getParameter("no"));
+
+        studyService.removeStudy(no);
+
+        return "redirect:/study/list";
+    }
 
 
 }
