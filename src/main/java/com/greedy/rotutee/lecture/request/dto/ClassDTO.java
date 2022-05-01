@@ -14,12 +14,12 @@ public class ClassDTO {
     private List<MultipartFile> fileList;
 
     private List<QuizDTO> quizList;
-    private List<AttachedFile> videoList;
+    private List<AttachedFileDTO> videoList;
 
     public ClassDTO() {
     }
 
-    public ClassDTO(int classNo, String className, String videoPath, ChapterDTO chapter, List<MultipartFile> fileList, List<QuizDTO> quizList, List<AttachedFile> videoList) {
+    public ClassDTO(int classNo, String className, String videoPath, ChapterDTO chapter, List<MultipartFile> fileList, List<QuizDTO> quizList, List<AttachedFileDTO> videoList) {
         this.classNo = classNo;
         this.className = className;
         this.videoPath = videoPath;
@@ -69,11 +69,11 @@ public class ClassDTO {
         this.quizList = quizList;
     }
 
-    public List<AttachedFile> getVideoList() {
+    public List<AttachedFileDTO> getVideoList() {
         return videoList;
     }
 
-    public void setVideoList(List<AttachedFile> videoList) {
+    public void setVideoList(List<AttachedFileDTO> videoList) {
         this.videoList = videoList;
     }
 

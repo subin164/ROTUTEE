@@ -82,16 +82,16 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         List<MultipartFile> imageList = newLecture.getFileList();
 
         String fileUploadDirectory  = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\sj\\image";
-        String thumbnailUploadDirectory = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\sj\\thumbnail";
-        String bannerUploadDirectory = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\sj\\banner";
-        String videoUploadDirectory = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\sj\\video";
+        String thumbnailUploadDirectory = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\thumbnail";
+        String bannerUploadDirectory = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images\\banner";
+        String videoUploadDirectory = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\video";
 
         File originalDirectory = new File(fileUploadDirectory);
         File thumbnailDirectory = new File(thumbnailUploadDirectory);
         File bannerDirectory = new File(bannerUploadDirectory);
         File videoDirectory = new File(videoUploadDirectory);
 
-        List<AttachedFile> imageEntityList = new ArrayList<>();
+        List<AttachedFileDTO> imageEntityList = new ArrayList<>();
 
         if(imageList.size() == 1) {
             if (!originalDirectory.exists() || !thumbnailDirectory.exists()) {
@@ -102,10 +102,6 @@ public class LectureRequestServiceImpl implements LectureRequestService{
             String originFileName = imageList.get(0).getOriginalFilename();
             String ext = originFileName.substring(originFileName.lastIndexOf("."));
             String savedFileName = UUID.randomUUID().toString().replace("-", "") + ext;
-            String thumbnailFileName = UUID.randomUUID().toString().replace("-", "") + ext;
-
-            System.out.println("originFileName = " + originFileName);
-            System.out.println("thumbnailFileName = " + thumbnailFileName);
 
             imageList.get(0).transferTo(new File(thumbnailUploadDirectory + "/" + savedFileName));
 
@@ -113,21 +109,19 @@ public class LectureRequestServiceImpl implements LectureRequestService{
 
             thumbnail.setOriginalAttachedFileName(originFileName);
             thumbnail.setSaveAttachedFileName(savedFileName);
-            thumbnail.setThumbnailFileName(thumbnailFileName);
-            thumbnail.setThumbnailFilePath(thumbnailUploadDirectory);
-            thumbnail.setStorageFile(fileUploadDirectory);
+            thumbnail.setStorageFile(thumbnailUploadDirectory + "/" + savedFileName);
             thumbnail.setDivision("강의");
             thumbnail.setLecture(newLecture);
             thumbnail.setFileDeletionYN("N");
 
-            AttachedFile newThumbnail = modelMapper.map(thumbnail, AttachedFile.class);
-
-            imageEntityList.add(newThumbnail);
+            imageEntityList.add(thumbnail);
 
             originalDirectory.setWritable(true);
             originalDirectory.setReadable(true);
             thumbnailDirectory.setWritable(true);
             thumbnailDirectory.setReadable(true);
+
+            newLecture.setImageList(imageEntityList);
 
         } else if(imageList.size() == 2) {
             if (!originalDirectory.exists() || !thumbnailDirectory.exists() || !bannerDirectory.exists()) {
@@ -139,43 +133,35 @@ public class LectureRequestServiceImpl implements LectureRequestService{
             String originFileName1 = imageList.get(0).getOriginalFilename();
             String ext1 = originFileName1.substring(originFileName1.lastIndexOf("."));
             String savedFileName1 = UUID.randomUUID().toString().replace("-", "") + ext1;
-            String thumbnailFileName1 = UUID.randomUUID().toString().replace("-", "") + ext1;
 
             imageList.get(0).transferTo(new File(thumbnailUploadDirectory + "/" + savedFileName1));
 
             AttachedFileDTO thumbnail = new AttachedFileDTO();
             thumbnail.setOriginalAttachedFileName(originFileName1);
             thumbnail.setSaveAttachedFileName(savedFileName1);
-            thumbnail.setThumbnailFileName(thumbnailFileName1);
-            thumbnail.setThumbnailFilePath(thumbnailUploadDirectory);
-            thumbnail.setStorageFile(fileUploadDirectory);
+            thumbnail.setStorageFile(thumbnailUploadDirectory + "/" + savedFileName1);
             thumbnail.setDivision("강의");
             thumbnail.setLecture(newLecture);
             thumbnail.setFileDeletionYN("N");
 
-            AttachedFile newThumbnail = modelMapper.map(thumbnail, AttachedFile.class);
-
             String originFileName2 = imageList.get(1).getOriginalFilename();
             String ext2 = originFileName2.substring(originFileName2.lastIndexOf("."));
             String savedFileName2 = UUID.randomUUID().toString().replace("-", "") + ext2;
-            String thumbnailFileName2 = UUID.randomUUID().toString().replace("-", "") + ext2;
 
             imageList.get(1).transferTo(new File(bannerUploadDirectory + "/" + savedFileName2));
 
             AttachedFileDTO banner = new AttachedFileDTO();
             banner.setOriginalAttachedFileName(originFileName2);
             banner.setSaveAttachedFileName(savedFileName2);
-            banner.setThumbnailFileName(thumbnailFileName2);
-            banner.setThumbnailFilePath(bannerUploadDirectory);
-            banner.setStorageFile(fileUploadDirectory);
+            banner.setStorageFile(bannerUploadDirectory + "/" + savedFileName2);
             banner.setDivision("배너");
             banner.setLecture(newLecture);
             banner.setFileDeletionYN("N");
 
-            AttachedFile newBanner = modelMapper.map(banner, AttachedFile.class);
+            imageEntityList.add(thumbnail);
+            imageEntityList.add(banner);
 
-            imageEntityList.add(newThumbnail);
-            imageEntityList.add(newBanner);
+            newLecture.setImageList(imageEntityList);
 
             originalDirectory.setWritable(true);
             originalDirectory.setReadable(true);
@@ -191,11 +177,10 @@ public class LectureRequestServiceImpl implements LectureRequestService{
 
             List<ClassDTO> classDTOList = chapter.getClassList();
             for(ClassDTO classDTO : classDTOList) {
-//                    classDTO.setVideoPath("www.naver.com");
                     classDTO.setChapter(chapter);
 
                 List<MultipartFile> classVideoList = classDTO.getFileList();
-                List<AttachedFile> videoList = new ArrayList<>();
+                List<AttachedFileDTO> videoList = new ArrayList<>();
                     for(MultipartFile classVideo : classVideoList) {
 
                         if(!videoDirectory.exists()) {
@@ -206,22 +191,19 @@ public class LectureRequestServiceImpl implements LectureRequestService{
                         String ext = originFileName.substring(originFileName.lastIndexOf("."));
                         String savedFileName = UUID.randomUUID().toString().replace("-", "") + ext;
 
-                        System.out.println("originFileName = " + originFileName);
-                        System.out.println("savedFileName = " + savedFileName);
-
                         classVideo.transferTo(new File(videoUploadDirectory + "/" + savedFileName));
 
                         AttachedFileDTO video = new AttachedFileDTO();
                         video.setOriginalAttachedFileName(originFileName);
                         video.setSaveAttachedFileName(savedFileName);
-                        video.setStorageFile(fileUploadDirectory);
+                        video.setStorageFile(videoUploadDirectory + "/" + savedFileName);
                         video.setDivision("강의영상");
                         video.setClasses(classDTO);
                         video.setFileDeletionYN("N");
 
-                        AttachedFile videoEntity = modelMapper.map(video, AttachedFile.class);
+                        videoList.add(video);
 
-                        videoList.add(videoEntity);
+                        classDTO.setVideoList(videoList);
 
                         videoDirectory.setWritable(true);
                         videoDirectory.setReadable(true);
@@ -235,9 +217,7 @@ public class LectureRequestServiceImpl implements LectureRequestService{
                 }
             }
 
-
         requestLectureRepository.save(modelMapper.map(newLecture, Lecture.class));
-
 
     }
 

@@ -1,0 +1,246 @@
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+
+
+
+.profile{
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: bisque;
+    width: 3rem;
+    height: 3rem;
+}
+
+.profileimg{
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 100%;
+}
+
+.searchbar-icon{
+    position: absolute;
+    top:50%;
+    right: 0.5rem;
+    transform: translate(-50%, -50%);
+}
+
+.lecture-serach{
+    width: 25rem;
+    border-radius: 20px;
+}
+
+
+.round{
+    border-radius: 20px;
+}
+
+input[type="search"]:focus {
+    border-style: none;
+  }
+
+
+/* 강의 검색 */
+
+.search *{
+    border-radius: 20px;
+}
+.search select{
+    width: 150px;
+}
+
+.searchbar{
+    max-width: 400px;
+    width: 100%;
+}
+.searchbar input{
+    position: relative;
+}
+
+.searchbar button{
+    position: absolute;
+    top:0;
+    right:0;
+    transform: translate(-50%, 50%);
+    background-color: transparent;
+    border: none;
+
+}
+
+.lecture-item{
+    width: 20rem;
+    height: 20rem;
+    /* background-color:blanchedalmond */
+}
+
+
+.lecture-thumbnail img{
+    width: 60%;
+    height: 60%;
+    border-radius: 80px;
+    margin-left: 60px;
+}
+.shoadow{
+    box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.1);
+}
+
+.opacity-50{
+    opacity: 50%;
+    /*background-image: url("/image/logo/logoR.svg");*/
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+.carousel-control-prev-icon{
+    width: 50px;
+    height: 50px;
+    background-color: gray;
+    border-radius: 10px;
+}
+.carousel-control-next-icon{
+    width: 50px;
+    height: 50px;
+    background-color: gray;
+    border-radius: 10px;
+}
+.lecture-info{
+    text-align: center;
+    line-height: 1.5em;
+}
+.carousel-header{
+    margin-left: 150px;
+    
+}
+  

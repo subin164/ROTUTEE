@@ -2,6 +2,7 @@ package com.greedy.rotutee.lecture.request.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.lecture.request.dto.*;
+import com.greedy.rotutee.lecture.request.entity.Lecture;
 import com.greedy.rotutee.lecture.request.service.LectureRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +36,16 @@ public class LectureRequestController {
         int memberNo = customUser.getNo();
         List<LectureDTO> lectureList = lectureRequestService.findLectureListBytutorNo(memberNo);
 
+        for(LectureDTO lecture : lectureList) {
+            System.out.println("lecture.getImageList().size() = " + lecture.getImageList().size());
+
+            List<AttachedFileDTO> fileList = lecture.getImageList();
+            for(AttachedFileDTO file : fileList) {
+                System.out.println("file.getStorageFile() = " + file.getStorageFile());
+            }
+
+        }
+
         mv.addObject("lectureList", lectureList);
         mv.setViewName("/request/myrequestlist");
 
@@ -52,29 +64,14 @@ public class LectureRequestController {
                                                                        , @RequestParam MultipartFile thumbnailImg
                                                                        , @RequestParam MultipartFile bannerImg
                                                                        , @AuthenticationPrincipal CustomUser customUser) throws IOException {
-        System.out.println("썸네일 사진 : " + thumbnailImg.getOriginalFilename());
-        System.out.println("배너 사진 : " + bannerImg.getOriginalFilename());
 
         List<MultipartFile> requestFileList = new ArrayList<>();
         requestFileList.add(thumbnailImg);
         if(!bannerImg.isEmpty()) {
             requestFileList.add(bannerImg);
         }
-        System.out.println("배열 길이 : " + requestFileList.size());
+
         newLecture.setFileList(requestFileList);
-        List<ChapterDTO> chapterList = newLecture.getChapterList();
-        for(ChapterDTO chapter : chapterList) {
-            List<ClassDTO> classList = chapter.getClassList();
-
-            for(ClassDTO classDTO : classList) {
-                List<MultipartFile> fileList = classDTO.getFileList();
-
-                for(MultipartFile file : fileList) {
-                    System.out.println("파일 이름 : " + file.getOriginalFilename());
-                }
-            }
-        }
-
 
         int memberNo = customUser.getNo();
         lectureRequestService.registLectureOpeningApplication(newLecture, categoryNo, memberNo);

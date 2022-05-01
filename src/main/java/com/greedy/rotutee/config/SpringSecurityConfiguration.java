@@ -33,7 +33,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/js/**", "images/**");   // 이녀석들한테는 인증을 요구하지 않겠다
+        web.ignoring().antMatchers("/css/**", "/js/**", "images/**", "video/**");   // 이녀석들한테는 인증을 요구하지 않겠다
     }
 
     @Override

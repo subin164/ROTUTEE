@@ -34,7 +34,7 @@ public class Class {
     @OneToMany(mappedBy = "classEntity", cascade = CascadeType.PERSIST)
     private List<Quiz> quizList;
 
-    @OneToMany(mappedBy = "classes")
+    @OneToMany(mappedBy = "classes", cascade = CascadeType.PERSIST)
     private List<AttachedFile> videoList;
 
     public Class() {

@@ -4,10 +4,20 @@ import javax.persistence.*;
 
 @Entity(name = "Request_AttachedFile")
 @Table(name = "TBL_ATTACHED_FILE")
+@SequenceGenerator(
+        name = "REQUEST_ATTACHED_FILE_SEQ_GENERATOR",
+        sequenceName = "ATTACHED_FILE_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class AttachedFile {
 
     @Id
     @Column(name = "ATTACHED_FILE_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "REQUEST_ATTACHED_FILE_SEQ_GENERATOR"
+    )
     private int attachedFileNo;
 
     @Column(name = "ORIGINAL_ATTACHED_FILE_NAME")
