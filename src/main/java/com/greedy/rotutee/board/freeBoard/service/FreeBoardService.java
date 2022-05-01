@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * packageName : com.greedy.rotutee.board.service
  * fileName : FreeBoardService
@@ -22,15 +24,18 @@ public interface FreeBoardService {
 
    Page<FreeBoardDTO> findCategoryBoardList(Pageable pageable, int categoryNo);
 
-   /*FreeBoardDTO selectBoardDetail(int boardNo);
+   Page<FreeBoardDTO> findSearchBoardList(Pageable pageable, int categoryNo, String searchValue, String searchCondition);
+
+   FreeBoardDTO selectBoardDetail(int boardNo);
+
+   void deleteFreeBoard(int boardNo);
 
    FreeBoardDTO selectBoardModify(int boardNo);
 
    void modifyBoard(FreeBoardDTO freeBoard);
-
+/*
    void registNewFreeBoard(FreeBoardDTO newFreeBoard);
 
-   void deleteFreeBoard(int boardNo);
 
    void deleteAnswer(int answerNo);
 
@@ -38,7 +43,5 @@ public interface FreeBoardService {
 
    void insertAnswer(FreeBoardAnswerDTO registAnswer);*/
 
-   Page<FreeBoardDTO> findSearchBoardList(Pageable pageable, int categoryNo, String searchValue, String searchCondition);
 
-   FreeBoardDTO selectBoardDetail(int boardNo);
 }

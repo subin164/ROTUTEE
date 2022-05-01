@@ -3,6 +3,7 @@ package com.greedy.rotutee.board.freeBoard.dto;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,5 +24,5 @@ public class FreeBoardDTO {
     private FreeBoardMemberDTO  freeBoardMember;
     private int boardReportCount;
     private char bulletinBoardSecretYN;
-    private FreeBoardAnswerDTO freeBoardAnswerList;
+    private List<FreeBoardAnswerDTO> freeBoardAnswerList;
 }

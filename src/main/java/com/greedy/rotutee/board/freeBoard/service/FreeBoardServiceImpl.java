@@ -1,13 +1,16 @@
 package com.greedy.rotutee.board.freeBoard.service;
 
 
+import com.greedy.rotutee.board.freeBoard.dto.FreeBoardAnswerDTO;
 import com.greedy.rotutee.board.freeBoard.dto.FreeBoardDTO;
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
+import com.greedy.rotutee.board.freeBoard.entity.FreeBoardAnswer;
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoardCategory;
 import com.greedy.rotutee.board.freeBoard.repository.FreeBoardCategoryRepository;
 import com.greedy.rotutee.board.freeBoard.repository.FreeBoardRepository;
 import com.greedy.rotutee.board.freeBoard.repository.FreeBoardAnswerRepository;
 import com.greedy.rotutee.board.freeBoard.repository.FreeBoardMemberRepository;
+import com.sun.xml.bind.v2.TODO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,35 +41,20 @@ public class FreeBoardServiceImpl implements FreeBoardService{
     private FreeBoardCategoryRepository categoryRepository;
     private FreeBoardRepository freeBoardRepository;
     private FreeBoardMemberRepository memberRepository;
-    private FreeBoardAnswerRepository freeBoardAnswerRepository;
+    private FreeBoardAnswerRepository answerRepository;
     private ModelMapper modelMapper;
 
     @Autowired
-    public FreeBoardServiceImpl(FreeBoardAnswerRepository answerRepository ,FreeBoardCategoryRepository categoryRepository, FreeBoardRepository freeBoardRepository, FreeBoardMemberRepository memberRepository, ModelMapper modelMapper) {
+    public FreeBoardServiceImpl(FreeBoardAnswerRepository answerRepository ,FreeBoardCategoryRepository categoryRepository,
+                                FreeBoardRepository freeBoardRepository, FreeBoardMemberRepository memberRepository,
+                                ModelMapper modelMapper) {
         this.categoryRepository = categoryRepository;
         this.freeBoardRepository = freeBoardRepository;
         this.memberRepository = memberRepository;
-        this.freeBoardAnswerRepository = answerRepository;
+        this.answerRepository = answerRepository;
         this.modelMapper = modelMapper;
     }
-
-    @Override
-    public Page<FreeBoardDTO> findCategoryBoardList(@PageableDefault Pageable pageable, int categoryNo) {
-
-        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,                        // pageing 정보들을 담아
-                pageable.getPageSize(),
-                Sort.by("boardNo").descending());
-        System.out.println("##"+pageable);
-        FreeBoardCategory freeBoardCategory = categoryRepository.findById(categoryNo).get();
-
-        System.out.println("$$$" + freeBoardCategory);
-        Page<FreeBoardDTO> pageFreeBoards =freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(freeBoardCategory,'N',pageable).map(FreeBoard -> modelMapper.map(FreeBoard,FreeBoardDTO.class));
-        System.out.println("$$$" + pageFreeBoards);
-        List<FreeBoard> freeBoardDTOList = freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(freeBoardCategory, 'N');
-        System.out.println("&&&" + freeBoardDTOList);
-
-        return pageFreeBoards;
-    }
+    //검색용
     @Override
     public Page<FreeBoardDTO> findSearchBoardList(Pageable pageable, int categoryNo, String searchValue, String searchCondition) {
 
@@ -75,38 +64,73 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         FreeBoardCategory freeBoardCategory = categoryRepository.findById(categoryNo).get();
 
         Page<FreeBoard> freeBoards = null;
-
         if(searchCondition.equals("title")){
-            freeBoards = freeBoardRepository.findByBoardTitleContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'Y',pageable);
+            freeBoards = freeBoardRepository.findByBoardTitleContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'N',pageable);
         }else if (searchCondition.equals("writer")){
-            freeBoards = freeBoardRepository.findByFreeBoardMemberContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'Y',pageable);
+            freeBoards = freeBoardRepository.findByFreeBoardMemberMemberNameContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'N',pageable);
 
         }else if(searchCondition.equals("content")){
-            freeBoards = freeBoardRepository.findByBoardContentContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'Y',pageable);
+            freeBoards = freeBoardRepository.findByBoardContentContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'N',pageable);
         }
-
-        freeBoards.forEach(System.out::println);
 
         return freeBoards.map(FreeBoard -> modelMapper.map(FreeBoard, FreeBoardDTO.class));
     }
+    // 카테고리 포함 조회용
+    @Override
+    public Page<FreeBoardDTO> findCategoryBoardList(@PageableDefault Pageable pageable, int categoryNo) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,                        // pageing 정보들을 담아
+                pageable.getPageSize(),
+                Sort.by("boardNo").descending());
+        FreeBoardCategory freeBoardCategory = categoryRepository.findById(categoryNo).get();
+
+        Page<FreeBoardDTO> pageFreeBoards =freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(freeBoardCategory,'N',pageable).map(FreeBoard -> modelMapper.map(FreeBoard,FreeBoardDTO.class));
+
+        return pageFreeBoards;
+    }
+
+    // 페이징 용
+    /*@Override
+    public Page<FreeBoardDTO> findPageBoardList(Pageable pageable) {
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(), Sort.by("boardNo").descending());
+
+        Page<FreeBoardDTO> pageFreeBoardDTO =freeBoardRepository.findByBoardDeleteYN('N', pageable).map(FreeBoard -> modelMapper.map(FreeBoard, FreeBoardDTO.class));
+
+        return pageFreeBoardDTO;
+    }*/
 
     @Override
+    @Transactional
     public FreeBoardDTO selectBoardDetail(int boardNo){
 
         FreeBoard freeBoard = freeBoardRepository.findById(boardNo).get();
         freeBoard.setBoardViewCount(freeBoard.getBoardViewCount() + 1);
-        freeBoardRepository.save(freeBoard);
 
-        FreeBoardDTO boardDTO = modelMapper.map(freeBoard, FreeBoardDTO.class);
-
-        return boardDTO;
+        List<FreeBoardAnswer> freeBoardAnswers = answerRepository.findByFreeBoardBoardNoAndAnswerYN(boardNo, 'N');
+        if(freeBoardAnswers != null) {
+            freeBoardAnswers.forEach(System.out::println);
+        }
+        freeBoard.setFreeBoardAnswerList(freeBoardAnswers);
+        FreeBoardDTO freeBoardDTO = modelMapper.map(freeBoard, FreeBoardDTO.class);
+        return freeBoardDTO;
     }
 
-   /* @Override
+
+    @Override
+    @Transactional
+    public void deleteFreeBoard(int boardNo) {
+        java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+
+        FreeBoard deleteBoard = freeBoardRepository.findById(boardNo).get();
+        deleteBoard.setBoardDeleteYN('Y');
+        deleteBoard.setBoardDeletionDate(sqlDate);
+    }
+
+    @Override
     public FreeBoardDTO selectBoardModify(int boardNo) {
         FreeBoard freeBoard = freeBoardRepository.findById(boardNo).get();
         FreeBoardDTO boardDTO = modelMapper.map(freeBoard, FreeBoardDTO.class);
-
         return boardDTO;
     }
 
@@ -119,14 +143,20 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         FreeBoardCategory freeBoardCategory = categoryRepository.findById(freeBoard.getFreeBoardCategory().getBoardCategoryNo()).get();
 
         FreeBoard modifyBoard = freeBoardRepository.findById(freeBoard.getBoardNo()).get();
+
+        System.out.println("(service)modifyBoard freeBoard: " + modifyBoard );
+
+        System.out.println(modifyBoard.getFreeBoardCategory().getBoardCategoryNo());
+
         modifyBoard.setBoardTitle(freeBoard.getBoardTitle());
         modifyBoard.setBoardContent(freeBoard.getBoardContent());
         modifyBoard.setBoardModifiedDate(sqlDate);
         modifyBoard.setFreeBoardCategory(freeBoardCategory);
-        modifyBoard.setBulletinBoardSecretYN(freeBoard.getBulletinBoardSecretYN());
+        modifyBoard.setBulletinBoardSecretYN('N');
         freeBoardRepository.save(modifyBoard);
     }
-
+    //        modifyBoard.setBulletinBoardSecretYN('N');비밀글 기능 다시만들어야함
+/*
     @Override
     @Transactional
     public void registNewFreeBoard(FreeBoardDTO freeBoard) {
@@ -151,16 +181,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         freeBoardRepository.save(newBoard);
     }
 
-    @Override
-    public void deleteFreeBoard(int boardNo) {
-        java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
 
-        FreeBoard deleteBoard = freeBoardRepository.findById(boardNo).get();
-        deleteBoard.setBoardDeleteYN('Y');
-        deleteBoard.setBoardDeletionDate(sqlDate);
-        freeBoardRepository.save(deleteBoard);
-
-    }
 
     @Override
     public void deleteAnswer(int answerNo) {

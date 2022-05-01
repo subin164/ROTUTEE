@@ -30,7 +30,7 @@ public class FreeBoardAnswer {
     @Column(name = "ANSWER_NO")
     private int answerNo;
 
-    @Column(name = "ANWER_CONTENT")
+    @Column(name = "ANSWER_CONTENT")
     private String answerContent;
 
     @Column(name = "ANSWER_YN")
@@ -39,7 +39,7 @@ public class FreeBoardAnswer {
     @Column(name = "ANSWER_REPORT_COUNT")
     private int answerReportCount;
 
-    @Column(name = "ANSWER_CREATE_DATE")
+    @Column(name = "ANSWER_CREATED_DATE")
     private Date answerCreatedDate;
 
     @Column( name = "ANSWER_MODIFY_DATE")

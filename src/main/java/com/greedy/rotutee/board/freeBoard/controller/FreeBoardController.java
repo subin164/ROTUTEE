@@ -1,7 +1,11 @@
 package com.greedy.rotutee.board.freeBoard.controller;
 
+import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.Authentication.service.AuthenticationService;
+import com.greedy.rotutee.board.freeBoard.dto.FreeBoardAnswerDTO;
+import com.greedy.rotutee.board.freeBoard.dto.FreeBoardCategoryDTO;
 import com.greedy.rotutee.board.freeBoard.dto.FreeBoardDTO;
+import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
 import com.greedy.rotutee.board.freeBoard.service.FreeBoardService;
 import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
@@ -10,11 +14,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.board.freeBoard.controller
@@ -34,6 +41,7 @@ public class FreeBoardController {
     private final FreeBoardService freeBoardService;
     private final MessageSource messageSource;
     private final AuthenticationService authenticationService;
+    private int boardNo;
 
     @Autowired
     public FreeBoardController(FreeBoardService freeBoardService, MessageSource messageSource,
@@ -46,19 +54,24 @@ public class FreeBoardController {
 
     @GetMapping(value = "/list")
     public ModelAndView CategoryFreeBoardList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable)  {
-        int categoryNo = Integer.parseInt(request.getParameter("category"));
-        String searchCondition = request.getParameter("searchCondition");
-        String searchValue = request.getParameter("searchValue");
+
+        System.out.println("@@@@@@@@@@@");
+        int categoryNo = 4;
+        if(request.getParameter("category")!=null){
+            categoryNo = Integer.parseInt(request.getParameter("category"));
+        }
+            String searchCondition = request.getParameter("searchCondition");
+            String searchValue = request.getParameter("searchValue");
 
 
         Page<FreeBoardDTO> boardList = null;
         if(searchCondition != null && !"".equals(searchCondition)) {
             boardList = freeBoardService.findSearchBoardList(pageable, categoryNo,searchValue, searchCondition);
-        }else{
+
+        }else {
             boardList = freeBoardService.findCategoryBoardList(pageable, categoryNo);
         }
 
-        System.out.println(boardList);
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(boardList);
 
         mv.addObject("paging", paging);
@@ -66,6 +79,7 @@ public class FreeBoardController {
         mv.addObject("searchCondition", searchCondition);
         mv.addObject("searchValue", searchValue);
 
+        mv.addObject("categoryNo", categoryNo);
         mv.addObject("boardList", boardList);
 
         mv.setViewName("board/freeboard/boardList");
@@ -73,36 +87,73 @@ public class FreeBoardController {
         return mv;
     }
 
-    /*@GetMapping(value = "/detail/{boardNo}")
+
+    @GetMapping(value = "/detail")
     public ModelAndView FreeBoardDetail(HttpServletRequest request, ModelAndView mv){
         int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 
-        FreeBoardDTO board = freeBoardService.selectBoardDetail(boardNo);
+        FreeBoardDTO freeBoardDTO = freeBoardService.selectBoardDetail(boardNo);
 
-        mv.addObject("board",board);
-        mv.setViewName("freeBoard/detail");
+        if(freeBoardDTO.getFreeBoardAnswerList() != null) {
+            List<FreeBoardAnswerDTO> answer =freeBoardDTO.getFreeBoardAnswerList();
+
+            System.out.println("####"+answer);
+            mv.addObject("answer",answer);
+        }
+
+        mv.addObject("board",freeBoardDTO);
+        mv.setViewName("board/freeboard/detail");
+
         return mv;
     }
 
-    @GetMapping(value = "/modify/{boardNo}")
+    @PostMapping(value = "/delete")
+    public ModelAndView deleteBoard(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv){
+        int categoryNo = Integer.parseInt(request.getParameter("category"));
+        int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+
+        freeBoardService.deleteFreeBoard(boardNo);
+
+        rttr.addFlashAttribute("successMessage", "삭제 완료");
+
+        mv.setViewName("redirect:/freeboard/list?category=" + categoryNo);
+
+        return mv;
+    }
+
+    //커뮤니티 게시판 수정 페이지 이동
+    @GetMapping(value = "/modify")
     public ModelAndView FreeBoardmMdifyPage(HttpServletRequest request, ModelAndView mv){
         int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 
-        FreeBoardDTO freeBoard = freeBoardService.selectBoardModify(boardNo);
+        FreeBoardDTO boardList = freeBoardService.selectBoardModify(boardNo);
 
-        mv.addObject("freeBoard",freeBoard);
-        mv.setViewName("freeBoard/modify");
+        mv.addObject("boardList",boardList);
+        mv.setViewName("board/freeboard/modify");
 
         return mv;
     }
 
+    //커뮤니티 게시글 수정 요청
     @PostMapping(value = "/modify")
-    public void FreeBoardModify(@ModelAttribute FreeBoardDTO freeBoard, RedirectAttributes rttr){
+    public ModelAndView FreeBoardModify(@ModelAttribute FreeBoardDTO freeBoard, HttpServletRequest request,
+                                         @AuthenticationPrincipal CustomUser customUser,RedirectAttributes rttr, ModelAndView mv){
 
+        int categoryNo = Integer.parseInt(request.getParameter("category"));
+        System.out.println("cateogry : "+categoryNo + ", " + freeBoard);
+
+        FreeBoardCategoryDTO categoryDTO = new FreeBoardCategoryDTO();
+        categoryDTO.setBoardCategoryNo(categoryNo);
+
+        freeBoard.setFreeBoardCategory(categoryDTO);
+        System.out.println("freeBoard : " + freeBoard);
         freeBoardService.modifyBoard(freeBoard);
-        rttr.addFlashAttribute("successMessage", "수정 완료");
-    }
 
+        rttr.addFlashAttribute("successMessage", "수정 완료");
+        mv.setViewName("redirect:/freeboard/detail?boardNo=" + freeBoard.getBoardNo());
+        return mv;
+    }
+/*
     @GetMapping("/regist")
     public void registBoard() {}
 
@@ -128,19 +179,7 @@ public class FreeBoardController {
         return mv;
     }
 
-    @PostMapping(value = "/delete")
-    public ModelAndView deleteBoard(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv){
-        int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
-        int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 
-        freeBoardService.deleteFreeBoard(boardNo);
-
-        rttr.addFlashAttribute("successMessage", "삭제 완료");
-
-        mv.setViewName("redirect:/freeBoard/list?" + categoryNo);
-
-        return mv;
-    }
 
     @PostMapping(value = "/modifyAnswer")
     public ModelAndView updateAnswer( ModelAndView mv, HttpServletRequest request, RedirectAttributes rttr, @ModelAttribute FreeBoardAnswerDTO modifyAnswer, @AuthenticationPrincipal CustomUser customUser){

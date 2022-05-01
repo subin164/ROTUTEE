@@ -1,7 +1,10 @@
 package com.greedy.rotutee.board.freeBoard.repository;
 
+import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoardAnswer;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.board.repository
@@ -16,4 +19,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FreeBoardAnswerRepository extends JpaRepository<FreeBoardAnswer, Integer> {
 
+    List<FreeBoardAnswer> findByFreeBoardBoardNoAndAnswerYN(int boardNo, char answerStatus);
 }

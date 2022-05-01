@@ -57,7 +57,7 @@ public class FreeBoard {
     private char bulletinBoardSecretYN;
 
 
-    @OneToMany(mappedBy = "freeBoard")
+    @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.PERSIST)
     private List<FreeBoardAnswer> freeBoardAnswerList;
 
     public FreeBoard(){}

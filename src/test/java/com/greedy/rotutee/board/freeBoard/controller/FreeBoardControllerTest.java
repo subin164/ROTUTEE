@@ -78,7 +78,7 @@ public class FreeBoardControllerTest {
         //when
 
         //then
-        mockMvc.perform(MockMvcRequestBuilders.get("/freeBoard/detail/"+boardNo))
+        mockMvc.perform(MockMvcRequestBuilders.get("/freeBoard/detail?boardNo="+boardNo))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.forwardedUrl("/freeBoard/detail"))
                 .andDo(MockMvcResultHandlers.print());
