@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,9 +49,19 @@ public class LectureRequestController {
     @PostMapping("lecture")
     public ModelAndView registLectureOpeningApplication(ModelAndView mv, @ModelAttribute LectureDTO newLecture
                                                                        , @RequestParam int categoryNo
-                                                                       , @AuthenticationPrincipal CustomUser customUser) {
+                                                                       , @RequestParam MultipartFile thumbnailImg
+                                                                       , @RequestParam MultipartFile bannerImg
+                                                                       , @AuthenticationPrincipal CustomUser customUser) throws IOException {
+        System.out.println("썸네일 사진 : " + thumbnailImg.getOriginalFilename());
+        System.out.println("배너 사진 : " + bannerImg.getOriginalFilename());
 
-        System.out.println(newLecture.getFileList());
+        List<MultipartFile> requestFileList = new ArrayList<>();
+        requestFileList.add(thumbnailImg);
+        if(!bannerImg.isEmpty()) {
+            requestFileList.add(bannerImg);
+        }
+        System.out.println("배열 길이 : " + requestFileList.size());
+        newLecture.setFileList(requestFileList);
         List<ChapterDTO> chapterList = newLecture.getChapterList();
         for(ChapterDTO chapter : chapterList) {
             List<ClassDTO> classList = chapter.getClassList();
@@ -59,14 +70,14 @@ public class LectureRequestController {
                 List<MultipartFile> fileList = classDTO.getFileList();
 
                 for(MultipartFile file : fileList) {
-
+                    System.out.println("파일 이름 : " + file.getOriginalFilename());
                 }
             }
         }
 
 
         int memberNo = customUser.getNo();
-//      lectureRequestService.registLectureOpeningApplication(newLecture, categoryNo, memberNo);
+        lectureRequestService.registLectureOpeningApplication(newLecture, categoryNo, memberNo);
 
         mv.setViewName("redirect:/request/list");
         return mv;
