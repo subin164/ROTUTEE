@@ -1,6 +1,5 @@
 package com.greedy.rotutee.member.member.repository;
 
-import com.greedy.rotutee.member.member.entity.Member;
 import com.greedy.rotutee.member.member.entity.Reasons;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

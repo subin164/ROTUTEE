@@ -2,10 +2,10 @@ package com.greedy.rotutee.member.profile.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
-import com.greedy.rotutee.member.profile.dto.AchievementDTO;
-import com.greedy.rotutee.member.profile.dto.AddressDTO;
+import com.greedy.rotutee.member.member.dto.AchievementDTO;
+import com.greedy.rotutee.member.member.dto.AddressDTO;
 import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
-import com.greedy.rotutee.member.profile.dto.TutorInfoDTO;
+import com.greedy.rotutee.member.profile.entity.TutorInfoDTO;
 import com.greedy.rotutee.member.profile.service.ProfileFileHandler;
 import com.greedy.rotutee.member.profile.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.List;
 
 /**

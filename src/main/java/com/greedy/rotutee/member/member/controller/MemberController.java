@@ -7,9 +7,8 @@ import com.greedy.rotutee.member.member.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
 import com.greedy.rotutee.member.member.dto.ReasonsDTO;
 import com.greedy.rotutee.member.member.service.MemberService;
-import com.greedy.rotutee.member.profile.dto.AchievementDTO;
 import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
-import com.greedy.rotutee.member.profile.dto.TutorInfoDTO;
+import com.greedy.rotutee.member.profile.entity.TutorInfoDTO;
 import com.greedy.rotutee.member.profile.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -121,44 +120,6 @@ public class MemberController {
         mv.setViewName("/member/list");
 
         return mv;
-    }
-
-    @GetMapping(value = "/searchlist", produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    private MemberDTO findSearchMember(@RequestParam("searchValue") String searchValue) {
-
-        MemberDTO searchMember = memberService.findSearchMember(searchValue);
-
-        return searchMember;
-    }
-
-    @GetMapping("/adminlist")
-    public ModelAndView findAdminList(ModelAndView mv, @PageableDefault Pageable pageable) {
-
-        Page<MemberDTO> adminList = memberService.findAllAdmin(pageable);
-
-        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(adminList);
-
-        mv.addObject("adminList", adminList);
-        mv.addObject("paging", paging);
-
-        mv.setViewName("/member/adminlist");
-
-        return mv;
-    }
-
-    @PostMapping(value = "/adminremove", produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public void removeAdmin(@RequestParam("searchValue") String searchValue) {
-
-        memberService.removeAdmin(searchValue);
-    }
-
-    @PostMapping(value = "/adminregist", produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public void registAdmin(@RequestParam("searchValue") String searchValue) {
-
-        memberService.registAdmin(searchValue);
     }
 
     @GetMapping("/detail/{memberNo}")
