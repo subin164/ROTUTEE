@@ -73,14 +73,14 @@ public class ProofFileHandler {
 
                 AttachedFile attachedFile = new AttachedFile();
 
-                attachedFile.setOriginalAttachedFileName(originFileName);                                   // 원본 이름
-                attachedFile.setSaveAttachedFileName(savedFileName);                                             // 저장 이름
-                attachedFile.setThumbnailAttachedFileName(thumbnailFileName);                            // 썸네일 이름
-                attachedFile.setThumbnailFilePath(thumbnailDirectory);                                                 // 썸네일 저장경로
-                attachedFile.setStoragePath(fileUploadDirectory);                                               // 저장 경로
-                attachedFile.setDivision("서류");                                                                // 구분
-                attachedFile.setMember(member);                                                                  // 회원 정보
-                attachedFile.setFileDeletionYn("N");                                                            // 삭제 여부
+                attachedFile.setOriginalAttachedFileName(originFileName);
+                attachedFile.setSaveAttachedFileName(savedFileName);
+                attachedFile.setThumbnailAttachedFileName(thumbnailFileName);
+                attachedFile.setThumbnailFilePath(thumbnailDirectory);
+                attachedFile.setStoragePath(fileUploadDirectory);
+                attachedFile.setDivision("서류");
+                attachedFile.setMember(member);
+                attachedFile.setFileDeletionYn("N");
 
                 fileList.add(attachedFile);
 
