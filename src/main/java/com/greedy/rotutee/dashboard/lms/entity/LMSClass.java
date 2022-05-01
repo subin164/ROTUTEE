@@ -1,5 +1,6 @@
 package com.greedy.rotutee.dashboard.lms.entity;
 
+import com.greedy.rotutee.dashboard.lms.dto.LMSChapterDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,8 +47,9 @@ public class LMSClass {
     @Column(name = "VIDEO_PATH")
     private String videoPath;
 
-    @Column(name = "CHAPTER_NO")
-    private int chapNo;
+    @ManyToOne
+    @JoinColumn(name = "CHAPTER_NO")
+    private LMSChapter chapter;
 
     @Override
     public String toString() {
@@ -55,7 +57,7 @@ public class LMSClass {
                 "classNo=" + classNo +
                 ", className='" + className + '\'' +
                 ", videoPath='" + videoPath + '\'' +
-                ", chapNo=" + chapNo +
+                ", chapter=" + chapter +
                 '}';
     }
 }

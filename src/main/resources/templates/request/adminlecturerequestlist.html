@@ -80,13 +80,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
+                        <tr th:each="request:${requestList}">
+                            <input type="hidden" th:value="${request.getLectureNo()}">
+                            <th scope="row" th:text="${request.tutor.getNo()}"></th>
+                            <td th:text="${request.tutor.getName()}"></td>
+                            <td th:text="${request.getLectureName()}"></td>
+                            <td th:text="${request.tutor.getRegistrationDate()}"></td>
+                            <td th:text="${request.getApplicationDate()}"></td>
+                            <td th:text="${request.getLectureApprovalStatus()}"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -113,13 +114,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
+                    <tr th:each="record:${recordList}">
+                        <input type="hidden" id="lectureNo" th:value="${record.getLectureNo()}">
+                        <th scope="row" th:text="${record.tutor.getNo()}"></th>
+                        <td th:text="${record.tutor.getName()}"></td>
+                        <td th:text="${record.getLectureName()}"></td>
+                        <td th:text="${record.tutor.getRegistrationDate()}"></td>
+                        <td th:text="${record.getApplicationDate()}"></td>
+                        <td th:text="${record.getLectureApprovalStatus()}"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -135,5 +137,12 @@
             </div>
         </div>
     </div>
+    <script>
+        $("tbody > tr").click(function() {
+            const lectureNo = $(this).children("input").val();
+            console.log(lectureNo);
+            location.href = "/request/lecturedetail?lectureNo=" + lectureNo;
+        })
+    </script>
 </body>
 </html>

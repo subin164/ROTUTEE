@@ -9,9 +9,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -27,6 +29,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/lms")
+@SessionAttributes({"lectureNo"})
 public class LMSDashboardController {
 
     private LMSDashboardService lmsDashboardService;
@@ -58,24 +61,30 @@ public class LMSDashboardController {
 
         LMSDashboardDTO dashboard = lmsDashboardService.findLMSDashboard(todo);
 
-        List<ToDoDTO> todos = dashboard.getTodos();
-        for (ToDoDTO toDoDTO : todos) {
-            System.out.println("toDoDTO = " + toDoDTO);
-        }
-        List<LMSNoticeBoardDTO> notices = dashboard.getNoticeBoards();
-        for (LMSNoticeBoardDTO notice : notices) {
-            System.out.println("notice = " + notice);
-        }
-        List<LMSNormalBoardDTO> normals = dashboard.getNormalBoards();
-        for (LMSNormalBoardDTO normal : normals) {
-            System.out.println("normal = " + normal);
-        }
-        List<LMSLatelyViewDTO> watch = dashboard.getWatching();
-        for (LMSLatelyViewDTO lMSLatelyViewDTO : watch) {
-            System.out.println("dashboardLectureWatchDTO = " + lMSLatelyViewDTO);
-        }
+//        List<ToDoDTO> todos = dashboard.getTodos();
+//        for (ToDoDTO toDoDTO : todos) {
+//            System.out.println("toDoDTO = " + toDoDTO);
+//        }
+//        List<LMSNoticeBoardDTO> notices = dashboard.getNoticeBoards();
+//        for (LMSNoticeBoardDTO notice : notices) {
+//            System.out.println("notice = " + notice);
+//        }
+//        List<LMSNormalBoardDTO> normals = dashboard.getNormalBoards();
+//        for (LMSNormalBoardDTO normal : normals) {
+//            System.out.println("normal = " + normal);
+//        }
+//        List<LMSLatelyViewDTO> watch = dashboard.getWatching();
+//        for (LMSLatelyViewDTO lMSLatelyViewDTO : watch) {
+//            System.out.println("dashboardLectureWatchDTO = " + lMSLatelyViewDTO);
+//        }
+        HttpSession session = request.getSession();
+        session.setAttribute("lectureNo", lectureNo);
         mv.addObject("dashboard", dashboard);
         mv.setViewName("dashboard/lms/dashboard");
         return mv;
     }
+
+
+
+
 }

@@ -53,7 +53,7 @@ public class Member {
     @Column(name = "ROULETTE_CHANCE")
     private String rouletteChance;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
     List<MemberRole> memberRoleList;
 
     public Member() {}

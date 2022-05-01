@@ -17,7 +17,7 @@ import java.sql.Date;
  * 2022-04-20 7sang 최초 생성
  */
 
-@Entity(name = "Member_MemberAchievement")
+@Entity(name = "Profile_MemberAchievement")
 @Table(name = "TBL_MEMBER_ACHIEVEMENT")
 public class MemberAchievement {
 

@@ -13,5 +13,4 @@ public class RoleDTO {
     private int no;           //권한코트
     private String name;        //권한명
     private String desc;        //권한설정
-
 }

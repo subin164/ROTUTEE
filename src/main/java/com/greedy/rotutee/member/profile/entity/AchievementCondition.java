@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 2022-04-20 7sang 최초 생성
  */
 
-@Entity(name = "Member_AchievementCondition")
+@Entity(name = "Profile_AchievementCondition")
 @Table(name = "TBL_CONDITION")
 public class AchievementCondition {
 

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
  * 2022-04-21 7sang 최초 생성
  */
 
-@Repository
+@Repository(value = "profile_AchievementRepository")
 public interface AchievementRepository extends JpaRepository<Achievement, Integer> {
 
 }

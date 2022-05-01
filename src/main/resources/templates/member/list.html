@@ -70,10 +70,22 @@
             width: 77%;
 
         }
-
+        .memberDetail_wrap {
+            display: none;
+            width: auto;
+            height: auto;
+            position: absolute;
+            background:#fff;
+            margin-top: 0%;
+            margin-left: 25%;
+            margin-right: auto;
+            z-index: 2;
+            background-color: #f5c6cb;
+        }
     </style>
 </head>
 <body>
+<div th:include="/common/topMenubar.html"></div>
 
 <div class="box">
     <label class="head">회원 목록</label>
@@ -98,24 +110,23 @@
                             <div class="table100-head">
                                 <table >
                                     <thead>
-                                    <tr class="row100 head">
-                                        <th class="cell100 column1">회원번호</th>
-                                        <th class="cell100 column2">회원명</th>
-                                        <th class="cell100 column3">닉네임</th>
-                                        <th class="cell100 column4">가입일</th>
-                                    </tr>
+                                        <tr class="row100 head">
+                                            <th class="cell100 column1">회원번호</th>
+                                            <th class="cell100 column2">회원명</th>
+                                            <th class="cell100 column3">이메일</th>
+                                            <th class="cell100 column4">가입일</th>
+                                        </tr>
                                     </thead>
                                 </table>
                             </div>
                             <div class="table100-body">
                                 <table id="before-table">
                                     <tbody>
-                                    <tr class="row100 body" th:each="member : ${ memberList }">
-                                        <td th:text="${ member.no }">
-                                        <td th:text="${ member.name }">
-                                        <td th:text="${ member.nickname }">
-                                        <td th:text="${ member.registrationDate }">
-                                    </tr>
+                                        <tr class="row100 body" th:each="tutee : ${ tuteeList }">
+                                            <td th:text="${ tutee.no }"></td>
+                                            <td th:text="${ tutee.name }"></td>
+                                            <td th:text="${ tutee.email }"></td>
+                                            <td th:text="${ tutee.registrationDate }"></td>
                                     </tbody>
                                 </table>
                             </div>
@@ -125,9 +136,9 @@
             </div>
             <div class="d-flex justify-content-center">
                 <div class="justify-content-evenly mt-lg-5">
-                    <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+                    <th:block th:each="page : ${#numbers.sequence(tuteePaging.startPage, tuteePaging.endPage)}">
                         <button class="btn pagebtn" th:onclick="'location.href=\'/member/list?page=' + @{${page}} + '\''"
-                                th:text="${ page }" th:disabled="${ paging.currentPage eq page }"></button>
+                                th:text="${ page }" th:disabled="${ tuteePaging.currentPage eq page }"></button>
                     </th:block>
                 </div>
             </div>
@@ -153,11 +164,11 @@
                             <div class="table100-body">
                                 <table id="after-table">
                                     <tbody>
-                                    <tr class="row100 body" th:each="member : ${ memberList }">
-                                        <td th:text="${ member.no }">
-                                        <td th:text="${ member.name }">
-                                        <td th:text="${ member.nickname }">
-                                        <td th:text="${ member.registrationDate }">
+                                    <tr class="row100 body" th:each="tutor : ${ tutorList }">
+                                        <td th:text="${ tutor.no }"></td>
+                                        <td th:text="${ tutor.name }"></td>
+                                        <td th:text="${ tutor.nickname }"></td>
+                                        <td th:text="${ tutor.registrationDate }"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -168,15 +179,17 @@
             </div>
             <div class="d-flex justify-content-center">
                 <div class="justify-content-evenly mt-lg-5">
-                    <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+                    <th:block th:each="page : ${#numbers.sequence(tutorPaging.startPage, tutorPaging.endPage)}">
                         <button class="btn pagebtn" th:onclick="'location.href=\'/member/list?page=' + @{${page}} + '\''"
-                                th:text="${ page }" th:disabled="${ paging.currentPage eq page }"></button>
+                                th:text="${ page }" th:disabled="${ tutorPaging.currentPage eq page }"></button>
                     </th:block>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div th:include="/common/footer.html"></div>
+
 <!--===============================================================================================-->
 <script src="../../static/sg/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -189,18 +202,51 @@
 
 <script>
 
+    $("#closeDetail").click(function() {
+
+        document.querySelector('.memberDetail_wrap').style.display ='none';
+    });
+
     // 테이블의 Row 클릭시 값 가져오기
     $("#before-table tr").click(function(){
 
         let tr = $(this);
         let td = tr.children();
 
-        let no = td.eq(0).text();
+        let memberNo = td.eq(0).text();
 
-        alert(no);
+        // document.querySelector('.memberDetail_wrap').style.display ='block';
 
-        // location.href="/tutorApply/detail/" + no;
+        location.href="/member/detail/" + memberNo;
     });
+
+    // $(function(){
+    //     $.ajax({
+    //         url: "/member/detail",
+    //         data: { "memberNo" : 14 },
+    //         success: function(data) {
+    //
+    //             console.log(data);
+    //
+    //             console.log(data.memberDetail);
+    //
+    //             const $noTr = $("#noTr");
+    //             const $noTd = $("<td>").text(data.no);
+    //             const $nameTr = $("#nameTr");
+    //             const $nameTd = $("<td>").text(data.name);
+    //             const emailTr = $("#emailTr");
+    //             const emailTd = $("<td>").text(data.email);
+    //             const nicknameTr = $("#nicknameTr");
+    //             const nicknameTd = $("<td>").text(data.name);
+    //             const phoneTr = $("#phoneTr");
+    //             const phoneTd = $("<td>").text(data.phoneNum);
+    //             const introductionTr = $("#introductionTr");
+    //             const introductionTd = $("<td>").text(data.introduction);
+    //
+    //             $nameTr.append($nameTd);
+    //         }
+    //     });
+    // });
 </script>
 </body>
 </html>

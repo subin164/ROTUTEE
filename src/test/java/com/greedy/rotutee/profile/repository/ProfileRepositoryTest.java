@@ -4,6 +4,7 @@ import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
 import com.greedy.rotutee.config.RotuteeApplication;
 import com.greedy.rotutee.member.member.entity.Member;
+import com.greedy.rotutee.member.member.entity.MemberAchievement;
 import com.greedy.rotutee.member.member.repository.MemberRepository;
 import com.greedy.rotutee.member.profile.entity.Achievement;
 import com.greedy.rotutee.member.profile.entity.AttachedFile;
@@ -139,4 +140,6 @@ public class ProfileRepositoryTest {
         assertNotNull(attachedFile);
 
     }
+
+
 }

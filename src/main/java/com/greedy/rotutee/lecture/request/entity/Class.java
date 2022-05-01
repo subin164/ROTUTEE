@@ -34,15 +34,19 @@ public class Class {
     @OneToMany(mappedBy = "classEntity", cascade = CascadeType.PERSIST)
     private List<Quiz> quizList;
 
+    @OneToMany(mappedBy = "classes")
+    private List<AttachedFile> videoList;
+
     public Class() {
     }
 
-    public Class(int classNo, String className, String videoPath, Chapter chapter, List<Quiz> quizList) {
+    public Class(int classNo, String className, String videoPath, Chapter chapter, List<Quiz> quizList, List<AttachedFile> videoList) {
         this.classNo = classNo;
         this.className = className;
         this.videoPath = videoPath;
         this.chapter = chapter;
         this.quizList = quizList;
+        this.videoList = videoList;
     }
 
     public int getClassNo() {
@@ -83,6 +87,14 @@ public class Class {
 
     public void setQuizList(List<Quiz> quizList) {
         this.quizList = quizList;
+    }
+
+    public List<AttachedFile> getVideoList() {
+        return videoList;
+    }
+
+    public void setVideoList(List<AttachedFile> videoList) {
+        this.videoList = videoList;
     }
 
     @Override

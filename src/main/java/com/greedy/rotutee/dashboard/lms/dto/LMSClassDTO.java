@@ -3,6 +3,7 @@ package com.greedy.rotutee.dashboard.lms.dto;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.dto
@@ -25,5 +26,6 @@ public class LMSClassDTO {
     private int classNo;
     private String className;
     private String videoPath;
-    private int chapNo;
+    private LMSChapterDTO chapter;
+    private LMSQuizDTO quiz;
 }

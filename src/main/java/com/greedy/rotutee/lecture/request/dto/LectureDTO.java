@@ -1,7 +1,6 @@
 package com.greedy.rotutee.lecture.request.dto;
 
-import com.greedy.rotutee.lecture.request.dto.LectureCategoryDTO;
-import com.greedy.rotutee.lecture.request.dto.MemberDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.util.List;
@@ -23,10 +22,10 @@ public class LectureDTO {
     private String applicationDivision;
     private int lectureCategoryNo;
     private LectureCategoryDTO category;
-    private String originalPath;
-    private String thumbnailPath;
-    private String bannerPath;
 
+    private List<MultipartFile> fileList;
+
+    private List<AttachedFileDTO> imageList;
     private List<ChapterDTO> chapterList;
 
     public List<ChapterDTO> getChapterList() {
@@ -40,7 +39,7 @@ public class LectureDTO {
     public LectureDTO() {
     }
 
-    public LectureDTO(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lectureDetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, int memberNo, MemberDTO tutor, Date applicationDate, String applicationDivision, int lectureCategoryNo, LectureCategoryDTO category, String originalPath, String thumbnailPath, String bannerPath) {
+    public LectureDTO(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lectureDetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, int memberNo, MemberDTO tutor, Date applicationDate, String applicationDivision, int lectureCategoryNo, LectureCategoryDTO category, String originalPath, String thumbnailPath, String bannerPath, List<MultipartFile> fileList, List<AttachedFileDTO> imageList) {
         this.lectureNo = lectureNo;
         this.lectureName = lectureName;
         this.lecturePrice = lecturePrice;
@@ -56,9 +55,8 @@ public class LectureDTO {
         this.applicationDivision = applicationDivision;
         this.lectureCategoryNo = lectureCategoryNo;
         this.category = category;
-        this.originalPath = originalPath;
-        this.thumbnailPath = thumbnailPath;
-        this.bannerPath = bannerPath;
+        this.fileList = fileList;
+        this.imageList = imageList;
     }
 
     public int getLectureNo() {
@@ -181,28 +179,20 @@ public class LectureDTO {
         this.category = category;
     }
 
-    public String getOriginalPath() {
-        return originalPath;
+    public List<AttachedFileDTO> getImageList() {
+        return imageList;
     }
 
-    public void setOriginalPath(String originalPath) {
-        this.originalPath = originalPath;
+    public void setImageList(List<AttachedFileDTO> imageList) {
+        this.imageList = imageList;
     }
 
-    public String getThumbnailPath() {
-        return thumbnailPath;
+    public List<MultipartFile> getFileList() {
+        return fileList;
     }
 
-    public void setThumbnailPath(String thumbnailPath) {
-        this.thumbnailPath = thumbnailPath;
-    }
-
-    public String getBannerPath() {
-        return bannerPath;
-    }
-
-    public void setBannerPath(String bannerPath) {
-        this.bannerPath = bannerPath;
+    public void setFileList(List<MultipartFile> fileList) {
+        this.fileList = fileList;
     }
 
     @Override
@@ -223,9 +213,6 @@ public class LectureDTO {
                 ", applicationDivision='" + applicationDivision + '\'' +
                 ", lectureCategoryNo=" + lectureCategoryNo +
                 ", category=" + category +
-                ", originalPath='" + originalPath + '\'' +
-                ", thumbnailPath='" + thumbnailPath + '\'' +
-                ", bannerPath='" + bannerPath + '\'' +
 //                ", chapterList='" + chapterList + '\'' +
                 '}';
     }

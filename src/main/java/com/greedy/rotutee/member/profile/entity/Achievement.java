@@ -14,7 +14,7 @@ import javax.persistence.*;
  * 2022-04-20 7sang 최초 생성
  */
 
-@Entity(name = "Member_Achievement")
+@Entity(name = "Profile_Achievement")
 @Table(name = "TBL_ACHIEVEMENT")
 public class Achievement {
 

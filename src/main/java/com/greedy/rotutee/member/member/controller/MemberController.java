@@ -5,7 +5,12 @@ import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import com.greedy.rotutee.member.member.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
+import com.greedy.rotutee.member.member.dto.ReasonsDTO;
 import com.greedy.rotutee.member.member.service.MemberService;
+import com.greedy.rotutee.member.profile.dto.AchievementDTO;
+import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
+import com.greedy.rotutee.member.profile.dto.TutorInfoDTO;
+import com.greedy.rotutee.member.profile.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/member")
@@ -26,12 +30,14 @@ public class MemberController {
 
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+    private final ProfileService profileService;
 
     @Autowired
-    public MemberController(MemberService memberService, PasswordEncoder passwordEncoder) {
+    public MemberController(MemberService memberService, PasswordEncoder passwordEncoder, ProfileService profileService) {
 
         this.memberService = memberService;
         this.passwordEncoder = passwordEncoder;
+        this.profileService = profileService;
     }
 
     @GetMapping("/login")
@@ -101,25 +107,134 @@ public class MemberController {
     @GetMapping("/list")
     public ModelAndView findMemberList(ModelAndView mv, @PageableDefault Pageable pageable) {
 
-        Page<MemberDTO> memberList = memberService.findAllMember(pageable);
+        Page<MemberDTO> tuteeList = memberService.findAllTutee(pageable);
+        Page<MemberDTO> tutorList = memberService.findAllTutor(pageable);
 
-        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(memberList);
+        PagingButtonInfo tuteePaging = Pagenation.getPagingButtonInfo(tutorList);
+        PagingButtonInfo tutorPaging = Pagenation.getPagingButtonInfo(tuteeList);
 
-        mv.addObject("memberList", memberList);
-        mv.addObject("paging", paging);
+        mv.addObject("tuteeList", tuteeList);
+        mv.addObject("tutorList", tutorList);
+        mv.addObject("tuteePaging", tuteePaging);
+        mv.addObject("tutorPaging", tutorPaging);
+
         mv.setViewName("/member/list");
 
         return mv;
+    }
+
+    @GetMapping(value = "/searchlist", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    private MemberDTO findSearchMember(@RequestParam("searchValue") String searchValue) {
+
+        MemberDTO searchMember = memberService.findSearchMember(searchValue);
+
+        return searchMember;
+    }
+
+    @GetMapping("/adminlist")
+    public ModelAndView findAdminList(ModelAndView mv, @PageableDefault Pageable pageable) {
+
+        Page<MemberDTO> adminList = memberService.findAllAdmin(pageable);
+
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(adminList);
+
+        mv.addObject("adminList", adminList);
+        mv.addObject("paging", paging);
+
+        mv.setViewName("/member/adminlist");
+
+        return mv;
+    }
+
+    @PostMapping(value = "/adminremove", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public void removeAdmin(@RequestParam("searchValue") String searchValue) {
+
+        memberService.removeAdmin(searchValue);
+    }
+
+    @PostMapping(value = "/adminregist", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public void registAdmin(@RequestParam("searchValue") String searchValue) {
+
+        memberService.registAdmin(searchValue);
     }
 
     @GetMapping("/detail/{memberNo}")
     public ModelAndView memberDetail(ModelAndView mv, @PathVariable int memberNo) {
 
         MemberDTO member = memberService.findMember(memberNo);
+        System.out.println("권한 " + member.getMemberRoleList().get(0).getRole().getName());
+        AttachedFileDTO attachedFile = profileService.findMemberProfile(memberNo);
+        String memberStatus = memberService.findMemberStatus(memberNo);
 
+        System.out.println("memberStatus = " + memberStatus);
+
+//        AchievementDTO achievement = profileService.findMemberAchievement(memberNo);
+
+        if(member.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
+            TutorInfoDTO tutorInfo = profileService.findTutorInfo(memberNo);
+
+            tutorInfo.setAddress(tutorInfo.getAddress().replace("&", " "));
+
+            mv.addObject("tutorInfo", tutorInfo);
+        }
+
+//        mv.addObject("achievement", achievement);
+        mv.addObject("attachedFile", attachedFile);
+        mv.addObject("memberStatus", memberStatus);
         mv.addObject("member", member);
         mv.setViewName("/member/detail");
 
         return mv;
+    }
+
+    @PostMapping("/stop")
+    public String memberStatusStop(@RequestParam("memberNo") String memberNo,
+                                   @RequestParam("stopReasons") String stopReasons, @RequestParam("stopDate") String stopDate) {
+
+        memberService.memberStatusStop(Integer.parseInt(memberNo), Integer.parseInt(stopReasons), Integer.parseInt(stopDate));
+
+        System.out.println("memberNo = " + memberNo);
+        System.out.println("stopReasons = " + stopReasons);
+        System.out.println("stopDate = " + stopDate);
+
+        return "redirect:/member/detail/" + memberNo;
+    }
+
+    @GetMapping("/play/{memberNo}")
+    public String memberStatusPlay(@PathVariable("memberNo") int memberNo) {
+
+        memberService.memberStatusPlay(memberNo);
+
+        return "redirect:/member/detail/" + memberNo;
+    }
+
+    @GetMapping(value = "/reasons", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public List<ReasonsDTO> findAllReasons() {
+
+        return memberService.findReasonsList();
+    }
+
+
+    @GetMapping("/myfiles")
+    public ModelAndView memberFilesPage(@AuthenticationPrincipal CustomUser loginMember, @PageableDefault Pageable pageable,
+                                        ModelAndView mv) {
+        List<AttachedFileDTO> attachedFileList = memberService.findMemberAttachedFileList(loginMember.getNo());
+
+        mv.addObject("attachedFileList", attachedFileList);
+        mv.setViewName("/member/myfiles");
+
+        return mv;
+    }
+
+    @GetMapping("/removefiles/{filesNo}")
+    public String removeMemberFiles(@PathVariable("filesNo") String filesNo){
+
+        memberService.removeMemberFiles(Integer.parseInt(filesNo));
+
+        return "redirect:/member/myfiles";
     }
 }

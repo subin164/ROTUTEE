@@ -3,6 +3,7 @@ package com.greedy.rotutee.member.profile.entity;
 import com.greedy.rotutee.member.member.entity.Member;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 /**
  * packageName : com.greedy.rotutee.member.entity
@@ -16,12 +17,22 @@ import javax.persistence.*;
  * 2022-04-20 7sang 최초 생성
  */
 
-@Entity(name = "Member_MemberAchievementHistory")
+@Entity(name = "Profile_MemberAchievementHistory")
 @Table(name = "TBL_MEMBER_ACHIEVEMENT_HISTORY")
+@SequenceGenerator(
+        name = "MEMBER_ACHIEVEMENT_HISTORY_SEQ_GENERATOR",
+        sequenceName = "MEMBER_ACHIEVEMENT_HISTORY_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class MemberAchievementHistory {
 
     @Id
     @Column(name = "MEMBER_ACHIEVEMENT_HISTORY_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "MEMBER_ACHIEVEMENT_HISTORY_SEQ_GENERATOR"
+    )
     private int historyNo;
 
     @JoinColumn(name = "MEMBER_ACHIEVEMENT_NO")
@@ -32,12 +43,23 @@ public class MemberAchievementHistory {
     @ManyToOne
     private Member member;
 
+    @Column(name = "ACHIEVEMENT_CHANGE_DATE")
+    private Date changeDate;
+
     public MemberAchievementHistory() {}
 
     public MemberAchievementHistory(int historyNo, MemberAchievement memberAchievement, Member member) {
         this.historyNo = historyNo;
         this.memberAchievement = memberAchievement;
         this.member = member;
+    }
+
+    public Date getChangeDate() {
+        return changeDate;
+    }
+
+    public void setChangeDate(Date changeDate) {
+        this.changeDate = changeDate;
     }
 
     public int getHistoryNo() {

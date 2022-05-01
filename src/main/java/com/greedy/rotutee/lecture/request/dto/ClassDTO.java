@@ -1,5 +1,8 @@
 package com.greedy.rotutee.lecture.request.dto;
 
+import com.greedy.rotutee.lecture.request.entity.AttachedFile;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public class ClassDTO {
@@ -8,18 +11,22 @@ public class ClassDTO {
     private String className;
     private String videoPath;
     private ChapterDTO chapter;
+    private List<MultipartFile> fileList;
 
     private List<QuizDTO> quizList;
+    private List<AttachedFile> videoList;
 
     public ClassDTO() {
     }
 
-    public ClassDTO(int classNo, String className, String videoPath, ChapterDTO chapter, List<QuizDTO> quizList) {
+    public ClassDTO(int classNo, String className, String videoPath, ChapterDTO chapter, List<MultipartFile> fileList, List<QuizDTO> quizList, List<AttachedFile> videoList) {
         this.classNo = classNo;
         this.className = className;
         this.videoPath = videoPath;
         this.chapter = chapter;
+        this.fileList = fileList;
         this.quizList = quizList;
+        this.videoList = videoList;
     }
 
     public int getClassNo() {
@@ -62,6 +69,22 @@ public class ClassDTO {
         this.quizList = quizList;
     }
 
+    public List<AttachedFile> getVideoList() {
+        return videoList;
+    }
+
+    public void setVideoList(List<AttachedFile> videoList) {
+        this.videoList = videoList;
+    }
+
+    public List<MultipartFile> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<MultipartFile> fileList) {
+        this.fileList = fileList;
+    }
+
     @Override
     public String toString() {
         return "ClassDTO{" +
@@ -69,6 +92,7 @@ public class ClassDTO {
                 ", className='" + className + '\'' +
                 ", videoPath='" + videoPath + '\'' +
                 ", chapter=" + chapter +
+                ", fileList=" + fileList +
                 '}';
     }
 }

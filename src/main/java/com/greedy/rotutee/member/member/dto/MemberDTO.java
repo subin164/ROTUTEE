@@ -1,5 +1,6 @@
 package com.greedy.rotutee.member.member.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.sql.Date;
@@ -10,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class MemberDTO {
 
     private int no;
@@ -24,6 +24,7 @@ public class MemberDTO {
     private Date withdrawalDate;
     private String leaveStatusYn;
     private String rouletteChance;
+    @JsonIgnoreProperties(value = {"member"})
     private List<MemberRoleDTO> memberRoleList;
 
     @Override

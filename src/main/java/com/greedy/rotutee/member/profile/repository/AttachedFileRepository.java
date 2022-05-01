@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
  * 2022-04-22 7sang 최초 생성
  */
 
-@Repository
+@Repository(value = "Profile_AttachedFileRepository")
 public interface AttachedFileRepository extends JpaRepository<AttachedFile, Integer> {
 
     AttachedFile findByMemberNo(int memeberNo);
