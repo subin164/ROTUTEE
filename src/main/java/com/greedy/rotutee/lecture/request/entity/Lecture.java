@@ -1,8 +1,6 @@
 package com.greedy.rotutee.lecture.request.entity;
 
 
-import com.greedy.rotutee.lecture.request.dto.ChapterDTO;
-
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
@@ -66,10 +64,13 @@ public class Lecture {
     @OneToMany(mappedBy = "lecture", cascade = CascadeType.PERSIST)
     private List<Chapter> chapterList;
 
+    @OneToMany(mappedBy = "lecture", cascade = CascadeType.PERSIST)
+    private List<AttachedFile> imageList;
+
     public Lecture() {
     }
 
-    public Lecture(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lectureDetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, Member tutor, Date applicationDate, String applicationDivision, LectureCategory lectureCategory, List<Chapter> chapterList) {
+    public Lecture(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lectureDetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, Member tutor, Date applicationDate, String applicationDivision, LectureCategory lectureCategory, List<Chapter> chapterList, List<AttachedFile> imageList) {
         this.lectureNo = lectureNo;
         this.lectureName = lectureName;
         this.lecturePrice = lecturePrice;
@@ -84,6 +85,15 @@ public class Lecture {
         this.applicationDivision = applicationDivision;
         this.lectureCategory = lectureCategory;
         this.chapterList = chapterList;
+        this.imageList = imageList;
+    }
+
+    public List<AttachedFile> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<AttachedFile> imageList) {
+        this.imageList = imageList;
     }
 
     public int getLectureNo() {
