@@ -1,4 +1,4 @@
-package com.greedy.rotutee.member.profile.entity;
+package com.greedy.rotutee.member.member.entity;
 
 import javax.persistence.*;
 
@@ -14,7 +14,7 @@ import javax.persistence.*;
  * 2022-04-20 7sang 최초 생성
  */
 
-@Entity(name = "Profile_Achievement")
+@Entity(name = "Member_Achievement")
 @Table(name = "TBL_ACHIEVEMENT")
 public class Achievement {
 

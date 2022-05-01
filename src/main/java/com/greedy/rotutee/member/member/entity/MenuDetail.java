@@ -1,9 +1,7 @@
 package com.greedy.rotutee.member.member.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "MenuDetail")
 @Table(name = "TBL_MENU_DETAIL")

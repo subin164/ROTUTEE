@@ -3,14 +3,10 @@ package com.greedy.rotutee.member.member.service;
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.member.member.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
-import com.greedy.rotutee.member.member.entity.LectureCategory;
-import com.greedy.rotutee.member.member.entity.Member;
-import com.greedy.rotutee.member.member.entity.MemberI;
-import com.greedy.rotutee.member.member.entity.MemberRole;
-import com.greedy.rotutee.member.member.repository.LectureCategoryRepository;
-import com.greedy.rotutee.member.member.repository.MemberRepository;
-import com.greedy.rotutee.member.member.repository.MemberRoleRepository;
-import com.greedy.rotutee.member.member.repository.RoleRepository;
+import com.greedy.rotutee.member.member.dto.ReasonsDTO;
+import com.greedy.rotutee.member.member.entity.*;
+import com.greedy.rotutee.member.member.repository.*;
+import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,10 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,9 +32,19 @@ public class MemberService {
     private final MemberRoleRepository memberRoleRepository;
     private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
+    private final MemberAchievementHistoryRepository memberAchievementHistoryRepository;
+    private final AchievementRepository achievementRepository;
+    private final MemberAchievementRepository memberAchievementRepository;
+    private final MemberStatusHistoryRepository memberStatusHistoryRepository;
+    private final MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery;
+    private final ReasonsRepository reasonsRepository;
+    private final AttachedFileRepository attachedFileRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
-    public MemberService(LectureCategoryRepository lectureCategoryRepository, PasswordEncoder passwordEncoder, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleRepository roleRepository, ModelMapper modelMapper) {
+    public MemberService(LectureCategoryRepository lectureCategoryRepository, PasswordEncoder passwordEncoder, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleRepository roleRepository, ModelMapper modelMapper, AchievementRepository achievementRepository, MemberAchievementRepository memberAchievementRepository, MemberAchievementHistoryRepository memberAchievementHistoryRepository, MemberStatusHistoryRepository memberStatusHistoryRepository, MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery, ReasonsRepository reasonsRepository, AttachedFileRepository attachedFileRepository) {
 
         this.lectureCategoryRepository = lectureCategoryRepository;
         this.passwordEncoder = passwordEncoder;
@@ -46,6 +52,13 @@ public class MemberService {
         this.memberRoleRepository = memberRoleRepository;
         this.roleRepository = roleRepository;
         this.modelMapper = modelMapper;
+        this.achievementRepository = achievementRepository;
+        this.memberAchievementRepository = memberAchievementRepository;
+        this.memberAchievementHistoryRepository = memberAchievementHistoryRepository;
+        this.memberStatusHistoryRepository = memberStatusHistoryRepository;
+        this.memberStatusHistoryRepositoryQuery = memberStatusHistoryRepositoryQuery;
+        this.reasonsRepository = reasonsRepository;
+        this.attachedFileRepository = attachedFileRepository;
     }
 
     /* 사용자번호로 사용자 정보 조회용 메서드 */
@@ -76,7 +89,44 @@ public class MemberService {
 
         memberRepository.save(modelMapper.map(member, Member.class));
 
+        setMemberStatus(member);
+        setMemberAchievement(member);
         setMemberRole(member);
+    }
+
+    /* 사용자 등록시 상태등록용 메서드 */
+    public void setMemberStatus(MemberDTO member) {
+
+        Member foundMember = memberRepository.findMemberByEmail(member.getEmail());
+        MemberStatusHistory memberStatusHistory = new MemberStatusHistory();
+        memberStatusHistory.setMember(foundMember);
+        memberStatusHistory.setStatus("활동");
+        long miliseconds = System.currentTimeMillis();
+        Date date = new Date(miliseconds);
+        memberStatusHistory.setHistoryDate(date);
+
+        //when
+        memberStatusHistoryRepository.save(memberStatusHistory);
+    }
+
+    /* 사용자 등록시 업적등록용 메서드 */
+    private void setMemberAchievement(MemberDTO member) {
+
+        Member foundMember = memberRepository.findMemberByEmail(member.getEmail());
+        MemberAchievement memberAchievement = new MemberAchievement();
+        memberAchievement.setAchievement(achievementRepository.findById(1).get());
+        memberAchievement.setMember(foundMember);
+        long miliseconds = System.currentTimeMillis();
+        Date date = new Date(miliseconds);
+        memberAchievement.setGetDat(date);
+        memberAchievementRepository.save(memberAchievement);
+
+        MemberAchievementHistory memberAchievementHistory = new MemberAchievementHistory();
+        memberAchievementHistory.setMemberAchievement(memberAchievementRepository.findByMemberAndAchievement(foundMember, achievementRepository.findById(1).get()));
+        memberAchievementHistory.setMember(foundMember);
+        memberAchievementHistory.setChangeDate(date);
+
+        memberAchievementHistoryRepository.save(memberAchievementHistory);
     }
 
     /* 사용자 등록시 권한등록용 메서드 */
@@ -118,8 +168,6 @@ public class MemberService {
     }
 
 
-
-
     public Page<MemberDTO> findAllMember(Pageable pageable) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
@@ -130,7 +178,124 @@ public class MemberService {
     }
 
     public Page<MemberDTO> findAllTutee(Pageable pageable) {
-        
-        return null;
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("no").descending());
+
+        return memberRepository.findByMemberRoleListRoleNo(3, pageable).map(member -> modelMapper.map(member, MemberDTO.class));
+    }
+
+    public Page<MemberDTO> findAllTutor(Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("no").descending());
+
+        return memberRepository.findByMemberRoleListRoleNo(4, pageable).map(member -> modelMapper.map(member, MemberDTO.class));
+    }
+
+    public Page<MemberDTO> findAllAdmin(Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("no").descending());
+
+        return memberRepository.findByMemberRoleListRoleNo(2, pageable).map(member -> modelMapper.map(member, MemberDTO.class));
+    }
+
+
+    public String findMemberStatus(int memberNo) {
+
+        return memberStatusHistoryRepositoryQuery.findMemberStatus(entityManager, memberNo);
+    }
+
+    @Transactional
+    public void memberStatusStop(int memberNo, int stopReasons, int stopDate) {
+
+        long miliseconds = System.currentTimeMillis();
+        Date date = new Date(miliseconds);
+        Date endDate = new Date(miliseconds + (long)( ( 1000 * 60 * 60 * 24 ) * stopDate ));
+
+        SuspensionHitory suspensionHitory = new SuspensionHitory();
+        suspensionHitory.setStartDate(date);
+        suspensionHitory.setEndDate(endDate);
+        suspensionHitory.setReasons(reasonsRepository.findById(stopReasons).get());
+
+        MemberStatusHistory memberStatusHistory = new MemberStatusHistory();
+        memberStatusHistory.setStatus("정지");
+        memberStatusHistory.setMember(memberRepository.findById(memberNo).get());
+        memberStatusHistory.setSuspensionHitory(suspensionHitory);
+        memberStatusHistory.setHistoryDate(date);
+
+        suspensionHitory.setMemberStatusHistory(memberStatusHistory);
+
+        memberStatusHistoryRepository.save(memberStatusHistory);
+
+    }
+
+    public List<ReasonsDTO> findReasonsList() {
+
+        return reasonsRepository.findAll().stream().map(reasons -> modelMapper.map(reasons, ReasonsDTO.class)).collect(Collectors.toList());
+    }
+
+    /* 회원 정지 철회 메서드 */
+    @Transactional
+    public void memberStatusPlay(int memberNo) {
+
+        long miliseconds = System.currentTimeMillis();
+        Date date = new Date(miliseconds);
+        MemberStatusHistory memberStatusHistory = new MemberStatusHistory();
+        memberStatusHistory.setStatus("활동");
+        memberStatusHistory.setMember(memberRepository.findById(memberNo).get());
+        memberStatusHistory.setHistoryDate(date);
+
+        memberStatusHistoryRepository.save(memberStatusHistory);
+    }
+
+    @Transactional
+    public void registAdmin(String adminEmail) {
+
+        Member member = memberRepository.findMemberByEmail(adminEmail);
+        Role adminRole = roleRepository.findById(2).get();
+
+        member.getMemberRoleList().get(0).setRole(adminRole);
+    }
+
+    @Transactional
+    public void removeAdmin(String adminEmail) {
+
+        Member member = memberRepository.findMemberByEmail(adminEmail);
+        Role adminRole = roleRepository.findById(3).get();
+
+        member.getMemberRoleList().get(0).setRole(adminRole);
+    }
+
+    public MemberDTO findSearchMember(String searchValue) {
+
+        Member saerchMember = memberRepository.findMemberByEmail(searchValue);
+
+        if(saerchMember == null) {
+            saerchMember = new Member();
+        }
+
+        return modelMapper.map(saerchMember, MemberDTO.class);
+    }
+
+    public List<AttachedFileDTO> findMemberAttachedFileList(int memberNo) {
+
+        String division = "서류";
+
+        List<AttachedFile> attachedFilesList = attachedFileRepository.findByMemberNoAndDivisionAndFileDeletionYn(memberNo, division, "N ");
+
+        return attachedFilesList.stream().map(attachedFile -> modelMapper.map(attachedFile, AttachedFileDTO.class)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void removeMemberFiles(int filesNo) {
+
+        AttachedFile attachedFile = attachedFileRepository.findById(filesNo).get();
+
+        attachedFile.setFileDeletionYn("Y");
     }
 }

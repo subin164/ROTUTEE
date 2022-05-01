@@ -5,18 +5,21 @@ import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
 import com.greedy.rotutee.config.RotuteeApplication;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
-import com.greedy.rotutee.member.member.entity.Member;
-import com.greedy.rotutee.member.member.repository.MemberRepository;
+import com.greedy.rotutee.member.member.entity.*;
+import com.greedy.rotutee.member.member.repository.*;
 import com.greedy.rotutee.member.profile.dto.TutorInfoDTO;
 import com.greedy.rotutee.member.profile.entity.TutorInfo;
 import com.greedy.rotutee.member.profile.repository.TutorInfoRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.sql.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,18 +41,36 @@ import static org.junit.Assert.assertNotNull;
 @ContextConfiguration(classes = {RotuteeApplication.class, JPAConfiguration.class, BeanConfiguration.class})
 public class MemberRepositoryTests {
 
-    private final MemberRepository memberRepository;
-    private final TutorInfoRepository tutorInfoRepository;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private MemberRepository memberRepository;
 
+    @Autowired
+    private TutorInfoRepository tutorInfoRepository;
 
-    public MemberRepositoryTests(MemberRepository memberRepository, TutorInfoRepository tutorInfoRepository, PasswordEncoder passwordEncoder) {
-        this.memberRepository = memberRepository;
-        this.tutorInfoRepository = tutorInfoRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleRepository roleRepository;
 
+    @Autowired
+    private MemberStatusHistoryRepository memberStatusHistoryRepository;
+
+    @Autowired
+    private MemberAchievementRepository memberAchievementRepository;
+
+    @Autowired
+    private AchievementRepository achievementRepository;
+
+    @Autowired
+    private MemberAchievementHistoryRepository memberAchievementHistoryRepository;
+
+    @Autowired
+    private MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+    
     @Test
     public void init() {
         assertNotNull(memberRepository);
@@ -110,9 +131,10 @@ public class MemberRepositoryTests {
     public void 전체_회원_조회_테스트_메서드() {
 
         //given
+        Role role = roleRepository.findRoleByNo(3);
 
         //when
-        List<Member> memberList = memberRepository.findAll();
+        List<Member> memberList = memberRepository.findByMemberRoleListRoleNo(3);
 
         //then
         assertNotNull(memberList);
@@ -120,6 +142,88 @@ public class MemberRepositoryTests {
 
     }
 
+    @Test
+    public void 회원_가입_상태_설정_테스트_메서드() {
+
+        //given
+        Member member = memberRepository.findById(14).get();
+        MemberStatusHistory memberStatusHistory = new MemberStatusHistory();
+        memberStatusHistory.setMember(member);
+        memberStatusHistory.setStatus("활동");
+        long miliseconds = System.currentTimeMillis();
+        Date date = new Date(miliseconds);
+        memberStatusHistory.setHistoryDate(date);
+
+        //when
+        memberStatusHistoryRepository.save(memberStatusHistory);
+
+        //then
+    }
+
+    @Test
+    public void 회원_상태_조회_테스트_메서드() {
+
+        //given
+        int memberNo = 14;
+
+        //when
+        String memberStatus = memberStatusHistoryRepositoryQuery.findMemberStatus(entityManager, memberNo);
+        
+        //then
+        assertNotNull(memberStatus);
+        System.out.println("memberStatus = " + memberStatus);
+    }
+
+    @Test
+    public void 회원_가입_칭호_설정_테스트_메서드() {
+
+        Member foundMember = memberRepository.findById(16).get();
+        MemberAchievement memberAchievement = new MemberAchievement();
+        memberAchievement.setAchievement(achievementRepository.findById(1).get());
+        memberAchievement.setMember(foundMember);
+        long miliseconds = System.currentTimeMillis();
+        Date date = new Date(miliseconds);
+        memberAchievement.setGetDat(date);
+        memberAchievementRepository.save(memberAchievement);
+
+        MemberAchievementHistory memberAchievementHistory = new MemberAchievementHistory();
+        memberAchievementHistory.setMemberAchievement(memberAchievementRepository.findByMemberAndAchievement(foundMember, achievementRepository.findById(1).get()));
+        memberAchievementHistory.setMember(foundMember);
+        memberAchievementHistory.setChangeDate(date);
+
+        memberAchievementHistoryRepository.save(memberAchievementHistory);
+
+    }
+
+    @Test
+    @Transactional
+    public void 회원_칭호_획득_테스트_메서드() {
+
+        //given
+
+        //when
+        MemberAchievement memberAchievement = new MemberAchievement();
+        memberAchievement.setAchievement(achievementRepository.findById(99).get());
+        memberAchievement.setMember(memberRepository.findById(14).get());
+        long miliseconds = System.currentTimeMillis();
+        Date date = new Date(miliseconds);
+        memberAchievement.setGetDat(date);
+
+        System.out.println("memberAchievement = " + memberAchievement);
+
+        //then
+        memberAchievementRepository.save(memberAchievement);
+    }
+
+    @Test
+    @Transactional
+    public void 회원_칭호_변경_테스트_메서드() {
+
+        //given
+        MemberAchievementHistory memberAchievementHistory = new MemberAchievementHistory();
+
+        //when
+    }
 //    /* 모든 강의 카테고리 정보 조회용 메서드 */
 //    public List<LectureCategoryDTO> findLectureCategoryList() {
 //
@@ -182,4 +286,6 @@ public class MemberRepositoryTests {
         System.out.println("encodePwd = " + encodePwd);
         System.out.println("findMember = " + findMember);
     }
+
+
 }

@@ -41,7 +41,8 @@
                 <p>프로필 사진</p>
                 <th:block th:if="${ attachedFile.saveAttachedFileName == null }">
                     프로필을 등록해주세요
-                </th:block><th:block th:if="${ attachedFile.saveAttachedFileName != null }">
+                </th:block>
+                <th:block th:if="${ attachedFile.saveAttachedFileName != null }">
                     <img th:src="@{/sg/image/} + ${ attachedFile.saveAttachedFileName }" style="width: 120px; height: 120px">
                 </th:block>
             </div>
@@ -63,10 +64,10 @@
                 닉네임　　
                 <span th:text="${ member.nickname }"></span>
             </p>
-            <p>
-                칭호　　　
-                <span th:text="${ achievement.achievementName }"></span>
-            </p>
+<!--            <p>-->
+<!--                칭호　　　-->
+<!--                <span th:text="${ achievement.achievementName }"></span>-->
+<!--            </p>-->
         </div>
     </div>
     <br>

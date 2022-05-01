@@ -1,23 +1,21 @@
-package com.greedy.rotutee.member.profile.entity;
-
-import com.greedy.rotutee.member.member.entity.Member;
+package com.greedy.rotutee.member.member.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
 
 /**
- * packageName : com.greedy.rotutee.member.entity
+ * packageName : com.greedy.rotutee.member.member.entity
  * fileName : MemberAchievementHistory
  * author : 7sang
- * date : 2022-04-20
+ * date : 2022-04-27
  * description :
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
- * 2022-04-20 7sang 최초 생성
+ * 2022-04-27 7sang 최초 생성
  */
 
-@Entity(name = "Profile_MemberAchievementHistory")
+@Entity(name = "MemberAchievementHistory")
 @Table(name = "TBL_MEMBER_ACHIEVEMENT_HISTORY")
 @SequenceGenerator(
         name = "MEMBER_ACHIEVEMENT_HISTORY_SEQ_GENERATOR",
@@ -93,4 +91,5 @@ public class MemberAchievementHistory {
                 ", memberAchievement=" + memberAchievement +
                 '}';
     }
+
 }

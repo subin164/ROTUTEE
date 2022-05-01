@@ -7,11 +7,16 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class MemberRoleDTO {
 
     private int memberRoleNo;
     private RoleDTO role;
     private MemberDTO member;
 
+    @Override
+    public String toString() {
+        return "MemberRoleDTO{" +
+                "memberRoleNo=" + memberRoleNo +
+                '}';
+    }
 }
