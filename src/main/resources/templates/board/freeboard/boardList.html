@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <head>
     <title>Table </title>
     <meta charset="UTF-8">
@@ -21,49 +22,52 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+    <script>
+        const message = "[[${successMessage}]]"
+        message && alert(message);
+    </script>
+
     <style>
+
         tr:hover {
             background-color: #F5F5F5;
             cursor:pointer;
         }
+
         .pagebtn{
 
             background-color: #D1E4FA;
         }
+
         .pagebtn:focus{
             background-color: #8397D7;
         }
-        .categorybtn{
-            background-color: #F0F2FF;
-        }
-        .categorybtn:focus{
-            background-color: #8397D7;
-        }
-        .container{
-            padding-top: 60px;
-        }
+
         .box{
 
             width: 80%;
             margin-top: 100px;
             margin-left: 300px;
         }
+
         .head{
             font-family: 'Noto Sans KR', sans-serif;
             font-size: 20px;
         }
+
         #myTab{
             font-family: 'Noto Sans KR', sans-serif;
-
         }
+
         .search-area{
         }
+
         .search-paging-area{
             text-align: center;
         }
 
     </style>
-
 </head>
 <body>
 
@@ -75,19 +79,18 @@
        </div>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="notice-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
-                        role="tab" aria-controls="home" aria-selected="true">공지사항</button>
+                <button class="nav-link" id="notice-tab" data-bs-toggle="tab" data-bs-target="#notice" type="button"
+                        role="tab" aria-controls="notice" aria-selected="true">공지사항</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="ask-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
-                        role="tab" aria-controls="profile" aria-selected="false">자유 질문</button>
+                <button class="nav-link" id="ask-tab" data-bs-toggle="tab" data-bs-target="#ask" type="button"
+                        role="tab" aria-controls="ask" aria-selected="false">질문 & 답변</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="free-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
-                        role="tab" aria-controls="contact" aria-selected="false">질문 & 답변</button>
+                <button class="nav-link" id="free-tab" data-bs-toggle="tab" data-bs-target="#free" type="button"
+                        role="tab" aria-controls="free" aria-selected="false">자유 질문</button>
             </li>
         </ul>
-
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="limiter">
@@ -107,17 +110,17 @@
                                         </thead>
                                     </table>
                                 </div>
-
                                 <div class="table100-body">
                                     <table>
                                         <tbody>
-                                        <tr class="row100 body" th:each="boardList : ${boardList}" onclick="boardListDetail()">
-                                            <td class="cell100 column1" th:text="${boardList.boardNo}"></td>
-                                            <td class="cell100 column2" th:text="${boardList.boardTitle}"></td>
-                                            <td class="cell100 column3" th:text="${boardList.freeBoardCategory.boardCategoryName}"></td>
-                                            <td class="cell100 column4" th:text="${boardList.boardCreationDate}"></td>
-                                            <td class="cell100 column5" th:text="${boardList.freeBoardMember.memberName}"></td>
-                                        </tr>
+                                            <tr id="board-tr" class="row100 body" th:each="boardList : ${boardList}">
+                                                <input id="boardId" type="hidden" th:value="${boardList.boardNo}">
+                                                <td class="cell100 column1" th:text="${boardList.boardNo}"></td>
+                                                <td class="cell100 column2" th:text="${boardList.boardTitle}"></td>
+                                                <td class="cell100 column3" th:text="${boardList.freeBoardCategory.boardCategoryName}"> </td>
+                                                <td class="cell100 column4" th:text="${boardList.boardCreationDate}"> </td>
+                                                <td class="cell100 column5" th:text="${boardList.freeBoardMember.memberName}"> </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -127,106 +130,110 @@
                 </div>
                 <div class="search-paging-area">
                     <div class="search-area">
-                    <form id="loginForm"action="list" method="get" style="display: inline-block">
+                    <form id="loginForm"action="list" method="get" style="display: inline-block" >
                         <input type="hidden" name="currentPage" value="1">
+                        <input type="hidden"  name="categoryNo" value="${categoryNo}">
                         <select id="searchCondition" name="searchCondition">
                             <option value="writer" th:selected="${ searchCondition } == 'writer'">작성자</option>
                             <option value="title" th:selected="${ searchCondition } == 'title'">제목</option>
                             <option value="content" th:selected="${ searchCondition } == 'content'">내용</option>
                         </select>
-                        <input type="search" id="searchValue" name="searchValue" th:value="${ searchValue }">
+                        <input type="search" id="searchValue" name="searchValue" th:value="${searchValue}">
                         <button class="btn btn-primary" type="submit">검색하기</button>
                     </form>
                         </div>
                     <button type="button" id="writeBoard" class="btn btn-primary">작성하기</button>
 
+                    <div class="pagingArea" align="center">
+                            <!-- 맨 앞으로 이동하는 버튼 -->
+                            <button id="startPage" class="pagebtn" th:onclick="'location.href=\'/freeBoard/list?page=' + @{${paging.startPage}} + '&searchCondition=' + @{${searchCondition}} +  '&searchValue=' + @{${searchValue}} + '&category=' + @{${categoryNo}} +'\''"
 
-                   <!-- <th:block sec:authorize="isAuthenticated()">
-                        <button class="btn btn-or" id="writeBoard">작성하기</button>
-                    </th:block>-->
-
-                    <!--<div class="pagingArea" align="center">
-                        <th:block th:if="${ searchCondition } ne null">
-                            &lt;!&ndash; 맨 앞으로 이동하는 버튼 &ndash;&gt;
-                            <button id="startPage" class="pagebtn" th:onclick="'location.href=\'/board/list?page=' + @{${paging.startPage}} + '&searchCondition=' + @{${searchCondition}} +  '&searchValue=' + @{${searchValue}} + '\''"
                                     th:disabled="${ boardList.first }"><<</button>
 
-                            &lt;!&ndash; 이전 페이지로 이동 &ndash;&gt;
-                            <button class="pagebtn" th:onclick="'location.href=\'/board/list?page=' + @{${paging.currentPage - 1}} + '&searchCondition=' + @{${searchCondition}} +  '&searchValue=' + @{${searchValue}} + '\''"
+                            <!-- 이전 페이지로 이동 -->
+                            <button class="pagebtn" th:onclick="'location.href=\'/freeBoard/list?page=' + @{${paging.currentPage - 1}} + '&searchCondition=' + @{${searchCondition}} +  '&searchValue=' + @{${searchValue}} + '&category=' + @{${categoryNo}} + '\''"
                                     th:disabled="${ boardList.first }"><</button>
 
-                            &lt;!&ndash; 숫자 버튼 &ndash;&gt;
+                            <!-- 숫자 버튼 -->
                             <th:block th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
-                                <button class="pagebtn" th:onclick="'location.href=\'/board/list?page=' + @{${page}} + '&searchCondition=' + @{${searchCondition}} +  '&searchValue=' + @{${searchValue}} + '\''"
+                                <button class="pagebtn" th:onclick="'location.href=\'/freeBoard/list?page=' + @{${page}} + '&searchCondition=' + @{${searchCondition}} +  '&searchValue=' + @{${searchValue}} + '&category=' + @{${categoryNo}} + '\''"
                                         th:text="${ page }"
                                         th:disabled="${ paging.currentPage eq page }"></button>
                             </th:block>
 
-                            &lt;!&ndash; 다음 페이지로 이동 &ndash;&gt;
-                            <button class="pagebtn" th:onclick="'location.href=\'/board/list?page=' + @{${paging.currentPage + 1}} + '&searchCondition=' + @{${searchCondition}} +  '&searchValue=' + @{${searchValue}} + '\''"
+                            <!-- 다음 페이지로 이동 -->
+                            <button class="pagebtn" th:onclick="'location.href=\'/freeBoard/list?page=' + @{${paging.currentPage + 1}} + '&searchCondition=' + @{${searchCondition}} +  '&searchValue=' + @{${searchValue}} + '&category=' + @{${categoryNo}} + '\''"
                                     th:disabled="${ boardList.last }">></button>
 
-                            &lt;!&ndash; 맨 마지막으로 이동하는 버튼 &ndash;&gt;
-                            <button id="maxPage" class="pagebtn" th:onclick="'location.href=\'/board/list?page=' + @{${paging.endPage}} + '&searchCondition=' + @{${searchCondition}} +  '&searchValue=' + @{${searchValue}} + '\''"
+                            <!-- 맨 마지막으로 이동하는 버튼 -->
+                            <button id="maxPage" class="pagebtn" th:onclick="'location.href=\'/freeBoard/list?page=' + @{${paging.endPage}} + '&searchCondition=' + @{${searchCondition}} +  '&searchValue=' + @{${searchValue}} + '&category=' + @{${categoryNo}} + '\''"
                                     th:disabled="${ boardList.last }">>></button>
-                        </th:block>
-
-
-                        <th:block th:if="${ searchCondition } eq null">
-                            &lt;!&ndash; 맨 앞으로 이동하는 버튼 &ndash;&gt;
-                            <button id="startPage" class="pagebtn" th:onclick="'location.href=\'/board/list?page=' + @{${paging.startPage}} + '\''"
-                                    th:disabled="${ boardList.first }"><<</button>
-
-                            &lt;!&ndash; 이전 페이지로 이동 &ndash;&gt;
-                            <button class="pagebtn" th:onclick="'location.href=\'/board/list?page=' + @{${paging.currentPage - 1}} + '\''"
-                                    th:disabled="${ boardList.first }"><</button>
-
-                            &lt;!&ndash; 숫자 버튼 &ndash;&gt;
-                            <th:block th:each="page : ${ #numbers.sequence(paging.startPage, paging.endPage)}">
-                                <button class="pagebtn" th:onclick="'location.href=\'/board/list?page=' + @{${page}} + '\''"
-                                        th:text="${ page }"
-                                        th:disabled="${ paging.currentPage eq page }"></button>
-                            </th:block>
-
-                            &lt;!&ndash; 다음 페이지로 이동 &ndash;&gt;
-                            <button class="pagebtn" th:onclick="'location.href=\'/board/list?page=' + @{${paging.currentPage + 1}} + '\''"
-                                    th:disabled="${ boardList.last }">></button>
-
-                            &lt;!&ndash; 맨 마지막으로 이동하는 버튼 &ndash;&gt;
-                            <button id="maxPage" class="pagebtn" th:onclick="'location.href=\'/board/list?page=' + @{${paging.endPage}} + '\''"
-                                    th:disabled="${ boardList.last }">>></button>
-                        </th:block>
-                    </div>-->
-
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+
     <div th:include="/common/footer.html"></div>
 
     <script>
-        const $tr = document.document.querySelectorAll("row100 body");
+        const $noticeTab = document.getElementById("notice-tab");
+        const $askTab = document.getElementById("ask-tab");
+        const $freeTab = document.getElementById("free-tab");
+        const $writeBoard = document.getElementById("writeBoard");
 
-       /* $(document).ready(function(){
-            for(let i = 0; i < $meetinglogBox.length; i++){
-                $tr[i].onclick = function() {
+        const $boardtr = document.querySelectorAll("#board-tr");
+        const $boardNo = document.querySelectorAll("#boardId");
 
+        document.addEventListener("DOMContentLoaded", function(){
+            const url = window.location.href;
 
-                }
-            })*/
+            const category = url.split("=");
+
+            if(category[1] =='4'){
+                $freeTab.setAttribute('class','nav-link active');
+            }else if(category[1] =='5'){
+                $askTab.setAttribute('class','nav-link active');
+            }else{
+                $noticeTab.setAttribute('class','nav-link active')
+            }
+        });
+
+        for(let i = 0; i < $boardtr.length; i++)
+        {
+            $boardtr[i].addEventListener("click", function () {
+                location.href = "detail?boardNo=" + $boardNo[i].value;
+                console.log($boardtr[i].value);
+            });
+        }
+
+        $writeBoard.addEventListener("click",function (){
+            window.location.href ="freeBoard/regist";
+        });
+
+        $noticeTab.addEventListener("click",function (){
+            window.location.replace("list?category=" + 6);
+        });
+
+        $askTab.addEventListener("click",function (){
+            window.location.replace("list?category=" + 5);
+        });
+
+        $freeTab.addEventListener("click",function (){
+            window.location.replace("list?category=" + 4);
+        });
+
     </script>
 
-
     <!--===============================================================================================-->
-    <script src="../../../static/sb/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="../../static/sb/vendor/jquery/jquery-3.2.1.min.js"></script>
     <!--===============================================================================================-->
-    <script src="../../../static/sb/vendor/bootstrap/js/popper.js"></script>
-    <script src="../../../static/sb/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../static/sb/vendor/bootstrap/js/popper.js"></script>
+    <script src="../../static/sb/vendor/bootstrap/js/bootstrap.min.js"></script>
     <!--===============================================================================================-->
-    <script src="../../../static/sb/vendor/select2/select2.min.js"></script>
+    <script src="../../static/sb/vendor/select2/select2.min.js"></script>
     <!--===============================================================================================-->
-    <script src="../../../static/sb/js/main.js"></script>
+    <script src="../../static/sb/js/main.js"></script>
     <!--===============================================================================================-->
 
 </body>

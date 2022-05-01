@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<head>
+    <meta charset="UTF-8">
+
+  <script>
+        const message = "[[${successMessage}]]"
+        message && alert(message);
+    </script>
+    <style>
+
+        .box{
+
+            width: 80%;
+            margin-top: 100px;
+            margin-left: 300px;
+        }
+        .inner-box{
+            border: 1px ridge #bcbcbc;
+            padding: 20px;
+
+        }
+      .content-area{
+          width: 100%;
+          height: 300px;
+          border: 1px ridge #bcbcbc;
+
+      }
+      .category-box{
+          border: 1px ridge #bcbcbc;
+
+      }
+      .answer-borderbox{
+          border: 1px ridge #bcbcbc;
+
+      }
+      #textarea{
+          width: 80%;
+      }
+      .content-area{
+          width: 100%;
+          height: 500px;
+      }
+
+      .answer{
+          width: 90%;
+          margin-top: auto;
+      }
+      .boardTitle-tr{
+          width: 90%;
+          margin-top: auto;
+          border: 1px ridge #bcbcbc;
+          padding: 10px;
+
+      }
+      .boardTitle-td{
+          border: 1px ridge #bcbcbc;
+      }
+    </style>
+
+    <title>Title</title>
+
+</head>
+<body>
+    <div th:include="common/mypagemenubar.html"></div>
+
+    <div class="box">
+        <div> <h1>커뮤니티</h1> </div>
+
+        <div class="inner-box">
+            <div> <h3>커뮤니티 상세</h3> </div>
+
+            <div class="category-box">
+                <div><h4>카테고리</h4></div>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="noticebtnradio1" id="noticebtnradio1" autocomplete="off" onclick="return(false);">
+                    <label class="btn btn-outline-primary" for="noticebtnradio1">공지사항</label>
+
+                    <input type="radio" class="btn-check" name="askbtnradio2" id="askbtnradio2" autocomplete="off" onclick="return(false);">
+                    <label class="btn btn-outline-primary" for="askbtnradio2">질물&답변</label>
+
+                    <input type="radio" class="btn-check" name="freebtnradio3" id="freebtnradio3" autocomplete="off" onclick="return(false);">
+                    <label class="btn btn-outline-primary" for="freebtnradio3">자유</label>
+                </div>
+            </div>
+
+            <div class="boardTitle-area">
+              <table class="boardTitle-table">
+                  <tr class="boardTitle-tr">
+                      <input id="boardNo" type="hidden" th:value="${board.boardNo}">
+                      <input id="category" type="hidden" th:value="${board.freeBoardCategory.boardCategoryNo}">
+                      <td class="boardTitle-td" th:text="제목"></td>
+                      <td class="boardTitle-td" th:text="${board.boardTitle}"></td>
+                      <td class="boardTitle-td" th:text="${board.freeBoardMember.memberName}"></td>
+                      <td class="boardTitle-td" th:text="${board.boardCreationDate}"></td>
+                      <td class="boardTitle-td" th:text="${board.boardViewCount}"></td>
+                  </tr>
+              </table>
+            </div>
+
+            <div class="form-group">
+                <h4>내용</h4>
+                <br>
+
+                <div class="content-area" >
+                    <div class="content" th:text="${board.boardContent}"></div>
+                </div>
+
+                <div align="center">
+                    <input id="boardListBtn" type="button" th:value="목록" class="btn btn-secondary">
+                    <input id="modifyBoardBtn" type="button" th:value="수정" class="btn btn-primary">
+                    <input id="deleteBoardBtn" type="button" th:value="삭제" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
+                </div>
+            </div>
+
+            <div class="answer-area">
+                <h6>댓글 작성</h6>
+                <form>
+                    <div class="answer-borderbox">
+                        <textarea id="textarea"></textarea>
+                        <input id="registAnswer" type="button" value="댓글 등록" class="btn btn-secondary">
+                    </div>
+                </form>
+
+
+                    <table class="answer-borderbox">
+                        <tbody class="answer-tbody">
+                            <tr class="answer-tr" th:each="answer : ${answer}">
+                                <input type="hidden" th:value="${answer.answerNo}}"/>
+                                <td th:text="${answer.answerNo}"></td>
+                                <td th:text="${answer.answerContent}"></td>
+                                <td th:text="${answer.answerCreatedDate}"></td>
+                                <td th:text="${answer.freeBoardMember.memberName}"></td>
+                                <td>
+                                    <input id="modifyAnswer" type="button" th:value="수정" class="btn btn-secondary">
+                                </td>
+                                <td>
+                                    <input id="deleteAnswer" type="button" th:value="삭제" class="btn btn-secondary">
+                                </td>
+                                <td>
+                                    <input id="declarationAnswer" type="button" th:value="신고" class="btn btn-danger">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">삭제 하기</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    삭제 하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="delete-ok" type="button" class="btn btn-primary">Sure</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--&lt;!&ndash;  modal &ndash;&gt;
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">삭제 하기</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    삭제 하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="delete-ok" type="button" class="btn btn-primary">Sure</button>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+
+
+
+    <script>
+        const $declaration = document.getElementById("declarationAnswer");
+        const $deleteAnswer = document.getElementById("deleteAnswer");
+        const $modifyAnswer = document.getElementById("modifyAnswer");
+        const $registAnswer = document.getElementById("registAnswer");
+
+        const $boardListBtn = document.getElementById("boardListBtn");
+        const $modifyBoardBtn = document.getElementById("modifyBoardBtn")
+        const $category = document.getElementById("category");
+
+        const $myModal = document.getElementById('myModal')
+        const $myInput = document.getElementById('myInput')
+
+        const $deleteBtn = document.getElementById("delete-ok");
+
+        let boardNo = 0;
+        let categoryNo = 0;
+        document.addEventListener("DOMContentLoaded", function(){
+            //$myModal.style.display= 'block';
+
+            const url = window.location.href;
+
+            boardNo = url.split("=");
+            boardNo= boardNo[1];
+
+            categoryNo = $category.value;
+            console.log("categoryNo : "+categoryNo);
+
+            switch (categoryNo){
+                case 6: $noticebtnradio1.setAttribute('checked',true);
+                    $askbtnradio2.setAttribute('checked',false);
+                    $freebtnradio3.setAttribute('checked',false);
+                    break;
+                case 5: $noticebtnradio1.setAttribute('checked',false);
+                    $askbtnradio2.setAttribute('checked',true);
+                    $freebtnradio3.setAttribute('checked',false);
+                    break;
+                default :
+                    $noticebtnradio1.setAttribute('checked',false);
+                    $askbtnradio2.setAttribute('checked',false);
+                    $freebtnradio3.setAttribute('checked',true);
+                    break;
+            }
+        });
+
+       /* $myModal.addEventListener('shown.bs.modal', function () {
+            $myInput.focus()
+        });*/
+        //ajax
+        $declaration.addEventListener("click",function (){
+
+        });
+
+        //ajax
+        $deleteAnswer.addEventListener("click",function (){
+
+        });
+
+        //ajax
+        $modifyAnswer.addEventListener("click",function (){
+        });
+
+        //ajax
+        $registAnswer.addEventListener("click",function (){
+        });
+
+
+        $boardListBtn.addEventListener("click",function (){
+            window.location.href="list?category=" + categoryNo;
+        });
+
+        $modifyBoardBtn.addEventListener("click",function (){
+            window.location.href="modify?boardNo=" + boardNo;
+        });
+
+        $deleteBtn.addEventListener("click",function (){
+            const params = {"boardNo":boardNo, "category":categoryNo};
+            console.log("params" + params);
+            delete_post_to_url("delete",params,'post');
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        function delete_post_to_url(path, params, method) {
+
+            const form = document.createElement("form");
+            form.setAttribute("method", method);
+            form.setAttribute("action", path);
+            for(let key in params) {
+                let hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value",params[key]);
+
+                console.log("key"+key);
+                console.log("param"+params[key]);
+
+                form.appendChild(hiddenField);
+            }
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+
+    <script>
+
+        $('.img-button-minus').on("click", function () {
+
+        });
+    </script>
+    <!--===============================================================================================-->
+    <!--<script src="../../static/sb/vendor/jquery/jquery-3.2.1.min.js"></script>-->
+    <!--===============================================================================================-->
+    <!--<script src="../../static/sb/vendor/bootstrap/js/popper.js"></script>
+    <script src="../../static/sb/vendor/bootstrap/js/bootstrap.min.js"></script>-->
+    <!--===============================================================================================-->
+   <!-- <script src="../../static/sb/vendor/select2/select2.min.js"></script>-->
+    <!--===============================================================================================-->
+   <!-- <script src="../../static/sb/js/main.js"></script>-->
+    <!--===============================================================================================-->
+
+</body>
+</html>

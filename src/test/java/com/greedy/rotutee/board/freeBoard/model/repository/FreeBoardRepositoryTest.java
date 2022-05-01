@@ -3,7 +3,9 @@ package com.greedy.rotutee.board.freeBoard.model.repository;
 import com.greedy.rotutee.board.freeBoard.dto.FreeBoardDTO;
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoardCategory;
+import com.greedy.rotutee.board.freeBoard.entity.FreeBoardMember;
 import com.greedy.rotutee.board.freeBoard.repository.FreeBoardCategoryRepository;
+import com.greedy.rotutee.board.freeBoard.repository.FreeBoardMemberRepository;
 import com.greedy.rotutee.board.freeBoard.repository.FreeBoardRepository;
 import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
@@ -54,8 +56,6 @@ public class FreeBoardRepositoryTest {
         assertNotNull(categoryRepository);
         System.out.println("freeBoardRepository = " + freeBoardRepository);
         System.out.println("freeBoardRepository = " + categoryRepository);
-
-
     }
 
     @Test
@@ -63,9 +63,7 @@ public class FreeBoardRepositoryTest {
 
         //given 값을 넣어주는 곳
         Integer categoryNo = 6;     // 6 : 공지사항, 5: 질문과 답변, 4:자유\
-
-       Pageable pageable = PageRequest.of(0, 5);
-
+        Pageable pageable = PageRequest.of(0, 5);
 
         //when 값을 넣어준것에 대한 로직처리
         FreeBoardCategory categoryEntry = categoryRepository.findById(categoryNo).get();
@@ -73,17 +71,80 @@ public class FreeBoardRepositoryTest {
         Page<FreeBoardDTO> pageFreeBoards =freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(categoryEntry,'N',pageable)
                 .map(FreeBoard -> modelMapper.map(FreeBoard,FreeBoardDTO.class));
 
-
         //then 결과
-        System.out.println("카테고리 엔티티 : "+ categoryEntry);
-        System.out.println("@@ 페이징 게시판 : " + pageFreeBoards);
-
         pageFreeBoards.forEach(System.out::println);
         assertNotNull(pageFreeBoards);
     }
 
     @Test
-    public void 커뮤니티_카테고리_목록_상세_조회(){
+    public void 커뮤니티_검색_제목_결과_조회(){
 
+        //given
+        Integer categoryNo = 6;     // 6 : 공지사항, 5: 질문과 답변, 4:자유\
+        String searchValue = "1";
+        Pageable pageable = PageRequest.of(0, 5);
+
+        //when
+        FreeBoardCategory categoryEntry = categoryRepository.findById(categoryNo).get();
+
+        Page<FreeBoard> pageFreeBoards = freeBoardRepository.findByBoardTitleContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue,  categoryEntry, 'N', pageable);
+
+        //then
+        pageFreeBoards.forEach(System.out::println);
+        assertNotNull(pageFreeBoards);
+    }
+
+    @Test
+    public void 커뮤니티_검색_작성자_결과_조회(){
+
+        //given
+        Integer categoryNo = 6;     // 6 : 공지사항, 5: 질문과 답변, 4:자유\
+        String searchValue = "공상";
+        Pageable pageable = PageRequest.of(0, 10);
+
+        //when
+        FreeBoardCategory categoryEntry = categoryRepository.findById(categoryNo).get();
+
+        Page<FreeBoard> pageFreeBoards = freeBoardRepository.findByFreeBoardMemberMemberNameContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue,  categoryEntry, 'N', pageable);
+
+        //then
+        pageFreeBoards.forEach(System.out::println);
+        assertNotNull(pageFreeBoards);
+    }
+
+    @Test
+    public void 커뮤니티_검색_내용_결과_조회(){
+
+        //given
+        Integer categoryNo = 6;     // 6 : 공지사항, 5: 질문과 답변, 4:자유\
+        String searchValue = "필수 조회";
+        Pageable pageable = PageRequest.of(0, 10);
+
+        //when
+        FreeBoardCategory categoryEntry = categoryRepository.findById(categoryNo).get();
+
+        Page<FreeBoard> pageFreeBoards = freeBoardRepository.findByBoardContentContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue,  categoryEntry, 'N', pageable);
+
+        //then
+        pageFreeBoards.forEach(System.out::println);
+        assertNotNull(pageFreeBoards);
+    }
+
+    @Test
+    public void 커뮤니티_상세_내용__조회(){
+
+        //given
+        Integer categoryNo = 6;     // 6 : 공지사항, 5: 질문과 답변, 4:자유\
+        String searchValue = "필수 조회";
+        Pageable pageable = PageRequest.of(0, 10);
+
+        //when
+        FreeBoardCategory categoryEntry = categoryRepository.findById(categoryNo).get();
+
+        Page<FreeBoard> pageFreeBoards = freeBoardRepository.findByBoardContentContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue,  categoryEntry, 'N', pageable);
+
+        //then
+        pageFreeBoards.forEach(System.out::println);
+        assertNotNull(pageFreeBoards);
     }
 }
