@@ -38,6 +38,12 @@ public class Study {
     @Column(name = "STUDY_RECRUITMENT_END_DATE")
     private java.sql.Date endDate;
 
+    @Column(name = "STUDY_MODIFIED_DATE")
+    private java.sql.Date modifyDate;
+
+    @Column(name = "STUDY_DELETION_DATE")
+    private java.sql.Date removeDate;
+
     @ManyToOne
     @JoinColumn(name = "MEMBER_NO")
     private Member writer;
@@ -52,22 +58,28 @@ public class Study {
     private String linked;
 
     @Column(name = "STUDY_RECRUITMENT_STATUS")
-    private String status;
+    private String recruitStatus;
+
+    @Column(name = "STUDY_DELETE_YN")
+    private String postStatus;
 
     public Study() {
     }
 
-    public Study(int studyNo, String title, String content, Date startDate, Date endDate, Member writer, int limited, int count, String linked, String status) {
+    public Study(int studyNo, String title, String content, Date startDate, Date endDate, Date modifyDate, Date removeDate, Member writer, int limited, int count, String linked, String recruitStatus, String postStatus) {
         this.studyNo = studyNo;
         this.title = title;
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.modifyDate = modifyDate;
+        this.removeDate = removeDate;
         this.writer = writer;
         this.limited = limited;
         this.count = count;
         this.linked = linked;
-        this.status = status;
+        this.recruitStatus = recruitStatus;
+        this.postStatus = postStatus;
     }
 
     public int getStudyNo() {
@@ -110,6 +122,22 @@ public class Study {
         this.endDate = endDate;
     }
 
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
+    public Date getRemoveDate() {
+        return removeDate;
+    }
+
+    public void setRemoveDate(Date removeDate) {
+        this.removeDate = removeDate;
+    }
+
     public Member getWriter() {
         return writer;
     }
@@ -142,12 +170,20 @@ public class Study {
         this.linked = linked;
     }
 
-    public String getStatus() {
-        return status;
+    public String getRecruitStatus() {
+        return recruitStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setRecruitStatus(String recruitStatus) {
+        this.recruitStatus = recruitStatus;
+    }
+
+    public String getPostStatus() {
+        return postStatus;
+    }
+
+    public void setPostStatus(String postStatus) {
+        this.postStatus = postStatus;
     }
 
     @Override
@@ -158,11 +194,14 @@ public class Study {
                 ", content='" + content + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
+                ", modifyDate=" + modifyDate +
+                ", removeDate=" + removeDate +
                 ", writer=" + writer +
                 ", limited=" + limited +
                 ", count=" + count +
                 ", linked='" + linked + '\'' +
-                ", status='" + status + '\'' +
+                ", recruitStatus='" + recruitStatus + '\'' +
+                ", postStatus='" + postStatus + '\'' +
                 '}';
     }
 }
