@@ -112,6 +112,12 @@
         ::-webkit-progress-value {
             background-color: #8DB6E7;
         }
+        .greenStyle {
+            color: #42a834;
+        }
+        .redStyle {
+            color: #ce3131;
+        }
     </style>
 
     <script th:inline="javascript">
@@ -242,6 +248,10 @@
     })
 
     $(".quiz").click(function () {
+        $('input[name=option]').prop('checked',false);
+        $('.resultArea').remove();
+        $('input[name="option"]').removeClass("redStyle");
+        $('input[name="option"]').removeClass("greenStyle");
         const quizNo = $(this).val();
         console.log(quizNo);
         // location.href = "/quiz/list?=" + quizNo;
@@ -271,7 +281,7 @@
     })
     $("#submit").click(function() {
         const answer = $('input[name=option]:checked').val();
-        const answerDisplays =
+        var tmpHtml = "";
         console.log(answer);
         const quiz = $('#quizNo').val();
         $.ajax({
@@ -282,11 +292,19 @@
                 console.log(data);
 
                 if(data == true){
-                    $('input[name=option]:checked').css("color", "green");
-                    $('input[name=option]').css("color", "red");
-                    $('.question').append("<hr><div>정답입니다!</div>");
+                    console.log($('input[name=option]').is(':checked'));
+                    if($('input[name=option]').is(':checked')){
+                        $('input[name="option"]:checked').addClass("greenStyle");
+                    } else {
+                        $('input[name="option"]').addClass("redStyle");
+                    }
+                    tmpHtml = tmpHtml + "<hr class='resultArea'><div class='resultArea'>정답입니다!</div>";
+                    $('.resultArea').remove();
+                    $('.question').append(tmpHtml);
                 } else if(data == false) {
-                    $('.question').append("<hr><div>오답입니다!</div>");
+                    tmpHtml = tmpHtml + "<hr class='resultArea'><div class='resultArea'>오답입니다!</div>";
+                    $('.resultArea').remove();
+                    $('.question').append(tmpHtml);
                 }
             }
         })

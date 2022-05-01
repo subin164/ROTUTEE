@@ -43,7 +43,7 @@ public class LMSQuizController {
 
 
     @ResponseBody
-    @GetMapping(value = "/list", produces="application/json; charset=UTF-8")
+    @GetMapping(value = "/list", produces = "application/json; charset=UTF-8")
     public String findQuizList(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
@@ -63,9 +63,9 @@ public class LMSQuizController {
 
     }
 
-    @PostMapping(value = "/grading", produces="application/json; charset=UTF-8")
+    @PostMapping(value = "/grading", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public String gradingQuiz(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser){
+    public String gradingQuiz(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
 
         int memberNo = customUser.getNo();
         int answer = Integer.parseInt(request.getParameter("option"));
@@ -92,5 +92,12 @@ public class LMSQuizController {
 
         return gson.toJson(gradingResult);
 
+    }
+
+    @GetMapping("/status")
+    public ModelAndView findQuizStatus(ModelAndView mv) {
+
+        mv.setViewName("dashboard/lms/quizstatus");
+        return mv;
     }
 }
