@@ -18,4 +18,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DashboardLectureRepository extends JpaRepository<DashboardLecture, Integer> {
     DashboardLecture findBymemberNo(int memberNo);
+
+    DashboardLecture findByLectureNo(int lectureNo);
 }
