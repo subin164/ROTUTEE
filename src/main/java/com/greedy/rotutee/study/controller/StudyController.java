@@ -7,8 +7,8 @@ import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
 import com.greedy.rotutee.study.dto.StudyByTagDTO;
 import com.greedy.rotutee.study.dto.StudyDTO;
+import com.greedy.rotutee.study.dto.StudyReplyDTO;
 import com.greedy.rotutee.study.service.StudyService;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Suspendable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
@@ -131,10 +131,11 @@ public class StudyController {
 
         StudyDTO studyDetail = studyService.findStudyDetail(no);
         List<StudyByTagDTO> studyByTagList = studyService.modifyStudyDetailTagList(no);
+        List<StudyReplyDTO> studyReplyList = studyService.fintStudyReply(no);
 
         mv.addObject("studyDetail", studyDetail);
         mv.addObject("studyByTagList", studyByTagList);
-
+        mv.addObject("studyReplyList", studyReplyList);
         mv.setViewName("/study/detail");
 
         return mv;
@@ -178,5 +179,32 @@ public class StudyController {
         return "redirect:/study/list";
     }
 
+
+    @PostMapping("/replyRegist")
+    @ResponseBody
+    public void studyReplyRegist(StudyReplyDTO replyDTO, HttpServletRequest request){
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user = (User) principal;
+
+        CustomUser customUser = (CustomUser) authenticationService.loadUserByUsername(user.getUsername());
+
+        MemberDTO memberDTO = new MemberDTO();
+
+        memberDTO.setNo(customUser.getNo());
+
+        int studyNo = Integer.parseInt(request.getParameter("studyNo"));
+
+        replyDTO.setReplyStatus("N");
+        replyDTO.setReplyReportCount(0);
+        replyDTO.setReplyWriteDate(new Date(System.currentTimeMillis()));
+        replyDTO.setStudyNO(studyNo);
+        replyDTO.setWriter(memberDTO);
+
+
+        System.out.println("리플 중간확인 : " + replyDTO);
+        studyService.studyReplyRegist(replyDTO);
+    }
 
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
 
@@ -12,17 +13,22 @@
 <body>
 <div th:include="/common/topMenubar.html"></div>
 <main>
-<section class="container">
-    <div class="bg-success">
-        뒤로가기
-    </div>
-    <div></div>
-    <div class="bg-danger">
-        사이드메뉴
-    </div>
-</section>
+    <section class="container">
+        <div class="study-detail-sideMenu">
+            <div class="study-detail-sideMenu-left">
+                뒤로가기
+            </div>
+            <div style="width: 100%; max-width: 800px;"></div>
+            <div class="study-detail-sideMenu-right">
+                <ul>
+                    <li> 모집상태</li>
+                    <li> 조회수</li>
+                </ul>
+            </div>
+        </div>
+    </section>
     <section class="study-detail-content">
-        <div class="w-100">
+        <div class="">
             <div class="d-flex justify-content-end">
                 <button class="btn" data-bs-toggle="modal" data-bs-target="#studyModify" th:onclick="btn()">수정
                 </button>
@@ -45,22 +51,33 @@
                 </li>
             </ul>
             <div calss="w-100">
-                <div class="reply-header">
+                <ul th:each="studyReplyList:${studyReplyList}" }>
+                    <li th:each="studyReplyList:${studyReplyList}">
+                        <span th:text="${studyReplyList.writer.nickname}"></span>
+                        <span th:text="${studyReplyList.replyContent}"></span>
+<!--                        <th:block sec:authorize="isAuthenticated()">-->
+<!--                            <div th:if sec:authentication="principal.no" == "${studyReplyList.writer.no}">-->
+<!--                            <button> </button>-->
+<!--                            </div>-->
+
+                        </th:block>
+                    </li>
+                </ul>
+
+                <div class=" reply-header">
                     <span th:text="${studyDetail.writer.nickname}"/>님 리플을 남겨보세요!
                 </div>
-                <form>
-                    <textarea>댓글입력</textarea>
-                </form>
-                <div>
-                    <button>작성</button>
-                </div>
             </div>
-
-
+            <form id="studyReplyFrom">
+                <textarea id="replyContent" style="width: 100%;">댓글입력</textarea>
+            </form>
+            <div>
+                <button class="btn" type="button" form="studyReplyFrom" onclick="studyReplyRegist()">작성</button>
+            </div>
         </div>
 
 
-
+        </div>
     </section>
 </main>
 
@@ -226,6 +243,25 @@
             },
         });
     };
+
+
+    //   스터디 댓글 작성
+    function studyReplyRegist() {
+
+        const replyContent = $("#replyContent").val();
+        const studyNo = "[(${studyDetail.getStudyNo()})]";
+        $.ajax({
+            url: "/study/replyRegist",
+            type: "post",
+            data: {"replyContent": replyContent, "studyNo": studyNo},
+            success: function (data) {
+                alert("성공이라귣");
+
+            }, error: function (data) {
+                alert("실패!!");
+            }
+        });
+    }
 </script>
 
 </body>

@@ -105,7 +105,23 @@ table {
 
 
 /* 모집글 상세페이지 댓글 */
+.study-detail-sideMenu{
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    width: 100%;
+}
+
+.study-detail-sideMenu-left{
+    max-width: 200px;
+}
+
+.study-detail-sideMenu-right {
+}
+
 .study-detail-content{
     width: 100%;
     max-width: 800px;
+    margin: auto;
 }

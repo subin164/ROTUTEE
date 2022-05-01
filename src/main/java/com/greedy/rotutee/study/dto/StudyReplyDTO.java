@@ -1,6 +1,6 @@
 package com.greedy.rotutee.study.dto;
 
-import com.greedy.rotutee.lecture.lecture.dto.MemberDTO;
+import com.greedy.rotutee.member.member.dto.MemberDTO;
 import lombok.*;
 
 @Getter
@@ -16,6 +16,7 @@ public class StudyReplyDTO {
     private int replyReportCount;
     private java.sql.Date replyWriteDate;
     private java.sql.Date replyModifyDate;
+    private java.sql.Date replyRemoveDate;
     private int studyNO;
     private MemberDTO writer;
 

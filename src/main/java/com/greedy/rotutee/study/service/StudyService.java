@@ -7,14 +7,19 @@
 
 package com.greedy.rotutee.study.service;
 
+import com.greedy.rotutee.member.member.dto.MemberDTO;
+import com.greedy.rotutee.member.member.entity.Member;
 import com.greedy.rotutee.member.member.repository.MemberRepository;
 import com.greedy.rotutee.study.dto.StudyByTagDTO;
 import com.greedy.rotutee.study.dto.StudyDTO;
+import com.greedy.rotutee.study.dto.StudyReplyDTO;
 import com.greedy.rotutee.study.dto.TagDTO;
 import com.greedy.rotutee.study.entity.Study;
 import com.greedy.rotutee.study.entity.StudyByTag;
+import com.greedy.rotutee.study.entity.StudyReply;
 import com.greedy.rotutee.study.entity.StudyTag;
 import com.greedy.rotutee.study.repository.StudyByTagRepository;
+import com.greedy.rotutee.study.repository.StudyReplyRepository;
 import com.greedy.rotutee.study.repository.StudyRepository;
 import com.greedy.rotutee.study.repository.StudyTagRepository;
 import org.modelmapper.ModelMapper;
@@ -22,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,14 +39,16 @@ public class StudyService {
     private final StudyRepository studyRepository;
     private final StudyTagRepository studyTagRepository;
     private final StudyByTagRepository studyByTagRepository;
+    private final StudyReplyRepository studyReplyRepository;
     private final MemberRepository memberRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public StudyService(StudyRepository studyRepository, StudyTagRepository studyTagRepository, StudyByTagRepository studyByTagRepository, MemberRepository memberRepository, ModelMapper modelMapper) {
+    public StudyService(StudyRepository studyRepository, StudyTagRepository studyTagRepository, StudyByTagRepository studyByTagRepository, StudyReplyRepository studyReplyRepository, MemberRepository memberRepository, ModelMapper modelMapper) {
         this.studyRepository = studyRepository;
         this.studyTagRepository = studyTagRepository;
         this.studyByTagRepository = studyByTagRepository;
+        this.studyReplyRepository = studyReplyRepository;
         this.memberRepository = memberRepository;
         this.modelMapper = modelMapper;
     }
@@ -154,6 +160,13 @@ public class StudyService {
         return studyByTag.stream().map(studyByTag1 -> modelMapper.map(studyByTag1, StudyByTagDTO.class)).collect(Collectors.toList());
     }
 
+    public List<StudyReplyDTO> fintStudyReply(int no) {
+
+        List<StudyReply> studyReply = studyReplyRepository.getByStudyNo(no);
+
+        return studyReply.stream().map(studyReply1 -> modelMapper.map(studyReply1, StudyReplyDTO.class)).collect(Collectors.toList());
+    }
+
     /*
      * writer : 김형경
      * writerDate : 22/04/28 ~ 22/04/28
@@ -184,4 +197,17 @@ public class StudyService {
         study.setLinked(studyDTO.getLinked());
         study.setRecruitStatus(studyDTO.getRecruitStatus());
     }
+
+    public void studyReplyRegist(StudyReplyDTO replyDTO) {
+
+        Member member = memberRepository.getById(replyDTO.getWriter().getNo());
+
+        replyDTO.setWriter(modelMapper.map(member, MemberDTO.class));
+
+        studyReplyRepository.save(modelMapper.map(replyDTO, StudyReply.class));
+
+
+    }
+
+
 }
