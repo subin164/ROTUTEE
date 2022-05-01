@@ -65,18 +65,9 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-50 ms-auto">
-                <form class="me-3 w-50 m-auto position-relative" action="/lecture/search" method="get">
-                    <input type="hidden" name="searchCondition" value="1">
-                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search" name="searchValue">
-                    <div class="searchbar-icon">
-                        <button type="submit" style="background-color: transparent; border: none;"><i class="bi bi-search"></i></button>
-                    </div>
-                </form>
-
                 <li class="nav-item ">
                     <a class="nav-link text-light" href="/lecture/list">강의</a>
                 </li>
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
@@ -207,7 +198,7 @@
 <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="sidebar"
      aria-labelledby="offcanvasScrollingLabel" style="width: 15%;">
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
-            style="margin-left: 185px; margin-top: 20px;"></button>
+            style="position: absolute; right: 0; margin-top: 20px;"></button>
     <div class="offcanvas-header">
         <!-- Sidebar -->
         <h3 class="w3-bar-item">MyPage</h3>

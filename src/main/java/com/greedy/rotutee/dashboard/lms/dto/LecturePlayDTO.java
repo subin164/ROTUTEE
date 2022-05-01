@@ -1,31 +1,31 @@
 package com.greedy.rotutee.dashboard.lms.dto;
 
-import lombok.*;
+import com.greedy.rotutee.dashboard.lms.entity.LMSChapter;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.sql.Date;
 import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.dto
- * fileName : LMSClassDTO
+ * fileName : LecturePlayDTO
  * author : SeoYoung
- * date : 2022-04-26
+ * date : 2022-04-27
  * description :
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
- * 2022-04-26 SeoYoung 최초 생성
+ * 2022-04-27 SeoYoung 최초 생성
  */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
-public class LMSClassDTO {
+public class LecturePlayDTO {
 
-    private int classNo;
-    private String className;
-    private String videoPath;
-    private LMSChapterDTO chapter;
-    private LMSQuizDTO quiz;
+    private String lectureSummary;
+    private List<LMSChapterDTO> chapters;
+
 }

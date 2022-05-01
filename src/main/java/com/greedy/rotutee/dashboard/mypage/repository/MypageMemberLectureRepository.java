@@ -22,4 +22,8 @@ public interface MypageMemberLectureRepository extends JpaRepository<MyPageMembe
     List<MyPageMemberLecture> findBymember(DashboardMember member);
 
     MyPageMemberLecture findByLectureLectureNoAndMemberMemberNo(int lectureNo, int memberNo);
+
+    MyPageMemberLecture findByMemberMemberNo(int memberNo);
+
+    MyPageMemberLecture findByMemberMemberNoAndLectureLectureNo(int memberNo, int lectureNo);
 }

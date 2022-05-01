@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- BootStrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+
+    <!-- font tamily -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+        .header {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 25px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-align: center;
+
+        }
+
+        .lecturevideo {
+
+            height: 38vh;
+            background-color: #d3e1f3;
+        }
+
+        .wrap {
+            width: 35vw;
+            margin: 25px;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .class-content {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            color: #6ba3e7;
+
+        }
+
+        .class-title {
+            margin: 10px;
+            position: relative;
+        }
+
+        .time {
+            position: absolute;
+            right: 0;
+        }
+
+        .tutor-comment {
+            margin: 20px;
+        }
+
+        .menu {
+            display: none;
+            font-size: 14px;
+            color: rgb(114, 114, 114);
+            position: relative;
+        }
+
+        .openmenu {
+            padding: 10px;
+        }
+
+        .top {
+            margin: auto;
+            font-size: 20px;
+            width: 90%;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .quiz-btn {
+            font-size: 14px !important;
+            font-family: 'Noto Sans KR', sans-serif;
+            width: 45px;
+            height: 25px;
+            padding: 0 !important;
+
+            position: absolute;
+            right: 0;
+
+        }
+
+        progress {
+            -webkit-appearance: none;
+            margin-left: 20px;
+        }
+
+        ::-webkit-progress-bar {
+            background-color: #E2E2E2;
+
+        }
+
+        ::-webkit-progress-value {
+            background-color: #8DB6E7;
+        }
+    </style>
+
+    <script th:inline="javascript">
+        /* 비지니스 로직 성공 alert 메시지 처리 */
+        const message = [[${message}]];
+        if(message != null && message !== '') {
+            alert(message);
+        }
+    </script>
+</head>
+
+<body>
+<div th:include="common/lmssidebar.html"></div>
+<div class="container">
+    <div class="top" style="margin-top: 15px;">
+        <span>강의 시청</span>
+        <hr style="margin: 10px;">
+    </div>
+</div>
+<div class="container">
+    <div class="wrap">
+        <div class="header">
+            <div>신나는 자바</div>
+        </div>
+        <div class="lecturevideo"></div>
+        <div class="tutor-comment">
+            <span th:text="${ lecturePlay.lectureSummary }"></span>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="lecture-list">
+            <div class="header">
+                <div>강의 리스트</div>
+            </div>
+            <div class="class-content">
+                <div th:each="chapter, stat : ${ lecturePlay.chapters }" class="class-title">
+                    <th:block th:text="${ chapter.chapterName }"></th:block>
+                    <progress class="progressbar" value="100" min="0" max="100"></progress>
+                    <span class="time">06:44</span>
+                    <div class="menu">
+                        <div class="openmenu"
+                             th:each="lectureClass, status : ${lecturePlay.chapters[stat.index].classesList}">
+                            <th:block th:text="${lectureClass.className}"></th:block>
+                            <button type="button" class="btn quiz-btn quiz" id="quiz"
+                                    th:attrappend="id=${lectureClass.quiz.quizNo}"
+                                    style="background-color: #7DACE4; color: white"
+                                    th:value="${ lectureClass.quiz.quizNo }" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                퀴즈
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<!--<form action="/quiz/grading" method="post">-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header modal-head">
+                    <span class="head-title">Quiz</span>
+                    <button type="button" class="btn-close close-btn" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="question">
+                        <div class="question-area">
+                            <label id="question"></label>
+                        </div>
+                        <div class="option-area">
+                            <input type="radio" class="option" name="option" value="1">
+                            <label id="option1"></label>
+                        </div>
+                        <div class="option-area">
+                            <input type="radio" class="option" name="option" value="2">
+                            <label id="option2"></label>
+                        </div>
+                        <div class="option-area">
+                            <input type="radio" class="option" name="option" value="3">
+                            <label id="option3"></label>
+                        </div>
+                        <div class="option-area">
+                            <input type="radio" class="option" name="option" value="4">
+                            <label id="option4"></label>
+                        </div>
+                    </div>
+                    <input type="hidden" id="quizNo" name="quizNo">
+                    <input type="hidden" id="correctAnswer">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="submit" type="button" class="btn" style="background-color: #d3e1f3; color: rgb(107, 107, 107);">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--</form>-->
+<script>
+    $('.class-title').click(function () {
+        // if ($(this).children('.menu').css('display') == 'none') {
+        //     $(this).children('.menu').css('display', 'block');
+        //     $(this).css('padding', 0);
+        // } else {
+        //     $(this).children('.menu').css('display', 'none');
+        //     $(this).css('padding', 13);
+        // }
+        $(this).children('.menu').slideToggle(600);
+    });
+
+    $('.class-title').hover(function () {
+        $(this).css('background-color', '#d3e1f3');
+        $(this).children('.menu').css('background-color', 'white');
+    }, function () {
+        $(this).css('background-color', 'white');
+    });
+
+    $('.openmenu').hover(function () {
+        $(this).css('background-color', '#e4e4e4');
+        // $(this).parent('class-title').css('background-color', 'white');
+    }, function () {
+        $(this).css('background-color', 'white');
+    })
+
+    $(".quiz").click(function () {
+        const quizNo = $(this).val();
+        console.log(quizNo);
+        // location.href = "/quiz/list?=" + quizNo;
+
+        // fetch('/quiz/list?quizNo='+ quizNo)
+        //     .then((response) => response.json())
+        //     .then((data) => console.log(data));
+
+        $.ajax({
+            url: "/quiz/list",
+            type: "get",
+            data: {quizNo: quizNo},
+            success: function (data) {
+                console.log(data)
+                $("#question").html(data.content);
+                $("#option1").html(data.option1);
+                $("#option2").html(data.option2);
+                $("#option3").html(data.option3);
+                $("#option4").html(data.option4);
+                $("#quizNo").val(data.quizNo);
+                $("#correctAnswer").val(data.answer);
+
+            }, error: function (data) {
+                console.log(data);
+            }
+        })
+    })
+    $("#submit").click(function() {
+        const answer = $('input[name=option]:checked').val();
+        const answerDisplays =
+        console.log(answer);
+        const quiz = $('#quizNo').val();
+        $.ajax({
+            url: "/quiz/grading",
+            type: "post",
+            data: {option: answer, quizNo:quiz },
+            success: function(data) {
+                console.log(data);
+
+                if(data == true){
+                    $('input[name=option]:checked').css("color", "green");
+                    $('input[name=option]').css("color", "red");
+                    $('.question').append("<hr><div>정답입니다!</div>");
+                } else if(data == false) {
+                    $('.question').append("<hr><div>오답입니다!</div>");
+                }
+            }
+        })
+    })
+
+
+
+
+
+</script>
+</body>
+
+</html>
