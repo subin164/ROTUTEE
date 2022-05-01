@@ -1,6 +1,4 @@
-package com.greedy.rotutee.member.profile.entity;
-
-import com.greedy.rotutee.member.member.entity.Member;
+package com.greedy.rotutee.member.member.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -17,12 +15,22 @@ import java.sql.Date;
  * 2022-04-20 7sang 최초 생성
  */
 
-@Entity(name = "Profile_MemberAchievement")
+@Entity(name = "Member_MemberAchievement")
 @Table(name = "TBL_MEMBER_ACHIEVEMENT")
+@SequenceGenerator(
+        name = "MEMBER_ACHIEVEMENT_SEQ_GENERATOR",
+        sequenceName = "MEMBER_ACHIEVEMENT_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class MemberAchievement {
 
     @Id
     @Column(name = "MEMBER_ACHIEVEMENT_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "MEMBER_ACHIEVEMENT_SEQ_GENERATOR"
+    )
     private int memberAchievementNo;
 
     @JoinColumn(name = "MEMBER_NO")

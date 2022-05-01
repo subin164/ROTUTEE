@@ -51,7 +51,7 @@ public class ProfileController {
 
         MemberDTO memeber = profileService.memberProfile(memberNo);
         AttachedFileDTO attachedFile = profileService.findMemberProfile(memberNo);
-        AchievementDTO achievement = profileService.findMemberAchievement(memberNo);
+//        AchievementDTO achievement = profileService.findMemberAchievement(memberNo);
 
         if(customUser.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
            TutorInfoDTO tutorInfo = profileService.findTutorInfo(memberNo);
@@ -61,13 +61,14 @@ public class ProfileController {
            mv.addObject("tutorInfo", tutorInfo);
         }
 
-        mv.addObject("achievement", achievement);
+//        mv.addObject("achievement", achievement);
         mv.addObject("attachedFile", attachedFile);
         mv.addObject("member", memeber);
         mv.setViewName("/profile/profile");
 
         return mv;
     }
+
 
     @GetMapping("/modify")
     public ModelAndView modifyPage(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
@@ -76,7 +77,7 @@ public class ProfileController {
 
         MemberDTO memeber = profileService.memberProfile(memberNo);
         AttachedFileDTO attachedFile = profileService.findMemberProfile(memberNo);
-        AchievementDTO achievement = profileService.findMemberAchievement(memberNo);
+//        AchievementDTO achievement = profileService.findMemberAchievement(memberNo);
 
         if(customUser.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
             TutorInfoDTO tutorInfo = profileService.findTutorInfo(memberNo);
@@ -94,7 +95,7 @@ public class ProfileController {
             mv.addObject("tutorInfo", tutorInfo);
         }
 
-        mv.addObject("achievement", achievement);
+//        mv.addObject("achievement", achievement);
         mv.addObject("attachedFile", attachedFile);
         mv.addObject("member", memeber);
         mv.setViewName("/profile/modify");
@@ -112,11 +113,11 @@ public class ProfileController {
     @PostMapping("/modify")
     public String modifyProfile(@AuthenticationPrincipal CustomUser loginMember, @ModelAttribute MemberDTO member,
                                  @ModelAttribute TutorInfoDTO tutorInfo, @ModelAttribute AddressDTO address,
-                                RedirectAttributes rttr) throws Exception {
+                                @RequestParam("achievementNo") int achievementNo, RedirectAttributes rttr) throws Exception {
 
         tutorInfo.setAddress(address.getZipCode() + "&" + address.getAddress1() + "&" + address.getAddress2());
 
-        profileService.modifyProfile(loginMember, member, tutorInfo);
+        profileService.modifyProfile(loginMember, member, tutorInfo, achievementNo);
 
         rttr.addFlashAttribute("message", "프로필 변경에 성공하셨습니다.");
 

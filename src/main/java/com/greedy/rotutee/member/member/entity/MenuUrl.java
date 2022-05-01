@@ -1,10 +1,8 @@
 package com.greedy.rotutee.member.member.entity;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "MenuUrl")
 @Table(name = "TBL_MENU_URL")
@@ -16,6 +14,7 @@ public class MenuUrl {
 
     @Column(name = "MENU_URL_NAME")
     private String name;
+
 
     public MenuUrl() {}
 

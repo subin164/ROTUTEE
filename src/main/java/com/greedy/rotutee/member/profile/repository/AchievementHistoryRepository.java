@@ -22,11 +22,11 @@ public class AchievementHistoryRepository {
     public int findAchievement(EntityManager entityManager, int memberNo) {
 
         String jpql = "SELECT a.memberAchievement.achievement.achievementNo " +
-                "FROM Member_MemberAchievementHistory a " +
+                "FROM Profile_MemberAchievementHistory a " +
                 "WHERE a.historyNo = " +
-                "(SELECT max(a.historyNo) " +
-                        "FROM Member_MemberAchievementHistory a " +
-                       "WHERE a.member.no = :memberNo)";
+                "(SELECT max(b.historyNo) " +
+                        "FROM Profile_MemberAchievementHistory b " +
+                       "WHERE b.memberAchievement.member.no = :memberNo)";
 
         return (int) entityManager.createQuery(jpql).setParameter("memberNo", memberNo).getSingleResult();
     }

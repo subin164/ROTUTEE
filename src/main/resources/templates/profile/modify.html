@@ -69,12 +69,12 @@
                     닉네임　　
                     <input type="text" style="width: 300px; height: 40px; border-radius: 8px;" name="nickname" id="nickname" th:value="${ member.nickname }">
                 </p>
-                <p>
-                    칭호설정　
-                    <select style="width: 300px; height: 40px; border-radius: 8px;" name="achievementName" id="achievementCategory">
-                        <option th:value="${ achievement.achievementNo }" th:text="${ achievement.achievementName }"></option>
-                    </select>
-                </p>
+<!--                <p>-->
+<!--                    칭호설정　-->
+<!--                    <select style="width: 300px; height: 40px; border-radius: 8px;" name="achievementNo" id="achievementCategory">-->
+<!--                        <option th:value="${ achievement.achievementNo }" th:text="${ achievement.achievementName }"></option>-->
+<!--                    </select>-->
+<!--                </p>-->
             </div>
         </div>
         <br>
@@ -136,6 +136,34 @@
 <div th:include="/common/footer.html"></div>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script th:inline="javascript">
+
+    // $(function() {
+    //
+    //     alert("카테고리 조호ㅣ한다")
+    //
+    //     $.ajax({
+    //         url: "/profile/achievementCategory",
+    //         success: function(data) {
+    //             const achievementCategory = $("#achievementCategory");
+    //             achievementCategory.html("");
+    //             console.log(data);
+    //
+    //             alert("카테고리 조호ㅣ한다2")
+    //
+    //
+    //             for(let index in data) {
+    //
+    //                 alert("카테고리 조호ㅣ한다3")
+    //
+    //                 achievementCategory.append($("<option>").val(data[index].achievementNo).text(data[index].achievementName));
+    //             }
+    //         },
+    //         error: function(xhr) {
+    //             console.log(xhr);
+    //         }
+    //     });
+    // });
+
     const $searchZipCode = document.getElementById("searchZipCode");
     const $goMain = document.getElementById("goMain");
 
@@ -154,24 +182,7 @@
         location.href = "${ pageContext.servletContext.contextPath }";
     }
 
-    $(function() {
 
-        $.ajax({
-            url: "/profile/achievementCategory",
-            success: function(data) {
-                const achievementCategory = $("#achievementCategory");
-                achievementCategory.html("");
-                console.log(data);
-
-                for(let index in data) {
-                    achievementCategory.append($("<option>").val(data[index].achievementNo).text(data[index].achievementName));
-                }
-            },
-            error: function(xhr) {
-                console.log(xhr);
-            }
-        });
-    });
 </script>
 </body>
 </html>
