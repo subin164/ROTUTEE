@@ -17,4 +17,12 @@ public interface LectureRequestService {
     LectureDTO findLectureByLectureNo(int lectureNo);
 
     void modifyLectureApprovalStatus(int lectureNo);
+
+    void rejectLecture(int lectureNo, int rejectionCategoryNo);
+
+    void requestLectureModification(LectureDTO modifiedLecture, int categoryNo);
+
+    List<LectureDTO> findRequestedModifyLecture();
+
+    List<LectureDTO> findProcessedModifyLecture();
 }

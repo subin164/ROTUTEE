@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -63,7 +64,8 @@ public class LectureRequestController {
                                                                        , @RequestParam int categoryNo
                                                                        , @RequestParam MultipartFile thumbnailImg
                                                                        , @RequestParam MultipartFile bannerImg
-                                                                       , @AuthenticationPrincipal CustomUser customUser) throws IOException {
+                                                                       , @AuthenticationPrincipal CustomUser customUser
+                                                                       , RedirectAttributes rttr) throws IOException {
 
         List<MultipartFile> requestFileList = new ArrayList<>();
         requestFileList.add(thumbnailImg);
@@ -76,6 +78,7 @@ public class LectureRequestController {
         int memberNo = customUser.getNo();
         lectureRequestService.registLectureOpeningApplication(newLecture, categoryNo, memberNo);
 
+        rttr.addFlashAttribute("message", "강의 개설 신청을 성공하였습니다.");
         mv.setViewName("redirect:/request/list");
         return mv;
     }
@@ -105,11 +108,103 @@ public class LectureRequestController {
     }
 
     @PostMapping("approve")
-    public ModelAndView approveRequestLecture(ModelAndView mv, @RequestParam int lectureNo) {
+    public ModelAndView approveRequestLecture(ModelAndView mv, @RequestParam int lectureNo, RedirectAttributes rttr) {
 
         lectureRequestService.modifyLectureApprovalStatus(lectureNo);
 
+        rttr.addFlashAttribute("message", "강의가 개설되었습니다.");
         mv.setViewName("redirect:/request/lecturelist");
+        return mv;
+    }
+
+    @GetMapping("reject")
+    public ModelAndView rejectRequestLecture(ModelAndView mv, @RequestParam int lectureNo
+                                                            , @RequestParam int rejectionCategoryNo
+                                                            , RedirectAttributes rttr) {
+
+
+        System.out.println("lectureNo = " + lectureNo);
+        System.out.println("rejectionCategoryNo = " + rejectionCategoryNo);
+        lectureRequestService.rejectLecture(lectureNo, rejectionCategoryNo);
+
+        rttr.addFlashAttribute("message", "해당 강의를 거절하였습니다.");
+        mv.setViewName("redirect:/request/lecturelist");
+        return mv;
+    }
+
+    @GetMapping("lecturemodification")
+    public ModelAndView lectureModifyForm(ModelAndView mv, @RequestParam int lectureNo) {
+
+        System.out.println("lectureNo = " + lectureNo);
+
+        LectureDTO lecture = lectureRequestService.findLectureByLectureNo(lectureNo);
+        List<ChapterDTO> chapterList = lecture.getChapterList();
+
+        mv.addObject("lecture", lecture);
+        mv.addObject("chapterList", chapterList);
+        mv.setViewName("request/lecturerequestmodify");
+
+        return mv;
+    }
+
+    @PostMapping("lecturemodification")
+    public ModelAndView requestLectureModification(ModelAndView mv, @ModelAttribute LectureDTO modifiedLecture
+                                                                  , @RequestParam int categoryNo
+                                                                  , @RequestParam MultipartFile thumbnailImg
+                                                                  , @RequestParam MultipartFile bannerImg
+                                                                  , @AuthenticationPrincipal CustomUser customUser
+                                                                  , RedirectAttributes rttr) {
+
+        List<MultipartFile> requestFileList = new ArrayList<>();
+        requestFileList.add(thumbnailImg);
+        if(!bannerImg.isEmpty()) {
+            requestFileList.add(bannerImg);
+        }
+
+        modifiedLecture.setFileList(requestFileList);
+
+        lectureRequestService.requestLectureModification(modifiedLecture, categoryNo);
+
+        return mv;
+    }
+
+    @GetMapping("lecturemodificationlist")
+    public ModelAndView findLectureModificationList(ModelAndView mv) {
+
+        List<LectureDTO> requestList = lectureRequestService.findRequestedModifyLecture();
+        List<LectureDTO> recordList = lectureRequestService.findProcessedModifyLecture();
+
+        mv.addObject("requestList",requestList);
+        mv.addObject("recordList", recordList);
+        mv.setViewName("request/adminlecturemodificationlist");
+
+        return mv;
+    }
+
+    @GetMapping("modifydetail")
+    public ModelAndView findModifiedLectureRequest(ModelAndView mv, @RequestParam int lectureNo) {
+
+        LectureDTO lecture = lectureRequestService.findLectureByLectureNo(lectureNo);
+        List<ChapterDTO> chapterList = lecture.getChapterList();
+
+        mv.addObject("lecture", lecture);
+        mv.addObject("chapterList", chapterList);
+        mv.setViewName("request/adminlecturemodificationdetail");
+
+        return mv;
+    }
+
+    @GetMapping("modifyapprove")
+    public ModelAndView approveLectureModify(ModelAndView mv, @RequestParam int lectureNo) {
+
+        lectureRequestService.modifyLectureApplicationDivision();
+
+        return mv;
+    }
+
+    @GetMapping("modifyreject")
+    public ModelAndView rejectLectureModify(ModelAndView mv, @RequestParam int lectureNo) {
+
         return mv;
     }
 }

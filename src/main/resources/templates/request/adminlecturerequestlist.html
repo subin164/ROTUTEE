@@ -52,6 +52,10 @@
         }
 
     </style>
+    <script>
+        const message = "[[${message}]]"
+        message && alert(message);
+    </script>
 </head>
 <body>
     <div th:include="common/mypagemenubar.html"></div>

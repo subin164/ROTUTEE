@@ -6,10 +6,20 @@ import java.sql.Date;
 
 @Entity(name = "Request_LectureRequestProcessingHistory")
 @Table(name = "TBL_LECTURE_REQUEST_PROCESSING_HISTORY")
+@SequenceGenerator(
+        name = "REQUEST_SEQ_LECTURE_REQUEST_HISTORY_NO",
+        sequenceName = "LECTURE_REQUEST_HISTORY_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class LectureRequestProcessingHistory {
 
     @Id
     @Column(name = "LECTURE_REQUEST_HISTORY_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "REQUEST_SEQ_LECTURE_REQUEST_HISTORY_NO"
+    )
     private int lectureRequestHistoryNo;
 
     @Column(name = "PROCESSING_DATE")
