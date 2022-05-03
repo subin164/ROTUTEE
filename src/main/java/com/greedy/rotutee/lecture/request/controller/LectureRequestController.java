@@ -197,7 +197,7 @@ public class LectureRequestController {
     @GetMapping("modifyapprove")
     public ModelAndView approveLectureModify(ModelAndView mv, @RequestParam int lectureNo) {
 
-        lectureRequestService.modifyLectureApplicationDivision();
+//        lectureRequestService.modifyLectureApplicationDivision();
 
         return mv;
     }
