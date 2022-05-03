@@ -16,7 +16,17 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 500MB
-# jpa config
+
+  #자동 재시작 사용여부
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+    thymeleaf:
+      cache: false
+
+  # jpa config
   jpa:
     generate-ddl: false
     show-sql: true

@@ -143,27 +143,28 @@ public class StudyService {
      * title : 모집글 상세페이지 조회
      * content : 스터디 모집글 상세페이지에서 받은 요청을 처리하여 DB조회 결과 반환
      * */
-    public StudyDTO findStudyDetail(int no) {
+    public StudyDTO findStudyDetail(int studyNo) {
 
-        Study study = studyRepository.findById(no).get();
+        Study study = studyRepository.findById(studyNo).get();
         System.out.println("선택한 스터디조회" + study);
 
         return modelMapper.map(study, StudyDTO.class);
     }
 
-    public List<StudyByTagDTO> modifyStudyDetailTagList(int no) {
+    public List<StudyByTagDTO> modifyStudyDetailTagList(int studyNo) {
 
-        List<StudyByTag> studyByTag = studyByTagRepository.findByStudyStudyNo(no);
+        List<StudyByTag> studyByTag = studyByTagRepository.findByStudyStudyNo(studyNo);
 
         System.out.println("studyByTag : " + studyByTag);
 
         return studyByTag.stream().map(studyByTag1 -> modelMapper.map(studyByTag1, StudyByTagDTO.class)).collect(Collectors.toList());
     }
 
-    public List<StudyReplyDTO> fintStudyReply(int no) {
+    public List<StudyReplyDTO> findStudyReply(int studyNo) {
 
-        List<StudyReply> studyReply = studyReplyRepository.getByStudyNo(no);
-
+        List<StudyReply> studyReply = studyReplyRepository.findByStudyNoAndReplyStatus(studyNo,"N ");
+        System.out.println("글번호 :: "+ studyNo);
+        System.out.println("댓글 리스트 " + studyReply);
         return studyReply.stream().map(studyReply1 -> modelMapper.map(studyReply1, StudyReplyDTO.class)).collect(Collectors.toList());
     }
 
@@ -197,17 +198,33 @@ public class StudyService {
         study.setLinked(studyDTO.getLinked());
         study.setRecruitStatus(studyDTO.getRecruitStatus());
     }
-
-    public void studyReplyRegist(StudyReplyDTO replyDTO) {
+    /*
+     * writer : 김형경
+     * writerDate : 22/05/01 ~ 22/05/01
+     * title : 모집글 댓글 작성
+     * content :
+     * */
+    public StudyReplyDTO studyReplyRegist(StudyReplyDTO replyDTO) {
 
         Member member = memberRepository.getById(replyDTO.getWriter().getNo());
 
         replyDTO.setWriter(modelMapper.map(member, MemberDTO.class));
 
-        studyReplyRepository.save(modelMapper.map(replyDTO, StudyReply.class));
+        StudyReply studyReply = studyReplyRepository.save(modelMapper.map(replyDTO, StudyReply.class));
+
+        return modelMapper.map(studyReply, StudyReplyDTO.class);
 
 
     }
 
+    @Transactional
+    public void studyReplyRemove(StudyReplyDTO replyDTO) {
+        StudyReply studyReply = studyReplyRepository.getById(replyDTO.getReplyNo());
 
+        studyReply.setReplyStatus("Y");
+
+        modelMapper.map(studyReply, StudyReplyDTO.class);
+
+        studyReplyRepository.save(modelMapper.map(studyReply, StudyReply.class));
+    }
 }

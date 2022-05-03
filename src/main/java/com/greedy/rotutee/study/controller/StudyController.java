@@ -127,11 +127,11 @@ public class StudyController {
     @GetMapping("/detail")
     public ModelAndView studyDetail(ModelAndView mv, HttpServletRequest request) {
 
-        int no = Integer.parseInt(request.getParameter("no"));
+        int studyNo = Integer.parseInt(request.getParameter("no"));
 
-        StudyDTO studyDetail = studyService.findStudyDetail(no);
-        List<StudyByTagDTO> studyByTagList = studyService.modifyStudyDetailTagList(no);
-        List<StudyReplyDTO> studyReplyList = studyService.fintStudyReply(no);
+        StudyDTO studyDetail = studyService.findStudyDetail(studyNo);
+        List<StudyByTagDTO> studyByTagList = studyService.modifyStudyDetailTagList(studyNo);
+        List<StudyReplyDTO> studyReplyList = studyService.findStudyReply(studyNo);
 
         mv.addObject("studyDetail", studyDetail);
         mv.addObject("studyByTagList", studyByTagList);
@@ -182,7 +182,7 @@ public class StudyController {
 
     @PostMapping("/replyRegist")
     @ResponseBody
-    public void studyReplyRegist(StudyReplyDTO replyDTO, HttpServletRequest request){
+    public StudyReplyDTO studyReplyRegist(StudyReplyDTO replyDTO, HttpServletRequest request){
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -199,12 +199,23 @@ public class StudyController {
         replyDTO.setReplyStatus("N");
         replyDTO.setReplyReportCount(0);
         replyDTO.setReplyWriteDate(new Date(System.currentTimeMillis()));
-        replyDTO.setStudyNO(studyNo);
         replyDTO.setWriter(memberDTO);
 
 
-        System.out.println("리플 중간확인 : " + replyDTO);
-        studyService.studyReplyRegist(replyDTO);
+
+        replyDTO = studyService.studyReplyRegist(replyDTO);
+
+        System.out.println("리플 ajax 반환값 확인 : " + replyDTO);
+
+        return  replyDTO;
+    }
+
+    @PostMapping("/replyRemove")
+    @ResponseBody
+    public void studyReplyRemove(StudyReplyDTO replyDTO){
+
+        System.out.println("컨트롤 리플넘버" + replyDTO);
+        studyService.studyReplyRemove(replyDTO);
     }
 
 }

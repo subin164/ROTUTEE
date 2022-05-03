@@ -38,7 +38,7 @@
             </div>
 
             <ul>
-                <div style="display:none" th:text="${studyDetail.studyNo}"/>
+                <input type="hidden" id="studyNo" th:value="${studyDetail.studyNo}"/>
                 <li class="w-100">
                     <span class="fs-3 fw-bold mb-md-3" th:text="${ studyDetail.title}"/>
                 </li>
@@ -50,29 +50,32 @@
                     <span th:text="${studyDetail.startDate}"></span>
                 </li>
             </ul>
-            <div calss="w-100">
-                <ul th:each="studyReplyList:${studyReplyList}" }>
-                    <li th:each="studyReplyList:${studyReplyList}">
-                        <span th:text="${studyReplyList.writer.nickname}"></span>
-                        <span th:text="${studyReplyList.replyContent}"></span>
-<!--                        <th:block sec:authorize="isAuthenticated()">-->
-<!--                            <div th:if sec:authentication="principal.no" == "${studyReplyList.writer.no}">-->
-<!--                            <button> </button>-->
-<!--                            </div>-->
-
-                        </th:block>
+            <div calss="w-100" id="registReplyList">
+                <ul th:each="studyReplyList:${studyReplyList}">
+                    <li class="d-flex">
+                        <input type="hidden" id="repleNo" th:value="${studyReplyList.replyNo}">
+                        <input type="hidden" id="repleWriteDate" th:value="${studyReplyList.replyWriteDate}">
+                    <li th:text="${studyReplyList.writer.nickname}"></li>
+                    <li th:text="${studyReplyList.replyContent}"></li>
+                    <li th:if="${studyReplyList.writer.no} == ${#authentication.principal.no}">
+                        <button type="button" th:onclick="|studyReplyModify(${studyReplyList.replyNo})|">수정</button>
+                        <button type="button" th:onclick="|studyReplyRemove(${studyReplyList.replyNo})|">삭제</button>
+                    </li>
                     </li>
                 </ul>
-
-                <div class=" reply-header">
-                    <span th:text="${studyDetail.writer.nickname}"/>님 리플을 남겨보세요!
-                </div>
             </div>
+
+            <div class=" reply-header">
+                <span th:text="${studyDetail.writer.nickname}"/>님 리플을 남겨보세요!
+            </div>
+
             <form id="studyReplyFrom">
                 <textarea id="replyContent" style="width: 100%;">댓글입력</textarea>
             </form>
             <div>
-                <button class="btn" type="button" form="studyReplyFrom" onclick="studyReplyRegist()">작성</button>
+                <button class="btn" id="registReply" type="button" form="studyReplyFrom">
+                    작성
+                </button>
             </div>
         </div>
 
@@ -170,6 +173,7 @@
         }
     }
 
+
     document.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
@@ -246,21 +250,63 @@
 
 
     //   스터디 댓글 작성
-    function studyReplyRegist() {
 
-        const replyContent = $("#replyContent").val();
-        const studyNo = "[(${studyDetail.getStudyNo()})]";
-        $.ajax({
-            url: "/study/replyRegist",
-            type: "post",
-            data: {"replyContent": replyContent, "studyNo": studyNo},
-            success: function (data) {
-                alert("성공이라귣");
+    if (document.getElementById("registReply")) {
 
-            }, error: function (data) {
-                alert("실패!!");
+        const $registReply = document.getElementById("registReply");
+
+        $registReply.onclick = function () {
+            let studyNo = document.getElementById("studyNo").value;
+            let replyContent = document.getElementById("replyContent").value;
+
+            if (replyContent.trim() == "") {
+                alert("휴먼 댓글을 먼저 입력하세요!!")
+            } else {
+                $.ajax({
+                    url: "/study/replyRegist",
+                    type: "post",
+                    data: {"replyContent": replyContent, "studyNo": studyNo},
+                    success: function (data) {
+
+                        const registReplyContent = data.replyContent;
+                        const registReplyWriter = data.writer.nickname;
+
+                        $("#registReplyList").append(
+                            "<ul class='d-flex'>" +
+                            "<input type='hidden' value="+ data.replyNo+ ">" +
+                            "<input type='hidden' value=" + data.writer.replyWriteDate + ">" +
+                            "<li>" + registReplyContent + "</li>"+
+                            "<li>" + registReplyWriter + "</li>" +
+                            "<li>" +
+                            "<button class='btn' onclick='studyReplyRemove(" + data.replyNo + ")'> 삭제 </button>" +
+                            "</li>" +
+                            "</ul>");
+
+                    }, error: function (data) {
+
+                        alert("댓글작성이 실패라능");
+                    }
+                });
             }
+        }
+    }
+
+    // 스터디 댓글 삭제
+    function studyReplyRemove(replyNo) {
+        let studyNo = $("#studyNo").val();
+        alert(studyNo);
+        $.ajax({
+            url: "/study/replyRemove",
+            type: "post",
+            data: {studyNo: studyNo, replyNo: replyNo},
+            success: function (data) {
+
+            },
+            error: function (data) {
+            }
+
         });
+
     }
 </script>
 
