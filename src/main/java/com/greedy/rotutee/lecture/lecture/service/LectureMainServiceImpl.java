@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -136,6 +137,8 @@ public class LectureMainServiceImpl implements  LectureMainService{
         LectureReviewDTO lectureReview = new LectureReviewDTO();
         lectureReview.setLectureGrade(rating);
         lectureReview.setLectureReviewContent(content);
+        lectureReview.setLectureReviewDate(new Date(System.currentTimeMillis()));
+        lectureReview.setLectureReviewRemoveYN("N");
         lectureReview.setLectureNo(lectureNo);
         lectureReview.setWriter(writer);
 

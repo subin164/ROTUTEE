@@ -40,4 +40,12 @@ public class MainServiceImpl implements MainService{
 
         return recentLectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public List<LectureDTO> findPopularLectureList() {
+
+        List<Lecture> popularLectureList = mainLectureRepository.findPopularLectureList();
+
+        return popularLectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+    }
 }

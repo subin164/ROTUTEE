@@ -7,10 +7,20 @@ import java.sql.Date;
 
 @Entity(name = "Lecture_LectureReview")
 @Table(name = "TBL_LECTURE_REVIEW")
+@SequenceGenerator(
+        name = "LECTURE_REVIEW_SEQ_GENERATOR",
+        sequenceName = "LECTURE_REVIEW_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class LectureReview {
 
     @Id
     @Column(name = "LECTURE_REVIEW_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "LECTURE_REVIEW_SEQ_GENERATOR"
+    )
     private int lectureReviewNo;
 
     @Column(name = "LECTURE_GRADE")

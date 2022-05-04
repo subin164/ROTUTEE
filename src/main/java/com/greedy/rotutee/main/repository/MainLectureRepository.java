@@ -23,4 +23,14 @@ public interface MainLectureRepository extends JpaRepository<Lecture, Integer> {
 
     @Query("select a from Main_Lecture a where a.lectureOpeningDate is not null order by a.lectureOpeningDate asc")
     List<Lecture> findRecentLectureList();
+
+    @Query(value = "SELECT DISTINCT\n" +
+            "    A.*\n" +
+            "   FROM TBL_LECTURE A\n" +
+            "   RIGHT JOIN TBL_LECTURE_REVIEW B ON A.LECTURE_NO = B.LECTURE_NO\n" +
+            "  WHERE (SELECT COUNT(*)\n" +
+            "           FROM TBL_LECTURE_REVIEW) > 0\n" +
+            " ORDER BY (SELECT AVG(C.LECTURE_GRADE)\n" +
+            "            FROM TBL_LECTURE_REVIEW C) ASC", nativeQuery = true)
+    List<Lecture> findPopularLectureList();
 }

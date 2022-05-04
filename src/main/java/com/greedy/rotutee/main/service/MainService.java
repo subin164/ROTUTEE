@@ -17,4 +17,6 @@ import java.util.List;
  */
 public interface MainService {
     List<LectureDTO> findRecentLectureList();
+
+    List<LectureDTO> findPopularLectureList();
 }

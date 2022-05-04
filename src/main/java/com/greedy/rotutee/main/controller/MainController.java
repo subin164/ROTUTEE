@@ -24,9 +24,9 @@ public class MainController {
     public ModelAndView main(ModelAndView mv) {
 
         List<LectureDTO> recentLectureList = mainService.findRecentLectureList();
+        List<LectureDTO> popularLectureList = mainService.findPopularLectureList();
 
-//        System.out.println("recentLectureList = " + recentLectureList);
-
+        mv.addObject("popularLectureList", popularLectureList);
         mv.addObject("recentLectureList", recentLectureList);
         mv.setViewName("/main/main");
         return mv;
