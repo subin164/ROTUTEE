@@ -11,6 +11,7 @@ import java.sql.Date;
         initialValue = 1,
         allocationSize = 1
 )
+
 public class Coupon {
     @Id
     @Column(name = "COUPON_NO")
