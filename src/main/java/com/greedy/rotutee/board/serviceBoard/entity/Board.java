@@ -2,6 +2,7 @@ package com.greedy.rotutee.board.serviceBoard.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class Board {
     private String content;
 
     @Column(name = "BOARD_CREATION_DATE")
-    private Date creationDate;
+    private Timestamp creationDate;
 
     @Column(name = "BOARD_MODIFIED_DATE")
     private Date modifiedDate;
@@ -75,7 +76,7 @@ public class Board {
 
     public Board() {}
 
-    public Board(int no, String title, String content, Date creationDate, Date modifiedDate, Date deletionDate, char deleteYN, int viewCount, BoardCategory boardCategory, Member member, int reportCount, char bulletinBoardSecretYN, List<BoardAnswer> boardAnswerList) {
+    public Board(int no, String title, String content, Timestamp creationDate, Date modifiedDate, Date deletionDate, char deleteYN, int viewCount, BoardCategory boardCategory, Member member, int reportCount, char bulletinBoardSecretYN, List<BoardAnswer> boardAnswerList) {
         this.no = no;
         this.title = title;
         this.content = content;
@@ -115,11 +116,11 @@ public class Board {
         this.content = content;
     }
 
-    public Date getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 

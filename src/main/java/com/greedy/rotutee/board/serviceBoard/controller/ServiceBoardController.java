@@ -1,5 +1,6 @@
 package com.greedy.rotutee.board.serviceBoard.controller;
 
+import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.board.serviceBoard.dto.BoardDTO;
 import com.greedy.rotutee.board.serviceBoard.service.ServiceBoardService;
 import com.greedy.rotutee.common.paging.Pagenation;
@@ -8,12 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * packageName : com.greedy.rotutee.board.serviceBoard.controller
@@ -64,5 +72,24 @@ public class ServiceBoardController {
     public String registPage() {
 
         return "/board/serviceBoard/regist"; 
+    }
+
+    @PostMapping("/regist")
+    public String registServiceBoard(@ModelAttribute BoardDTO board, @AuthenticationPrincipal CustomUser loginMember) {
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        board.setCreationDate(timestamp);
+        board.setDeleteYN('N');
+        if(board.getBulletinBoardSecretYN() != 'Y') {
+            board.setBulletinBoardSecretYN('N');
+        }
+        board.setBoardCategory(serviceBoardService.findCategoryByNo(7));
+        board.setViewCount(0);
+        board.setMember(serviceBoardService.findMemberByNo(loginMember.getNo()));
+        board.setReportCount(0);
+
+        serviceBoardService.registServiceBoard(board);
+
+        return "/board/serviceBoard/regist";
     }
 }
