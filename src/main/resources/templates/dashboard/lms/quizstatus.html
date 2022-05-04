@@ -71,101 +71,140 @@
 <div class="container">
 
     <div class="accordion" id="accordionPanelsStayOpenExample">
-        <div >
+        <div>
             <div class="accordion-item" th:each="chapter,status : ${ quizStatus.chapters }">
                 <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                    <button  class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#panelsStayOpen-collapse" aria-expanded="false"
                             aria-controls="panelsStayOpen-collapse" th:attrappend="data-bs-target=${status.index}">
-                            <th:block th:text="${chapter.chapterName}"></th:block>
+                        <th:block th:text="${chapter.chapterName}"></th:block>
+
                     </button>
                 </h2>
                 <div id="panelsStayOpen-collapse" th:attrappend="id=${status.index}" class="accordion-collapse collapse"
                      aria-labelledby="panelsStayOpen-headingOne">
-                    <div class="accordion-body" >
+                    <div class="accordion-body">
                         <div class="className" data-bs-toggle="modal"
-                             data-bs-target="#exampleModal" th:each="class : ${ chapter.classesList }">
+                             data-bs-target="#exampleModal" th:each="class, stat : ${ chapter.classesList }">
                             <input type="hidden" th:value="${class.quiz.quizNo}">
+                            <input type="hidden" th:value="${class.quiz.submissionStatus}">
                             <span th:text="${class.quiz.content}"></span>
+                            <th:block class="submissionStatus"
+                                      th:if="${class.quiz.submissionStatus.toString().equals('Y')}"
+                                      >
+                                <th:block th:if="${class.quiz.correctStatus.toString().equals('Y ')}">
+                                    <span class="badge text-light" style="background-color: #caecc6">정답</span>
+                                </th:block>
+                                <th:block th:if="${class.quiz.correctStatus.toString().equals('N ')}">
+                                    <span class="badge text-light" style="background-color: #f3c3c3">오답</span>
+                                </th:block>
+                            </th:block>
+                            <th:block class="submissionStatus"
+                                      th:if="${class.quiz.submissionStatus.toString().equals('N')}"
+                                      th:value="${class.quiz.submissionStatus}">
+                                <span class="badge text-light" style="background-color: #b9acd9">풀이전</span>
+                            </th:block>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        </div>
     </div>
+</div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">정답</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="quiz-area">
-                        <div class="quiz-question" id="quiz-question"></div>
-                        <div class="quiz-options">
-                            <div class="option-area">
-                                <input type="radio" name="option">
-                                <label>1. </label>
-                                <label id="option1"></label>
-                            </div>
-                            <div class="option-area">
-                                <input type="radio" name="option">
-                                <label>2. </label>
-                                <label id="option2"></label>
-                            </div>
-                            <div class="option-area">
-                                <input type="radio" name="option">
-                                <label>3. </label>
-                                <label id="option3"></label>
-                            </div>
-                            <div class="option-area">
-                                <input type="radio" name="option">
-                                <label>4. </label>
-                                <label id="option4"></label>
-                            </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="correctStatus">정답</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="quiz-area">
+                    <div class="quiz-question" id="quiz-question"></div>
+                    <div class="quiz-options">
+                        <div class="option-area">
+                            <input type="radio" name="option">
+                            <label>1. </label>
+                            <label id="option1"></label>
                         </div>
-                        <hr style="color: #9e9b9b;">
-                        <div>
-                            <span>정답 :</span>
-                            <span id="correctAnswer"></span><br>
-                            <span>해설 :</span>
-                            <span id="explanation"></span>
+                        <div class="option-area">
+                            <input type="radio" name="option">
+                            <label>2. </label>
+                            <label id="option2"></label>
+                        </div>
+                        <div class="option-area">
+                            <input type="radio" name="option">
+                            <label>3. </label>
+                            <label id="option3"></label>
+                        </div>
+                        <div class="option-area">
+                            <input type="radio" name="option">
+                            <label>4. </label>
+                            <label id="option4"></label>
                         </div>
                     </div>
+                    <hr style="color: #9e9b9b;">
+                    <div>
+                        <span>정답 :</span>
+                        <span id="correctAnswer"></span><br>
+                        <span>해설 :</span>
+                        <span id="explanation"></span>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 
 <script th:inline="javascript">
-    $(".className").click(function() {
-        const quizNo = $(this).children('input').val();
+    $(".className").click(function () {
+        const quizNo = $(this).children('input').eq(0).val();
         console.log(quizNo);
-        for(let i = 0; i < [[${quizList}]].length; i++) {
-            if([[${quizList}]][i].quizNo == quizNo) {
-                const question = [[${quizList}]][i].content;
-                const option1 = [[${quizList}]][i].option1;
-                console.log(question);
-                console.log(option1);
-                $("#quiz-question").html(question)
-                $("#option1").html(option1);
-                $("#option2").html([[${quizList}]][i].option2);
-                $("#option3").html([[${quizList}]][i].option3);
-                $("#option4").html([[${quizList}]][i].option4);
-                $("#correctAnswer").html([[${quizList}]][i].answer);
-                $("#explanation").html([[${quizList}]][i].solution);
+        console.log($(this).children('input').eq(1).val());
+        console.log($(this).children('input').eq(1).val() === 'Y');
+        if ($(this).children('input').eq(1).val() === 'Y') {
+            for (let i = 0; i < [[${quizList}]].length; i++) {
+                if ([[${quizList}]][i].quizNo == quizNo) {
+                    const question = [[${quizList}]][i].content;
+                    const option1 = [[${quizList}]][i].option1;
+                    console.log(question);
+                    console.log(option1);
+                    $("#quiz-question").html(question)
+                    $("#option1").html(option1);
+                    $("#option2").html([[${quizList}]][i].option2);
+                    $("#option3").html([[${quizList}]][i].option3);
+                    $("#option4").html([[${quizList}]][i].option4);
+                    $("#correctAnswer").html([[${quizList}]][i].answer);
+                    $("#explanation").html([[${quizList}]][i].solution);
 
 
+                }
+
+                if ([[${submissionQuizList}]][i].quizNo == quizNo) {
+                    if ([[${submissionQuizList}]][i].answerStatus === 'Y ') {
+                        $("#correctStatus").html("정답");
+                        $("#correctStatus").css("color", "green");
+                    } else {
+                        $("#correctStatus").html("오답");
+                        $("#correctStatus").css("color", "red");
+                    }
+
+                }
             }
+        } else {
+            alert("퀴즈를 풀지 않았습니다!");
+            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+                keyboard: false
+            })
+            myModal.hide();
         }
+
 
     })
 </script>

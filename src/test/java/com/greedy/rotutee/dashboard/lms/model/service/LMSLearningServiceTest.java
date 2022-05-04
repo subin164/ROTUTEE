@@ -9,12 +9,10 @@ import com.greedy.rotutee.dashboard.lms.dto.LMSQuizDTO;
 import com.greedy.rotutee.dashboard.lms.entity.LMSChapter;
 import com.greedy.rotutee.dashboard.lms.entity.LMSClass;
 import com.greedy.rotutee.dashboard.lms.entity.LMSQuiz;
-import com.greedy.rotutee.dashboard.lms.entity.LMSSubmissonQuiz;
 import com.greedy.rotutee.dashboard.lms.repository.LMSChapterRepository;
 import com.greedy.rotutee.dashboard.lms.repository.LMSClassRepository;
 import com.greedy.rotutee.dashboard.lms.repository.LMSQuizRepository;
 import com.greedy.rotutee.dashboard.lms.repository.LMSSubmissionQuizRepository;
-import com.greedy.rotutee.dashboard.mypage.entity.MyPageMemberLecture;
 import com.greedy.rotutee.dashboard.mypage.repository.MypageMemberLectureRepository;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -22,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

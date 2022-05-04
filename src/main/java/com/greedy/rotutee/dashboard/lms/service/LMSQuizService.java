@@ -2,6 +2,9 @@ package com.greedy.rotutee.dashboard.lms.service;
 
 import com.greedy.rotutee.dashboard.lms.dto.LMSQuizDTO;
 import com.greedy.rotutee.dashboard.lms.dto.LMSQuizStatusDTO;
+import com.greedy.rotutee.dashboard.lms.dto.LMSSubmissionQuizDTO;
+
+import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.service
@@ -22,4 +25,6 @@ public interface LMSQuizService {
     boolean confirmQuiz(int quizNo);
 
     LMSQuizStatusDTO findQuizStatus(int memberNo, int lectureNo);
+
+    List<LMSSubmissionQuizDTO> findSubmissionQuiz(int memberNo, int lectureNo);
 }

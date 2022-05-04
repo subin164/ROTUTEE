@@ -1,14 +1,7 @@
 package com.greedy.rotutee.dashboard.lms.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.entity
@@ -30,7 +23,7 @@ import java.text.SimpleDateFormat;
         initialValue = 1,
         allocationSize = 1
 )
-public class LMSSubmissonQuiz {
+public class LMSSubmissionQuiz {
 
     @Id
     @Column(name = "SUBMISSION_QUIZ_NO")
@@ -52,10 +45,10 @@ public class LMSSubmissonQuiz {
     @Column(name = "QUIZ_NO")
     private int quizNo;
 
-    public LMSSubmissonQuiz() {}
+    public LMSSubmissionQuiz() {}
 
 
-    public LMSSubmissonQuiz(int submissionQuizNo, String answerStatus, Date submitDate, int memberLectureNo, int quizNo) {
+    public LMSSubmissionQuiz(int submissionQuizNo, String answerStatus, Date submitDate, int memberLectureNo, int quizNo) {
         this.submissionQuizNo = submissionQuizNo;
         this.answerStatus = answerStatus;
         this.submitDate = submitDate;
