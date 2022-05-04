@@ -85,7 +85,7 @@
                      aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
                         <div class="className" data-bs-toggle="modal"
-                             data-bs-target="#exampleModal" th:each="class, stat : ${ chapter.classesList }">
+                             th:each="class, stat : ${ chapter.classesList }">
                             <input type="hidden" th:value="${class.quiz.quizNo}">
                             <input type="hidden" th:value="${class.quiz.submissionStatus}">
                             <span th:text="${class.quiz.content}"></span>
@@ -182,6 +182,7 @@
                     $("#option4").html([[${quizList}]][i].option4);
                     $("#correctAnswer").html([[${quizList}]][i].answer);
                     $("#explanation").html([[${quizList}]][i].solution);
+                    $("#exampleModal").modal('show');
 
 
                 }
@@ -199,10 +200,6 @@
             }
         } else {
             alert("퀴즈를 풀지 않았습니다!");
-            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
-                keyboard: false
-            })
-            myModal.hide();
         }
 
 
