@@ -21,6 +21,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -184,9 +186,12 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
     @Override
     public void insertAnswer(FreeBoardAnswerDTO registAnswer) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss.SSS");
+        System.out.println();
 
         java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
 
+        System.out.println("++++++"+sqlDate);
         FreeBoard freeBoard = modelMapper.map(registAnswer.getFreeBoard(),FreeBoard.class);
 
         FreeBoardMember freeBoardMember =  modelMapper.map(registAnswer.getFreeBoardMember(),FreeBoardMember.class);

@@ -15,7 +15,6 @@
     <style>
 
         .box{
-
             width: 80%;
             margin-top: 100px;
             margin-left: 300px;
@@ -23,25 +22,33 @@
         .inner-box{
             border: 1px ridge #bcbcbc;
             padding: 20px;
-
         }
         .content-area{
             width: 100%;
             height: 300px;
             border: 1px ridge #bcbcbc;
-
         }
         .category-box{
             border: 1px ridge #bcbcbc;
+        }
+        .answer-all-area{
+            height: auto;
+        }
 
+        .regist-textarea{
+            float: left;
+            width: 93%;
+            height: 100px;
+            resize: none;
+            padding: 10px;
         }
-        .answer-borderbox{
-            border: 1px ridge #bcbcbc;
 
+        #registAnswerBtn{
+            width: 7%;
+            float: left;
+            height: 100px;
         }
-        #textarea{
-            width: 80%;
-        }
+
         .content-area{
             width: 100%;
             height: 500px;
@@ -63,7 +70,38 @@
         }
         .answer-tr{
             border: 1px ridge #bcbcbc;
+            height: auto;
+            align : left;
+        }
 
+        .detail-board-button{
+            text-align: center;
+            margin-top: 10px;
+        }
+        .answer-content-btn{
+            text-align: left;
+        }
+
+        .modify-answer-textarea{
+            width: 90%;
+            padding: 10px;
+            height: 100px;
+
+        }
+        .answer-content-info{
+            width: 93%;
+            padding: 10px;
+        }
+        .answer-content-btn{
+            align : left;
+            width: 7%;
+        }
+
+        .answer-borderbox{
+            height: auto;
+        }
+        .content{
+            padding: 10px;
         }
     </style>
 
@@ -115,48 +153,60 @@
                 <div class="content" th:text="${board.boardContent}"></div>
             </div>
 
-            <div align="center">
+            <div class="detail-board-button">
                 <input id="boardListBtn" type="button" th:value="목록" class="btn btn-secondary">
                 <input id="modifyBoardBtn" type="button" th:value="수정" class="btn btn-primary">
                 <input id="deleteBoardBtn" type="button" th:value="삭제" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
             </div>
         </div>
 
-        <div class="answer-area">
-            <h6>댓글 작성</h6>
-            <form>
-                <div class="answer-borderbox">
-                    <textarea id="textarea"></textarea>
-                    <input id="registAnswer" type="button" value="댓글 등록" class="btn btn-secondary">
+        <div class="answer-all-area">
+
+                <div class="answer-regist-area">
+                    <h6>댓글 작성</h6>
+                    <div align="center">
+                        <textarea id="textarea" class="regist-textarea" placeholder="댓글을 작성해주세요"></textarea>
+                        <input id="registAnswerBtn" type="button" value="댓글 등록" class="btn btn-secondary">
+                    </div>
                 </div>
-            </form>
 
-            <form id="answerform">
-            <table id="answertable" class="answer-borderbox" th:if="${answer != null}">
-                <tbody id="answerbody" class="answer-tbody">
-                <tr id="answertr" class="answer-tr" th:each="answer : ${answer}">
-                    <input id="answerNo" type="hidden" th:value="${answer.answerNo}"/>
-                    <td th:text="${answer.answerNo}"></td>
-                    <td th:text="${answer.answerContent}"></td>
-                    <td th:text="${answer.answerCreatedDate}"></td>
-                    <td th:text="${answer.freeBoardMember.memberName}"></td>
-                    <th:block th:if="${ answer.freeBoardMember.memberName } == ${ #authentication.principal.name }">
-                        <td >
-                            <input id="modifyAnswer" type="button" th:value="수정" class="btn btn-secondary">
-                        </td>
-                        <td>
-                            <input id="deleteAnswer" type="button" th:value="삭제" class="btn btn-secondary">
-                        </td>
-                    </th:block>
-
-                    <th:block th:if="${ answer.freeBoardMember.memberName } != ${ #authentication.principal.name }">
-                        <td><input id="declarationAnswer" type="button" th:value="신고" class="btn btn-danger">
-                    </th:block>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            </form>
+                <div id="answertable" class="answer-borderbox" th:if="${answer != null}">
+                    <div id="answerbody" class="answer-tbody" >
+                        <div id="answertr" class="answer-tr" th:each="answer : ${answer}" >
+                            <div id="answer" class="answer-area">
+                                <div class="answer-content-info">
+                                    <input id="answerNo" type="hidden" th:value="${answer.answerNo}"/>
+                                    <div class="answer-column" th:text="${answer.freeBoardMember.memberName}"></div>
+                                    <div class="answer-column" th:text="${answer.answerContent}"></div>
+                                    <div class="answer-column" th:text="${answer.answerCreatedDate}"></div>
+                                </div>
+                                <div class="answer-content-btn">
+                                    <th:block th:if="${ answer.freeBoardMember.memberNo } == ${ #authentication.principal.no }">
+                                        <input id="modifyAnswer" type="button" th:value="수정" class="btn btn-secondary">
+                                        <input id="deleteAnswer" type="button" th:value="삭제" class="btn btn-secondary">
+                                    </th:block>
+                                    <th:block th:if="${ answer.freeBoardMember.memberNo } != ${ #authentication.principal.no }">
+                                        <input id="declarationAnswer" type="button" th:value="신고" class="btn btn-danger">
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div id="inputanswer" class="input-answer-area" >
+                                <div class="answer-content-info">
+                                    <input id="modifyanswerNo" type="hidden" th:value="${answer.answerNo}"/>
+                                    <div class="input-answer-column" th:text="${answer.freeBoardMember.memberName}"></div>
+                                    <div class="input-answer-column" >
+                                        <textarea id="modifyAnswerContent" class="modify-answer-textarea" th:value="${answer.answerContent}"></textarea>
+                                    </div>
+                                    <div class="input-answer-column" th:text="${answer.answerCreatedDate}"></div>
+                                </div>
+                                <div class="answer-content-btn">
+                                    <input id="modifyAnswerOk" type="button" th:value="확인" class="btn btn-secondary">
+                                    <input id="modifyAnswerCancel" type="button" th:value="취소" class="btn btn-secondary">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 </div>
@@ -200,13 +250,16 @@
 </div>
 
 <script>
-    const $declaration = document.querySelectorAll("#declarationAnswer");
     const $deleteAnswer = document.querySelectorAll("#deleteAnswer");
     const $modifyAnswer = document.querySelectorAll("#modifyAnswer");
-    const $answerTr = document.querySelectorAll("#answertr");
     const $answerNo = document.querySelectorAll("#answerNo");
+    const $inputanswer = document.querySelectorAll("#inputanswer");
+    const $answer = document.querySelectorAll("#answer");
+    const $modifyAnswerContent = document.querySelectorAll("#modifyAnswerContent");
+    const $modifyAnswerOk = document.querySelectorAll("#modifyAnswerOk");
+    const $modifyAnswerCancel= document.querySelectorAll("#modifyAnswerCancel");
 
-    const $registAnswer = document.getElementById("registAnswer");
+    const $registAnswer = document.getElementById("registAnswerBtn");
     const $boardListBtn = document.getElementById("boardListBtn");
     const $modifyBoardBtn = document.getElementById("modifyBoardBtn")
     const $category = document.getElementById("category");
@@ -215,11 +268,11 @@
     const $noticeradio1 = document.getElementById("btnradio1");
     const $askfadio2 = document.getElementById("btnradio2");
     const $freeradio3 = document.getElementById("btnradio3");
-
     const $deleteBtn = document.getElementById("delete-ok");
 
     let boardNo = 0;
     let categoryNo = 0;
+
 
     document.addEventListener("DOMContentLoaded", function() {
         const url = window.location.href;
@@ -241,10 +294,17 @@
                 break;
         }
 
+        for (var i = 0; i < $inputanswer.length; i++) {
+            $inputanswer[i].style.display='none';
+        }
+
+        for (var i = 0; i < $answer.length; i++) {
+            $answer[i].style.display='block'
+        }
         $registAnswer.addEventListener("click", function () {
             const params = {"boardNo":boardNo, "answerContent":$textarea.value};
             $textarea.value =""
-            registanswer("/freeboard/registanswer",params,'post');
+            from_url("/freeboard/registanswer",params,'post');
         });
 
         $boardListBtn.addEventListener("click",function (){
@@ -253,40 +313,57 @@
 
         $modifyBoardBtn.addEventListener("click",function (){
             window.location.href="modify?boardNo=" + boardNo;
-
         });
 
         $deleteBtn.addEventListener("click",function (){
             const params = {"boardNo":boardNo, "categoryNo":categoryNo};
-            delete_post_to_url("/freeboard/delete",params,'post');
+            from_url("/freeboard/delete",params,'post');
         });
 
         for (var i = 0; i < $modifyAnswer.length; i++) {
+
             $modifyAnswer[i].addEventListener("click", function () {
-                $answerTr[i].innerHTML="";
-
-
+                $inputanswer[i].style.display='block';
+                $answer[i].style.display='none';
             });
         }
-/*
-        for (var i = 0; i < $declaration.length; i++) {
-            $declaration[i].addEventListener("click", function () {
+        for (var i = 0; i < $modifyAnswer.length; i++) {
+            $modifyAnswerOk[i].addEventListener("click", function () {
+                if($modifyAnswerContent[i].value.trim() == ""){
+                    $modifyAnswerContent[i].value ="";
+                    alert('댓글을 입력해 주십시오');
+                }else {
+                    const params = {
+                        "answerNo": $answerNo[i].value,
+                        "answerContent": $modifyAnswerContent[i].value,
+                        "boardNo": boardNo
+                    };
+                    from_url("/freeboard/modifyAnswer",params,'post');
 
+                    $inputanswer[i].style.display = 'block';
+                    $answer[i].style.display = "none";
+                }
             });
-        }*/
+        }
+
+        for (var i = 0; i < $modifyAnswerCancel.length; i++) {
+            $modifyAnswerCancel[i].addEventListener("click", function () {
+                $inputanswer[i].style.display = 'block';
+                $answer[i].style.display = "none";
+            });
+        }
 
         for (var i = 0; i < $deleteAnswer.length; i++) {
             $deleteAnswer[i].addEventListener("click", function () {
                 const params = {"boardNo":boardNo, "answerNo":$answerNo[i].value};
-                deleteanswer("/freeboard/deleteAnswer",params,'post');
+                from_url("/freeboard/deleteAnswer",params,'post');
             });
         }
-
     });
 </script>
 
 <script type="text/javascript">
-    function registanswer(path, params, method) {
+    function from_url(path, params, method) {
 
         const form = document.createElement("form");
         form.setAttribute("method", method);
@@ -307,49 +384,6 @@
     }
 </script>
 
-<script type="text/javascript">
-    function delete_post_to_url(path, params, method) {
-
-        const form = document.createElement("form");
-        form.setAttribute("method", method);
-        form.setAttribute("action", path);
-        for(let key in params) {
-            let hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value",params[key]);
-
-            console.log("key"+key);
-            console.log("param"+params[key]);
-
-            form.appendChild(hiddenField);
-        }
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script>
-
-<script type="text/javascript">
-    function deleteanswer(path, params, method) {
-
-        const form = document.createElement("form");
-        form.setAttribute("method", method);
-        form.setAttribute("action", path);
-        for(let key in params) {
-            let hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value",params[key]);
-
-            console.log("key"+key);
-            console.log("param"+params[key]);
-
-            form.appendChild(hiddenField);
-        }
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script>
 <!--===============================================================================================-->
 <!--<script src="../../static/sb/vendor/jquery/jquery-3.2.1.min.js"></script>-->
 <!--===============================================================================================-->

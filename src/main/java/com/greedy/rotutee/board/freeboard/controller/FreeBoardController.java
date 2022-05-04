@@ -21,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -96,6 +98,9 @@ public class FreeBoardController {
             System.out.println("####"+answer);
             mv.addObject("answer",answer);
         }
+       /* SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        String date = dayTime.format(new Date( freeBoardDTO.getBoardCreationDate().getTime()));
+        freeBoardDTO.setBoardCreationDate(date);*/
 
         System.out.println("cateogry" + freeBoardDTO.getFreeBoardCategory().getBoardCategoryNo());
 
@@ -191,8 +196,6 @@ public class FreeBoardController {
         int boardNo = Integer.parseInt(request.getParameter("boardNo"));
         String context = request.getParameter("answerContent");
 
-        System.out.println("boardNo : " + boardNo);
-        System.out.println("name"+customUser.getName());
         FreeBoardMemberDTO freeBoardMemberDTO = new FreeBoardMemberDTO();
         freeBoardMemberDTO.setMemberNo(customUser.getNo());
 
@@ -231,8 +234,12 @@ public class FreeBoardController {
     }
 
     @PostMapping(value = "/modifyAnswer")
-    public ModelAndView updateAnswer( ModelAndView mv, HttpServletRequest request, RedirectAttributes rttr, @ModelAttribute FreeBoardAnswerDTO modifyAnswer, @AuthenticationPrincipal CustomUser customUser){
+    public ModelAndView updateAnswer( ModelAndView mv, HttpServletRequest request, RedirectAttributes rttr
+                                    , @AuthenticationPrincipal CustomUser customUser){
+
         int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+        int answerNo = Integer.parseInt(request.getParameter("answerNo"));
+        String context = request.getParameter("answerContent");
 
         FreeBoardDTO freeBoardDTO = new FreeBoardDTO();
         freeBoardDTO.setBoardNo(boardNo);
@@ -240,6 +247,10 @@ public class FreeBoardController {
         FreeBoardMemberDTO freeBoardMemberDTO = new FreeBoardMemberDTO();
         freeBoardMemberDTO.setMemberNo(customUser.getNo());
 
+        FreeBoardAnswerDTO modifyAnswer = new FreeBoardAnswerDTO();
+
+        modifyAnswer.setAnswerNo(answerNo);
+        modifyAnswer.setAnswerContent(context);
         modifyAnswer.setFreeBoardMember(freeBoardMemberDTO);
         modifyAnswer.setFreeBoard(freeBoardDTO);
 
