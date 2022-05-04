@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class BoardDTO {
     private int no;
     private String title;
     private String content;
-    private Date creationDate;
+    private Timestamp creationDate;
     private Date modifiedDate;
     private Date deletionDate;
     private char deleteYN;
