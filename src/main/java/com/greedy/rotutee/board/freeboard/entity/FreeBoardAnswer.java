@@ -1,7 +1,11 @@
 package com.greedy.rotutee.board.freeboard.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
  * packageName : com.greedy.rotutee.board.entity
@@ -40,7 +44,7 @@ public class FreeBoardAnswer {
     private int answerReportCount;
 
     @Column(name = "ANSWER_CREATED_DATE")
-    private Date answerCreatedDate;
+    private Timestamp answerCreatedDate;
 
     @Column( name = "ANSWER_MODIFY_DATE")
     private Date answerModifyDate;
@@ -56,10 +60,14 @@ public class FreeBoardAnswer {
     @JoinColumn(name = "MEMBER_NO")
     private FreeBoardMember freeBoardMember;
 
+
+
     public FreeBoardAnswer() {
     }
 
-    public FreeBoardAnswer(int answerNo, String answerContent, char answerYN, int answerReportCount, Date answerCreatedDate, Date answerModifyDate, Date answerDeleteDate, FreeBoard freeBoard, FreeBoardMember freeBoardMember) {
+    public FreeBoardAnswer(int answerNo, String answerContent, char answerYN, int answerReportCount
+                           , Timestamp answerCreatedDate, Date answerModifyDate, Date answerDeleteDate
+                           , FreeBoard freeBoard, FreeBoardMember freeBoardMember) {
         this.answerNo = answerNo;
         this.answerContent = answerContent;
         this.answerYN = answerYN;
@@ -103,11 +111,11 @@ public class FreeBoardAnswer {
         this.answerReportCount = answerReportCount;
     }
 
-    public Date getAnswerCreatedDate() {
+    public Timestamp getAnswerCreatedDate() {
         return answerCreatedDate;
     }
 
-    public void setAnswerCreatedDate(Date answerCreatedDate) {
+    public void setAnswerCreatedDate(Timestamp answerCreatedDate) {
         this.answerCreatedDate = answerCreatedDate;
     }
 

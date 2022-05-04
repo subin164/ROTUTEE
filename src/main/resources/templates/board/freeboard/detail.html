@@ -71,34 +71,30 @@
         .answer-tr{
             border: 1px ridge #bcbcbc;
             height: auto;
-            align : left;
         }
 
         .detail-board-button{
             text-align: center;
             margin-top: 10px;
         }
-        .answer-content-btn{
-            text-align: left;
-        }
 
         .modify-answer-textarea{
             width: 90%;
             padding: 10px;
             height: 100px;
-
+            resize: none;
         }
         .answer-content-info{
             width: 93%;
             padding: 10px;
         }
         .answer-content-btn{
-            align : left;
             width: 7%;
         }
 
         .answer-borderbox{
             height: auto;
+            margin-top: 100px;
         }
         .content{
             padding: 10px;
@@ -279,7 +275,6 @@
 
         boardNo = url.split("=");
         boardNo = boardNo[1];
-
         categoryNo = $category.value;
 
         switch (categoryNo) {

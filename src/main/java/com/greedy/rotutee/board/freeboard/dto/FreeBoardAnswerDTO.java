@@ -3,6 +3,7 @@ package com.greedy.rotutee.board.freeboard.dto;
 import lombok.*;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * packageName : com.greedy.rotutee.board.dto
@@ -25,7 +26,7 @@ public class FreeBoardAnswerDTO {
     private String answerContent;
     private char answerYN;
     private int answerReportCount;
-    private Date answerCreatedDate;
+    private Timestamp answerCreatedDate;
     private Date answerModifyDate;
     private Date answerDeleteDate;
     private FreeBoardDTO freeBoard;

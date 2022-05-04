@@ -98,9 +98,6 @@ public class FreeBoardController {
             System.out.println("####"+answer);
             mv.addObject("answer",answer);
         }
-       /* SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        String date = dayTime.format(new Date( freeBoardDTO.getBoardCreationDate().getTime()));
-        freeBoardDTO.setBoardCreationDate(date);*/
 
         System.out.println("cateogry" + freeBoardDTO.getFreeBoardCategory().getBoardCategoryNo());
 
@@ -228,7 +225,7 @@ public class FreeBoardController {
 
         rttr.addFlashAttribute("successMessage", "댓글 삭제 완료");
 
-        mv.setViewName("redirect:/freeBoard/detail?"+ boardNo);
+        mv.setViewName("redirect:/freeBoard/detail?boardNo="+ boardNo);
 
         return mv;
     }
@@ -258,7 +255,7 @@ public class FreeBoardController {
 
         rttr.addFlashAttribute("successMessage", "댓글 수정 완료");
 
-        mv.setViewName("redirect:/freeBoard/detail?"+ modifyAnswer.getFreeBoard().getBoardNo());
+        mv.setViewName("redirect:/freeBoard/detail?boardNo="+ modifyAnswer.getFreeBoard().getBoardNo());
 
         return mv;
     }

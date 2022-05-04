@@ -22,7 +22,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -186,12 +189,9 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
     @Override
     public void insertAnswer(FreeBoardAnswerDTO registAnswer) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss.SSS");
-        System.out.println();
-
-        java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
-
-        System.out.println("++++++"+sqlDate);
+        Timestamp ts=new Timestamp(System.currentTimeMillis());
+        Date sqlDate=new Date(ts.getTime());
+        System.out.println("날짜" + sqlDate +", timestap : " +ts);
         FreeBoard freeBoard = modelMapper.map(registAnswer.getFreeBoard(),FreeBoard.class);
 
         FreeBoardMember freeBoardMember =  modelMapper.map(registAnswer.getFreeBoardMember(),FreeBoardMember.class);
@@ -201,7 +201,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         newRegistAnswer.setAnswerContent(registAnswer.getAnswerContent());
         newRegistAnswer.setAnswerYN('N');
         newRegistAnswer.setAnswerReportCount(0);
-        newRegistAnswer.setAnswerCreatedDate(sqlDate);
+        newRegistAnswer.setAnswerCreatedDate(ts);
         newRegistAnswer.setFreeBoard(freeBoard);
         newRegistAnswer.setFreeBoardMember(freeBoardMember);
 
@@ -210,11 +210,11 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
     @Override
     public void deleteAnswer(int answerNo) {
-        java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+        java.util.Date sqlDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()); //Thu Jul 26 01:00:30 KST 2018
 
         FreeBoardAnswer deleteAnswer = answerRepository.findById(answerNo).get();
         deleteAnswer.setAnswerYN('Y');
-        deleteAnswer.setAnswerDeleteDate(sqlDate);
+        deleteAnswer.setAnswerDeleteDate((Date) sqlDate);
         answerRepository.save(deleteAnswer);
     }
 
