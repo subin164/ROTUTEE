@@ -33,15 +33,12 @@ public class CouponService {
     }
 
 
-    public void findCouponList(CouponDTO couponDTO, Pageable pageable) {
+    public Page findCouponList(CouponDTO couponDTO, Pageable pageable) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
                 pageable.getPageSize());
 
-        List<Coupon> couponList = couponRepository.findByCouponStatus("N");
-
-        System.out.println("couponlist 22222: " + couponList);
-
+        return couponRepository.findByCouponStatus("N ", pageable).map(coupon -> modelMapper.map(coupon, CouponDTO.class));
     }
 
 

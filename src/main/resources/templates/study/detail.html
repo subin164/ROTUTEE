@@ -294,7 +294,6 @@
     // 스터디 댓글 삭제
     function studyReplyRemove(replyNo) {
         let studyNo = $("#studyNo").val();
-        alert(studyNo);
         $.ajax({
             url: "/study/replyRemove",
             type: "post",
