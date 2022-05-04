@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../hg/css/coupon.css">
+</head>
+<body>
+
+<div th:include="/common/topMenubar.html"></div>
+
+<main class="d-flex mb-md-3">
+    <div th:include="/common/adminSideMenuBar.html"></div>
+    <div class="container d-flex flex-md-column w-100">
+        <section class="coupon-header my-md-3">
+            <div class="">
+                <h2 class="fs-3">쿠폰 목록</h2>
+            </div>
+
+            <hr>
+
+        </section>
+        <section>
+            <ul class="d-flex">
+                <li>
+                    <button class="btn" data-bs-toggle="modal"
+                            data-bs-target="#couponRegistModal">쿠폰등록
+                    </button>
+                </li>
+                <li>
+                    <button class="btn">쿠폰수정</button>
+                </li>
+                <li>
+                    <button class="btn">쿠폰삭제</button>
+                </li>
+                <li>
+                    <button class="btn">쿠폰발행</button>
+                </li>
+            </ul>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Handle</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td colspan="2">Larry the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+</main>
+
+
+<!-- Modal -->
+<div class="modal fade" id="couponRegistModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2>쿠폰 등록</h2>
+            </div>
+
+            <div class="modal-body">
+                <form action="/coupon/regist" method="post" id="couponRegistForm">
+                    <div class="d-flex flex-md-column">
+
+                        <div class="col-md-6 shadow-sm mb-md-3 w-100">
+                            <label class="fw-bold">쿠폰명</label>
+                            <div class="d-flex">
+                                <input class="tag-input w-100" type="text" name="couponName">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 shadow-sm mb-md-3 w-100">
+                            <label class="fw-bold">쿠폰내용</label>
+                            <div class="d-flex">
+                                <input class="tag-input w-100" type="text" name="couponContent">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 shadow-sm mb-md-3 w-100">
+                            <label class="fw-bold">할인율</label>
+                            <div class="d-flex">
+                                <input class="tag-input w-100" type="text" name="discountRate">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 shadow-sm mb-md-3  w-100">
+                            <label class="fw-bold">사용기한</label>
+                            <div class="d-flex">
+                                <input class="tag-input w-100" type="date" name="couponRegistDate">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <div class="d-flex">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
+                        취소
+                    </button>
+                    <button type="submit" class="btn btn-outline-primary" form="couponRegistForm">
+                        등록
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
