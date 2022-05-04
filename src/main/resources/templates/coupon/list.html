@@ -16,36 +16,39 @@
     <div th:include="/common/topMenubar.html"></div>
 </header>
 <main>
-    <div th:include="/common/adminSideMenuBar.html"></div>
-    <section>
-        <div class="container d-flex flex-md-column w-100">
-            <section class="coupon-header my-md-3">
-                <div class="">
-                    <h2 class="fs-3">쿠폰 목록</h2>
-                </div>
+    <div class="d-flex">
+        <div>
+            <div th:include="/common/adminSideMenuBar.html"></div>
+        </div>
 
-                <hr>
+        <div class="coupon-content">
+            <div>
+                <h2 class="fs-3">쿠폰 목록</h2>
+            </div>
 
-                <ul class="d-flex">
-                    <li>
-                        <button class="btn" data-bs-toggle="modal"
-                                data-bs-target="#couponRegistModal">쿠폰등록
-                        </button>
-                    </li>
-                    <li>
-                        <button class="btn">쿠폰수정</button>
-                    </li>
-                    <li>
-                        <button class="btn">쿠폰삭제</button>
-                    </li>
-                    <li>
-                        <button class="btn">쿠폰발행</button>
-                    </li>
-                </ul>
+            <hr>
 
-                <table class="table table-hover">
+            <ul class="d-flex">
+                <li>
+                    <button class="btn" data-bs-toggle="modal"
+                            data-bs-target="#couponRegistModal">쿠폰등록
+                    </button>
+                </li>
+                <li>
+                    <button class="btn">쿠폰수정</button>
+                </li>
+                <li>
+                    <button class="btn" type="button" onclick="couponRemove()">쿠폰삭제</button>
+                </li>
+                <li>
+                    <button class="btn">쿠폰발행</button>
+                </li>
+            </ul>
+
+            <table class="table table-hover">
+                <form id="coponSelectForm">
                     <thead>
-<!--                    <rd>선택</rd>-->
+                    <td>선택</td>
                     <td>쿠폰명</td>
                     <td>쿠폰내용</td>
                     <td>쿠폰등록일자</td>
@@ -55,9 +58,9 @@
 
                     <tbody>
                     <tr th:each="coupon:${couponList}">
-<!--                        <td>-->
-<!--                            <input type="checkbox" th:value="${coupon.couponNo}">-->
-<!--                        </td>-->
+                        <td>
+                            <input name="couponNo" type="checkbox" th:value="${coupon.couponNo}">
+                        </td>
                         <td th:text="${coupon.couponName}"></td>
                         <td th:text="${coupon.couponContent}"></td>
                         <td th:text="${coupon.couponRegistDate}"></td>
@@ -65,10 +68,10 @@
                         <td th:text="${coupon.expirationDate}"></td>
                     </tr>
                     </tbody>
-                </table>
-            </section>
+                </form>
+            </table>
         </div>
-    </section>
+    </div>
 </main>
 
 
@@ -137,5 +140,32 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+
+<script>
+    function couponRemove() {
+        let couponNo = document.getElementsByName("couponNo").length;
+        let couponNoArray = new Array();
+        for (let i = 0; i < couponNo; i++) {
+            if (document.getElementsByName("couponNo")[i].checked == true) {
+                couponNoArray.push(document.getElementsByName("couponNo")[i].value);
+            }
+        }
+       console.log(couponNoArray.value);
+
+        $.ajax({
+            url: "/coupon/remove",
+            type: "post",
+            data: {"couponNoArray": couponNoArray},
+            success: function (data) {
+                alert("성공");
+            },
+            error: function (data) {
+                alert("실패");
+
+            }
+        });
+    };
+
+</script>
 </body>
 </html>
