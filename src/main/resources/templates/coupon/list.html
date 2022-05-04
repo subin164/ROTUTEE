@@ -7,72 +7,68 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../common/css/common.css">
     <link rel="stylesheet" href="../hg/css/coupon.css">
 </head>
 <body>
 
-<div th:include="/common/topMenubar.html"></div>
-
-<main class="d-flex mb-md-3">
+<header>
+    <div th:include="/common/topMenubar.html"></div>
+</header>
+<main>
     <div th:include="/common/adminSideMenuBar.html"></div>
-    <div class="container d-flex flex-md-column w-100">
-        <section class="coupon-header my-md-3">
-            <div class="">
-                <h2 class="fs-3">쿠폰 목록</h2>
-            </div>
+    <section>
+        <div class="container d-flex flex-md-column w-100">
+            <section class="coupon-header my-md-3">
+                <div class="">
+                    <h2 class="fs-3">쿠폰 목록</h2>
+                </div>
 
-            <hr>
+                <hr>
 
-        </section>
-        <section>
-            <ul class="d-flex">
-                <li>
-                    <button class="btn" data-bs-toggle="modal"
-                            data-bs-target="#couponRegistModal">쿠폰등록
-                    </button>
-                </li>
-                <li>
-                    <button class="btn">쿠폰수정</button>
-                </li>
-                <li>
-                    <button class="btn">쿠폰삭제</button>
-                </li>
-                <li>
-                    <button class="btn">쿠폰발행</button>
-                </li>
-            </ul>
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-    </div>
+                <ul class="d-flex">
+                    <li>
+                        <button class="btn" data-bs-toggle="modal"
+                                data-bs-target="#couponRegistModal">쿠폰등록
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn">쿠폰수정</button>
+                    </li>
+                    <li>
+                        <button class="btn">쿠폰삭제</button>
+                    </li>
+                    <li>
+                        <button class="btn">쿠폰발행</button>
+                    </li>
+                </ul>
 
+                <table class="table table-hover">
+                    <thead>
+<!--                    <rd>선택</rd>-->
+                    <td>쿠폰명</td>
+                    <td>쿠폰내용</td>
+                    <td>쿠폰등록일자</td>
+                    <td>할인률</td>
+                    <td>사용기간</td>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="coupon:${couponList}">
+<!--                        <td>-->
+<!--                            <input type="checkbox" th:value="${coupon.couponNo}">-->
+<!--                        </td>-->
+                        <td th:text="${coupon.couponName}"></td>
+                        <td th:text="${coupon.couponContent}"></td>
+                        <td th:text="${coupon.couponRegistDate}"></td>
+                        <td th:text="${coupon.discountRate}"></td>
+                        <td th:text="${coupon.expirationDate}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </section>
 </main>
 
 
@@ -112,9 +108,9 @@
                         </div>
 
                         <div class="col-md-12 shadow-sm mb-md-3  w-100">
-                            <label class="fw-bold">사용기한</label>
+                            <label class="fw-bold">만료기한</label>
                             <div class="d-flex">
-                                <input class="tag-input w-100" type="date" name="couponRegistDate">
+                                <input class="tag-input w-100" type="text" name="expirationDate">
                             </div>
                         </div>
                     </div>
