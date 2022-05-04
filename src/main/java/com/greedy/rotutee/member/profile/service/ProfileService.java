@@ -106,7 +106,7 @@ public class ProfileService {
 
     /* 사용자 프로필 수정용 메서드 */
     @Transactional
-    public void modifyProfile(CustomUser loginMember, MemberDTO member, TutorInfoDTO tutorInfo, int achievementNo) {
+    public void modifyProfile(CustomUser loginMember, MemberDTO member, TutorInfoDTO tutorInfo) {
 
         Member foundMember = memberRepository.findById(loginMember.getNo()).get();
         foundMember.setIntroduction(member.getIntroduction());
@@ -119,8 +119,6 @@ public class ProfileService {
             foundTutorInfo.setAccountNumber(tutorInfo.getAccountNumber());
             foundTutorInfo.setBankName(tutorInfo.getBankName());
         }
-
-        setMemberAhievment(loginMember.getNo(), achievementNo);
 
     }
 
