@@ -44,6 +44,20 @@ public class BasketServiceImpl implements BasketService{
         this.classBasketMemberRepository = classBasketMemberRepository;
     }
 
+    @Override
+    public ClassBasketDTO findByLectureNoAndMemberNo(int lectureNo, int memberNo) {
+
+        Lecture lectureEntity = classBasketLectureRepository.findByLectureNo(lectureNo);
+        Member memberEntity = classBasketMemberRepository.findByNo(memberNo);
+
+        ClassBasket basket = classBasketRepository.findByLectureAndMember(lectureEntity, memberEntity);
+
+        if(basket != null) {
+            return modelMapper.map(basket, ClassBasketDTO.class);
+        }
+
+        return null;
+    }
 
     @Override
     @Transactional
@@ -69,4 +83,16 @@ public class BasketServiceImpl implements BasketService{
 
         return cartList.stream().map(cart -> modelMapper.map(cart, ClassBasketDTO.class)).collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional
+    public void removeOneBasket(int lectureNo, int memberNo) {
+
+        Lecture lectureEntity = classBasketLectureRepository.findByLectureNo(lectureNo);
+        Member memberEntity = classBasketMemberRepository.findByNo(memberNo);
+
+        classBasketRepository.deleteByLectureAndMember(lectureEntity, memberEntity);
+
+    }
+
 }

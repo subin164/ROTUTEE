@@ -1,6 +1,8 @@
 package com.greedy.rotutee.basket.repository;
 
+import com.greedy.rotutee.basket.entity.ClassBasket;
 import com.greedy.rotutee.basket.entity.Lecture;
+import com.greedy.rotutee.basket.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +20,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClassBasketLectureRepository extends JpaRepository<Lecture, Integer> {
     Lecture findByLectureNo(int lectureNo);
+
 }

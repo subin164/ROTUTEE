@@ -19,4 +19,8 @@ public interface BasketService {
     void registLectureToCart(int lectureNo, int memberNo);
 
     List<ClassBasketDTO> findByMemberNo(int memberNo);
+
+    void removeOneBasket(int lectureNo, int memberNo);
+
+    ClassBasketDTO findByLectureNoAndMemberNo(int lectureNo, int memberNo);
 }

@@ -42,12 +42,19 @@ public class BasketController {
     public ModelAndView addLecture(ModelAndView mv, @PathVariable int lectureNo
                                                   , @AuthenticationPrincipal CustomUser customUser
                                                   , RedirectAttributes rttr) {
-
         int memberNo = customUser.getNo();
-        basketService.registLectureToCart(lectureNo, memberNo);
 
-        rttr.addFlashAttribute("message", "수강바구니에 추가되었습니다.");
-        mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
+        ClassBasketDTO basket = basketService.findByLectureNoAndMemberNo(lectureNo, memberNo);
+
+        if(basket == null) {
+            basketService.registLectureToCart(lectureNo, memberNo);
+
+            rttr.addFlashAttribute("message", "수강바구니에 추가되었습니다.");
+            mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
+        } else {
+            rttr.addFlashAttribute("message", "이미 추가되어있습니다.");
+            mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
+        }
         return mv;
     }
 
@@ -59,8 +66,22 @@ public class BasketController {
 
         System.out.println(cartList);
 
+        mv.addObject("cartList", cartList);
         mv.setViewName("basket/basketlist");
         return mv;
     }
 
+    @GetMapping("/remove/{lectureNo}")
+    public ModelAndView removeOneBasket(ModelAndView mv, @PathVariable int lectureNo
+                                                             , @AuthenticationPrincipal CustomUser customUser
+                                                             , RedirectAttributes rttr) {
+
+        int memberNo = customUser.getNo();
+
+        basketService.removeOneBasket(lectureNo, memberNo);
+
+        rttr.addFlashAttribute("message", "해당 강의를 제거하였습니다.");
+        mv.setViewName("redirect:/basket/list");
+        return mv;
+    }
 }

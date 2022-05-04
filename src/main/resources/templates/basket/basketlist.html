@@ -7,11 +7,57 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="/css/sj/common.css">
+    <script>
+        const message = "[[${message}]]"
+        message && alert(message);
+    </script>
 </head>
 <body>
-<div th:include="common/topMenubar.html"></div>
+<div th:include="common/mypagemenubar.html"></div>
 <main>
-    <p>안녕하세요</p>
+    <div class="container">
+        <div class="row">
+            <p style="margin-top: 30px; font-size: x-large;">수강 바구니</p>
+            <br>
+            <div class="col-8">
+                <div style="margin-left: 1px; width: 1620px">
+                    <div class="col-4" style="background-color: #e4e6e9">
+                        <p style="font-size: large;">강의 정보</p>
+                    </div>
+                </div>
+                <br>
+                <div class="card mb-3" style="max-width: 540px;" th:each="cart : ${cartList}">
+                     <div class="row g-0">
+                         <div class="col-md-4">
+                             <img src="..." class="img-fluid rounded-start" alt="...">
+                         </div>
+                         <div class="col-md-8">
+                             <div class="card-body">
+                                 <input type="hidden" class="lectureNo" th:value="${cart.lecture.lectureNo}">
+                                 <h5 class="card-title" th:text="${cart.lecture.lectureName}"></h5>
+                                 <p class="card-text"><small class="text-muted" th:text="${cart.lecture.tutor.name}"></small></p>
+                                 <p th:text="'￦ ' + ${cart.lecture.lecturePrice}"></p>
+                                 <button class="btn btn-outline-secondary btn-sm" style="float: right; margin-bottom: 10px">쿠폰함</button>
+                                 <button class="btn btn-outline-secondary btn-sm remove" style="float: right; margin-bottom: 10px">삭제</button>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div style="width: 300px; height: 500px; border: 1px solid black;">
+
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
+<script>
+    $(".remove").click(function() {
+        const lectureNo = $(this).siblings(".lectureNo").val();
+        console.log(lectureNo);
+        location.href = "/basket/remove/" + lectureNo;
+    })
+</script>
 </body>
 </html>
