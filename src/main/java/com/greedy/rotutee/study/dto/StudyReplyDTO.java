@@ -17,7 +17,7 @@ public class StudyReplyDTO {
     private java.sql.Date replyWriteDate;
     private java.sql.Date replyModifyDate;
     private java.sql.Date replyRemoveDate;
-    private int studyNO;
+    private int studyNo;
     private MemberDTO writer;
 
 }
