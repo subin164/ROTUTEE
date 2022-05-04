@@ -1,3 +1,4 @@
+/*
 package com.greedy.rotutee.board.freeBoard.controller;
 
 import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+*/
 /**
  * packageName : com.greedy.rotutee.board.freeBoard.controller
  * fileName : FreeBoardControllerTest
@@ -29,7 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * ===========================================================
  * DATE              AUTHOR      NOTE * -----------------------------------------------------------
  * 2022-04-21        soobeen     최초 생성
- */
+ *//*
+
 
 @SpringBootTest
 @ContextConfiguration(classes = {RotuteeApplication.class, JPAConfiguration.class, BeanConfiguration.class})
@@ -154,3 +157,4 @@ public class FreeBoardControllerTest {
     }
 
 }
+*/

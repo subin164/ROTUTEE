@@ -1,4 +1,4 @@
-package com.greedy.rotutee.board.freeBoard.entity;
+package com.greedy.rotutee.board.freeboard.entity;
 
 import javax.persistence.*;
 

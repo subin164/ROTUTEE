@@ -1,12 +1,10 @@
-package com.greedy.rotutee.board.freeBoard.service;
+package com.greedy.rotutee.board.freeboard.service;
 
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardAnswerDTO;
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardDTO;
+import com.greedy.rotutee.board.freeboard.dto.FreeBoardAnswerDTO;
+import com.greedy.rotutee.board.freeboard.dto.FreeBoardDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.board.service
@@ -33,15 +31,14 @@ public interface FreeBoardService {
    FreeBoardDTO selectBoardModify(int boardNo);
 
    void modifyBoard(FreeBoardDTO freeBoard);
-/*
+
    void registNewFreeBoard(FreeBoardDTO newFreeBoard);
 
+   void insertAnswer(FreeBoardAnswerDTO registAnswer);
 
    void deleteAnswer(int answerNo);
 
    void updateAnswer(FreeBoardAnswerDTO modifyAnswer);
-
-   void insertAnswer(FreeBoardAnswerDTO registAnswer);*/
 
 
 }

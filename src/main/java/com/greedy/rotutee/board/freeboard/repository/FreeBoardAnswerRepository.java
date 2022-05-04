@@ -1,7 +1,6 @@
-package com.greedy.rotutee.board.freeBoard.repository;
+package com.greedy.rotutee.board.freeboard.repository;
 
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoardAnswer;
+import com.greedy.rotutee.board.freeboard.entity.FreeBoardAnswer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

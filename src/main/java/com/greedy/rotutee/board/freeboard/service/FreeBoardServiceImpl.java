@@ -1,16 +1,16 @@
-package com.greedy.rotutee.board.freeBoard.service;
+package com.greedy.rotutee.board.freeboard.service;
 
 
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardAnswerDTO;
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardDTO;
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoardAnswer;
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoardCategory;
-import com.greedy.rotutee.board.freeBoard.repository.FreeBoardCategoryRepository;
-import com.greedy.rotutee.board.freeBoard.repository.FreeBoardRepository;
-import com.greedy.rotutee.board.freeBoard.repository.FreeBoardAnswerRepository;
-import com.greedy.rotutee.board.freeBoard.repository.FreeBoardMemberRepository;
-import com.sun.xml.bind.v2.TODO;
+import com.greedy.rotutee.board.freeboard.dto.FreeBoardAnswerDTO;
+import com.greedy.rotutee.board.freeboard.dto.FreeBoardDTO;
+import com.greedy.rotutee.board.freeboard.entity.FreeBoard;
+import com.greedy.rotutee.board.freeboard.entity.FreeBoardAnswer;
+import com.greedy.rotutee.board.freeboard.entity.FreeBoardCategory;
+import com.greedy.rotutee.board.freeboard.entity.FreeBoardMember;
+import com.greedy.rotutee.board.freeboard.repository.FreeBoardCategoryRepository;
+import com.greedy.rotutee.board.freeboard.repository.FreeBoardRepository;
+import com.greedy.rotutee.board.freeboard.repository.FreeBoardAnswerRepository;
+import com.greedy.rotutee.board.freeboard.repository.FreeBoardMemberRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * packageName : com.greedy.rotutee.board.service
@@ -156,7 +155,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         freeBoardRepository.save(modifyBoard);
     }
     //        modifyBoard.setBulletinBoardSecretYN('N');비밀글 기능 다시만들어야함
-/*
+
     @Override
     @Transactional
     public void registNewFreeBoard(FreeBoardDTO freeBoard) {
@@ -177,20 +176,41 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         newBoard.setFreeBoardMember(freeBoardMember);
         newBoard.setBoardReportCount(0);
         newBoard.setBulletinBoardSecretYN(freeBoard.getBulletinBoardSecretYN());
+        newBoard.setBoardDeleteYN(freeBoard.getBoardDeleteYN());
 
         freeBoardRepository.save(newBoard);
     }
 
 
+    @Override
+    public void insertAnswer(FreeBoardAnswerDTO registAnswer) {
+
+        java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+
+        FreeBoard freeBoard = modelMapper.map(registAnswer.getFreeBoard(),FreeBoard.class);
+
+        FreeBoardMember freeBoardMember =  modelMapper.map(registAnswer.getFreeBoardMember(),FreeBoardMember.class);
+
+        FreeBoardAnswer newRegistAnswer = new FreeBoardAnswer();
+
+        newRegistAnswer.setAnswerContent(registAnswer.getAnswerContent());
+        newRegistAnswer.setAnswerYN('N');
+        newRegistAnswer.setAnswerReportCount(0);
+        newRegistAnswer.setAnswerCreatedDate(sqlDate);
+        newRegistAnswer.setFreeBoard(freeBoard);
+        newRegistAnswer.setFreeBoardMember(freeBoardMember);
+
+        answerRepository.save(newRegistAnswer);
+    }
 
     @Override
     public void deleteAnswer(int answerNo) {
         java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
 
-        FreeBoardAnswer deleteAnswer = freeBoardAnswerRepository.findById(answerNo).get();
+        FreeBoardAnswer deleteAnswer = answerRepository.findById(answerNo).get();
         deleteAnswer.setAnswerYN('Y');
         deleteAnswer.setAnswerDeleteDate(sqlDate);
-        freeBoardAnswerRepository.save(deleteAnswer);
+        answerRepository.save(deleteAnswer);
     }
 
     @Override
@@ -201,7 +221,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
         FreeBoard freeBoard = modelMapper.map(modifyAnswer.getFreeBoard(),FreeBoard.class);
 
-        FreeBoardAnswer freeBoardAnswer = freeBoardAnswerRepository.findById(modifyAnswer.getAnswerNo()).get();
+        FreeBoardAnswer freeBoardAnswer = answerRepository.findById(modifyAnswer.getAnswerNo()).get();
         freeBoardAnswer.setAnswerContent(modifyAnswer.getAnswerContent());
         freeBoardAnswer.setAnswerYN(modifyAnswer.getAnswerYN());
         freeBoardAnswer.setAnswerReportCount(modifyAnswer.getAnswerReportCount());
@@ -209,28 +229,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         freeBoardAnswer.setFreeBoardMember(freeBoardMember);
         freeBoardAnswer.setFreeBoard(freeBoard);
 
-        freeBoardAnswerRepository.save(freeBoardAnswer);
+        answerRepository.save(freeBoardAnswer);
 
     }
-
-    @Override
-    public void insertAnswer(FreeBoardAnswerDTO registAnswer) {
-
-        java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
-
-        FreeBoard freeBoard = modelMapper.map(registAnswer.getFreeBoard(),FreeBoard.class);
-        FreeBoardMember freeBoardMember =  modelMapper.map(registAnswer.getFreeBoardMember(),FreeBoardMember.class);
-
-        FreeBoardAnswer newRegistAnswer = new FreeBoardAnswer();
-
-        newRegistAnswer.setAnswerContent(registAnswer.getAnswerContent());
-        newRegistAnswer.setAnswerNo('N');
-        newRegistAnswer.setAnswerReportCount(0);
-        newRegistAnswer.setAnswerCreatedDate(sqlDate);
-        newRegistAnswer.setFreeBoard(freeBoard);
-        newRegistAnswer.setFreeBoardMember(freeBoardMember);
-
-        freeBoardAnswerRepository.save(newRegistAnswer);
-    }*/
-
 }

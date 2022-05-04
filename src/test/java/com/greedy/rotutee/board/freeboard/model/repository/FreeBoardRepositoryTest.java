@@ -1,12 +1,10 @@
-package com.greedy.rotutee.board.freeBoard.model.repository;
+package com.greedy.rotutee.board.freeboard.model.repository;
 
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardDTO;
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoardCategory;
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoardMember;
-import com.greedy.rotutee.board.freeBoard.repository.FreeBoardCategoryRepository;
-import com.greedy.rotutee.board.freeBoard.repository.FreeBoardMemberRepository;
-import com.greedy.rotutee.board.freeBoard.repository.FreeBoardRepository;
+import com.greedy.rotutee.board.freeboard.dto.FreeBoardDTO;
+import com.greedy.rotutee.board.freeboard.entity.FreeBoard;
+import com.greedy.rotutee.board.freeboard.entity.FreeBoardCategory;
+import com.greedy.rotutee.board.freeboard.repository.FreeBoardCategoryRepository;
+import com.greedy.rotutee.board.freeboard.repository.FreeBoardRepository;
 import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
 import com.greedy.rotutee.config.RotuteeApplication;
@@ -17,12 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.ContextConfiguration;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
