@@ -1,12 +1,12 @@
-package com.greedy.rotutee.board.freeBoard.controller;
+package com.greedy.rotutee.board.freeboard.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.Authentication.service.AuthenticationService;
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardAnswerDTO;
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardCategoryDTO;
-import com.greedy.rotutee.board.freeBoard.dto.FreeBoardDTO;
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
-import com.greedy.rotutee.board.freeBoard.service.FreeBoardService;
+import com.greedy.rotutee.board.freeboard.dto.FreeBoardAnswerDTO;
+import com.greedy.rotutee.board.freeboard.dto.FreeBoardCategoryDTO;
+import com.greedy.rotutee.board.freeboard.dto.FreeBoardDTO;
+import com.greedy.rotutee.board.freeboard.dto.FreeBoardMemberDTO;
+import com.greedy.rotutee.board.freeboard.service.FreeBoardService;
 import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/freeBoard")
+@RequestMapping("/freeboard")
 public class FreeBoardController {
 
     private final FreeBoardService freeBoardService;
@@ -55,19 +55,15 @@ public class FreeBoardController {
     @GetMapping(value = "/list")
     public ModelAndView CategoryFreeBoardList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable)  {
 
-        System.out.println("@@@@@@@@@@@");
-        int categoryNo = 4;
-        if(request.getParameter("category")!=null){
-            categoryNo = Integer.parseInt(request.getParameter("category"));
-        }
-            String searchCondition = request.getParameter("searchCondition");
-            String searchValue = request.getParameter("searchValue");
+        int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
+        System.out.println(categoryNo);
 
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
 
         Page<FreeBoardDTO> boardList = null;
         if(searchCondition != null && !"".equals(searchCondition)) {
             boardList = freeBoardService.findSearchBoardList(pageable, categoryNo,searchValue, searchCondition);
-
         }else {
             boardList = freeBoardService.findCategoryBoardList(pageable, categoryNo);
         }
@@ -101,6 +97,8 @@ public class FreeBoardController {
             mv.addObject("answer",answer);
         }
 
+        System.out.println("cateogry" + freeBoardDTO.getFreeBoardCategory().getBoardCategoryNo());
+
         mv.addObject("board",freeBoardDTO);
         mv.setViewName("board/freeboard/detail");
 
@@ -109,14 +107,14 @@ public class FreeBoardController {
 
     @PostMapping(value = "/delete")
     public ModelAndView deleteBoard(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv){
-        int categoryNo = Integer.parseInt(request.getParameter("category"));
+        int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
         int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 
         freeBoardService.deleteFreeBoard(boardNo);
 
         rttr.addFlashAttribute("successMessage", "삭제 완료");
 
-        mv.setViewName("redirect:/freeboard/list?category=" + categoryNo);
+        mv.setViewName("redirect:/freeboard/list?categoryNo=" + categoryNo);
 
         return mv;
     }
@@ -137,10 +135,10 @@ public class FreeBoardController {
     //커뮤니티 게시글 수정 요청
     @PostMapping(value = "/modify")
     public ModelAndView FreeBoardModify(@ModelAttribute FreeBoardDTO freeBoard, HttpServletRequest request,
-                                         @AuthenticationPrincipal CustomUser customUser,RedirectAttributes rttr, ModelAndView mv){
+                                        RedirectAttributes rttr, ModelAndView mv){
 
-        int categoryNo = Integer.parseInt(request.getParameter("category"));
-        System.out.println("cateogry : "+categoryNo + ", " + freeBoard);
+        int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
+        System.out.println("cateogryNo : "+categoryNo + ", " + freeBoard);
 
         FreeBoardCategoryDTO categoryDTO = new FreeBoardCategoryDTO();
         categoryDTO.setBoardCategoryNo(categoryNo);
@@ -153,9 +151,12 @@ public class FreeBoardController {
         mv.setViewName("redirect:/freeboard/detail?boardNo=" + freeBoard.getBoardNo());
         return mv;
     }
-/*
+
     @GetMapping("/regist")
-    public void registBoard() {}
+    public String registBoard() {
+
+        return "board/freeboard/regist";
+    }
 
     @PostMapping(value = "/regist")
     public ModelAndView FreeBoardmRegistPage(@ModelAttribute FreeBoardDTO freeBoard, @AuthenticationPrincipal CustomUser customUser
@@ -164,22 +165,70 @@ public class FreeBoardController {
         int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
 
         FreeBoardMemberDTO memberDTO = new FreeBoardMemberDTO();
+
         memberDTO.setMemberNo(customUser.getNo());
         memberDTO.setMemberName(customUser.getName());
+        freeBoard.setFreeBoardMember(memberDTO);
 
         FreeBoardCategoryDTO categoryDTO = new FreeBoardCategoryDTO();
         categoryDTO.setBoardCategoryNo(categoryNo);
-
-        freeBoard.setFreeBoardMember(memberDTO);
         freeBoard.setFreeBoardCategory(categoryDTO);
+
+        freeBoard.setBulletinBoardSecretYN('N');
+        freeBoard.setBoardDeleteYN('N');
         freeBoardService.registNewFreeBoard(freeBoard);
 
         rttr.addFlashAttribute("successMessage", "생성 완료");
-        mv.setViewName("redirect:/freeBoard/list?" +freeBoard.getFreeBoardCategory().getBoardCategoryNo());
+        mv.setViewName("redirect:/freeboard/list?categoryNo=" +categoryNo);
         return mv;
     }
 
 
+    @PostMapping(value = "/registanswer" )
+    public ModelAndView modifyAnswer(@ModelAttribute FreeBoardDTO freeBoard,@AuthenticationPrincipal CustomUser customUser,
+                                     HttpServletRequest request, RedirectAttributes rttr,ModelAndView mv){
+
+        int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+        String context = request.getParameter("answerContent");
+
+        System.out.println("boardNo : " + boardNo);
+        System.out.println("name"+customUser.getName());
+        FreeBoardMemberDTO freeBoardMemberDTO = new FreeBoardMemberDTO();
+        freeBoardMemberDTO.setMemberNo(customUser.getNo());
+
+        FreeBoardDTO freeBoardDTO = new FreeBoardDTO();
+        freeBoardDTO.setBoardNo(boardNo);
+
+        FreeBoardAnswerDTO registAnswer = new FreeBoardAnswerDTO();
+        registAnswer.setAnswerContent(context);
+        registAnswer.setFreeBoardMember(freeBoardMemberDTO);
+        registAnswer.setFreeBoard(freeBoardDTO);
+
+        System.out.println(registAnswer);
+
+        freeBoardService.insertAnswer(registAnswer);
+
+        rttr.addFlashAttribute("successMessage", "댓글 생성 완료");
+        mv.setViewName("redirect:/freeboard/detail?boardNo="+ boardNo);
+
+        return mv;
+    }
+
+
+
+    @PostMapping(value = "/deleteAnswer")
+    public ModelAndView deleteAnswer(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv){
+        int answerNo = Integer.parseInt(request.getParameter("answerNo"));
+        int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+
+        freeBoardService.deleteAnswer(answerNo);
+
+        rttr.addFlashAttribute("successMessage", "댓글 삭제 완료");
+
+        mv.setViewName("redirect:/freeBoard/detail?"+ boardNo);
+
+        return mv;
+    }
 
     @PostMapping(value = "/modifyAnswer")
     public ModelAndView updateAnswer( ModelAndView mv, HttpServletRequest request, RedirectAttributes rttr, @ModelAttribute FreeBoardAnswerDTO modifyAnswer, @AuthenticationPrincipal CustomUser customUser){
@@ -203,39 +252,4 @@ public class FreeBoardController {
         return mv;
     }
 
-    @PostMapping(value = "/registAnswer")
-    public ModelAndView modifyAnswer(@ModelAttribute  FreeBoardAnswerDTO registAnswer, @AuthenticationPrincipal CustomUser customUser,
-                                     HttpServletRequest request, RedirectAttributes rttr,ModelAndView mv){
-
-        int boardNo = Integer.parseInt(request.getParameter("boardNo"));
-
-        FreeBoardMemberDTO freeBoardMemberDTO = new FreeBoardMemberDTO();
-        freeBoardMemberDTO.setMemberNo(customUser.getNo());
-
-        FreeBoardDTO freeBoardDTO = new FreeBoardDTO();
-        freeBoardDTO.setBoardNo(boardNo);
-
-        registAnswer.setFreeBoardMember(freeBoardMemberDTO);
-        registAnswer.setFreeBoard(freeBoardDTO);
-        freeBoardService.insertAnswer(registAnswer);
-
-        rttr.addFlashAttribute("successMessage", "댓글 생성 완료");
-        mv.setViewName("redirect:/freeBoard/detail?"+ registAnswer.getFreeBoard().getBoardNo());
-
-        return mv;
-    }
-
-    @PostMapping(value = "/deleteAnswer")
-    public ModelAndView deleteAnswer(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv){
-        int answerNo = Integer.parseInt(request.getParameter("answerNo"));
-        int boardNo = Integer.parseInt(request.getParameter("boardNo"));
-
-        freeBoardService.deleteAnswer(answerNo);
-
-        rttr.addFlashAttribute("successMessage", "댓글 삭제제 완료");
-
-        mv.setViewName("redirect:/freeBoard/detail?"+ boardNo);
-
-        return mv;
-    }*/
 }

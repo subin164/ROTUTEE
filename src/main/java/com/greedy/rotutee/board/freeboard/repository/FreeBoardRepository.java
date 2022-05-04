@@ -1,15 +1,12 @@
-package com.greedy.rotutee.board.freeBoard.repository;
+package com.greedy.rotutee.board.freeboard.repository;
 
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoard;
+import com.greedy.rotutee.board.freeboard.entity.FreeBoard;
 
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoardCategory;
-import com.sun.xml.bind.v2.schemagen.episode.SchemaBindings;
+import com.greedy.rotutee.board.freeboard.entity.FreeBoardCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.board.repository

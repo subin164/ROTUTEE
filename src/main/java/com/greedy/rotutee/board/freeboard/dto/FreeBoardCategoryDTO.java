@@ -1,4 +1,4 @@
-package com.greedy.rotutee.board.freeBoard.dto;
+package com.greedy.rotutee.board.freeboard.dto;
 
 import lombok.*;
 

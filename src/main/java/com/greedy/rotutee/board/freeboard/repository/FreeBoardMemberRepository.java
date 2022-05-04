@@ -1,12 +1,13 @@
-package com.greedy.rotutee.board.freeBoard.repository;
+package com.greedy.rotutee.board.freeboard.repository;
 
-import com.greedy.rotutee.board.freeBoard.entity.FreeBoardCategory;
+
+import com.greedy.rotutee.board.freeboard.entity.FreeBoardMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  * packageName : com.greedy.rotutee.board.repository
- * fileName : CategoryRepository
+ * fileName : MemberRepository
  * author : soobeen
  * date : 2022-04-20
  * description :
@@ -16,6 +17,5 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface FreeBoardCategoryRepository extends JpaRepository<FreeBoardCategory, Integer> {
-
+public interface FreeBoardMemberRepository extends JpaRepository<FreeBoardMember, Integer> {
 }
