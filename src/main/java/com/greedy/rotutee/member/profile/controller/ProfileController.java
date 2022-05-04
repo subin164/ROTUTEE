@@ -112,11 +112,11 @@ public class ProfileController {
     @PostMapping("/modify")
     public String modifyProfile(@AuthenticationPrincipal CustomUser loginMember, @ModelAttribute MemberDTO member,
                                  @ModelAttribute TutorInfoDTO tutorInfo, @ModelAttribute AddressDTO address,
-                                @RequestParam("achievementNo") int achievementNo, RedirectAttributes rttr) throws Exception {
+                                RedirectAttributes rttr) {
 
         tutorInfo.setAddress(address.getZipCode() + "&" + address.getAddress1() + "&" + address.getAddress2());
 
-        profileService.modifyProfile(loginMember, member, tutorInfo, achievementNo);
+        profileService.modifyProfile(loginMember, member, tutorInfo);
 
         rttr.addFlashAttribute("message", "프로필 변경에 성공하셨습니다.");
 
