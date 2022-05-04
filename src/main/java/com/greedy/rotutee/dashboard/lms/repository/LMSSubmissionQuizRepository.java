@@ -1,6 +1,6 @@
 package com.greedy.rotutee.dashboard.lms.repository;
 
-import com.greedy.rotutee.dashboard.lms.entity.LMSSubmissonQuiz;
+import com.greedy.rotutee.dashboard.lms.entity.LMSSubmissionQuiz;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -16,8 +16,12 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2022-04-30 SeoYoung 최초 생성
  */
-public interface LMSSubmissionQuizRepository extends JpaRepository<LMSSubmissonQuiz, Integer> {
-    LMSSubmissonQuiz findByQuizNo(int quizNo);
+public interface LMSSubmissionQuizRepository extends JpaRepository<LMSSubmissionQuiz, Integer> {
+    LMSSubmissionQuiz findByQuizNo(int quizNo);
 
-    List<LMSSubmissonQuiz> findByMemberLectureNo(int memberLectureNo);
+    List<LMSSubmissionQuiz> findByMemberLectureNo(int memberLectureNo);
+
+    List<LMSSubmissionQuiz> findByMemberLectureNoOrderByQuizNo(int memberLectureNo);
+
+    List<LMSSubmissionQuiz> findByMemberLectureNoOrderByQuizNoAsc(int memberLectureNo);
 }

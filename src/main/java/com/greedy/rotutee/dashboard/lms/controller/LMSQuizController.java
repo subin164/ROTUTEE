@@ -7,6 +7,7 @@ import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.dashboard.lms.dto.LMSChapterDTO;
 import com.greedy.rotutee.dashboard.lms.dto.LMSQuizDTO;
 import com.greedy.rotutee.dashboard.lms.dto.LMSQuizStatusDTO;
+import com.greedy.rotutee.dashboard.lms.dto.LMSSubmissionQuizDTO;
 import com.greedy.rotutee.dashboard.lms.service.LMSQuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -130,9 +131,10 @@ public class LMSQuizController {
                 quizList.add(quiz);
             }
         }
+        /* 퀴즈 채점 상태 */
+        List<LMSSubmissionQuizDTO> submissionQuizList = lmsQuizService.findSubmissionQuiz(memberNo, lectureNo);
 
-
-
+        mv.addObject("submissionQuizList", submissionQuizList);
         mv.addObject("quizList", quizList);
         mv.addObject("quizStatus", quizStatus);
         mv.setViewName("dashboard/lms/quizstatus");

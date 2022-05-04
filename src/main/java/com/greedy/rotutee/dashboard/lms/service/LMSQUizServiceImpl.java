@@ -1,13 +1,10 @@
 package com.greedy.rotutee.dashboard.lms.service;
 
-import com.greedy.rotutee.dashboard.lms.dto.LMSChapterDTO;
-import com.greedy.rotutee.dashboard.lms.dto.LMSClassDTO;
-import com.greedy.rotutee.dashboard.lms.dto.LMSQuizDTO;
-import com.greedy.rotutee.dashboard.lms.dto.LMSQuizStatusDTO;
+import com.greedy.rotutee.dashboard.lms.dto.*;
 import com.greedy.rotutee.dashboard.lms.entity.LMSChapter;
 import com.greedy.rotutee.dashboard.lms.entity.LMSClass;
 import com.greedy.rotutee.dashboard.lms.entity.LMSQuiz;
-import com.greedy.rotutee.dashboard.lms.entity.LMSSubmissonQuiz;
+import com.greedy.rotutee.dashboard.lms.entity.LMSSubmissionQuiz;
 import com.greedy.rotutee.dashboard.lms.repository.LMSChapterRepository;
 import com.greedy.rotutee.dashboard.lms.repository.LMSClassRepository;
 import com.greedy.rotutee.dashboard.lms.repository.LMSQuizRepository;
@@ -85,7 +82,7 @@ public class LMSQUizServiceImpl implements LMSQuizService{
         int correctAnswer = quizInfo.getAnswer();
         String result = "";
         boolean gradingResult = false;
-        LMSSubmissonQuiz lmsSubmissonQuiz = new LMSSubmissonQuiz();
+        LMSSubmissionQuiz lmsSubmissonQuiz = new LMSSubmissionQuiz();
         System.out.println("answer = " + answer);
         System.out.println("correctAnswer = " + correctAnswer);
         MyPageMemberLecture memberLecture = memberLectureRepository.findByMemberMemberNoAndLectureLectureNo(memberNo, lectureNo);
@@ -120,6 +117,14 @@ public class LMSQUizServiceImpl implements LMSQuizService{
         List<LMSChapter> chaptersEntity = lmsChapterRepository.findByLectureNo(lectureNo);
         List<LMSChapterDTO> chapters = chaptersEntity.stream().map(Lms_Chapter -> modelMapper.map(Lms_Chapter, LMSChapterDTO.class)).collect(Collectors.toList());
 
+        /* 회원별 수강번호 */
+        MyPageMemberLecture memberLectureEntity = memberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
+        int memberLectureNo = memberLectureEntity.getMemberLectureNo();
+
+        /* 제출한 퀴즈 채점 정보 */
+        List<LMSSubmissionQuiz> lmsSubmissionQuizEntities = lmsSubmissionQuizRepository.findByMemberLectureNoOrderByQuizNoAsc(memberLectureNo);
+        List<LMSSubmissionQuizDTO> submissionQuizs = lmsSubmissionQuizEntities.stream().map(Lms_SubmissionQuiz -> modelMapper.map(Lms_SubmissionQuiz, LMSSubmissionQuizDTO.class)).collect(Collectors.toList());
+//        System.out.println("submissionQuizs = " + submissionQuizs);
         /*강의의 챕터 별 클래스 정보, 클래스 별 퀴즈 정보*/
         for(int i = 0; i < chapters.size(); i++){
             int chapterNo = chapters.get(i).getChapterNo();
@@ -140,18 +145,28 @@ public class LMSQUizServiceImpl implements LMSQuizService{
                 } else {
                     quizSubmissionStatus = "N";
                 }
+
                 quiz.setSubmissionStatus(quizSubmissionStatus);
 
                 lectureClasses.get(j).setQuiz(quiz);
             }
         }
 
-        /* 회원별 수강번호 */
-        MyPageMemberLecture memberLectureEntity = memberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
-        int memberLectureNo = memberLectureEntity.getMemberLectureNo();
+        for(int k = 0; k < chapters.size(); k++) {
+            List<LMSClassDTO> classList = chapters.get(k).getClassesList();
+            for(int j = 0; j < classList.size(); j++) {
+                LMSClassDTO LMSclass = classList.get(j);
+                for(int g = 0; g < submissionQuizs.size(); g++) {
+                    if(submissionQuizs.get(g).getQuizNo() == LMSclass.getQuiz().getQuizNo()) {
+                        String answerStatus = submissionQuizs.get(g).getAnswerStatus();
+                        LMSclass.getQuiz().setCorrectStatus(answerStatus);
+                    }
+                }
+            }
+        }
 
         /* 전체 퀴즈 중 제출한 퀴즈의 개수, 제출한 퀴즈 중 정답개수 */
-        List<LMSSubmissonQuiz> lmsSubmissonQuizEntities = lmsSubmissionQuizRepository.findByMemberLectureNo(memberLectureNo);
+        List<LMSSubmissionQuiz> lmsSubmissonQuizEntities = lmsSubmissionQuizRepository.findByMemberLectureNo(memberLectureNo);
         int submissionCount = lmsSubmissonQuizEntities.size();
         int correctCount = 0;
 
@@ -167,6 +182,18 @@ public class LMSQUizServiceImpl implements LMSQuizService{
         quizStatusDTO.setChapters(chapters);
 
         return quizStatusDTO;
+    }
+
+    @Override
+    public List<LMSSubmissionQuizDTO> findSubmissionQuiz(int memberNo, int lectureNo) {
+
+        MyPageMemberLecture memberLectureEntity = memberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
+        int memberLectureNo = memberLectureEntity.getMemberLectureNo();
+
+        List<LMSSubmissionQuiz> submissionQuizEntities =  lmsSubmissionQuizRepository.findByMemberLectureNoOrderByQuizNo(memberLectureNo);
+        List<LMSSubmissionQuizDTO> submissionQuizs = submissionQuizEntities.stream().map(Lms_SubmissionQuiz -> modelMapper.map(Lms_SubmissionQuiz, LMSSubmissionQuizDTO.class)).collect(Collectors.toList());
+
+        return submissionQuizs;
     }
 
 }

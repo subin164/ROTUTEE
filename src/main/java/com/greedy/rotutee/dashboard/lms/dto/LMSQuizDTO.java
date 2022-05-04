@@ -33,6 +33,7 @@ public class LMSQuizDTO {
     private String option3;
     private String option4;
     private String submissionStatus;        //제출을 했는지 안했는지 여부
+    private String correctStatus;
 
     @Override
     public String toString() {
@@ -48,6 +49,7 @@ public class LMSQuizDTO {
                 ", option3='" + option3 + '\'' +
                 ", option4='" + option4 + '\'' +
                 ", submissionStatus='" + submissionStatus + '\'' +
+                ", correctStatus='" + correctStatus + '\'' +
                 '}';
     }
 }
