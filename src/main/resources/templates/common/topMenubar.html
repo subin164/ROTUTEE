@@ -67,12 +67,15 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="#">관리자</a>
-                </li>
-
-                <li class="nav-item">
                     <a class="nav-link text-light" onclick="location.href='/study/list'">스터디</a>
                 </li>
+
+                <th:block sec:authorize="hasRole('ADMIN')">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" onclick="location.href='/coupon/list'">관리자</a>
+                    </li>
+                </th:block>
+
             </ul>
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="display: contents;">

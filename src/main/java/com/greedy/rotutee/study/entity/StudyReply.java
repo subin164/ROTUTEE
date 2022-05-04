@@ -1,7 +1,6 @@
 package com.greedy.rotutee.study.entity;
 
 import com.greedy.rotutee.member.member.entity.Member;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -9,7 +8,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "TBL_STUDY_BOARD_ANSWER")
 @SequenceGenerator(
-        name="STUDY_Reply_GENERATOR",
+        name="STUDY_REPLY_GENERATOR",
         sequenceName = "STUDY_ANSWER_NO",
         initialValue = 1,
         allocationSize = 1
@@ -20,7 +19,7 @@ public class StudyReply {
     @Column(name = "STUDY_ANSWER_NO")
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "STUDY_Reply_GENERATOR"
+            generator = "STUDY_REPLY_GENERATOR"
     )
     private int replyNo;
 

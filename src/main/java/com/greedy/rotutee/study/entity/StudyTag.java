@@ -3,7 +3,7 @@ package com.greedy.rotutee.study.entity;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity(name="studyTag")
+@Entity
 @Table(name = "TBL_STUDY_GROUP_BOARD_TAG")
 @SequenceGenerator(
         name="STUDY_TAG_GENERATOR",
