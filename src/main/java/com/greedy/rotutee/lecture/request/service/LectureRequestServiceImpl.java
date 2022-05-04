@@ -1,14 +1,8 @@
 package com.greedy.rotutee.lecture.request.service;
 
 import com.greedy.rotutee.lecture.request.dto.*;
-import com.greedy.rotutee.lecture.request.entity.AttachedFile;
-import com.greedy.rotutee.lecture.request.entity.Lecture;
-import com.greedy.rotutee.lecture.request.entity.LectureCategory;
-import com.greedy.rotutee.lecture.request.entity.Member;
-import com.greedy.rotutee.lecture.request.repository.RequestAttachedFileRepository;
-import com.greedy.rotutee.lecture.request.repository.RequestLectureCategoryRepository;
-import com.greedy.rotutee.lecture.request.repository.RequestLectureRepository;
-import com.greedy.rotutee.lecture.request.repository.RequestMemberRepository;
+import com.greedy.rotutee.lecture.request.entity.*;
+import com.greedy.rotutee.lecture.request.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,14 +25,18 @@ public class LectureRequestServiceImpl implements LectureRequestService{
     private final RequestMemberRepository requestMemberRepository;
     private final RequestAttachedFileRepository requestAttachedFileRepository;
     private final RequestLectureCategoryRepository requestLectureCategoryRepository;
+    private final RequestLectureRejectionReasonRepository requestLectureRejectionReasonRepository;
+    private final RequestLectureRequestProcessingHistoryRepository requestLectureRequestProcessingHistoryRepository;
 
     @Autowired
-    public LectureRequestServiceImpl(ModelMapper modelMapper, RequestLectureRepository requestLectureRepository, RequestMemberRepository requestMemberRepository, RequestAttachedFileRepository requestAttachedFileRepository, RequestLectureCategoryRepository requestLectureCategoryRepository) {
+    public LectureRequestServiceImpl(ModelMapper modelMapper, RequestLectureRepository requestLectureRepository, RequestMemberRepository requestMemberRepository, RequestAttachedFileRepository requestAttachedFileRepository, RequestLectureCategoryRepository requestLectureCategoryRepository, RequestLectureRejectionReasonRepository requestLectureRejectionReasonRepository, RequestLectureRequestProcessingHistoryRepository requestLectureRequestProcessingHistoryRepository) {
         this.modelMapper = modelMapper;
         this.requestLectureRepository = requestLectureRepository;
         this.requestMemberRepository = requestMemberRepository;
         this.requestAttachedFileRepository = requestAttachedFileRepository;
         this.requestLectureCategoryRepository = requestLectureCategoryRepository;
+        this.requestLectureRejectionReasonRepository = requestLectureRejectionReasonRepository;
+        this.requestLectureRequestProcessingHistoryRepository = requestLectureRequestProcessingHistoryRepository;
     }
 
     @Override
@@ -243,9 +241,9 @@ public class LectureRequestServiceImpl implements LectureRequestService{
     @Override
     public LectureDTO findLectureByLectureNo(int lectureNo) {
 
-        Lecture lectuer = requestLectureRepository.findByLectureNo(lectureNo);
+        Lecture lecture = requestLectureRepository.findByLectureNo(lectureNo);
 
-        return modelMapper.map(lectuer, LectureDTO.class);
+        return modelMapper.map(lecture, LectureDTO.class);
     }
 
     @Override
@@ -254,6 +252,63 @@ public class LectureRequestServiceImpl implements LectureRequestService{
 
         Lecture lecture = requestLectureRepository.findByLectureNo(lectureNo);
         lecture.setLectureApprovalStatus("승인");
+        lecture.setLectureOpeningDate(new Date(System.currentTimeMillis()));
+    }
+
+    @Override
+    @Transactional
+    public void rejectLecture(int lectureNo, int rejectionCategoryNo) {
+
+        Lecture lecture = requestLectureRepository.findByLectureNo(lectureNo);
+        lecture.setLectureApprovalStatus("거절");
+
+        LectureDTO lectureDTO = modelMapper.map(lecture, LectureDTO.class);
+
+        LectureRejectionReason reasonEntity = requestLectureRejectionReasonRepository.findByLectureRejectionReasonNo(rejectionCategoryNo);
+        LectureRejectionReasonDTO reason = modelMapper.map(reasonEntity, LectureRejectionReasonDTO.class);
+
+        LectureRequestProcessingHistoryDTO history = new LectureRequestProcessingHistoryDTO();
+        history.setProcessingDate(new Date(System.currentTimeMillis()));
+        history.setReason(reason);
+        history.setProcessingStatus("거절");
+        history.setLecture(lectureDTO);
+
+        requestLectureRequestProcessingHistoryRepository.save(modelMapper.map(history, LectureRequestProcessingHistory.class));
+
+    }
+
+    @Override
+    @Transactional
+    public void requestLectureModification(LectureDTO modifiedLecture, int categoryNo) {
+
+        Lecture lecture = requestLectureRepository.findByLectureNo(modifiedLecture.getLectureNo());
+        lecture.setLectureName(modifiedLecture.getLectureName());
+        lecture.setLecturePrice(modifiedLecture.getLecturePrice());
+        lecture.setLectureLevel(modifiedLecture.getLectureLevel());
+        lecture.setLectureSummary(modifiedLecture.getLectureSummary());
+        lecture.setLectureDetails(modifiedLecture.getLectureDetails());
+        lecture.setApplicationDate(new Date(System.currentTimeMillis()));
+        lecture.setApplicationDivision("수정신청");
+    }
+
+    @Override
+    public List<LectureDTO> findRequestedModifyLecture() {
+
+        String division = "수정신청";
+
+        List<Lecture> requestList = requestLectureRepository.findByApplicationDivision(division);
+
+        return requestList.stream().map(request -> modelMapper.map(request, LectureDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LectureDTO> findProcessedModifyLecture() {
+
+        String division = "수정완료";
+
+        List<Lecture> recordList = requestLectureRepository.findByApplicationDivision(division);
+
+        return recordList.stream().map(record -> modelMapper.map(record, LectureDTO.class)).collect(Collectors.toList());
     }
 
 }

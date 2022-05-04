@@ -46,9 +46,11 @@
     <script>
         $(".reapply").click(function() {
             const lectureNo = $(this).parent().siblings("#lectureNo").val();
+            location.href = "/request/"
         })
         $(".modify").click(function() {
             const lectureNo = $(this).parent().siblings("#lectureNo").val();
+            location.href = "/request/lecturemodification?lectureNo=" + lectureNo;
         })
         $("#newLecture").click(function() {
             location.href = "/request/lecture";
