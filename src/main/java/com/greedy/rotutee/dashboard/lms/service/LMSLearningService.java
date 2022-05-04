@@ -19,5 +19,5 @@ import java.util.List;
 public interface LMSLearningService {
 
 
-    LecturePlayDTO findLecturePlay(int lectureNo);
+    LecturePlayDTO findLecturePlay(int lectureNo, int memberNo);
 }

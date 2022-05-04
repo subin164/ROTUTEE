@@ -44,7 +44,7 @@ public class LMSLearningController {
         HttpSession session = request.getSession();
         int lectureNo = Integer.parseInt(String.valueOf(session.getAttribute("lectureNo")));
 
-        LecturePlayDTO lecturePlay = lmsLearningService.findLecturePlay(lectureNo);
+        LecturePlayDTO lecturePlay = lmsLearningService.findLecturePlay(lectureNo, memberNo);
 
         System.out.println("memberNo = " + memberNo);
         System.out.println("lectureNo = " + lectureNo);

@@ -20,4 +20,6 @@ public interface LMSQuizRepository extends JpaRepository<LMSQuiz,Integer> {
     LMSQuiz findByClassNo(int classNo);
 
     LMSQuiz findByQuizNo(int quizNo);
+
+    LMSQuiz findByClassNoOrderByQuizNo(int classNo);
 }

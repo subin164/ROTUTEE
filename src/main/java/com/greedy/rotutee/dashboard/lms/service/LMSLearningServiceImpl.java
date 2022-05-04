@@ -10,13 +10,13 @@ import com.greedy.rotutee.dashboard.lms.entity.LMSQuiz;
 import com.greedy.rotutee.dashboard.lms.repository.LMSChapterRepository;
 import com.greedy.rotutee.dashboard.lms.repository.LMSClassRepository;
 import com.greedy.rotutee.dashboard.lms.repository.LMSQuizRepository;
+import com.greedy.rotutee.dashboard.lms.repository.LMSSubmissionQuizRepository;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardLecture;
 import com.greedy.rotutee.dashboard.mypage.repository.DashboardLectureRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,18 +38,20 @@ public class LMSLearningServiceImpl implements LMSLearningService {
     private DashboardLectureRepository lectureRepository;
     private LMSClassRepository lmsClassRepository;
     private LMSQuizRepository lmsQuizRepository;
+    private LMSSubmissionQuizRepository lmsSubmissionQuizRepository;
     private ModelMapper modelMapper;
 
-    public LMSLearningServiceImpl(LMSChapterRepository lmsChapterRepository, DashboardLectureRepository lectureRepository, LMSClassRepository lmsClassRepository, LMSQuizRepository lmsQuizRepository, ModelMapper modelMapper) {
+    public LMSLearningServiceImpl(LMSChapterRepository lmsChapterRepository, DashboardLectureRepository lectureRepository, LMSClassRepository lmsClassRepository, LMSQuizRepository lmsQuizRepository, LMSSubmissionQuizRepository lmsSubmissionQuizRepository, ModelMapper modelMapper) {
         this.lmsChapterRepository = lmsChapterRepository;
         this.lectureRepository = lectureRepository;
         this.lmsClassRepository = lmsClassRepository;
         this.lmsQuizRepository = lmsQuizRepository;
+        this.lmsSubmissionQuizRepository = lmsSubmissionQuizRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public LecturePlayDTO findLecturePlay(int lectureNo) {
+    public LecturePlayDTO findLecturePlay(int lectureNo, int memberNo) {
 
         /*강의 소개*/
         DashboardLecture lectureEntity = lectureRepository.findByLectureNo(lectureNo);
@@ -60,16 +62,26 @@ public class LMSLearningServiceImpl implements LMSLearningService {
         List<LMSChapterDTO> chapters = chaptersEntity.stream().map(Lms_Chapter -> modelMapper.map(Lms_Chapter, LMSChapterDTO.class)).collect(Collectors.toList());
 
         /*강의의 챕터 별 클래스 정보, 클래스 별 퀴즈 정보*/
-        for(int i = 0; i < chapters.size(); i++){
-            int chapterNo = chapters.get(i).getChapterNo();
-            List<LMSClass> lectureClassesEntity = lmsClassRepository.findByChapterChapterNoOrderByChapterChapterNoAsc(chapterNo);
-            List<LMSClassDTO> lectureClasses = lectureClassesEntity.stream().map(Lms_Class -> modelMapper.map(Lms_Class, LMSClassDTO.class)).collect(Collectors.toList());
-            chapters.get(i).setClassesList(lectureClasses);
+                for(int i = 0; i < chapters.size(); i++){
+                    int chapterNo = chapters.get(i).getChapterNo();
+                    List<LMSClass> lectureClassesEntity = lmsClassRepository.findByChapterChapterNoOrderByChapterChapterNoAsc(chapterNo);
+                    List<LMSClassDTO> lectureClasses = lectureClassesEntity.stream().map(Lms_Class -> modelMapper.map(Lms_Class, LMSClassDTO.class)).collect(Collectors.toList());
+                    chapters.get(i).setClassesList(lectureClasses);
 
-            for(int j = 0; j < lectureClassesEntity.size(); j++){
-                int classNo = lectureClassesEntity.get(j).getClassNo();
-                LMSQuiz quizEntity = lmsQuizRepository.findByClassNo(classNo);
-                LMSQuizDTO quiz = modelMapper.map(quizEntity, LMSQuizDTO.class);
+                    for(int j = 0; j < lectureClassesEntity.size(); j++){
+                        int classNo = lectureClassesEntity.get(j).getClassNo();
+                        LMSQuiz quizEntity = lmsQuizRepository.findByClassNoOrderByQuizNo(classNo);
+                        LMSQuizDTO quiz = modelMapper.map(quizEntity, LMSQuizDTO.class);
+
+                String quizSubmissionStatus = "";
+                int quizNo = quiz.getQuizNo();
+                if(lmsSubmissionQuizRepository.findByQuizNo(quizNo) != null) {
+                    quizSubmissionStatus = "Y";
+                } else {
+                    quizSubmissionStatus = "N";
+                }
+                quiz.setSubmissionStatus(quizSubmissionStatus);
+
                 lectureClasses.get(j).setQuiz(quiz);
             }
         }

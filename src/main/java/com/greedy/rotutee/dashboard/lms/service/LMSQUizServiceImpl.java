@@ -1,8 +1,15 @@
 package com.greedy.rotutee.dashboard.lms.service;
 
+import com.greedy.rotutee.dashboard.lms.dto.LMSChapterDTO;
+import com.greedy.rotutee.dashboard.lms.dto.LMSClassDTO;
 import com.greedy.rotutee.dashboard.lms.dto.LMSQuizDTO;
+import com.greedy.rotutee.dashboard.lms.dto.LMSQuizStatusDTO;
+import com.greedy.rotutee.dashboard.lms.entity.LMSChapter;
+import com.greedy.rotutee.dashboard.lms.entity.LMSClass;
 import com.greedy.rotutee.dashboard.lms.entity.LMSQuiz;
 import com.greedy.rotutee.dashboard.lms.entity.LMSSubmissonQuiz;
+import com.greedy.rotutee.dashboard.lms.repository.LMSChapterRepository;
+import com.greedy.rotutee.dashboard.lms.repository.LMSClassRepository;
 import com.greedy.rotutee.dashboard.lms.repository.LMSQuizRepository;
 import com.greedy.rotutee.dashboard.lms.repository.LMSSubmissionQuizRepository;
 import com.greedy.rotutee.dashboard.mypage.entity.MyPageMemberLecture;
@@ -11,6 +18,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.service
@@ -29,14 +41,20 @@ public class LMSQUizServiceImpl implements LMSQuizService{
     private LMSQuizRepository lmsQuizRepository;
     private MypageMemberLectureRepository memberLectureRepository;
     private LMSSubmissionQuizRepository lmsSubmissionQuizRepository;
+    private LMSChapterRepository lmsChapterRepository;
+    private LMSClassRepository lmsClassRepository;
     private ModelMapper modelMapper;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
-    public LMSQUizServiceImpl(LMSQuizRepository lmsQuizRepository, ModelMapper modelMapper, MypageMemberLectureRepository memberLectureRepository, LMSSubmissionQuizRepository lmsSubmissionQuizRepository) {
+    public LMSQUizServiceImpl(LMSQuizRepository lmsQuizRepository, ModelMapper modelMapper, MypageMemberLectureRepository memberLectureRepository, LMSSubmissionQuizRepository lmsSubmissionQuizRepository, LMSChapterRepository lmsChapterRepository, LMSClassRepository lmsClassRepository) {
         this.lmsQuizRepository = lmsQuizRepository;
         this.memberLectureRepository = memberLectureRepository;
         this.modelMapper = modelMapper;
         this.lmsSubmissionQuizRepository = lmsSubmissionQuizRepository;
+        this.lmsChapterRepository = lmsChapterRepository;
+        this.lmsClassRepository = lmsClassRepository;
     }
 
 
@@ -47,6 +65,16 @@ public class LMSQUizServiceImpl implements LMSQuizService{
         LMSQuizDTO quizDetail = modelMapper.map(quizDetailEntity, LMSQuizDTO.class);
 
         return quizDetail;
+    }
+    @Override
+    public boolean confirmQuiz(int quizNo) {
+
+        if(lmsSubmissionQuizRepository.findByQuizNo(quizNo) != null) {
+            return true; //퀴즈를 풀어서 제출했다
+        } else {
+            return false; //퀴즈를 풀지 않은 상태이다
+        }
+
     }
 
     @Override
@@ -74,4 +102,71 @@ public class LMSQUizServiceImpl implements LMSQuizService{
 
         return gradingResult;
     }
+
+    /**
+     * methodName : findQuizStatus
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param memberNo
+     * @param lectureNo
+     * @return lmsQuizStatusDTO
+     */
+    @Override
+    public LMSQuizStatusDTO findQuizStatus(int memberNo, int lectureNo) {
+        LMSQuizStatusDTO quizStatusDTO = new LMSQuizStatusDTO();
+
+        /*강의의 챕터 정보*/
+        List<LMSChapter> chaptersEntity = lmsChapterRepository.findByLectureNo(lectureNo);
+        List<LMSChapterDTO> chapters = chaptersEntity.stream().map(Lms_Chapter -> modelMapper.map(Lms_Chapter, LMSChapterDTO.class)).collect(Collectors.toList());
+
+        /*강의의 챕터 별 클래스 정보, 클래스 별 퀴즈 정보*/
+        for(int i = 0; i < chapters.size(); i++){
+            int chapterNo = chapters.get(i).getChapterNo();
+            List<LMSClass> lectureClassesEntity = lmsClassRepository.findByChapterChapterNoOrderByChapterChapterNoAsc(chapterNo);
+            List<LMSClassDTO> lectureClasses = lectureClassesEntity.stream().map(Lms_Class -> modelMapper.map(Lms_Class, LMSClassDTO.class)).collect(Collectors.toList());
+            chapters.get(i).setClassesList(lectureClasses);
+
+            for(int j = 0; j < lectureClassesEntity.size(); j++){
+                int classNo = lectureClassesEntity.get(j).getClassNo();
+                LMSQuiz quizEntity = lmsQuizRepository.findByClassNoOrderByQuizNo(classNo);
+                LMSQuizDTO quiz = modelMapper.map(quizEntity, LMSQuizDTO.class);
+
+                /* 퀴즈를 제출했는지 안했는지 여부*/
+                String quizSubmissionStatus = "";
+                int quizNo = quiz.getQuizNo();
+                if(lmsSubmissionQuizRepository.findByQuizNo(quizNo) != null) {
+                    quizSubmissionStatus = "Y";
+                } else {
+                    quizSubmissionStatus = "N";
+                }
+                quiz.setSubmissionStatus(quizSubmissionStatus);
+
+                lectureClasses.get(j).setQuiz(quiz);
+            }
+        }
+
+        /* 회원별 수강번호 */
+        MyPageMemberLecture memberLectureEntity = memberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
+        int memberLectureNo = memberLectureEntity.getMemberLectureNo();
+
+        /* 전체 퀴즈 중 제출한 퀴즈의 개수, 제출한 퀴즈 중 정답개수 */
+        List<LMSSubmissonQuiz> lmsSubmissonQuizEntities = lmsSubmissionQuizRepository.findByMemberLectureNo(memberLectureNo);
+        int submissionCount = lmsSubmissonQuizEntities.size();
+        int correctCount = 0;
+
+        for(int i = 0; i < lmsSubmissonQuizEntities.size(); i++){
+            String answerStatus = lmsSubmissonQuizEntities.get(i).getAnswerStatus();
+            if(answerStatus.equals("Y ")){
+                correctCount += 1;
+            }
+        }
+
+        quizStatusDTO.setSubmissionCount(submissionCount);
+        quizStatusDTO.setCorrectCount(correctCount);
+        quizStatusDTO.setChapters(chapters);
+
+        return quizStatusDTO;
+    }
+
 }

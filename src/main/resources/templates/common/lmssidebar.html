@@ -9,10 +9,10 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!--font awesome-->
 <script src="https://kit.fontawesome.com/621489de5f.js" crossorigin="anonymous"></script>
 
-<!-- W3School Side bar -->
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 <!-- font tamily -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,6 +35,11 @@
         font-family: 'Noto Sans KR', sans-serif;
         font-size: 16px;
     }
+    .category{
+        padding: 7px;
+        border-radius: 7px;
+
+    }
 
     .category:hover {
         background-color: #d3e1f3;
@@ -42,19 +47,38 @@
     .group1 {
         background-color: #d3e1f3;
     }
+    a:link {
+        text-decoration: none;
+        color: black;
+    }
+
+    a:visited {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    a:active {
+        text-decoration: none;
+    }
+    .sidebar-menu {
+        margin: 10px;
+    }
+    .sidebar {
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+    .sidebar-top-header {
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+
 </style>
 
 <body>
 <nav class="navbar navbar-expand-lg" style="background-color: #7DACE4;">
     <div class="container-fluid">
-        <button class="listBtn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar"
-                aria-controls="offcanvasScrolling">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list"
-                 viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                      d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
-            </svg>
-        </button>
+        <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="offcanvasScrolling"><i style="font-size: 20px" class="fa-solid fa-list"></i></button>
 
         <a class="navbar-brand text-light fs-3 fw-bold" href="/" style="display: contents;">
             <img width="80">ROTUTEE</a>
@@ -128,9 +152,9 @@
                 <th:block sec:authorize="isAuthenticated()">
                     <li class="nav-item dropdown">
                         <div class="d-flex">
-<!--                            <div class="profile">-->
-<!--                                -->
-<!--                            </div>-->
+                            <!--                            <div class="profile">-->
+                            <!--                                -->
+                            <!--                            </div>-->
                         </div>
 
                     <li class="nav-item dropdown me-5">
@@ -197,14 +221,13 @@
         </div>
     </div>
 </nav>
-<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="sidebar"
+<div class="offcanvas offcanvas-start sidebar" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="sidebar"
      aria-labelledby="offcanvasScrollingLabel" style="width: 15%;">
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
-            style="margin-left: 185px; margin-top: 20px;"></button>
+            style="position: absolute; right: 0; margin-top: 20px;"></button>
     <div class="offcanvas-header">
         <!-- Sidebar -->
-        <h3 class="w3-bar-item">MyPage</h3>
-
+        <h4 class="sidebar-top-header">LMS</h4>
     </div>
     <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
@@ -213,89 +236,135 @@
                     <img th:src="@{/sy/images/thumbnail.PNG}" style="width: 250px; height: 200px;">
                 </div>
                 <div class="sidebar-menu">
-                    <a href="#" class="w3-bar-item w3-button category" id="category">대시보드</a>
+                    <a href="#" class="category" >대시보드</a>
                 </div>
-                <div class="sidebar-menu">
-                    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
-                        강의 <i class="fa fa-caret-down"></i>
+
+                <div class="dropdown sidebar-menu">
+                    <button class="btn dropdown-toggle category" type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false">
+                        강의
                     </button>
-                    <div id="demoAcc" class="w3-hide w3-white w3-card">
+                    <ul class="dropdown-menu" id="demoAcc" aria-labelledby="dropdownMenu1">
                         <div>
-                            <a href="/learning/play" class="w3-bar-item w3-button">강의시청</a>
+                            <a href="/learning/play" class="dropdown-item">강의시청</a>
                         </div>
                         <div>
-                            <a href="#" class="w3-bar-item w3-button">다시보기</a>
+                            <a href="#" class="dropdown-item">다시보기</a>
                         </div>
-                    </div>
+                    </ul>
                 </div>
-                <div class="sidebar-menu">
-                    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc2()">
-                        게시판 <i class="fa fa-caret-down"></i>
+
+                <div class="dropdown sidebar-menu">
+                    <button class="btn dropdown-toggle category" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                        게시판
                     </button>
-                    <div id="demoAcc2" class="w3-hide w3-white w3-card">
+                    <ul class="dropdown-menu" id="demoAcc2" aria-labelledby="dropdownMenu2">
                         <div>
-                            <a href="#" class="w3-bar-item w3-button">공지사항</a>
+                            <a href="#" class="dropdown-item">공지사항</a>
                         </div>
                         <div>
-                            <a href="/learning/play/" class="w3-bar-item w3-button">일반</a>
+                            <a href="#" class="dropdown-item">일반</a>
                         </div>
-                    </div>
+                    </ul>
                 </div>
-                <div class="sidebar-menu">
-                    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc3()">
-                        내 학습관리 <i class="fa fa-caret-down"></i>
+
+                <div class="dropdown sidebar-menu">
+                    <button class="btn dropdown-toggle category" type="button" id="dropdownMenu3" data-bs-toggle="dropdown" aria-expanded="false">
+                        내 학습관리
                     </button>
-                    <div id="demoAcc3" class="w3-hide w3-white w3-card">
+                    <ul class="dropdown-menu" id="demoAcc3" aria-labelledby="dropdownMenu3">
                         <div>
-                            <a href="/quiz/status" class="w3-bar-item w3-button">퀴즈현황</a>
+                            <a href="/quiz/status" class="dropdown-item">퀴즈현황</a>
                         </div>
                         <div>
-                            <a href="#" class="w3-bar-item w3-button">출석 진행율</a>
+                            <a href="#" class="dropdown-item">출석 진행율</a>
                         </div>
-                    </div>
+                    </ul>
                 </div>
+
+                <!--                <div class="sidebar-menu">-->
+                <!--                    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">-->
+                <!--                        강의 <i class="fa fa-caret-down"></i>-->
+                <!--                    </button>-->
+                <!--                    <div id="demoAcc" class="w3-hide w3-white w3-card">-->
+                <!--                        <div>-->
+                <!--                            <a href="/learning/play" class="dropdown-item">강의시청</a>-->
+                <!--                        </div>-->
+                <!--                        <div>-->
+                <!--                            <a href="#" class="w3-bar-item w3-button">다시보기</a>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+
+                <!--                <div class="sidebar-menu">-->
+                <!--                    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc2()">-->
+                <!--                        게시판 <i class="fa fa-caret-down"></i>-->
+                <!--                    </button>-->
+                <!--                    <div id="demoAcc2" class="w3-hide w3-white w3-card">-->
+                <!--                        <div>-->
+                <!--                            <a href="#" class="w3-bar-item w3-button">공지사항</a>-->
+                <!--                        </div>-->
+                <!--                        <div>-->
+                <!--                            <a href="/learning/play/" class="w3-bar-item w3-button">일반</a>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+
+                <!--                <div class="sidebar-menu">-->
+                <!--                    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc3()">-->
+                <!--                        내 학습관리 <i class="fa fa-caret-down"></i>-->
+                <!--                    </button>-->
+                <!--                    <div id="demoAcc3" class="w3-hide w3-white w3-card">-->
+                <!--                        <div>-->
+                <!--                            <a href="/quiz/status" class="w3-bar-item w3-button">퀴즈현황</a>-->
+                <!--                        </div>-->
+                <!--                        <div>-->
+                <!--                            <a href="#" class="w3-bar-item w3-button">출석 진행율</a>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+
             </li>
         </ul>
     </div>
 </div>
 <script>
-    function myAccFunc() {
 
-        var x = document.getElementById("demoAcc");
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-            x.previousElementSibling.className += " group1";
-        } else {
-            x.className = x.className.replace(" w3-show", "");
-            x.previousElementSibling.className =
-                x.previousElementSibling.className.replace(" group1", "");
-        }
-
-    }
-
-    function myAccFunc2() {
-        var x = document.getElementById("demoAcc2");
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-            x.previousElementSibling.className += " group1";
-        } else {
-            x.className = x.className.replace(" w3-show", "");
-            x.previousElementSibling.className =
-                x.previousElementSibling.className.replace(" group1", "");
-        }
-    }
-
-    function myAccFunc3() {
-        var x = document.getElementById("demoAcc3");
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-            x.previousElementSibling.className += " group1";
-        } else {
-            x.className = x.className.replace(" w3-show", "");
-            x.previousElementSibling.className =
-                x.previousElementSibling.className.replace(" group1", "");
-        }
-    }
+    // function myAccFunc() {
+    //     var x = document.getElementById("demoAcc");
+    //     if (x.className.indexOf("w3-show") == -1) {
+    //         x.className += " w3-show";
+    //         x.previousElementSibling.className += " group1";
+    //     } else {
+    //         x.className = x.className.replace(" w3-show", "");
+    //         x.previousElementSibling.className =
+    //             x.previousElementSibling.className.replace(" group1", "");
+    //     }
+    //
+    // }
+    //
+    // function myAccFunc2() {
+    //     var x = document.getElementById("demoAcc2");
+    //     if (x.className.indexOf("w3-show") == -1) {
+    //         x.className += " w3-show";
+    //         x.previousElementSibling.className += " group1";
+    //     } else {
+    //         x.className = x.className.replace(" w3-show", "");
+    //         x.previousElementSibling.className =
+    //             x.previousElementSibling.className.replace(" group1", "");
+    //     }
+    // }
+    //
+    // function myAccFunc3() {
+    //     var x = document.getElementById("demoAcc3");
+    //     if (x.className.indexOf("w3-show") == -1) {
+    //         x.className += " w3-show";
+    //         x.previousElementSibling.className += " group1";
+    //     } else {
+    //         x.className = x.className.replace(" w3-show", "");
+    //         x.previousElementSibling.className =
+    //             x.previousElementSibling.className.replace(" group1", "");
+    //     }
+    // }
 
 </script>
 </body>

@@ -4,7 +4,9 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.greedy.rotutee.Authentication.dto.CustomUser;
+import com.greedy.rotutee.dashboard.lms.dto.LMSChapterDTO;
 import com.greedy.rotutee.dashboard.lms.dto.LMSQuizDTO;
+import com.greedy.rotutee.dashboard.lms.dto.LMSQuizStatusDTO;
 import com.greedy.rotutee.dashboard.lms.service.LMSQuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.controller
@@ -63,6 +67,23 @@ public class LMSQuizController {
 
     }
 
+    @GetMapping(value = "/confirm", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String confirmQuiz(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
+        int quizNo = Integer.parseInt(request.getParameter("quizNo"));
+
+        boolean confirmResult = lmsQuizService.confirmQuiz(quizNo);
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls().disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(confirmResult);
+    }
+
     @PostMapping(value = "/grading", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String gradingQuiz(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
@@ -95,8 +116,25 @@ public class LMSQuizController {
     }
 
     @GetMapping("/status")
-    public ModelAndView findQuizStatus(ModelAndView mv) {
+    public ModelAndView findQuizStatus(ModelAndView mv, HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
+        int memberNo = customUser.getNo();
+        HttpSession session = request.getSession();
+        int lectureNo = Integer.parseInt(String.valueOf(session.getAttribute("lectureNo")));
+        LMSQuizStatusDTO quizStatus = lmsQuizService.findQuizStatus(memberNo, lectureNo);
+        /* 퀴즈만 따로 담아줌 */
+        List<LMSQuizDTO> quizList = new ArrayList<>();
+        for(int i = 0; i < quizStatus.getChapters().size(); i++){
+            LMSChapterDTO chapter = quizStatus.getChapters().get(i);
+            for(int j = 0; j < chapter.getClassesList().size(); j++) {
+                LMSQuizDTO quiz = chapter.getClassesList().get(j).getQuiz();
+                quizList.add(quiz);
+            }
+        }
 
+
+
+        mv.addObject("quizList", quizList);
+        mv.addObject("quizStatus", quizStatus);
         mv.setViewName("dashboard/lms/quizstatus");
         return mv;
     }
