@@ -27,8 +27,8 @@ public class FreeBoardAnswerDTO {
     private char answerYN;
     private int answerReportCount;
     private Timestamp answerCreatedDate;
-    private Date answerModifyDate;
-    private Date answerDeleteDate;
+    private Timestamp answerModifyDate;
+    private Timestamp answerDeleteDate;
     private FreeBoardDTO freeBoard;
     private FreeBoardMemberDTO freeBoardMember;
 
