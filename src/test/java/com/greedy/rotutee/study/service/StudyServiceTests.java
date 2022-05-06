@@ -55,7 +55,6 @@ public class StudyServiceTests {
         newStudy.setLimited(5);
         newStudy.setCount(0);
         newStudy.setLinked("discode.djklsdjfla.sdf");
-        newStudy.setStatus("Y");
 
         System.out.println(newStudy);
 
