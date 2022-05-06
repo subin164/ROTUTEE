@@ -26,4 +26,6 @@ public interface LectureMainService {
     void modifyReviewContent(int lectureReviewNo, String lectureReviewContent);
 
     void removeReview(int lectureReviewNo);
+
+    void registInterestDegree(int no, LectureCategoryDTO category);
 }

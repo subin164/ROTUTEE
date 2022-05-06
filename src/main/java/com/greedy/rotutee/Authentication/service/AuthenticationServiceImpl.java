@@ -66,6 +66,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    @Transactional
     public Map<String, List<String>> getPermitListMap() {
 
         Map<String, List<String>> permitListMap = new HashMap<>();
@@ -75,12 +76,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<String> tutorPermitList = new ArrayList<>();
         List<String> memberPermitList = new ArrayList<>();
 
+        System.out.println("=======================================1========================================");
         List<RoleMenuUrl> adminRoleList = roleMenuUrlRepositoryl.findRoleMenuUrlByRoleNo(1);
+        System.out.println("=======================================2========================================");
         List<RoleMenuUrl> subAdminRoleList = roleMenuUrlRepositoryl.findRoleMenuUrlByRoleNo(2);
         List<RoleMenuUrl> tuteeRoleList = roleMenuUrlRepositoryl.findRoleMenuUrlByRoleNo(3);
         List<RoleMenuUrl> tutorRoleList = roleMenuUrlRepositoryl.findRoleMenuUrlByRoleNo(4);
         List<RoleMenuUrl> memberRoleList = roleMenuUrlRepositoryl.findRoleMenuUrlByRoleNo(5);
-
+        System.out.println("=======================================3========================================");
         for(int i = 0; i < adminRoleList.size(); i++) {
             adminPermitList.add("/" + adminRoleList.get(i).getMenuUrl().getName() + "/" + adminRoleList.get(i).getMenuDetail().getName());
         }

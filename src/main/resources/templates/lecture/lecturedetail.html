@@ -22,7 +22,7 @@
                     <br>
                     <p style="margin-left: 75px; font-size: xx-large;" th:text="${lecture.lectureName}"></p>
                     <br>
-                    <img src="image/banner/Java.jpg" style="width: 800px; margin-left: 75px;">
+                    <img th:src="@{/images/thumbnail/} + ${lecture.saveFileName}" style="width: 800px; margin-left: 75px;">
                     <div class="lecture-intro" th:text="${lecture.lectureSummary}"></div>
                     <p style="margin-left: 75px; margin-top: 30px; font-size: x-large;">커리큘럼</p>
                     <div th:each="chapter : ${chapterList}">
@@ -38,31 +38,48 @@
                             <div class="review-info">
                                 <p style="margin-left: 75px; margin-top: 10px; font-size: x-large;" th:text="${gradeAverage}"></p>
                                 <div style="margin-left: 15px; margin-top:10px; font-size: xx-large;">
-                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                                    <th:block th:if="${gradeAverage} <= 0">
+
+                                    </th:block>
+                                    <th:block th:if="${gradeAverage} >= 1 and ${gradeAverage} < 2">
+                                        <span>★</span>
+                                    </th:block>
+                                    <th:block th:if="${gradeAverage} >= 2 and ${gradeAverage} < 3">
+                                        <span>★</span><span>★</span>
+                                    </th:block>
+                                    <th:block th:if="${gradeAverage} >= 3 and ${gradeAverage} < 4">
+                                        <span>★</span><span>★</span><span>★</span>
+                                    </th:block>
+                                    <th:block th:if="${gradeAverage} >= 4 and ${gradeAverage} < 5">
+                                        <span>★</span><span>★</span><span>★</span><span>★</span>
+                                    </th:block>
+                                    <th:block th:if="${gradeAverage} >= 5">
+                                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                                    </th:block>
                                 </div>
-                                <p style="margin-left: 50px; margin-top: 20px; font-size: large;">20명 참여</p>
+                                <p style="margin-left: 50px; margin-top: 20px; font-size: large;" th:text="${lectureReviewList.size()} + '명 참여'"></p>
                             </div>
-                            <div class="grade-list">
-                                <div class="progress" style="margin-top: 10px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <br>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <br>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <br>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <br>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
+<!--                            <div class="grade-list">-->
+<!--                                <div class="progress" style="margin-top: 10px;">-->
+<!--                                    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>-->
+<!--                                </div>-->
+<!--                                <br>-->
+<!--                                <div class="progress">-->
+<!--                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>-->
+<!--                                </div>-->
+<!--                                <br>-->
+<!--                                <div class="progress">-->
+<!--                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>-->
+<!--                                </div>-->
+<!--                                <br>-->
+<!--                                <div class="progress">-->
+<!--                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>-->
+<!--                                </div>-->
+<!--                                <br>-->
+<!--                                <div class="progress">-->
+<!--                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                         <div class="review-write">
                             <form name="myform" id="myform" method="post" action="/lecture/writereview">
@@ -84,23 +101,43 @@
                             <!-- 댓글 -->
                             <div class="row review" style="margin-top: 5px; margin-bottom: 5px; margin-left: 25px;" th:each="lectureReview : ${lectureReviewList}">
                                 <div class="col-1 review-image" style="margin-top: 10px">
-                                    <img class="profileimg" src="image/logo/profileimg.jpeg">
+                                    <th:block th:if="${lectureReview.writer.imageName} != null">
+                                        <img class="profileimg" th:src="@{/sg/image/} + ${lectureReview.writer.imageName}">
+                                    </th:block>
                                 </div>
                                 <div class="col-2 review-name">
-                                    <p style="margin-left: 10px;"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></p>
+                                    <th:block th:if="${lectureReview.lectureGrade == 1}">
+                                        <p style="margin-left: 10px;"><span>★</span></p>
+                                    </th:block>
+                                    <th:block th:if="${lectureReview.lectureGrade == 2}">
+                                        <p style="margin-left: 10px;"><span>★</span><span>★</span></p>
+                                    </th:block>
+                                    <th:block th:if="${lectureReview.lectureGrade == 3}">
+                                        <p style="margin-left: 10px;"><span>★</span><span>★</span><span>★</span></p>
+                                    </th:block>
+                                    <th:block th:if="${lectureReview.lectureGrade == 4}">
+                                        <p style="margin-left: 10px;"><span>★</span><span>★</span><span>★</span><span>★</span></p>
+                                    </th:block>
+                                    <th:block th:if="${lectureReview.lectureGrade == 5}">
+                                        <p style="margin-left: 10px;"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></p>
+                                    </th:block>
                                     <p style="margin-left: 10px;" th:text="${lectureReview.writer.name}"></p>
                                 </div>
                                 <div class="col-4"></div>
                                 <div class="col-4 button-area" style="margin-top: 10px">
-                                    <button type="button" class="btn btn-danger report">신고</button>
-                                    <button type="button" class="btn btn-danger remove">삭제</button>
-                                    <button type="button" class="btn btn-success modifybutton">수정</button>
+                                    <th:block th:if="${lectureReview.writer} != ${#authentication.principal}">
+                                        <button type="button" class="btn btn-danger report">신고</button>
+                                    </th:block>
+                                    <th:block th:if="${lectureReview.writer} == ${#authentication.principal}">
+                                        <button type="button" class="btn btn-danger remove">삭제</button>
+                                        <button type="button" class="btn btn-success modifybutton">수정</button>
+                                    </th:block>
                                 </div>
                                 <div class="review-text">
                                     <input type="hidden" class="lectureReviewNo" name="lectureReviewNo" th:value="${lectureReview.lectureReviewNo}">
                                     <textarea th:text="${lectureReview.lectureReviewContent}" class="reviewsBody" name="reviewsBody" cols="90", rows="4" disabled></textarea>
                                     <button type="button" class="btn btn-primary btn-sm modify" style="display:none; margin-bottom: 25px">저장</button>
-                                    <button type="button" class="btn btn-secondary btn-sm cancel" style="display:none; margin-bottom: 25px">취소</button>
+                                    <button type="reset" class="btn btn-secondary btn-sm cancel" style="display:none; margin-bottom: 25px">취소</button>
                                 </div>
                             </div>
                             <!-- 댓글 end -->
@@ -115,7 +152,7 @@
                     <p style="margin-left: 65px; margin-top: 20px;" th:text="|현재 ${lectureMemberCount} 명이 수강중입니다.|"></p>
                     <div class="d-flex tutor-info">
                         <div class="tutor-image">
-                            <img src="image/banner/surreal-ga273b48a9_1920.jpg" style="width: 140px; height: 140px;">
+                            <img th:src="@{/sg/image/} + ${lecture.tutor.imageName}" style="width: 140px; height: 140px;">
                         </div>
                         <div class="tutor-name">
                             <p style="margin-left: 30px; margin-top: 30px;" th:text="${lecture.tutor.name}"></p>
@@ -129,9 +166,26 @@
                 <div class="lecture-grade">
                     <p style="margin-top: 20px; margin-left: 20px; font-size: x-large;">평점</p>
                     <div style="margin-left: 65px; margin-top:30px; font-size: xx-large;">
-                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                        <th:block th:if="${gradeAverage} <= 0">
+
+                        </th:block>
+                        <th:block th:if="${gradeAverage} >= 1 and ${gradeAverage} < 2">
+                            <span>★</span>
+                        </th:block>
+                        <th:block th:if="${gradeAverage} >= 2 and ${gradeAverage} < 3">
+                            <span>★</span><span>★</span>
+                        </th:block>
+                        <th:block th:if="${gradeAverage} >= 3 and ${gradeAverage} < 4">
+                            <span>★</span><span>★</span><span>★</span>
+                        </th:block>
+                        <th:block th:if="${gradeAverage} >= 4 and ${gradeAverage} < 5">
+                            <span>★</span><span>★</span><span>★</span><span>★</span>
+                        </th:block>
+                        <th:block th:if="${gradeAverage} >= 5">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                        </th:block>
                     </div>
-                    <p style="margin-top: 20px; margin-left: 110px;">20명 참여</p>
+                    <p style="margin-top: 20px; margin-left: 110px;" th:text="${lectureReviewList.size()} + '명 참여'"></p>
                 </div>
             </div>
         </div>

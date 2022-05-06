@@ -22,5 +22,6 @@ public class AttachedFileDTO {
     private Integer boardNo;
     private Integer lectureNo;
     private Integer documentNo;
+
     
 }

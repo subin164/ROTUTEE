@@ -45,23 +45,41 @@ public class LectureMainController {
     }
 
     @GetMapping("/detail")
-    public ModelAndView findLectureByLectureNo(ModelAndView mv, @RequestParam int lectureNo) {
-        System.out.println("lectureNo = " + lectureNo);
+    public ModelAndView findLectureByLectureNo(ModelAndView mv, @RequestParam int lectureNo, @AuthenticationPrincipal CustomUser customUser) {
 
-        LectureDTO lecture = lectureMainService.findLectureByLectureNo(lectureNo);
-        List<ChapterDTO> chapterList = lectureMainService.findChapterListByLectureNo(lectureNo);
-        List<LectureReviewDTO> lectureReviewList = lectureMainService.findReviewListByLectureNo(lectureNo);
-        int lectureMemberCount = lectureMainService.findMemberCountByLectureNo(lectureNo);
-        int gradeAverage = lectureMainService.findGradeAverageByLectureNo(lectureNo);
+        if(customUser == null) {
 
-        System.out.println("lectureReviewList = " + lectureReviewList);
+            LectureDTO lecture = lectureMainService.findLectureByLectureNo(lectureNo);
+            List<ChapterDTO> chapterList = lectureMainService.findChapterListByLectureNo(lectureNo);
+            List<LectureReviewDTO> lectureReviewList = lectureMainService.findReviewListByLectureNo(lectureNo);
+            int lectureMemberCount = lectureMainService.findMemberCountByLectureNo(lectureNo);
+            int gradeAverage = lectureMainService.findGradeAverageByLectureNo(lectureNo);
 
-        mv.addObject("gradeAverage", gradeAverage);
-        mv.addObject("lectureMemberCount", lectureMemberCount);
-        mv.addObject("lectureReviewList", lectureReviewList);
-        mv.addObject("chapterList", chapterList);
-        mv.addObject("lecture", lecture);
-        mv.setViewName("lecture/lecturedetail");
+            mv.addObject("gradeAverage", gradeAverage);
+            mv.addObject("lectureMemberCount", lectureMemberCount);
+            mv.addObject("lectureReviewList", lectureReviewList);
+            mv.addObject("chapterList", chapterList);
+            mv.addObject("lecture", lecture);
+            mv.setViewName("lecture/lecturedetail");
+
+        } else {
+
+            LectureDTO lecture = lectureMainService.findLectureByLectureNo(lectureNo);
+            List<ChapterDTO> chapterList = lectureMainService.findChapterListByLectureNo(lectureNo);
+            List<LectureReviewDTO> lectureReviewList = lectureMainService.findReviewListByLectureNo(lectureNo);
+            int lectureMemberCount = lectureMainService.findMemberCountByLectureNo(lectureNo);
+            int gradeAverage = lectureMainService.findGradeAverageByLectureNo(lectureNo);
+
+            lectureMainService.registInterestDegree(customUser.getNo(), lecture.getCategory());
+
+            mv.addObject("gradeAverage", gradeAverage);
+            mv.addObject("lectureMemberCount", lectureMemberCount);
+            mv.addObject("lectureReviewList", lectureReviewList);
+            mv.addObject("chapterList", chapterList);
+            mv.addObject("lecture", lecture);
+            mv.setViewName("lecture/lecturedetail");
+
+        }
 
         return mv;
     }

@@ -9,7 +9,7 @@ public class Pagenation {
         int currentPage = page.getNumber() + 1;
         int startPage;
         int endPage;
-        int defaultButtonCount = 10;
+        int defaultButtonCount = 5;
 
         startPage = (int) (Math.ceil((double) currentPage / defaultButtonCount) - 1) * defaultButtonCount + 1;
         endPage = startPage + defaultButtonCount - 1;

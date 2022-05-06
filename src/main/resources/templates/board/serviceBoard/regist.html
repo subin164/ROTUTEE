@@ -6,6 +6,9 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
+    <style>
+
+    </style>
 </head>
 <body>
 <div th:include="/common/topMenubar.html"></div>
@@ -15,23 +18,31 @@
             <hr style="width: 800px;" align="left">
         </div>
         <div>
-<!--            <p>-->
-<!--                <span style="font-size: small">작성자</span>-->
-<!--                <input type="text" style="border: none; font-size: small; background-color: white" value="공상근" disabled>-->
-<!--            </p>-->
-            <p>
-                <span style="font-size: large">분류</span><br>
-                <input type="checkbox"> 강의
-                <input type="checkbox"> 결제
-                <input type="checkbox"> 환불
-                <input type="checkbox"> 기타
-            </p>
-            <p>
-            <span style="font-size: x-large">제목</span>
-            <input type="text" style="width: 300px; height: 30px; border-radius: 5px">
-            </p>
-            <p style="font-size: x-large">내용</p>
-            <textarea style="width: 600px; height: 300px; border-radius: 5px;"></textarea>
+            <form action="/serviceBoard/regist" method="post">
+    <!--            <p>-->
+    <!--                <span style="font-size: small">작성자</span>-->
+    <!--                <input type="text" style="border: none; font-size: small; background-color: white" value="공상근" disabled>-->
+    <!--            </p>-->
+                <p>
+                    <input type="checkbox" value="Y" name="bulletinBoardSecretYN"> 비밀글
+                </p>
+                <p>
+                    <span style="font-size: large">분류</span><br>
+                    <input name="categoryNo" value="11" type="checkbox"> 강의
+                    <input name="categoryNo" value="12" type="checkbox"> 결제
+                    <input name="categoryNo" value="13" type="checkbox"> 환불
+                    <input name="categoryNo" value="14" type="checkbox"> 기타
+                </p>
+                <p>
+                <span style="font-size: x-large">제목</span>
+                <input type="text" style="width: 300px; height: 30px; border-radius: 5px" name="title">
+                </p>
+                <p style="font-size: x-large">내용</p>
+                <textarea style="width: 600px; height: 300px; border-radius: 5px;" name="content"></textarea>
+                <p>
+                    <input type="submit" value="등록">
+                </p>
+            </form>
         </div>
     </div>
 <div th:include="/common/footer.html"></div>

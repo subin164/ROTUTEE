@@ -37,7 +37,7 @@ public class ServiceBoardRepositoryTests {
 
         //given
         int categoryNo = 7;
-        String status = "N";
+        char status = 'N';
 
         //when
         List<Board> boardList = boardRepository.findByBoardCategoryNoAndDeleteYN(categoryNo, status);
@@ -45,5 +45,38 @@ public class ServiceBoardRepositoryTests {
         //then
         assertNotNull(boardList);
         boardList.forEach(System.out::println);
+    }
+
+    @Test
+    public void 고객센터_게시판_상세_보기_테스트_메서드() {
+
+        //given
+        int boardNo = 148;
+        
+        //when
+//        Board fountBoard = boardRepository.findByNoAndBoardAnswerListAnswerYn(boardNo, 'N');
+        
+        //then
+//        assertNotNull(fountBoard);
+//        System.out.println("fountBoard.getBoardAnswerList() = " + fountBoard.getBoardAnswerList());
+    }
+
+    @Test
+    public void 고객센터_게시판_검색_테스트_메서드() {
+
+        //given
+        String searchCondition = "제목";
+        String searchValue = "test";
+
+        //when
+        List<Board> searchBoardList = null;
+
+//        if (searchCondition == "작성자") {
+//            searchBoardList = boardRepository.findByMemberName(searchValue);
+//        } else if(searchCondition == "제목") {
+//            searchBoardList = boardRepository.findByTitle(searchValue);
+//        }
+
+        //then
     }
 }

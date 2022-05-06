@@ -2,6 +2,7 @@ package com.greedy.rotutee.board.serviceBoard.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class Board {
     private String content;
 
     @Column(name = "BOARD_CREATION_DATE")
-    private Date creationDate;
+    private Timestamp creationDate;
 
     @Column(name = "BOARD_MODIFIED_DATE")
     private Date modifiedDate;
@@ -68,14 +69,12 @@ public class Board {
     @Column(name = "BULLETIN_BOARD_SECRET_YN")
     private char bulletinBoardSecretYN;
 
-    @OneToMany(mappedBy = "board",
-                cascade = CascadeType.ALL,
-                orphanRemoval = true)
-    private List<BoardAnswer> boardAnswerList;
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<BoardAnswer> boardAnswerList;
 
     public Board() {}
 
-    public Board(int no, String title, String content, Date creationDate, Date modifiedDate, Date deletionDate, char deleteYN, int viewCount, BoardCategory boardCategory, Member member, int reportCount, char bulletinBoardSecretYN, List<BoardAnswer> boardAnswerList) {
+    public Board(int no, String title, String content, Timestamp creationDate, Date modifiedDate, Date deletionDate, char deleteYN, int viewCount, BoardCategory boardCategory, Member member, int reportCount, char bulletinBoardSecretYN, List<BoardAnswer> boardAnswerList) {
         this.no = no;
         this.title = title;
         this.content = content;
@@ -88,7 +87,7 @@ public class Board {
         this.member = member;
         this.reportCount = reportCount;
         this.bulletinBoardSecretYN = bulletinBoardSecretYN;
-        this.boardAnswerList = boardAnswerList;
+//        this.boardAnswerList = boardAnswerList;
     }
 
     public int getNo() {
@@ -115,11 +114,11 @@ public class Board {
         this.content = content;
     }
 
-    public Date getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -187,13 +186,13 @@ public class Board {
         this.bulletinBoardSecretYN = bulletinBoardSecretYN;
     }
 
-    public List<BoardAnswer> getBoardAnswerList() {
-        return boardAnswerList;
-    }
-
-    public void setBoardAnswerList(List<BoardAnswer> boardAnswerList) {
-        this.boardAnswerList = boardAnswerList;
-    }
+//    public List<BoardAnswer> getBoardAnswerList() {
+//        return boardAnswerList;
+//    }
+//
+//    public void setBoardAnswerList(List<BoardAnswer> boardAnswerList) {
+//        this.boardAnswerList = boardAnswerList;
+//    }
 
     @Override
     public String toString() {

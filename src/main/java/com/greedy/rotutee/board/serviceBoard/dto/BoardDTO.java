@@ -1,5 +1,6 @@
 package com.greedy.rotutee.board.serviceBoard.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.greedy.rotutee.board.serviceBoard.entity.BoardAnswer;
 import com.greedy.rotutee.board.serviceBoard.entity.BoardCategory;
 import com.greedy.rotutee.board.serviceBoard.entity.Member;
@@ -7,6 +8,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -30,7 +32,7 @@ public class BoardDTO {
     private int no;
     private String title;
     private String content;
-    private Date creationDate;
+    private Timestamp creationDate;
     private Date modifiedDate;
     private Date deletionDate;
     private char deleteYN;
@@ -39,6 +41,7 @@ public class BoardDTO {
     private MemberDTO member;
     private int reportCount;
     private char bulletinBoardSecretYN;
+    @JsonIgnoreProperties(value = {"board"})
     private List<BoardAnswerDTO> boardAnswerList;
 
     @Override

@@ -1,5 +1,6 @@
 package com.greedy.rotutee.board.serviceBoard.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.util.List;
@@ -20,11 +21,20 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class BoardCategoryDTO {
 
     private int no;
     private String name;
     private BoardCategoryDTO boardCategory;
+    @JsonIgnoreProperties(value = {"boardCategory"})
     private List<BoardCategoryDTO> upperCategoryList;
+
+    @Override
+    public String toString() {
+        return "BoardCategoryDTO{" +
+                "no=" + no +
+                ", name='" + name + '\'' +
+                ", upperCategoryList=" + upperCategoryList +
+                '}';
+    }
 }

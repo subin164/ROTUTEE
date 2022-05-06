@@ -79,7 +79,7 @@ public class BoardCategory {
         return "BoardCategory{" +
                 "no=" + no +
                 ", name='" + name + '\'' +
-                ", boardCategory=" + boardCategory +
+//                ", boardCategory=" + boardCategory +
                 ", upperCategoryList=" + upperCategoryList +
                 '}';
     }

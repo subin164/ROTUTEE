@@ -1,6 +1,7 @@
 package com.greedy.rotutee.basket.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
+import com.greedy.rotutee.basket.dto.AttachedFileDTO;
 import com.greedy.rotutee.basket.dto.ClassBasketDTO;
 import com.greedy.rotutee.basket.service.BasketService;
 import org.dom4j.rule.Mode;
@@ -42,18 +43,25 @@ public class BasketController {
     public ModelAndView addLecture(ModelAndView mv, @PathVariable int lectureNo
                                                   , @AuthenticationPrincipal CustomUser customUser
                                                   , RedirectAttributes rttr) {
-        int memberNo = customUser.getNo();
 
-        ClassBasketDTO basket = basketService.findByLectureNoAndMemberNo(lectureNo, memberNo);
-
-        if(basket == null) {
-            basketService.registLectureToCart(lectureNo, memberNo);
-
-            rttr.addFlashAttribute("message", "수강바구니에 추가되었습니다.");
+        if(customUser == null) {
+            rttr.addFlashAttribute("message", "로그인이 필요한 서비스입니다.");
             mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
         } else {
-            rttr.addFlashAttribute("message", "이미 추가되어있습니다.");
-            mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
+
+            int memberNo = customUser.getNo();
+
+            ClassBasketDTO basket = basketService.findByLectureNoAndMemberNo(lectureNo, memberNo);
+
+            if (basket == null) {
+                basketService.registLectureToCart(lectureNo, memberNo);
+
+                rttr.addFlashAttribute("message", "수강바구니에 추가되었습니다.");
+                mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
+            } else {
+                rttr.addFlashAttribute("message", "이미 추가되어있습니다.");
+                mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
+            }
         }
         return mv;
     }
@@ -61,13 +69,17 @@ public class BasketController {
     @GetMapping("/list")
     public ModelAndView findBasketList(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
 
+
         int memberNo = customUser.getNo();
         List<ClassBasketDTO> cartList = basketService.findByMemberNo(memberNo);
-
-        System.out.println(cartList);
+        for(ClassBasketDTO cart : cartList) {
+            List<AttachedFileDTO> fileList = cart.getLecture().getImageList();
+            System.out.println("fileList = " + fileList);
+        }
 
         mv.addObject("cartList", cartList);
         mv.setViewName("basket/basketlist");
+
         return mv;
     }
 

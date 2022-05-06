@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Table V04</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/vendor/animate/animate.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/vendor/select2/select2.min.css}">
+
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/css/util.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/css/main.css}">
+    <!-- font-family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        tr:hover {
+            background-color: #F5F5F5;
+        }
+
+        .pagebtn {
+
+            background-color: #D1E4FA !important;
+        }
+
+        .pagebtn:focus {
+            background-color: #8397D7;
+        }
+
+        .categorybtn {
+            background-color: #F0F2FF;
+        }
+
+        .categorybtn:focus {
+            background-color: #8397D7;
+        }
+
+        .container {
+            padding-top: 60px;
+        }
+
+        .head {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 20px;
+        }
+
+        #myTab {
+            font-family: 'Noto Sans KR', sans-serif;
+            width: 77%;
+        }
+
+        #exampleModal {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+    </style>
+</head>
+<body>
+<div th:include="/common/adminsidebar.html"></div>
+<div class="container">
+    <div class="box">
+        <label class="head">게시판</label>
+        <hr>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="limiter">
+                    <div class="container-table100">
+                        <div class="wrap-table100">
+                            <div class="table100 ver1 m-b-110">
+                                <div class="table100-head">
+                                    <table>
+                                        <thead>
+                                        <tr class="row100 head">
+                                            <th class="cell100 column1">카테고리</th>
+                                            <th class="cell100 column2">제목 및 내용</th>
+                                            <th class="cell100 column3">작성자</th>
+                                            <th class="cell100 column4">처리상태</th>
+                                            <th class="cell100 column5">신고횟수</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                                <div class="table100-body">
+                                    <table id="report-table">
+                                        <tbody>
+                                        <tr class="row100 body" th:each="report : ${reports}" data-bs-toggle="modal">
+                                            <input type="hidden" th:value="${report.reportNo}">
+                                            <input type="hidden" id="boardTitle" th:value="${report.board.boardTitle}">
+                                            <th:block th:if="${report.boardAnswer != null}">
+                                                <input type="hidden" id="answerContent" th:value="${report.boardAnswer.answerContent}">
+                                            </th:block>
+                                            <input type="hidden" id="accusedMember" th:value="${report.accusedMember.email}">
+                                            <input type="hidden" id="reporter" th:value="${report.member.email}">
+                                            <input type="hidden" id="reportReason" th:value="${report.reportCategory.reportCategoryName}">
+                                            <input type="hidden" id="report-content" th:value="${report.content}">
+                                            <input type="hidden" id="report-date" th:value="${report.reportedDate}">
+                                            <td class="cell100 column1" th:text="${report.division}"></td>
+                                            <td class="cell100 column2" th:text="${report.board.boardTitle}"></td>
+                                            <td class="cell100 column3" th:text="${report.board.member.name}"></td>
+                                            <td class="cell100 column4" th:text="${report.processStatus}"></td>
+                                            <th:block th:if="${report.boardAnswer == null}">
+                                                <td class="cell100 column5"
+                                                    th:text="${report.board.boardReportCount}"></td>
+                                            </th:block>
+                                            <th:block th:if="${report.boardAnswer != null}">
+                                                <td class="cell100 column5"
+                                                    th:text="${report.boardAnswer.answerReportCount}"></td>
+                                            </th:block>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="justify-content-evenly mt-lg-5">
+                <button class="btn pagebtn"
+                        th:onclick="'location.href=\'/report/list?page=' + @{${paging.startPage}}  + '\''"
+                        th:disabled="${ reports.first }"><<
+                </button>
+                <button class="btn pagebtn"
+                        th:onclick="'location.href=\'/report/list?page=' + @{${paging.currentPage - 1}}  + '\''"
+                        th:disabled="${ reports.first }"><
+                </button>
+                <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+                    <button class="btn pagebtn"
+                            th:onclick="'location.href=\'/report/list?page=' + @{${page}}  + '\''"
+                            th:text="${ page }"
+                            th:disabled="${ paging.currentPage eq page }">
+                    </button>
+                </th:block>
+                <button class="btn pagebtn"
+                        th:onclick="'location.href=\'/report/list?page=' + @{${paging.currentPage + 1}}  + '\''"
+                        th:disabled="${ reports.last }">>
+                </button>
+                <button class="btn pagebtn"
+                        th:onclick="'location.href=\'/report/list?page=' + @{${paging.endPage}}  + '\''"
+                        th:disabled="${ reports.last }">>>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-head">
+                <span class="head-title">신고관리</span>
+                <button type="button" class="btn-close close-btn" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div>
+                    <span>제목 :</span>
+                    <span id="report-title"></span>
+                </div>
+                <hr style="margin: 3px;">
+                <div>
+                    <span>작성자 : </span>
+                    <span id="report-writer"></span>
+                </div>
+                <hr style="margin: 3px;">
+                <div class="report-list">
+                    <table>
+                        <tr>
+                            <th>신고자</th>
+                            <th>신고사유</th>
+                            <th>신고내용</th>
+                            <th>신고일자</th>
+                        </tr>
+                        <tr>
+                            <td id="report-member"></td>
+                            <td id="reason"></td>
+                            <td id="content"></td>
+                            <td id="date">2022-05-05</td>
+                        </tr>
+                    </table>
+                </div>
+                <input type="hidden" id="quizNo" name="quizNo">
+                <input type="hidden" id="correctAnswer">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="approve-btn" type="button" class="btn"
+                        style="background-color: #d3e1f3; color: rgb(107, 107, 107);">
+                    승인
+                </button>
+                <button id="reject-btn" type="button" class="btn"
+                        style="background-color: #f3abb2; color: rgb(107, 107, 107);">
+                    거절
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    console.log([[${reports}]].length);
+    // 테이블의 Row 클릭시 값 가져오기
+    $("#report-table tr").click(function () {
+        let tr = $(this);
+        let reportNo = tr.children('input').eq(0).val();
+        let answer = tr.children('input').eq(1).val();
+        console.log(reportNo);
+        console.log(answer);
+        console.log($("#answerContent").val());
+        // if ($("#answerContent").val() == null) {
+        //     $("#report-title").html($("#boardTitle").val());
+        // } else if ($("#answerContent").val() != null) {
+        //     $("#report-title").html($("#answerContent").val());
+        // }
+        // $("#report-writer").html($("#accusedMember").val());
+        // $("#report-member").html($("#reporter").val());
+        // $("#reason").html($("#reportReason").val());
+        // $("#content").html($("#report-content").val());
+        // $("#date").html($("#report-date").val());
+
+        $.ajax({
+            url: "/report/detail",
+            type: "get",
+            data: {reportNo: reportNo},
+            success: function (data) {
+                console.log(data);
+            }
+        })
+        $("#exampleModal").modal('show');
+
+    });
+</script>
+<!--===============================================================================================-->
+<!--<script th:src="@{/sy/vendor/bootstrap/js/popper.js}"></script>-->
+<!--<script th:src="@{/sy/vendor/bootstrap/js/bootstrap.min.js}"></script>-->
+<!--===============================================================================================-->
+<script th:src="@{/sy/vendor/select2/select2.min.js}"></script>
+<!--===============================================================================================-->
+
+
+<!--===============================================================================================-->
+<script th:src="@{/sy/js/main.js}"></script>
+
+</body>
+</html>

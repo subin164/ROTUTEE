@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <!--Jquery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <!-- font tamily -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <style>
+    .header {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 20px;
+    }
+
+    .quizCount,
+    .quizCorrectRatio {
+      border: solid 1px;
+      border-radius: 7px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 16px;
+      text-align: center;
+      padding: 25px;
+      margin: 20px;
+    }
+
+    .wrap {
+      display: flex;
+    }
+
+    .quizStatusBox {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 16px;
+    }
+
+    .className {
+      margin: 10px;
+      padding: 5px;
+    }
+
+    .className:hover {
+      background-color: rgb(244, 244, 244);
+    }
+  </style>
+</head>
+
+<body>
+<div th:include="common/lmssidebar.html"></div>
+<div class="container" style="margin-top: 50px;">
+  <div class="header">Quiz 현황</div>
+  <hr>
+  <div class="wrap">
+    <div class="quizCount col-md-2" onclick="location.href='/FQABoard/list/15'">
+      <span>강의</span>
+    </div>
+    <div class="quizCorrectRatio col-md-2" onclick="location.href='/FQABoard/list/16'">
+      <span>결제</span>
+    </div>
+    <div class="quizCorrectRatio col-md-2" onclick="location.href='/FQABoard/list/17'">
+      <span>환불</span>
+    </div>
+    <div class="quizCorrectRatio col-md-2" onclick="location.href='/FQABoard/list/18'">
+      <span>기타</span>
+    </div>
+  </div>
+</div>
+<div class="container">
+
+  <div class="accordion" id="accordionPanelsStayOpenExample">
+    <div>
+      <th:block  th:each="board : ${ boardList }">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#panelsStayOpen-collapse" aria-expanded="false"
+                  aria-controls="panelsStayOpen-collapse" th:attrappend="data-bs-target=${board.no}">
+            <th:block th:text="${board.title}"></th:block>
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapse" th:attrappend="id=${board.no}" class="accordion-collapse collapse"
+             aria-labelledby="panelsStayOpen-headingOne">
+          <div class="accordion-body">
+            <div class="className" data-bs-toggle="modal">
+              <span th:text="${board.content}"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </th:block>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        <h5 class="modal-title" id="correctStatus">정답</h5>-->
+<!--        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--      </div>-->
+<!--      <div class="modal-body">-->
+<!--        <div class="quiz-area">-->
+<!--          <div class="quiz-question" id="quiz-question"></div>-->
+<!--          <div class="quiz-options">-->
+<!--            <div class="option-area">-->
+<!--              <input type="radio" name="option">-->
+<!--              <label>1. </label>-->
+<!--              <label id="option1"></label>-->
+<!--            </div>-->
+<!--            <div class="option-area">-->
+<!--              <input type="radio" name="option">-->
+<!--              <label>2. </label>-->
+<!--              <label id="option2"></label>-->
+<!--            </div>-->
+<!--            <div class="option-area">-->
+<!--              <input type="radio" name="option">-->
+<!--              <label>3. </label>-->
+<!--              <label id="option3"></label>-->
+<!--            </div>-->
+<!--            <div class="option-area">-->
+<!--              <input type="radio" name="option">-->
+<!--              <label>4. </label>-->
+<!--              <label id="option4"></label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <hr style="color: #9e9b9b;">-->
+<!--          <div>-->
+<!--            <span>정답 :</span>-->
+<!--            <span id="correctAnswer"></span><br>-->
+<!--            <span>해설 :</span>-->
+<!--            <span id="explanation"></span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="modal-footer">-->
+<!--        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<script th:inline="javascript">
+
+  // $(".className").click(function () {
+  //   const quizNo = $(this).children('input').eq(0).val();
+  //   console.log(quizNo);
+  //   console.log($(this).children('input').eq(1).val());
+  //   console.log($(this).children('input').eq(1).val() === 'Y');
+  //   if ($(this).children('input').eq(1).val() === 'Y') {
+  //     for (let i = 0; i < [[${quizList}]].length; i++) {
+  //       if ([[${quizList}]][i].quizNo == quizNo) {
+  //         const question = [[${quizList}]][i].content;
+  //         const option1 = [[${quizList}]][i].option1;
+  //         console.log(question);
+  //         console.log(option1);
+  //         $("#quiz-question").html(question)
+  //         $("#option1").html(option1);
+  //         $("#option2").html([[${quizList}]][i].option2);
+  //         $("#option3").html([[${quizList}]][i].option3);
+  //         $("#option4").html([[${quizList}]][i].option4);
+  //         $("#correctAnswer").html([[${quizList}]][i].answer);
+  //         $("#explanation").html([[${quizList}]][i].solution);
+  //         $("#exampleModal").modal('show');
+  //
+  //
+  //       }
+  //
+  //       if ([[${submissionQuizList}]][i].quizNo == quizNo) {
+  //         if ([[${submissionQuizList}]][i].answerStatus === 'Y ') {
+  //           $("#correctStatus").html("정답");
+  //           $("#correctStatus").css("color", "green");
+  //         } else {
+  //           $("#correctStatus").html("오답");
+  //           $("#correctStatus").css("color", "red");
+  //         }
+  //
+  //       }
+  //     }
+  //   } else {
+  //     alert("퀴즈를 풀지 않았습니다!");
+  //   }
+
+
+  // })
+</script>
+</body>

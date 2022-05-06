@@ -22,7 +22,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -185,13 +188,9 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
 
     @Override
+    @Transactional
     public void insertAnswer(FreeBoardAnswerDTO registAnswer) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss.SSS");
-        System.out.println();
-
-        java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
-
-        System.out.println("++++++"+sqlDate);
+        Timestamp timestamp=new Timestamp(System.currentTimeMillis());
         FreeBoard freeBoard = modelMapper.map(registAnswer.getFreeBoard(),FreeBoard.class);
 
         FreeBoardMember freeBoardMember =  modelMapper.map(registAnswer.getFreeBoardMember(),FreeBoardMember.class);
@@ -201,7 +200,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         newRegistAnswer.setAnswerContent(registAnswer.getAnswerContent());
         newRegistAnswer.setAnswerYN('N');
         newRegistAnswer.setAnswerReportCount(0);
-        newRegistAnswer.setAnswerCreatedDate(sqlDate);
+        newRegistAnswer.setAnswerCreatedDate(timestamp);
         newRegistAnswer.setFreeBoard(freeBoard);
         newRegistAnswer.setFreeBoardMember(freeBoardMember);
 
@@ -209,18 +208,20 @@ public class FreeBoardServiceImpl implements FreeBoardService{
     }
 
     @Override
+    @Transactional
     public void deleteAnswer(int answerNo) {
-        java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+        Timestamp timestamp=new Timestamp(System.currentTimeMillis());
 
         FreeBoardAnswer deleteAnswer = answerRepository.findById(answerNo).get();
         deleteAnswer.setAnswerYN('Y');
-        deleteAnswer.setAnswerDeleteDate(sqlDate);
+        deleteAnswer.setAnswerDeleteDate(timestamp);
         answerRepository.save(deleteAnswer);
     }
 
     @Override
+    @Transactional
     public void updateAnswer(FreeBoardAnswerDTO modifyAnswer) {
-        java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+        Timestamp timestamp=new Timestamp(System.currentTimeMillis());
 
         FreeBoardMember freeBoardMember = modelMapper.map(modifyAnswer.getFreeBoardMember(),FreeBoardMember.class);
 
@@ -228,13 +229,12 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
         FreeBoardAnswer freeBoardAnswer = answerRepository.findById(modifyAnswer.getAnswerNo()).get();
         freeBoardAnswer.setAnswerContent(modifyAnswer.getAnswerContent());
-        freeBoardAnswer.setAnswerYN(modifyAnswer.getAnswerYN());
+        freeBoardAnswer.setAnswerYN('N');
         freeBoardAnswer.setAnswerReportCount(modifyAnswer.getAnswerReportCount());
-        freeBoardAnswer.setAnswerModifyDate(sqlDate);
+        freeBoardAnswer.setAnswerModifyDate(timestamp);
         freeBoardAnswer.setFreeBoardMember(freeBoardMember);
         freeBoardAnswer.setFreeBoard(freeBoard);
 
         answerRepository.save(freeBoardAnswer);
-
     }
 }
