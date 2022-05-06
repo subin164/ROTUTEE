@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CouponService {
@@ -41,5 +40,21 @@ public class CouponService {
         return couponRepository.findByCouponStatus("N ", pageable).map(coupon -> modelMapper.map(coupon, CouponDTO.class));
     }
 
+    @Transactional
+    public void findRemoveList(List<String> couponArray) {
 
+        for(int i = 0; i<couponArray.size(); i++){
+
+            System.out.println(i +"번째 : " + couponArray.get(i) );;
+            Coupon coupon = couponRepository.getById(Integer.valueOf(couponArray.get(i)));
+
+            coupon.setCouponStatus("Y");
+
+            couponRepository.save(coupon);
+        }
+    }
+
+    public void couponModifyPrev(CouponDTO couponDTO) {
+
+    }
 }

@@ -35,9 +35,6 @@
                     </button>
                 </li>
                 <li>
-                    <button class="btn">쿠폰수정</button>
-                </li>
-                <li>
                     <button class="btn" type="button" onclick="couponRemove()">쿠폰삭제</button>
                 </li>
                 <li>
@@ -46,29 +43,33 @@
             </ul>
 
             <table class="table table-hover">
-                <form id="coponSelectForm">
-                    <thead>
-                    <td>선택</td>
-                    <td>쿠폰명</td>
-                    <td>쿠폰내용</td>
-                    <td>쿠폰등록일자</td>
-                    <td>할인률</td>
-                    <td>사용기간</td>
-                    </thead>
+                <thead>
+                <td>선택</td>
+                <td>쿠폰명</td>
+                <td>쿠폰내용</td>
+                <td>쿠폰등록일자</td>
+                <td>할인률</td>
+                <td>사용기간</td>
+                <td></td>
+                </thead>
 
-                    <tbody>
-                    <tr th:each="coupon:${couponList}">
-                        <td>
-                            <input name="couponNo" type="checkbox" th:value="${coupon.couponNo}">
-                        </td>
-                        <td th:text="${coupon.couponName}"></td>
-                        <td th:text="${coupon.couponContent}"></td>
-                        <td th:text="${coupon.couponRegistDate}"></td>
-                        <td th:text="${coupon.discountRate}"></td>
-                        <td th:text="${coupon.expirationDate}"></td>
-                    </tr>
-                    </tbody>
-                </form>
+                <tbody>
+                <tr th:each="coupon:${couponList}" id="couponList">
+                    <td>
+                        <input id="couponNo" name="couponNo" type="checkbox" th:value="${coupon.couponNo}">
+                    </td>
+                    <td th:text="${coupon.couponName}"></td>
+                    <td th:text="${coupon.couponContent}"></td>
+                    <td th:text="${coupon.couponRegistDate}"></td>
+                    <td th:text="${coupon.discountRate}"></td>
+                    <td th:text="${coupon.expirationDate}"></td>
+                    <td>
+                        <button type="button" class="btn" data-bs-toggle="modal"
+                                data-bs-target="#couponModifyModal" name="couponModifyButton" )>쿠폰변경
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -134,6 +135,66 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="couponModifyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2>쿠폰변경</h2>
+            </div>
+
+            <div class="modal-body">
+                <form action="/coupon/modify" method="post" id="couponModifyForm">
+                    <div class="d-flex flex-md-column">
+
+                        <div class="col-md-6 shadow-sm mb-md-3 w-100">
+                            <label class="fw-bold">쿠폰명</label>
+                            <div class="d-flex">
+                                <input type="hidden" id="modifyCouponNo" val="">
+                                <input class="tag-input w-100" type="text" id="modifyCouponName">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 shadow-sm mb-md-3 w-100">
+                            <label class="fw-bold">쿠폰내용</label>
+                            <div class="d-flex">
+                                <input class="tag-input w-100" type="text" id="modifyCouponContent">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 shadow-sm mb-md-3 w-100">
+                            <label class="fw-bold">할인율</label>
+                            <div class="d-flex">
+                                <input class="tag-input w-100" type="text" id="modifyDiscountRate">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 shadow-sm mb-md-3  w-100">
+                            <label class="fw-bold">만료기한</label>
+                            <div class="d-flex">
+                                <input class="tag-input w-100" type="text" id="modifyExpirationDate">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <div class="d-flex">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
+                        취소
+                    </button>
+                    <button type="submit" class="btn btn-outline-primary" form="couponRegistForm">
+                        등록
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -143,21 +204,30 @@
 
 <script>
     function couponRemove() {
-        let couponNo = document.getElementsByName("couponNo").length;
-        let couponNoArray = new Array();
-        for (let i = 0; i < couponNo; i++) {
-            if (document.getElementsByName("couponNo")[i].checked == true) {
-                couponNoArray.push(document.getElementsByName("couponNo")[i].value);
-            }
-        }
-       console.log(couponNoArray.value);
+
+        let couponArray = [];
+
+        $("input:checkbox[name=couponNo]:checked").each(function () {
+
+            couponArray.push(($(this).val()));
+
+            console.log(couponArray);
+        });
+
 
         $.ajax({
             url: "/coupon/remove",
             type: "post",
-            data: {"couponNoArray": couponNoArray},
+            data: {"couponArray": couponArray},
             success: function (data) {
                 alert("성공");
+
+                if ($("input:checkbox[name=couponNo]:checked")) {
+                    $("input:checkbox[name=couponNo]:checked").each(function () {
+                        $(this).closest("tr").remove();
+                    });
+                }
+
             },
             error: function (data) {
                 alert("실패");
@@ -165,6 +235,25 @@
             }
         });
     };
+
+
+    $("button[name=couponModifyButton]").on("click", function () {
+
+        const thisRow = $(this).closest("tr");
+        const couponNo = thisRow.find("td:eq(0)").find("input").val();
+        const couponName = thisRow.find("td:eq(1)").html();
+        const couponContent = thisRow.find("td:eq(2)").html();
+        const couponDiscountRate = thisRow.find("td:eq(4)").html();
+        const couponExpirationDate = thisRow.find("td:eq(5)").html();
+
+        $("#modifyCouponNo").val(couponNo);
+        $("#modifyCouponName").val(couponName);
+        $("#modifyCouponContent").val(couponContent);
+        $("#modifyDiscountRate").val(couponDiscountRate);
+        $("#modifyExpirationDate").val(couponExpirationDate);
+
+    });
+
 
 </script>
 </body>

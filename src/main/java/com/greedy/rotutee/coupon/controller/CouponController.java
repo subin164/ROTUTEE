@@ -3,18 +3,14 @@ package com.greedy.rotutee.coupon.controller;
 import com.greedy.rotutee.coupon.dto.CouponDTO;
 import com.greedy.rotutee.coupon.service.CouponService;
 
-import org.apache.maven.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.List;
 
@@ -44,7 +40,7 @@ public class CouponController {
     }
 
     @PostMapping("/regist")
-    public ModelAndView couponRegist(ModelAndView mv, CouponDTO couponDTO) {
+    public String couponRegist(CouponDTO couponDTO) {
 
         couponDTO.setCouponStatus("N");
 
@@ -52,17 +48,27 @@ public class CouponController {
 
         couponService.couponRegist(couponDTO);
 
-        mv.setViewName("/coupon/list");
 
-        return mv;
+        return "redirect:/coupon/list";
     }
 
-    @PostMapping("/remove")
+    @PostMapping(value = "/remove")
     @ResponseBody
-    public void couponRemove(HttpServletRequest request){
+    public void couponRemove(
+            @RequestParam(value = "couponArray[]") List<String> couponArray) {
 
-        System.out.println("요청은 왔느냐");
+        couponService.findRemoveList(couponArray);
+    }
 
+    @GetMapping("/modify")
+    @ResponseBody
+    public String couponModify(CouponDTO couponDTO) {
+
+        System.out.println("couponDTO : " + couponDTO);
+
+        couponService.couponModifyPrev(couponDTO);
+
+        return "redirect:/coupon/list";
     }
 
 }
