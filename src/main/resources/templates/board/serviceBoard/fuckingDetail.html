@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+
+        .box {
+            width: 80%;
+            margin-top: 100px;
+            margin-left: 300px;
+        }
+
+        .inner-box {
+            border: 1px ridge #bcbcbc;
+            padding: 20px;
+        }
+
+        .content-area {
+            width: 100%;
+            height: 300px;
+            border: 1px ridge #bcbcbc;
+        }
+
+        .category-box {
+            border: 1px ridge #bcbcbc;
+        }
+
+        .answer-all-area {
+            height: auto;
+        }
+
+        .regist-textarea {
+            float: left;
+            width: 93%;
+            height: 100px;
+            resize: none;
+            padding: 10px;
+        }
+
+        #registAnswerBtn {
+            width: 7%;
+            float: left;
+            height: 100px;
+        }
+
+        .content-area {
+            width: 100%;
+            height: 500px;
+        }
+
+        .answer {
+            width: 90%;
+            margin-top: auto;
+        }
+
+        .boardTitle-tr {
+            width: 90%;
+            margin-top: auto;
+            border: 1px ridge #bcbcbc;
+            padding: 10px;
+
+        }
+
+        .boardTitle-td {
+            border: 1px ridge #bcbcbc;
+        }
+
+        .answer-tr {
+            border: 1px ridge #bcbcbc;
+            height: auto;
+        }
+
+        .detail-board-button {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .modify-answer {
+            width: 90%;
+            padding: 10px;
+            height: 100px;
+            resize: none;
+        }
+
+        .answer-content-info {
+            width: 80%;
+            bottom-padding: 10px;
+        }
+
+        .answer-content-btn {
+            width: 20%;
+        }
+
+
+        .answer-borderbox {
+            height: auto;
+            margin-top: 100px;
+        }
+
+        .content {
+            padding: 10px;
+        }
+
+        .answer-area {
+            padding: 10px;
+        }
+    </style>
+
+</head>
+<body>
+<div th:include="/common/topMenubar.html"></div>
+
+<div class="box">
+    <div><h1>문의게시판</h1></div>
+
+    <div class="inner-box">
+
+        <div class="boardTitle-area">
+            <table class="boardTitle-table">
+                <tr class="boardTitle-tr">
+                    <input id="boardNo" type="hidden" th:value="${ detailBoard.no }">
+                    <td class="boardTitle-td" th:text="제목"></td>
+                    <td class="boardTitle-td" th:text="${ detailBoard.title }"></td>
+                    <td class="boardTitle-td" th:text="${ detailBoard.member.name }"></td>
+                    <td class="boardTitle-td" th:text="${ detailBoard.creationDate }"></td>
+                    <td class="boardTitle-td" th:text="${ detailBoard.viewCount }"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-group">
+            <h4>내용</h4>
+            <br>
+
+            <div class="content-area">
+                <div class="content" th:text="${ detailBoard.content }"></div>
+            </div>
+
+            <div class="detail-board-button">
+                <input id="boardListBtn" type="button" th:value="목록" class="btn btn-secondary"
+                       onclick="location.href='/serviceBoard/list'">
+                <th: sec:authorize="isAuthenticated()">
+                    <th:block th:if="${ detailBoard.member.no } == ${ #authentication.principal.no }">
+                        <input id="modifyBoardBtn" type="button" th:value="수정" class="btn btn-primary"
+                               onclick="location.href='/serviceBoard/modify/' + boardNo">
+                        <input id="deleteBoardBtn" type="button" th:value="삭제" class="btn btn-primary"
+                               data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                               onclick="location.href='/serviceBoard/remove/' + boardNo"/>
+                    </th:block>
+                </th:>
+            </div>
+        </div>
+
+        <!--        <div class="answer-all-area">-->
+        <div class="answer-regist-area">
+            <h6>댓글</h6>
+            <th: sec:authorize="isAuthenticated()">
+                <div align="center">
+                    <textarea id="answer-textarea" class="regist-textarea" placeholder="댓글을 작성해주세요"></textarea>
+                    <input id="registAnswerBtn" type="button" value="댓글 등록" class="btn btn-secondary">
+                </div>
+            </th:>
+        </div>
+
+        <div id="answertable" class="answer-borderbox" th:if="${ detailAnswerList != null}">
+            <div id="answerbody" class="answer-tbody">
+                <div id="answertr" class="answer-tr" th:each="answer : ${ detailAnswerList }">
+                    <div id="answer" class="answer-area" th:attrappend="id=${ answer.no }" th:value="${ answer.no }">
+                        <div class="answer-content-info">
+                            <input id="answerNo" type="hidden" th:value="${ answer.no }"/>
+                            <div class="answer-column" th:text="${ answer.member.name }"></div>
+                            <div id="answer-content" th:attrappend="id=${ answer.no }" class="answer-column"
+                                 th:text="${ answer.content }"></div>
+                            <div class="answer-column" th:text="${ answer.createdDate }"></div>
+                        </div>
+                        <div class="answer-content-btn">
+                            <th: sec:authorize="isAuthenticated()">
+                                <th:block th:if="${ answer.member.no } == ${ #authentication.principal.no }">
+                                    <button class="btn-modify" type="button" th:value="${ answer.no }">수정</button>
+                                    <button class="btn-delete" type="button" th:value="${ answer.no }">삭제</button>
+                                </th:block>
+                                <th th:if="${ answer.member.no } != ${ #authentication.principal.no }">
+                                    <input id="declarationAnswer" type="button" th:value="신고" class="btn btn-danger">
+                                </th>
+                            </th:>
+                        </div>
+                    </div>
+                    <div id="inputanswer" class="input-answer-area" style="display: none"
+                         th:attrappend="id=${ answer.no }" th:value="${ answer.no}">
+                        <div class="answer-content-info">
+                            <input id="modifyanswerNo" type="hidden" th:value="${ answer.no }"/>
+                            <div class="input-answer-column" th:text="${ answer.member.name }"></div>
+                            <div class="input-answer-column">
+                                <input class="modify-answer" type="text" id="modifyAnswerContent"
+                                       th:attrappend="id=${ answer.no }" th:value="${ answer.content }">
+                            </div>
+                            <div class="input-answer-column" th:text="${ answer.createdDate }"></div>
+                        </div>
+                        <div class="answer-content-btn">
+                            <button id="modifyAnswerOk" class="btn-ok" type="button" th:value="${ answer.no }">확인
+                            </button>
+                            <button id="modifyAnswerCancel" class="btn-close" type="button" th:value="${ answer.no }">
+                                취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- delete modal -->
+<!--<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="staticBackdropLabel">삭제 하기</h5>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                삭제 하시겠습니까?-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--                <button id="delete-ok" type="button" class="btn btn-primary">Sure</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--  declaration Answer modal -->
+<!--<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="staticBackdropLabel1">신고 하기</h5>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                신고 하시겠습니까?-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--                <button id="declaration-ok" type="button" class="btn btn-primary">Sure</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<div th:include="/common/footer.html"></div>
+<script>
+
+    const boardNo = "[[${ detailBoard.no }]]";
+
+    $("#registAnswerBtn").click(function () {
+
+        let answerContent = $("#answer-textarea").val();
+
+        $.ajax({
+            url: "/serviceBoard/registAnswer",
+            data: {"answerContent": answerContent, "boardNo": boardNo},
+            success: function (data) {
+
+                location.href = "/serviceBoard/detail/" + boardNo;
+            }
+        });
+
+    });
+
+    $(".btn-modify").click(function () {
+
+        let answerNo = $(this).val();
+
+        $("#answer" + answerNo).hide();
+        $("#inputanswer" + answerNo).show();
+    });
+
+    $(".btn-delete").click(function () {
+
+        let answerNo = $(this).val();
+
+        $.ajax({
+            url: "/serviceBoard/removeAnswer",
+            type: "post",
+            data: {"answerNo": answerNo},
+            success: function (data) {
+
+                alert("즉시삭제");
+
+                location.href = "/serviceBoard/detail/" + boardNo;
+            }
+        })
+    });
+
+    $(".btn-close").click(function () {
+
+        let answerNo = $(this).val();
+
+        $("#answer" + answerNo).show();
+        $("#inputanswer" + answerNo).hide();
+    });
+
+    $(".btn-ok").click(function () {
+
+        let answerNo = $(this).val();
+        let modifyContent = $("#modifyAnswerContent" + answerNo).val();
+
+        alert(modifyContent + boardNo);
+
+        $.ajax({
+            url: "/serviceBoard/modifyAnswer",
+            type: "post",
+            data: {"boardNo": boardNo, "answerNo": answerNo, "modifyContent": modifyContent},
+            success: function (data) {
+
+                $("#answer" + answerNo).show();
+                $("#inputanswer" + answerNo).hide();
+
+                $("#answer-content" + answerNo).text(modifyContent);
+
+                alert("수정했ㄷ ㅏ이녀석아~!");
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

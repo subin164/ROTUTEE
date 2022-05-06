@@ -1,12 +1,8 @@
-package com.greedy.rotutee.board.serviceBoard.dto;
+package com.greedy.rotutee.board.FQABoard.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.greedy.rotutee.board.serviceBoard.entity.BoardAnswer;
-import com.greedy.rotutee.board.serviceBoard.entity.BoardCategory;
-import com.greedy.rotutee.board.serviceBoard.entity.Member;
 import lombok.*;
 
-import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
