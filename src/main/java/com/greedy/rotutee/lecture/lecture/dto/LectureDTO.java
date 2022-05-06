@@ -23,9 +23,8 @@ public class LectureDTO {
     private String applicationDivision;
     private int lectureCategoryNo;
     private LectureCategoryDTO category;
-    private String originalPath;
-    private String thumbnailPath;
-    private String bannerPath;
+    private String saveFileName;
+
 
     public LectureDTO() {
     }
@@ -46,9 +45,7 @@ public class LectureDTO {
         this.applicationDivision = applicationDivision;
         this.lectureCategoryNo = lectureCategoryNo;
         this.category = category;
-        this.originalPath = originalPath;
-        this.thumbnailPath = thumbnailPath;
-        this.bannerPath = bannerPath;
+        this.saveFileName = saveFileName;
     }
 
     public int getLectureNo() {
@@ -171,28 +168,12 @@ public class LectureDTO {
         this.category = category;
     }
 
-    public String getOriginalPath() {
-        return originalPath;
+    public String getSaveFileName() {
+        return saveFileName;
     }
 
-    public void setOriginalPath(String originalPath) {
-        this.originalPath = originalPath;
-    }
-
-    public String getThumbnailPath() {
-        return thumbnailPath;
-    }
-
-    public void setThumbnailPath(String thumbnailPath) {
-        this.thumbnailPath = thumbnailPath;
-    }
-
-    public String getBannerPath() {
-        return bannerPath;
-    }
-
-    public void setBannerPath(String bannerPath) {
-        this.bannerPath = bannerPath;
+    public void setSaveFileName(String saveFileName) {
+        this.saveFileName = saveFileName;
     }
 
     @Override
@@ -213,9 +194,7 @@ public class LectureDTO {
                 ", applicationDivision='" + applicationDivision + '\'' +
                 ", lectureCategoryNo=" + lectureCategoryNo +
                 ", category=" + category +
-                ", originalPath='" + originalPath + '\'' +
-                ", thumbnailPath='" + thumbnailPath + '\'' +
-                ", bannerPath='" + bannerPath + '\'' +
+                ", saveFileName='" + saveFileName + '\'' +
                 '}';
     }
 }

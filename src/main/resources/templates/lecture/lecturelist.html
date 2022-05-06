@@ -47,14 +47,16 @@
             <div class="col-sm-3" th:each="lecture : ${lectureList}">
                 <div class="card">
                     <input type="hidden" th:value="${lecture.lectureNo}" name="lectureNo" class="lectureNo">
-                    <img src="" class="card-img-top" alt="...">
+                    <th:block th:if="${lecture.saveFileName != null}">
+                        <img th:src="@{/images/thumbnail/} + ${lecture.saveFileName}" class="card-img-top" alt="...">
+                    </th:block>
                     <div class="card-body">
                         <input class="lecture-price-box" type="text" th:value="${lecture.lecturePrice} + WON" disabled>
                         <br>
                         <p class="card-title" th:text="${lecture.lectureName}"></p>
-                        <i class="bi bi-play-circle"></i><span></span>
-                        <br>
-                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>4.5 (20 reviews)
+<!--                        <i class="bi bi-play-circle"></i><span></span>-->
+<!--                        <br>-->
+<!--                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>4.5 (20 reviews)-->
                     </div>
                 </div>
             </div>

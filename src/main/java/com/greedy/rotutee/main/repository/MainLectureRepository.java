@@ -21,7 +21,7 @@ import java.util.List;
 @Repository
 public interface MainLectureRepository extends JpaRepository<Lecture, Integer> {
 
-    @Query("select a from Main_Lecture a where a.lectureOpeningDate is not null order by a.lectureOpeningDate asc")
+    @Query("select a from Main_Lecture a where a.lectureOpeningDate is not null order by a.lectureOpeningDate desc")
     List<Lecture> findRecentLectureList();
 
     @Query(value = "SELECT DISTINCT\n" +
