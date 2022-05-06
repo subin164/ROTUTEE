@@ -60,13 +60,12 @@ public class CouponController {
         couponService.findRemoveList(couponArray);
     }
 
-    @GetMapping("/modify")
-    @ResponseBody
+    @PostMapping("/modify")
     public String couponModify(CouponDTO couponDTO) {
 
         System.out.println("couponDTO : " + couponDTO);
 
-        couponService.couponModifyPrev(couponDTO);
+//        couponService.couponModifyPrev(couponDTO);
 
         return "redirect:/coupon/list";
     }
