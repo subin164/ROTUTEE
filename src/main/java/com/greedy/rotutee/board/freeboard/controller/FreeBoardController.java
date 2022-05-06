@@ -95,7 +95,6 @@ public class FreeBoardController {
         if(freeBoardDTO.getFreeBoardAnswerList() != null) {
             List<FreeBoardAnswerDTO> answer =freeBoardDTO.getFreeBoardAnswerList();
 
-            System.out.println("####"+answer);
             mv.addObject("answer",answer);
         }
 
@@ -166,6 +165,7 @@ public class FreeBoardController {
 
         int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
 
+        System.out.println("freeboard :" + freeBoard);
         FreeBoardMemberDTO memberDTO = new FreeBoardMemberDTO();
 
         memberDTO.setMemberNo(customUser.getNo());
@@ -225,7 +225,7 @@ public class FreeBoardController {
 
         rttr.addFlashAttribute("successMessage", "댓글 삭제 완료");
 
-        mv.setViewName("redirect:/freeBoard/detail?boardNo="+ boardNo);
+        mv.setViewName("redirect:/freeboard/detail?boardNo="+ boardNo);
 
         return mv;
     }
@@ -251,11 +251,12 @@ public class FreeBoardController {
         modifyAnswer.setFreeBoardMember(freeBoardMemberDTO);
         modifyAnswer.setFreeBoard(freeBoardDTO);
 
+
         freeBoardService.updateAnswer(modifyAnswer);
 
         rttr.addFlashAttribute("successMessage", "댓글 수정 완료");
 
-        mv.setViewName("redirect:/freeBoard/detail?boardNo="+ modifyAnswer.getFreeBoard().getBoardNo());
+        mv.setViewName("redirect:/freeboard/detail?boardNo="+ modifyAnswer.getFreeBoard().getBoardNo());
 
         return mv;
     }

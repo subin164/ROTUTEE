@@ -47,10 +47,10 @@ public class FreeBoardAnswer {
     private Timestamp answerCreatedDate;
 
     @Column( name = "ANSWER_MODIFY_DATE")
-    private Date answerModifyDate;
+    private Timestamp answerModifyDate;
 
     @Column(name = "ANSWER_DELETE_DATE")
-    private Date answerDeleteDate;
+    private Timestamp answerDeleteDate;
 
     @ManyToOne
     @JoinColumn(name ="BOARD_NO")
@@ -66,7 +66,7 @@ public class FreeBoardAnswer {
     }
 
     public FreeBoardAnswer(int answerNo, String answerContent, char answerYN, int answerReportCount
-                           , Timestamp answerCreatedDate, Date answerModifyDate, Date answerDeleteDate
+                           , Timestamp answerCreatedDate, Timestamp answerModifyDate, Timestamp answerDeleteDate
                            , FreeBoard freeBoard, FreeBoardMember freeBoardMember) {
         this.answerNo = answerNo;
         this.answerContent = answerContent;
@@ -119,19 +119,19 @@ public class FreeBoardAnswer {
         this.answerCreatedDate = answerCreatedDate;
     }
 
-    public Date getAnswerModifyDate() {
+    public Timestamp getAnswerModifyDate() {
         return answerModifyDate;
     }
 
-    public void setAnswerModifyDate(Date answerModifyDate) {
+    public void setAnswerModifyDate(Timestamp answerModifyDate) {
         this.answerModifyDate = answerModifyDate;
     }
 
-    public Date getAnswerDeleteDate() {
+    public Timestamp getAnswerDeleteDate() {
         return answerDeleteDate;
     }
 
-    public void setAnswerDeleteDate(Date answerDeleteDate) {
+    public void setAnswerDeleteDate(Timestamp answerDeleteDate) {
         this.answerDeleteDate = answerDeleteDate;
     }
 
