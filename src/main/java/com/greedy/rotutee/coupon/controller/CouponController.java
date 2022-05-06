@@ -65,7 +65,7 @@ public class CouponController {
 
         System.out.println("couponDTO : " + couponDTO);
 
-//        couponService.couponModifyPrev(couponDTO);
+        couponService.couponModify(couponDTO);
 
         return "redirect:/coupon/list";
     }

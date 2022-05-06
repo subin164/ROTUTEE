@@ -44,7 +44,7 @@ public class Study {
     @Column(name = "STUDY_DELETION_DATE")
     private java.sql.Date removeDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_NO")
     private Member writer;
 

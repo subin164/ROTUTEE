@@ -54,7 +54,17 @@ public class CouponService {
         }
     }
 
-    public void couponModifyPrev(CouponDTO couponDTO) {
+    @Transactional
+    public void couponModify(CouponDTO couponDTO) {
+        Coupon modifyCoupon  = couponRepository.getById(couponDTO.getCouponNo());
 
+        modelMapper.map(modifyCoupon, CouponDTO.class);
+
+        modifyCoupon.setCouponName(couponDTO.getCouponName());
+        modifyCoupon.setCouponContent(couponDTO.getCouponContent());
+        modifyCoupon.setDiscountRate(couponDTO.getDiscountRate());
+        modifyCoupon.setExpirationDate(couponDTO.getExpirationDate());
+
+        couponRepository.save(modelMapper.map(modifyCoupon, Coupon.class));
     }
 }
