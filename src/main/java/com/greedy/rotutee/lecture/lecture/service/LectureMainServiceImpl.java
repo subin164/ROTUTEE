@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,15 +21,19 @@ public class LectureMainServiceImpl implements  LectureMainService{
     private final LectureReviewMainRepository lectureReviewMainRepository;
     private final MemberLectureMainRepository memberLectureMainRepository;
     private final LectureAttachedFileRepository lectureAttachedFileRepository;
+    private final LectureMemberInterestRepository lectureMemberInterestRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public LectureMainServiceImpl(LectureMainRepository lectureMainRepository, ModelMapper modelMapper, ChapterRepository chapterRepository, LectureReviewMainRepository lectureReviewMainRepository, MemberLectureMainRepository memberLectureMainRepository, LectureAttachedFileRepository lectureAttachedFileRepository) {
+    public LectureMainServiceImpl(LectureMainRepository lectureMainRepository, ModelMapper modelMapper, ChapterRepository chapterRepository, LectureReviewMainRepository lectureReviewMainRepository, MemberLectureMainRepository memberLectureMainRepository, LectureAttachedFileRepository lectureAttachedFileRepository, LectureMemberInterestRepository lectureMemberInterestRepository, MemberRepository memberRepository) {
         this.lectureMainRepository = lectureMainRepository;
         this.modelMapper = modelMapper;
         this.chapterRepository = chapterRepository;
         this.lectureReviewMainRepository = lectureReviewMainRepository;
         this.memberLectureMainRepository = memberLectureMainRepository;
         this.lectureAttachedFileRepository = lectureAttachedFileRepository;
+        this.lectureMemberInterestRepository = lectureMemberInterestRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class LectureMainServiceImpl implements  LectureMainService{
 
         List<LectureDTO> lectureDTOList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
         for(LectureDTO lecture : lectureDTOList) {
-            lecture.setThumbnailPath(lectureAttachedFileRepository.findThumbnailPathBylectureNo(lecture.getLectureNo()));
+            lecture.setSaveFileName(lectureAttachedFileRepository.findSaveFileNameBylectureNo(lecture.getLectureNo()));
         }
 
         return lectureDTOList;
@@ -57,13 +60,13 @@ public class LectureMainServiceImpl implements  LectureMainService{
             lectureList = lectureMainRepository.findBylectureNameContaining(searchValue);
             lectureDTOList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
             for(LectureDTO lecture : lectureDTOList) {
-                lecture.setThumbnailPath(lectureAttachedFileRepository.findThumbnailPathBylectureNo(lecture.getLectureNo()));
+                lecture.setSaveFileName(lectureAttachedFileRepository.findSaveFileNameBylectureNo(lecture.getLectureNo()));
             }
         } else if(searchCondition == 2) {
             lectureList = lectureMainRepository.findLecturesByTutorName(searchValue);
             lectureDTOList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
             for(LectureDTO lecture : lectureDTOList) {
-                lecture.setThumbnailPath(lectureAttachedFileRepository.findThumbnailPathBylectureNo(lecture.getLectureNo()));
+                lecture.setSaveFileName(lectureAttachedFileRepository.findSaveFileNameBylectureNo(lecture.getLectureNo()));
             }
         }
 
@@ -73,9 +76,19 @@ public class LectureMainServiceImpl implements  LectureMainService{
     @Override
     public LectureDTO findLectureByLectureNo(int lectureNo) {
 
-        Lecture lecture = lectureMainRepository.findById(lectureNo).get();
+        Lecture lectureEntity = lectureMainRepository.findById(lectureNo).get();
+        LectureDTO lecture = modelMapper.map(lectureEntity, LectureDTO.class);
 
-        return modelMapper.map(lecture, LectureDTO.class);
+        String division = "프로필";
+        String deletion = "N ";
+        AttachedFile image = lectureAttachedFileRepository.findByMemberNoAndDivisionAndFileDeletionYN(lecture.getTutor().getNo(), division, deletion);
+        System.out.println("image = " + image);
+        if(image != null) {
+            lecture.getTutor().setImageName(image.getSaveAttachedFileName());
+        }
+        lecture.setSaveFileName(lectureAttachedFileRepository.findSaveFileNameBylectureNo(lecture.getLectureNo()));
+
+        return lecture;
     }
 
     @Override
@@ -89,9 +102,19 @@ public class LectureMainServiceImpl implements  LectureMainService{
     @Override
     public List<LectureReviewDTO> findReviewListByLectureNo(int lectureNo) {
 
-        List<LectureReview> lectureReviewList = lectureReviewMainRepository.findLectureReviewByLectureNoAndLectureReviewRemoveYN(lectureNo);
+        List<LectureReview> lectureReviewEntityList = lectureReviewMainRepository.findLectureReviewByLectureNoAndLectureReviewRemoveYN(lectureNo);
 
-        return lectureReviewList.stream().map(lectureReview -> modelMapper.map(lectureReview, LectureReviewDTO.class)).collect(Collectors.toList());
+        List<LectureReviewDTO> lectureReviewList = lectureReviewEntityList.stream().map(lectureReview -> modelMapper.map(lectureReview, LectureReviewDTO.class)).collect(Collectors.toList());
+        for(LectureReviewDTO review : lectureReviewList) {
+            String division = "프로필";
+            String deletion = "N";
+            AttachedFile image = lectureAttachedFileRepository.findByMemberNoAndDivisionAndFileDeletionYN(review.getWriter().getNo(), division, deletion);
+            if(image != null) {
+                review.getWriter().setImageName(image.getSaveAttachedFileName());
+            }
+        }
+
+        return lectureReviewList;
     }
 
     @Override
@@ -163,6 +186,35 @@ public class LectureMainServiceImpl implements  LectureMainService{
 
         LectureReview foundReview = lectureReviewMainRepository.findById(lectureReviewNo).get();
         foundReview.setLectureReviewRemoveYN(status);
+
+    }
+
+    @Override
+    @Transactional
+    public void registInterestDegree(int no, LectureCategoryDTO category) {
+
+        Member member = memberRepository.findById(no).get();
+
+        LectureCategory categoryEntity = modelMapper.map(category, LectureCategory.class);
+
+        MemberInterest memberInterest = lectureMemberInterestRepository.findByMemberAndCategory(member, categoryEntity);
+
+        if(memberInterest == null) {
+
+            int degree = 1;
+
+            MemberInterestDTO interest = new MemberInterestDTO();
+            interest.setMember(modelMapper.map(member, MemberDTO.class));
+            interest.setCategory(category);
+            interest.setInterestDegree(degree);
+
+            lectureMemberInterestRepository.save(modelMapper.map(interest, MemberInterest.class));
+
+        } else {
+
+            int increasedDegree = memberInterest.getInterestDegree() + 1;
+            memberInterest.setInterestDegree(increasedDegree);
+        }
 
     }
 }

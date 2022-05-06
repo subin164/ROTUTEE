@@ -31,12 +31,12 @@ public class ClassBasket {
     )
     private int classBasketNo;
 
-    @JoinColumn (name = "MEMBER_NO")
-    @ManyToOne
+    @JoinColumn(name = "MEMBER_NO")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @JoinColumn (name = "LECTURE_NO")
-    @ManyToOne
+    @JoinColumn(name = "LECTURE_NO")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Lecture lecture;
 
     public ClassBasket() {

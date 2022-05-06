@@ -28,13 +28,6 @@ public class LectureDTO {
     private List<AttachedFileDTO> imageList;
     private List<ChapterDTO> chapterList;
 
-    public List<ChapterDTO> getChapterList() {
-        return chapterList;
-    }
-
-    public void setChapterList(List<ChapterDTO> chapterList) {
-        this.chapterList = chapterList;
-    }
 
     public LectureDTO() {
     }
@@ -121,6 +114,13 @@ public class LectureDTO {
 
     public void setLectureApprovalStatus(String lectureApprovalStatus) {
         this.lectureApprovalStatus = lectureApprovalStatus;
+    }
+    public List<ChapterDTO> getChapterList() {
+        return chapterList;
+    }
+
+    public void setChapterList(List<ChapterDTO> chapterList) {
+        this.chapterList = chapterList;
     }
 
     public Date getLectureOpeningDate() {

@@ -53,7 +53,7 @@ public class Member {
     private String rouletteChance;
 
     @OneToMany(mappedBy = "member")
-    List<MemberRole> memberRoleList;
+    private List<MemberRole> memberRoleList;
 
     public Member() {}
 
