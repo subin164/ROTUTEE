@@ -1,21 +1,29 @@
 package com.greedy.rotutee.lecture.request.model.repository;
 
-import com.greedy.rotutee.lecture.request.entity.Lecture;
-import com.greedy.rotutee.lecture.request.entity.Member;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.greedy.rotutee.config.BeanConfiguration;
+import com.greedy.rotutee.config.JPAConfiguration;
+import com.greedy.rotutee.config.RotuteeApplication;
+import com.greedy.rotutee.lecture.request.repository.RequestLectureRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
-@Repository
-public interface RequestLectureRepositoryTest extends JpaRepository<Lecture, Integer> {
-    List<Lecture> findByTutor(Member tutor);
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-    List<Lecture> findByLectureApprovalStatus(String status);
+@SpringBootTest
+@ContextConfiguration(classes = {RotuteeApplication.class, BeanConfiguration.class, JPAConfiguration.class})
+public class RequestLectureRepositoryTest {
 
-    List<Lecture> findByLectureApprovalStatusOrLectureApprovalStatus(String status1, String status2);
+    @Autowired
+    private RequestLectureRepository requestLectureRepository;
 
-    Lecture findByLectureNo(int lectureNo);
+    @Test
+    public void 레포지토리_의존성_테스트() {
 
-    List<Lecture> findByApplicationDivision(String division);
+        assertNotNull(requestLectureRepository);
+        System.out.println("requestLectureRepository = " + requestLectureRepository);
+    }
+
 }
