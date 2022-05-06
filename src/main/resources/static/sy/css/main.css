@@ -173,24 +173,24 @@ th, td {
 }
 
 .column1 {
-  width: 33%;
+  width: 10%;
   padding-left: 40px;
 }
 
 .column2 {
-  width: 13%;
+  width: 60%;
 }
 
 .column3 {
-  width: 22%;
+  width: 10%;
 }
 
 .column4 {
-  width: 19%;
+  width: 10%;
 }
 
 .column5 {
-  width: 13%;
+  width: 10%;
 }
 
 .table100-head th {
@@ -227,7 +227,7 @@ th, td {
 
 .table100.ver1 th {
   font-family: Lato-Bold;
-  font-size: 18px;
+  font-size: 14px;
   color: #8397D7;
   line-height: 1.4;
 
