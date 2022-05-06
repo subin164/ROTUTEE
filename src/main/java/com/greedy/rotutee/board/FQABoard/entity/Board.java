@@ -1,4 +1,4 @@
-package com.greedy.rotutee.board.serviceBoard.entity;
+package com.greedy.rotutee.board.FQABoard.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -17,7 +17,7 @@ import java.util.List;
  * 2022-05-04 7sang 최초 생성
  */
 
-@Entity(name = "ServiceBoard_SerivceBoard")
+@Entity(name = "FQABoard_SerivceBoard")
 @Table(name = "TBL_BOARD")
 @SequenceGenerator(
         name = "BOARD_SEQ_GENERATOR",

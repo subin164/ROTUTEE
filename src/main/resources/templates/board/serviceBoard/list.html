@@ -91,6 +91,7 @@
     <label class="head">문의 게시판</label>
     <button onclick="location.href='/serviceBoard/regist'">글작성</button>
     <hr>
+
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
@@ -122,11 +123,16 @@
                                 </table>
                             </div>
                             <div class="table100-body">
-                                <table id="before-table">
+                                <table id="serviceBoard-table">
                                     <tbody>
                                     <tr id="board-tr" class="row100 body" th:each="board : ${ boardList }">
                                         <td class="cell100 column1" style="width: 10%;" th:text="${ board.no}"></td>
-                                        <td class="cell100 column2" style="width: 30%;" th:text="${ board.title}"></td>
+                                        <th:block th:if="${ board.bulletinBoardSecretYN == 'Y'}">
+                                            <td class="cell100 column1" style="width: 30%;" >비밀글 입니다.</td>
+                                        </th:block>
+                                        <th:block th:if="${ board.bulletinBoardSecretYN == 'N'}">
+                                            <td class="cell100 column2" style="width: 30%;" th:text="${ board.title}"></td>
+                                        </th:block>
                                         <td class="cell100 column3" th:text="${ board.boardCategory.name}"> </td>
                                         <td class="cell100 column4" th:text="${ board.creationDate}"> </td>
                                         <td class="cell100 column5" th:text="${ board.member.name}"> </td>
@@ -137,6 +143,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="d-flex justify-content-center">
                 <div class="justify-content-evenly mt-lg-5">
                     <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
@@ -144,6 +151,19 @@
                                 th:text="${ page }" th:disabled="${ paging.currentPage eq page }"></button>
                     </th:block>
                 </div>
+            </div>
+        </div>
+        <div class="select d-flex justify-content-end container">
+            <div class="selectBox">
+                <form action="/serviceBoard/search">
+                <select name="searchCondition">
+                    <option value="member">작성자</option>
+                    <option value="title">제목</option>
+                    <option value="content">내용</option>
+                </select>
+                <input type="text" name="searchValue" placeholder="검색어입력">
+                <button type="submit" class="btn search-btn">검색하기</button>
+                </form>
             </div>
         </div>
 <!--        <div class="tab-pane fade board" id="profile" role="tabpanel" aria-labelledby="profile-tab">-->
@@ -213,16 +233,14 @@
     });
 
     // 테이블의 Row 클릭시 값 가져오기
-    $("#before-table tr").click(function(){
+    $("#serviceBoard-table tr").click(function(){
 
         let tr = $(this);
         let td = tr.children();
 
-        let memberNo = td.eq(0).text();
+        let boardNo = td.eq(0).text();
 
-        // document.querySelector('.memberDetail_wrap').style.display ='block';
-
-        location.href="/member/detail/" + memberNo;
+        location.href="/serviceBoard/detail/" + boardNo;
     });
 
     // $(function(){

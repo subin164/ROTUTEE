@@ -1,4 +1,4 @@
-package com.greedy.rotutee.board.serviceBoard.dto;
+package com.greedy.rotutee.board.FQABoard.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;

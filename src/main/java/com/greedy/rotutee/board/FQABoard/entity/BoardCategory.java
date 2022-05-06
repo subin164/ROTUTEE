@@ -1,4 +1,4 @@
-package com.greedy.rotutee.board.serviceBoard.entity;
+package com.greedy.rotutee.board.FQABoard.entity;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * 2022-05-04 7sang 최초 생성
  */
 
-@Entity(name = "ServiceBoard_BoardCategory")
+@Entity(name = "FQABoard_BoardCategory")
 @Table(name = "TBL_BOARD_CATEGORY")
 public class BoardCategory {
 
