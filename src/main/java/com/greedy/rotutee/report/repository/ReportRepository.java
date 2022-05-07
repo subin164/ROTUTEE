@@ -3,6 +3,8 @@ package com.greedy.rotutee.report.repository;
 import com.greedy.rotutee.report.entity.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * packageName : com.greedy.rotutee.report.repository
  * fileName : ReportRepository
@@ -17,4 +19,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ReportRepository extends JpaRepository<Report, Integer> {
 
 
+    List<Report> findByBoardBoardNoOrderByReportNoAsc(int boardNo);
 }

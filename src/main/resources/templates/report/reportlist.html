@@ -94,7 +94,8 @@
                                     <table id="report-table">
                                         <tbody>
                                         <tr class="row100 body" th:each="report : ${reports}" data-bs-toggle="modal">
-                                            <input type="hidden" th:value="${report.reportNo}">
+                                            <input type="hidden" id="reportNo" th:value="${report.reportNo}">
+                                            <input type="hidden" id="boardNo" th:value="=${report.board.boardNo}"
                                             <input type="hidden" id="boardTitle" th:value="${report.board.boardTitle}">
                                             <th:block th:if="${report.boardAnswer != null}">
                                                 <input type="hidden" id="answerContent" th:value="${report.boardAnswer.answerContent}">
@@ -215,8 +216,9 @@
     // 테이블의 Row 클릭시 값 가져오기
     $("#report-table tr").click(function () {
         let tr = $(this);
-        let reportNo = tr.children('input').eq(0).val();
+        let reportNo = $("#reportNo").val();
         let answer = tr.children('input').eq(1).val();
+        let boardNo = $("#boardNo").val();
         console.log(reportNo);
         console.log(answer);
         console.log($("#answerContent").val());
@@ -234,7 +236,7 @@
         $.ajax({
             url: "/report/detail",
             type: "get",
-            data: {reportNo: reportNo},
+            data: {boardNo: boardNo},
             success: function (data) {
                 console.log(data);
             }

@@ -60,9 +60,9 @@ public class ReportController {
     @GetMapping(value = "/detail", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String findReportDetail(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
-        int reportNo = Integer.parseInt(request.getParameter("reportNo"));
+        int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 
-        ReportDTO report = reportService.findReportDetail(reportNo);
+        ReportDTO report = reportService.findReportDetail(boardNo);
 
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")

@@ -57,9 +57,16 @@ public class ReportServiceTest {
     }
 
     @Test
-    public void 신고번호에_따른_조회_확인() {
+    public void 게시판번호에_따른_신고조회_확인() {
+        //given
+        int boardNo = 903;
+        //when
+        List<Report> reportEntities = reportRepository.findByBoardBoardNoOrderByReportNoAsc(boardNo);
 
-
+        //then
+        for (Report reportEntity : reportEntities) {
+            System.out.println("reportEntity = " + reportEntity);
+        }
     }
 
 

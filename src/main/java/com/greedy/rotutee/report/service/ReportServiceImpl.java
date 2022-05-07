@@ -51,8 +51,9 @@ public class ReportServiceImpl implements ReportService{
     }
 
     @Override
-    public ReportDTO findReportDetail(int reportNo) {
+    public ReportDTO findReportDetail(int boardNo) {
 
+        List<Report> reportEntities = reportRepository.findByBoardBoardNoOrderByReportNoAsc(boardNo);
 
 
         return null;
