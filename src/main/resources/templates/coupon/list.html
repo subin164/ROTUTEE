@@ -38,7 +38,9 @@
                     <button class="btn" type="button" onclick="couponRemove()">쿠폰삭제</button>
                 </li>
                 <li>
-                    <button class="btn">쿠폰발행</button>
+                    <button class="btn" data-bs-toggle="modal"
+                            data-bs-target="#couponPublishModal" onclick="publishCouponList()">쿠폰발행
+                    </button>
                 </li>
             </ul>
 
@@ -160,7 +162,8 @@
                         <div class="col-md-6 shadow-sm mb-md-3 w-100">
                             <label class="fw-bold">쿠폰내용</label>
                             <div class="d-flex">
-                                <input class="tag-input w-100" type="text" id="modifyCouponContent" name="couponContent">
+                                <input class="tag-input w-100" type="text" id="modifyCouponContent"
+                                       name="couponContent">
                             </div>
                         </div>
 
@@ -174,7 +177,8 @@
                         <div class="col-md-12 shadow-sm mb-md-3  w-100">
                             <label class="fw-bold">만료기한</label>
                             <div class="d-flex">
-                                <input class="tag-input w-100" type="text" id="modifyExpirationDate" name="expirationDate">
+                                <input class="tag-input w-100" type="text" id="modifyExpirationDate"
+                                       name="expirationDate">
                             </div>
                         </div>
                     </div>
@@ -188,6 +192,41 @@
                     </button>
                     <button type="submit" class="btn btn-outline-primary" form="couponModifyForm">
                         등록
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="couponPublishModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2>쿠폰변경</h2>
+            </div>
+
+            <div class="modal-body">
+                <form action="/coupon/publish" method="post" id="couponPublishForm">
+                    <div>
+                        <button>회원전체 발행</button>
+                        <button>개인회원 발행</button>
+                    </div>
+                    <ul id="publishCouponList"></ul>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <div class="d-flex">
+
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
+                        취소
+                    </button>
+                    <button type="submit" class="btn btn-outline-primary" form="couponPublishForm">
+                        발행
                     </button>
                 </div>
             </div>
@@ -253,6 +292,27 @@
         $("#modifyExpirationDate").val(couponExpirationDate);
 
     });
+
+    function publishCouponList() {
+
+        const coupons = [];
+
+        $("input:checkbox[name=couponNo]:checked").each(function () {
+
+            const thisRow = $(this).closest("tr");
+
+            const couponNo = thisRow.find("td:eq(0)").find("input").val();
+            const couponName = thisRow.find("td:eq(1)").html();
+
+            coupons.push({no: couponNo, name: couponName})
+
+        });
+
+        coupons.map((coupon) => {
+
+            $("#publishCouponList").append("<li class='publish-coupon-item'>" + "<input type='hidden' name='couponNo' value='" + coupon.no + "'>" + coupon.name + "</li>");
+        });
+    };
 
 
 </script>
