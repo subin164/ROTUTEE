@@ -20,6 +20,7 @@ public class Member {
             strategy = GenerationType.SEQUENCE,
             generator = "MEMBER_SEQ_GENERATOR"
     )
+
     @Column(name = "MEMBER_NO")
     private int no;
 

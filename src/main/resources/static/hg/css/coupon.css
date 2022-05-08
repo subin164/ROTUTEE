@@ -26,3 +26,8 @@
     margin: 0 auto;
     padding: 30px;
 }
+
+/* 쿠폰 발행*/
+.publish-coupon-item{
+    padding: 5px 10px;
+}

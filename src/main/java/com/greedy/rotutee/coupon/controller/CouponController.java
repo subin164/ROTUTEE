@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -70,4 +69,14 @@ public class CouponController {
         return "redirect:/coupon/list";
     }
 
-}
+    @PostMapping("/publish")
+    public String publishCoupon(@RequestParam(value = "couponNo") List<String> couponNoList){
+
+            System.out.println("퍼블리싱ㅋ ㅜ폰 욫어옴 : " + couponNoList);
+
+            couponService.couponPublish(couponNoList);
+
+            return "redirect:/coupon/list";
+        }
+
+    }
