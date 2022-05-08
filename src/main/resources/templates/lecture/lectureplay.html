@@ -29,8 +29,8 @@
 
         .lecturevideo {
 
-            height: 38vh;
-            background-color: #d3e1f3;
+            /*height: 38vh;*/
+
         }
 
         .wrap {
@@ -136,7 +136,9 @@
         <div class="header">
             <div>신나는 자바</div>
         </div>
-        <div class="lecturevideo"></div>
+        <div class="lecturevideo">
+            <video id="lecture-video" style="width: 40vw; height: 35vh;"></video>
+        </div>
         <div class="tutor-comment">
             <span th:text="${ lecturePlay.lectureSummary }"></span>
         </div>
@@ -325,6 +327,8 @@
 
 
 
+
+    // th:src="@{/video/}"
 
 
 </script>
