@@ -20,9 +20,4 @@ public interface LectureRequestService {
 
     void rejectLecture(int lectureNo, int rejectionCategoryNo);
 
-    void requestLectureModification(LectureDTO modifiedLecture, int categoryNo);
-
-    List<LectureDTO> findRequestedModifyLecture();
-
-    List<LectureDTO> findProcessedModifyLecture();
 }

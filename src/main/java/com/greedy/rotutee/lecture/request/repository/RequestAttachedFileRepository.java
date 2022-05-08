@@ -9,6 +9,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RequestAttachedFileRepository extends JpaRepository<AttachedFile, Integer> {
 
-    AttachedFile findByLectureAndFileDeletionYNAndDivision(Lecture lectureEntity, String deletion, String division);
-
 }

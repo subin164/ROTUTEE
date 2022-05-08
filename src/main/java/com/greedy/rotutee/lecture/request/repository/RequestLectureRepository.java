@@ -16,6 +16,4 @@ public interface RequestLectureRepository extends JpaRepository<Lecture, Integer
     List<Lecture> findByLectureApprovalStatusOrLectureApprovalStatus(String status1, String status2);
 
     Lecture findByLectureNo(int lectureNo);
-
-    List<Lecture> findByApplicationDivision(String division);
 }
