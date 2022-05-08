@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * packageName : com.greedy.rotutee.report.controller
@@ -45,9 +47,19 @@ public class ReportController {
     }
 
     @GetMapping("/list")
-    public ModelAndView findReportList(ModelAndView mv, @PageableDefault Pageable pageable) {
+    public ModelAndView findReportList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
 
-        Page<ReportDTO> reports = reportService.findReportList(pageable);
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        System.out.println("searchCondition = " + searchCondition);
+        System.out.println("searchValue = " + searchValue);
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        Page<ReportDTO> reports = reportService.findReportList(pageable, searchMap);
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(reports);
 
         mv.addObject("reports", reports);
@@ -62,7 +74,7 @@ public class ReportController {
     public String findReportDetail(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
         int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 
-        ReportDTO report = reportService.findReportDetail(boardNo);
+        List<ReportDTO> reports = reportService.findReportDetail(boardNo);
 
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
@@ -71,9 +83,90 @@ public class ReportController {
                 .serializeNulls().disableHtmlEscaping()
                 .create();
 
-        return gson.toJson(report);
+        return gson.toJson(reports);
 
     }
+    @GetMapping(value = "/answerdetail", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String findReportAnswerDetail(HttpServletRequest request) {
+        String mapString = "answerNo";
+        int answerNo = getRequestNo(request, mapString);
+
+        List<ReportDTO> reports = reportService.findReportAnswerDetail(answerNo);
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls().disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(reports);
+
+    }
+    @GetMapping(value = "/modifyboard", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String modifyBoardReport(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
+        String boardNoMap = "boardNo";
+        int boardNo = getRequestNo(request, boardNoMap);
+        int memberNo = customUser.getNo();
+        String clickBtn = request.getParameter("clickBtn");
+
+        boolean result = false;
+        if( clickBtn.equals("승인")) {
+            result = reportService.approveBoardReport(boardNo, memberNo);
+        } else if(clickBtn.equals("거절")) {
+            result = reportService.rejectBoardReport(boardNo, memberNo);
+        } else if(clickBtn.equals("철회")) {
+            result = reportService.withdrawBoardReport(boardNo, memberNo);
+        }
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls().disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(result);
+    }
+
+    @GetMapping(value = "/modifyanswer", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String modifyAnswerReport(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
+
+        String answerNoMap = "answerNo";
+        int memberNo = customUser.getNo();
+        int answerNo = getRequestNo(request, answerNoMap);
+        String clickBtn = request.getParameter("clickBtn");
+
+        boolean result = false;
+        if( clickBtn.equals("승인")) {
+            result =  reportService.approveAnswerReport(answerNo, memberNo);
+        } else if(clickBtn.equals("거절")) {
+            result = reportService.rejectAnswerReport(answerNo, memberNo);
+        } else if(clickBtn.equals("철회")) {
+            result = reportService.withdrawAnswerReport(answerNo, memberNo);
+        }
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls().disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(result);
+    }
+
+    private int getRequestNo(HttpServletRequest request, String mapString) {
+
+        int requestNo = Integer.parseInt(request.getParameter(mapString));
+
+        return requestNo;
+    }
+
+
 }
 
 

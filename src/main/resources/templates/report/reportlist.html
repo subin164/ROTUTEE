@@ -44,7 +44,7 @@
             background-color: #8397D7;
         }
 
-        .container {
+        .tablewrap {
             padding-top: 60px;
         }
 
@@ -62,13 +62,37 @@
             font-family: 'Noto Sans KR', sans-serif;
         }
 
+        .selectBox {
+            height: 30px;
+            display: flex;
+            align-content: center;
+            margin-top: 20px;
+
+        }
+
+        .search-btn {
+            background-color: #8DB6E7 !important;
+            color: white !important;
+            width: 70px;
+            height: 35px;
+            font-size: 12px !important;
+            padding: 0 !important;
+        }
+
+        #search-box {
+            border: solid 1px;
+        }
+        .modal-withdraw {
+            display: none;
+        }
+
     </style>
 </head>
 <body>
 <div th:include="/common/adminsidebar.html"></div>
-<div class="container">
-    <div class="box">
-        <label class="head">게시판</label>
+<div class="container tablewrap">
+    <form class="box">
+        <label class="head">신고관리</label>
         <hr>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -95,18 +119,32 @@
                                         <tbody>
                                         <tr class="row100 body" th:each="report : ${reports}" data-bs-toggle="modal">
                                             <input type="hidden" id="reportNo" th:value="${report.reportNo}">
-                                            <input type="hidden" id="boardNo" th:value="=${report.board.boardNo}"
-                                            <input type="hidden" id="boardTitle" th:value="${report.board.boardTitle}">
+                                            <input type="hidden" id="boardNo" th:value="${report.board.boardNo}">
+                                            <input type="hidden" id="boardAnswer" th:value="${report.boardAnswer}">
                                             <th:block th:if="${report.boardAnswer != null}">
-                                                <input type="hidden" id="answerContent" th:value="${report.boardAnswer.answerContent}">
+                                                <input type="hidden" th:value="${report.boardAnswer.answerNo}">
                                             </th:block>
-                                            <input type="hidden" id="accusedMember" th:value="${report.accusedMember.email}">
-                                            <input type="hidden" id="reporter" th:value="${report.member.email}">
-                                            <input type="hidden" id="reportReason" th:value="${report.reportCategory.reportCategoryName}">
-                                            <input type="hidden" id="report-content" th:value="${report.content}">
-                                            <input type="hidden" id="report-date" th:value="${report.reportedDate}">
+                                            <th:block th:if="${report.boardAnswer != null}">
+                                                <input type="hidden" id="answerContent"
+                                                       th:value="${report.boardAnswer.answerContent}">
+                                            </th:block>
                                             <td class="cell100 column1" th:text="${report.division}"></td>
-                                            <td class="cell100 column2" th:text="${report.board.boardTitle}"></td>
+                                            <th:block th:if="${report.boardAnswer == null}">
+                                                <td class="cell100 column2">
+                                                    [[${report.board.boardTitle}]]
+                                                    <th:block th:if="${report.processStatus == '승인' or report.processStatus == '거절'}">
+                                                        <span class="badge text-light" style="background-color: #f3c3c3">처리완료</span>
+                                                    </th:block>
+                                                </td>
+                                            </th:block>
+                                            <th:block th:if="${report.boardAnswer != null}">
+                                                <td class="cell100 column2">
+                                                    [[${report.boardAnswer.answerContent}]]
+                                                    <th:block th:if="${report.processStatus == '승인' or report.processStatus == '거절' }">
+                                                        <span class="badge text-light" style="background-color: #f3c3c3">처리완료</span>
+                                                    </th:block>
+                                                </td>
+                                            </th:block>
                                             <td class="cell100 column3" th:text="${report.board.member.name}"></td>
                                             <td class="cell100 column4" th:text="${report.processStatus}"></td>
                                             <th:block th:if="${report.boardAnswer == null}">
@@ -127,35 +165,49 @@
                 </div>
             </div>
         </div>
+        <!--paging button-->
         <div class="d-flex justify-content-center">
             <div class="justify-content-evenly mt-lg-5">
-                <button class="btn pagebtn"
+                <button class="btn pagebtn" type="button"
                         th:onclick="'location.href=\'/report/list?page=' + @{${paging.startPage}}  + '\''"
                         th:disabled="${ reports.first }"><<
                 </button>
-                <button class="btn pagebtn"
+                <button class="btn pagebtn" type="button"
                         th:onclick="'location.href=\'/report/list?page=' + @{${paging.currentPage - 1}}  + '\''"
                         th:disabled="${ reports.first }"><
                 </button>
                 <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-                    <button class="btn pagebtn"
+                    <button class="btn pagebtn" type="button"
                             th:onclick="'location.href=\'/report/list?page=' + @{${page}}  + '\''"
                             th:text="${ page }"
                             th:disabled="${ paging.currentPage eq page }">
                     </button>
                 </th:block>
-                <button class="btn pagebtn"
+                <button class="btn pagebtn" type="button"
                         th:onclick="'location.href=\'/report/list?page=' + @{${paging.currentPage + 1}}  + '\''"
                         th:disabled="${ reports.last }">>
                 </button>
-                <button class="btn pagebtn"
+                <button class="btn pagebtn" type="button"
                         th:onclick="'location.href=\'/report/list?page=' + @{${paging.endPage}}  + '\''"
                         th:disabled="${ reports.last }">>>
                 </button>
             </div>
         </div>
-    </div>
+        <!-- Search bar -->
+        <form th:action="@{/report/list}" method="get">
+            <div class="selectBox d-flex justify-content-center">
+                <select name="searchCondition">
+                    <option value="title">제목</option>
+                    <option value="category">카테고리</option>
+                    <option value="status">처리상태</option>
+                </select>
+                <input id="search-box" type="text" placeholder="검색어입력" name="searchValue">
+                <button class="btn search-btn">검색하기</button>
+            </div>
+        </form>
 </div>
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -178,7 +230,7 @@
                 </div>
                 <hr style="margin: 3px;">
                 <div class="report-list">
-                    <table>
+                    <table id="report-modalTable">
                         <tr>
                             <th>신고자</th>
                             <th>신고사유</th>
@@ -186,25 +238,32 @@
                             <th>신고일자</th>
                         </tr>
                         <tr>
+                            <tbody>
                             <td id="report-member"></td>
                             <td id="reason"></td>
                             <td id="content"></td>
-                            <td id="date">2022-05-05</td>
+                            <td id="date"></td>
+                            </tbody>
                         </tr>
                     </table>
                 </div>
-                <input type="hidden" id="quizNo" name="quizNo">
-                <input type="hidden" id="correctAnswer">
+                <input type="hidden" id="modal-reportNo" name="reportNo">
+                <input type="hidden" id="modal-boardNo" name="boardNo">
+                <input type="hidden" id="modal-answerNo" name="answerNo">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="approve-btn" type="button" class="btn"
+                <button id="approve-btn" type="button" class="btn modal-btn"
                         style="background-color: #d3e1f3; color: rgb(107, 107, 107);">
                     승인
                 </button>
-                <button id="reject-btn" type="button" class="btn"
+                <button id="reject-btn" type="button" class="btn modal-btn"
                         style="background-color: #f3abb2; color: rgb(107, 107, 107);">
                     거절
+                </button>
+                <button id="withdraw-btn" type="button" class="btn modal-withdraw"
+                        style="background-color: #f3abb2; color: rgb(107, 107, 107);">
+                    철회
                 </button>
             </div>
         </div>
@@ -212,38 +271,251 @@
 </div>
 
 <script th:inline="javascript">
-    console.log([[${reports}]].length);
     // 테이블의 Row 클릭시 값 가져오기
     $("#report-table tr").click(function () {
+        $(".modal-btn").css('display', 'block');
+        $(".modal-withdraw").css('display', 'none');
         let tr = $(this);
-        let reportNo = $("#reportNo").val();
-        let answer = tr.children('input').eq(1).val();
-        let boardNo = $("#boardNo").val();
+        console.log(tr);
+        let reportNo = tr.children('input:eq(0)').val();
+        let boardNo = tr.children('input:eq(1)').val();
+        let boardAnswer = tr.children('input:eq(2)').val();
+        let answerNo = tr.children('input:eq(3)').val();
         console.log(reportNo);
-        console.log(answer);
+        console.log(boardNo);
+        console.log(boardAnswer);
+        console.log(answerNo);
         console.log($("#answerContent").val());
-        // if ($("#answerContent").val() == null) {
-        //     $("#report-title").html($("#boardTitle").val());
-        // } else if ($("#answerContent").val() != null) {
-        //     $("#report-title").html($("#answerContent").val());
-        // }
-        // $("#report-writer").html($("#accusedMember").val());
-        // $("#report-member").html($("#reporter").val());
-        // $("#reason").html($("#reportReason").val());
-        // $("#content").html($("#report-content").val());
-        // $("#date").html($("#report-date").val());
 
-        $.ajax({
-            url: "/report/detail",
-            type: "get",
-            data: {boardNo: boardNo},
-            success: function (data) {
-                console.log(data);
-            }
-        })
+        if (boardAnswer === "") {
+            $.ajax({
+                url: "/report/detail",
+                type: "get",
+                data: {boardNo: boardNo},
+                success: function (data) {
+                    const reportModalTitle = tr.children('td').eq(1).html();
+                    const reportModalWriter = tr.children('td').eq(2).html();
+                    const table = document.getElementById('report-modalTable');
+                    $('#report-modalTable > tbody').empty();
+                    $("#report-title").html(reportModalTitle);
+                    $("#report-writer").html(reportModalWriter);
+                    for (let i = 0; i < data.length; i++) {
+                        const newRow = table.insertRow();
+                        const newCell1 = newRow.insertCell(0);
+                        const newCell2 = newRow.insertCell(1);
+                        const newCell3 = newRow.insertCell(2);
+                        const newCell4 = newRow.insertCell(3);
+                        console.log(data[i].member.email);
+                        console.log(data[i].reportCategory.reportCategoryName);
+                        console.log(data[i].content);
+                        console.log(data[i].reportedDate);
+                        newCell1.innerText = data[i].member.email;
+                        newCell2.innerText = data[i].reportCategory.reportCategoryName;
+                        newCell3.innerText = data[i].content;
+                        newCell4.innerText = data[i].reportedDate;
+                    }
+                    if (data[0].processStatus === '승인' || data[0].processStatus === '거절') {
+                        $(".modal-btn").css('display', 'none');
+                        $(".modal-withdraw").css('display', 'block');
+                    }
+                }
+            })
+        } else if (boardAnswer != null) {
+            $.ajax({
+                url: "/report/answerdetail",
+                type: "get",
+                data: {answerNo: answerNo},
+                success: function (data) {
+                    console.log(data);
+                    const reportModalTitle = tr.children('td').eq(1).html();
+                    const reportModalWriter = tr.children('td').eq(2).html();
+                    console.log(tr.children('td').eq(1).html());
+                    const table = document.getElementById('report-modalTable');
+                    $('#report-modalTable > tbody').empty();
+                    $("#report-title").html(reportModalTitle);
+                    $("#report-writer").html(reportModalWriter);
+                    console.log(data.length);
+                    for (let i = 0; i < data.length; i++) {
+                        const newRow = table.insertRow();
+                        const newCell1 = newRow.insertCell(0);
+                        const newCell2 = newRow.insertCell(1);
+                        const newCell3 = newRow.insertCell(2);
+                        const newCell4 = newRow.insertCell(3);
+                        console.log(data[i].member.email);
+                        console.log(data[i].reportCategory.reportCategoryName);
+                        console.log(data[i].content);
+                        console.log(data[i].reportedDate);
+                        newCell1.innerText = data[i].member.email;
+                        newCell2.innerText = data[i].reportCategory.reportCategoryName;
+                        newCell3.innerText = data[i].content;
+                        newCell4.innerText = data[i].reportedDate;
+                    }
+                    if (data[0].processStatus === '승인' || data[0].processStatus === '거절') {
+                        $(".modal-btn").css('display', 'none');
+                        $(".modal-withdraw").css('display', 'block');
+                    }
+                }
+            });
+        }
+
+        $("#modal-reportNo").val(reportNo);
+        $("#modal-boardNo").val(boardNo);
+        if (boardAnswer != null) {
+            $("#modal-answerNo").val(answerNo);
+        }
         $("#exampleModal").modal('show');
-
     });
+
+    /* 승인 버튼 클릭 시 */
+    $("#approve-btn").click(function () {
+        const modalReportNo = $("#modal-reportNo").val();
+        const modalBoardNo = $("#modal-boardNo").val();
+        const modalAnswerNo = $("#modal-answerNo").val();
+        console.log(modalReportNo);
+        console.log(modalBoardNo);
+        console.log(modalAnswerNo);
+        if (modalAnswerNo === "") {
+            $.ajax({
+                url: "/report/modifyboard",
+                type: "get",
+                data: {
+                    reportNo: modalReportNo,
+                    boardNo: modalBoardNo,
+                    clickBtn: "승인"
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data === true) {
+                        alert("승인되었습니다.");
+                        const currentPage = [[${paging.currentPage}]];
+                        console.log(currentPage);
+                        location.href = "/report/list?page=" + currentPage;
+
+                    }
+                }
+            })
+        } else if (modalAnswerNo != null) {
+            $.ajax({
+                url: "/report/modifyanswer",
+                type: "get",
+                data: {
+                    reportNo: modalReportNo,
+                    answerNo: modalAnswerNo,
+                    clickBtn: "승인"
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data === true) {
+                        alert("승인되었습니다.");
+                        const currentPage = [[${paging.currentPage}]];
+                        console.log(currentPage);
+                        location.href = "/report/list?page=" + currentPage;
+
+                    }
+                }
+            })
+        }
+    })
+
+    /* 거절 버튼 클릭 시 */
+    $("#reject-btn").click(function () {
+        const modalReportNo = $("#modal-reportNo").val();
+        const modalBoardNo = $("#modal-boardNo").val();
+        const modalAnswerNo = $("#modal-answerNo").val();
+        if (modalAnswerNo === "") {
+            $.ajax({
+                url: "/report/modifyboard",
+                type: "get",
+                data: {
+                    reportNo: modalReportNo,
+                    boardNo: modalBoardNo,
+                    clickBtn: "거절"
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data === true) {
+                        alert("거절되었습니다.");
+                        const currentPage = [[${paging.currentPage}]];
+                        console.log(currentPage);
+                        location.href = "/report/list?page=" + currentPage;
+
+                    }
+                }
+            })
+        } else if (modalAnswerNo != null) {
+            $.ajax({
+                url: "/report/modifyanswer",
+                type: "get",
+                data: {
+                    reportNo: modalReportNo,
+                    answerNo: modalAnswerNo,
+                    clickBtn: "거절"
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data === true) {
+                        alert("거절되었습니다.");
+                        const currentPage = [[${paging.currentPage}]];
+                        console.log(currentPage);
+                        location.href = "/report/list?page=" + currentPage;
+
+                    }
+
+                }
+            })
+        }
+    })
+
+    /* 철회 버튼 클릭 시 */
+    $("#withdraw-btn").click(function (){
+        const modalReportNo = $("#modal-reportNo").val();
+        const modalBoardNo = $("#modal-boardNo").val();
+        const modalAnswerNo = $("#modal-answerNo").val();
+        console.log(modalReportNo);
+        console.log(modalBoardNo);
+        console.log(modalAnswerNo);
+        if (modalAnswerNo === "") {
+            $.ajax({
+                url: "/report/modifyboard",
+                type: "get",
+                data: {
+                    reportNo: modalReportNo,
+                    boardNo: modalBoardNo,
+                    clickBtn: "철회"
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data === true) {
+                        alert("철회되었습니다.");
+                        const currentPage = [[${paging.currentPage}]];
+                        console.log(currentPage);
+                        location.href = "/report/list?page=" + currentPage;
+
+                    }
+                }
+            })
+        } else if (modalAnswerNo != null) {
+            $.ajax({
+                url: "/report/modifyanswer",
+                type: "get",
+                data: {
+                    reportNo: modalReportNo,
+                    answerNo: modalAnswerNo,
+                    clickBtn: "철회"
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data === true) {
+                        alert("철회되었습니다.");
+                        const currentPage = [[${paging.currentPage}]];
+                        console.log(currentPage);
+                        location.href = "/report/list?page=" + currentPage;
+                    }
+                }
+            })
+        }
+
+    })
 </script>
 <!--===============================================================================================-->
 <!--<script th:src="@{/sy/vendor/bootstrap/js/popper.js}"></script>-->
