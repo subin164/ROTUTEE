@@ -11,7 +11,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+/**
+ * packageName      : com.greedy.rotutee.lecture.request.model.repository
+ * fileName         : RequestMemberRepositoryTest
+ * author           : SEOK
+ * date             : 2022-05-02
+ * description      :
+ * ==========================================================
+ * DATE            AUTHOR              NOTE
+ * ----------------------------------------------------------
+ * 2022-05-02      SEOK         최초 생성
+ */
 @SpringBootTest
 @ContextConfiguration(classes = {RotuteeApplication.class, BeanConfiguration.class, JPAConfiguration.class})
 public class RequestMemberRepositoryTest {
@@ -28,10 +38,11 @@ public class RequestMemberRepositoryTest {
 
     @Test
     public void 회원조회_테스트() {
-
+        //given
         int memberNo = 16;
-
+        //when
         Member member = requestMemberRepository.findByNo(memberNo);
+        //then
         assertNotNull(member);
 
     }

@@ -47,16 +47,6 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         List<Lecture> lectureList = requestLectureRepository.findByTutor(tutor);
 
         List<LectureDTO> lectureDTOList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
-        for(LectureDTO lecture : lectureDTOList) {
-            String deletion = "N";
-            String division = "강의";
-            Lecture lectureEntity = modelMapper.map(lecture, Lecture.class);
-            AttachedFile file = requestAttachedFileRepository.findByLectureAndFileDeletionYNAndDivision(lectureEntity, deletion, division);
-
-            if(file != null) {
-            AttachedFileDTO fileDTO = modelMapper.map(file, AttachedFileDTO.class);
-            }
-        }
 
         return lectureDTOList;
     }
@@ -175,7 +165,8 @@ public class LectureRequestServiceImpl implements LectureRequestService{
 
             List<ClassDTO> classDTOList = chapter.getClassList();
             for(ClassDTO classDTO : classDTOList) {
-                    classDTO.setChapter(chapter);
+
+                classDTO.setChapter(chapter);
 
                 List<MultipartFile> classVideoList = classDTO.getFileList();
                 List<AttachedFileDTO> videoList = new ArrayList<>();
@@ -202,6 +193,7 @@ public class LectureRequestServiceImpl implements LectureRequestService{
                         videoList.add(video);
 
                         classDTO.setVideoList(videoList);
+                        classDTO.setVideoPath(savedFileName);
 
                         videoDirectory.setWritable(true);
                         videoDirectory.setReadable(true);
@@ -275,40 +267,6 @@ public class LectureRequestServiceImpl implements LectureRequestService{
 
         requestLectureRequestProcessingHistoryRepository.save(modelMapper.map(history, LectureRequestProcessingHistory.class));
 
-    }
-
-    @Override
-    @Transactional
-    public void requestLectureModification(LectureDTO modifiedLecture, int categoryNo) {
-
-        Lecture lecture = requestLectureRepository.findByLectureNo(modifiedLecture.getLectureNo());
-        lecture.setLectureName(modifiedLecture.getLectureName());
-        lecture.setLecturePrice(modifiedLecture.getLecturePrice());
-        lecture.setLectureLevel(modifiedLecture.getLectureLevel());
-        lecture.setLectureSummary(modifiedLecture.getLectureSummary());
-        lecture.setLectureDetails(modifiedLecture.getLectureDetails());
-        lecture.setApplicationDate(new Date(System.currentTimeMillis()));
-        lecture.setApplicationDivision("수정신청");
-    }
-
-    @Override
-    public List<LectureDTO> findRequestedModifyLecture() {
-
-        String division = "수정신청";
-
-        List<Lecture> requestList = requestLectureRepository.findByApplicationDivision(division);
-
-        return requestList.stream().map(request -> modelMapper.map(request, LectureDTO.class)).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<LectureDTO> findProcessedModifyLecture() {
-
-        String division = "수정완료";
-
-        List<Lecture> recordList = requestLectureRepository.findByApplicationDivision(division);
-
-        return recordList.stream().map(record -> modelMapper.map(record, LectureDTO.class)).collect(Collectors.toList());
     }
 
 }
