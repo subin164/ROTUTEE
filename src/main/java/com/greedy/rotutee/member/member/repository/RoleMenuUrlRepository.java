@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface RoleMenuUrlRepository extends JpaRepository<RoleMenuUrl, Integer> {
 
-    @Query("select DISTINCT a from RoleMenuUrl a join fetch a.role b where b.no = :no")
+//    @Query("select DISTINCT a from RoleMenuUrl a join fetch a.role b where b.no = :no")
     List<RoleMenuUrl> findRoleMenuUrlByRoleNo(Integer no);
 }

@@ -23,4 +23,6 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     List<Board> findByBoardCategoryNo(int categoryNo);
+
+    List<Board> findByBoardCategoryNoAndDeleteYN(int categoryNo, char n);
 }

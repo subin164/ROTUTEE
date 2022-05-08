@@ -106,16 +106,12 @@ public class MemberController {
     @GetMapping("/list")
     public ModelAndView findMemberList(ModelAndView mv, @PageableDefault Pageable pageable) {
 
-        Page<MemberDTO> tuteeList = memberService.findAllTutee(pageable);
-        Page<MemberDTO> tutorList = memberService.findAllTutor(pageable);
+        Page<MemberDTO> memberList = memberService.findAllMember(pageable);
 
-        PagingButtonInfo tuteePaging = Pagenation.getPagingButtonInfo(tutorList);
-        PagingButtonInfo tutorPaging = Pagenation.getPagingButtonInfo(tuteeList);
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(memberList);
 
-        mv.addObject("tuteeList", tuteeList);
-        mv.addObject("tutorList", tutorList);
-        mv.addObject("tuteePaging", tuteePaging);
-        mv.addObject("tutorPaging", tutorPaging);
+        mv.addObject("memberList", memberList);
+        mv.addObject("paging", paging);
 
         mv.setViewName("/member/list");
 
@@ -135,6 +131,7 @@ public class MemberController {
 //        AchievementDTO achievement = profileService.findMemberAchievement(memberNo);
 
         if(member.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
+
             TutorInfoDTO tutorInfo = profileService.findTutorInfo(memberNo);
 
             tutorInfo.setAddress(tutorInfo.getAddress().replace("&", " "));

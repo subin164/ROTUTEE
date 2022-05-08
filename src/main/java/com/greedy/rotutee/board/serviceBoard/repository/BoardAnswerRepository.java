@@ -26,4 +26,6 @@ public interface BoardAnswerRepository extends JpaRepository<BoardAnswer, Intege
 
     @Query("select DISTINCT a from ServiceBoard_BoardAnswer a join fetch a.board where a.no = :answerNo")
     List<BoardAnswer> findByNo(int answerNo);
+
+    List<BoardAnswer> findByBoardNoAndAnswerYn(int boardNo, char status);
 }

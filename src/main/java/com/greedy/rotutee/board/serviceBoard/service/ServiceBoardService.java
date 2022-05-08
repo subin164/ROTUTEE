@@ -58,10 +58,10 @@ public class ServiceBoardService {
                 pageable.getPageSize(),
                 Sort.by("no").descending());
 
-        int categoryNo = 7;
+        int upperCategoryNo = 7;
         char status = 'N';
 
-        return boardRepository.findByBoardCategoryNoAndDeleteYN(categoryNo, status, pageable).map(board -> modelMapper.map(board, BoardDTO.class));
+        return boardRepository.findByBoardCategoryBoardCategoryNoAndDeleteYN(upperCategoryNo, status, pageable).map(board -> modelMapper.map(board, BoardDTO.class));
     }
 
     public Page<BoardDTO> findServiceBoardList2(Pageable pageable) {
@@ -127,7 +127,7 @@ public class ServiceBoardService {
 
     public Page<BoardDTO> findSearchServiceBoardList(String searchValue, String searchCondition, Pageable pageable) {
 
-        int categoryNo = 7;
+        int upperCategoryNo = 7;
         char status = 'N';
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
@@ -137,11 +137,13 @@ public class ServiceBoardService {
         Page<Board> searchBoardList = null;
 
         if (searchCondition.equals("member")) {
-            searchBoardList = boardRepository.findByBoardCategoryNoAndDeleteYNAndMemberNameContaining(categoryNo, status, searchValue, pageable);
+            searchBoardList = boardRepository.findByBoardCategoryBoardCategoryNoAndDeleteYNAndMemberNameContaining(upperCategoryNo, status, searchValue, pageable);
         } else if(searchCondition.equals("title")) {
-            searchBoardList = boardRepository.findByBoardCategoryNoAndDeleteYNAndTitleContaining(categoryNo, status, searchValue ,pageable);
+            searchBoardList = boardRepository.findByBoardCategoryBoardCategoryNoAndDeleteYNAndTitleContaining(upperCategoryNo, status, searchValue ,pageable);
         } else if(searchCondition.equals("content")) {
-            searchBoardList = boardRepository.findByBoardCategoryNoAndDeleteYNAndContentContaining(categoryNo, status, searchValue, pageable);
+            searchBoardList = boardRepository.findByBoardCategoryBoardCategoryNoAndDeleteYNAndContentContaining(upperCategoryNo, status, searchValue, pageable);
+        } else if(searchCondition.equals("category")) {
+            searchBoardList = boardRepository.findByBoardCategoryBoardCategoryNoAndDeleteYNAndBoardCategoryNameContaining(upperCategoryNo, status, searchValue, pageable);
         }
 
         return searchBoardList.map(board -> modelMapper.map(board, BoardDTO.class));
@@ -162,7 +164,7 @@ public class ServiceBoardService {
 
     public List<BoardAnswerDTO> findBoardAnswerList(int boardNo) {
 
-        List<BoardAnswer> boardAnswerList = boardAnswerRepository.findByBoardNo(boardNo);
+        List<BoardAnswer> boardAnswerList = boardAnswerRepository.findByBoardNoAndAnswerYn(boardNo, 'N');
 
         return boardAnswerList.stream().map(boardAnswer -> modelMapper.map(boardAnswer, BoardAnswerDTO.class)).collect(Collectors.toList());
     }

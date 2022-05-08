@@ -92,17 +92,6 @@
     <button onclick="location.href='/serviceBoard/regist'">글작성</button>
     <hr>
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
-                    role="tab" aria-controls="home" aria-selected="true">문의하기</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
-                    role="tab" aria-controls="profile" aria-selected="false">자주 묻는 질문</button>
-        </li>
-    </ul>
-
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="limiter">
@@ -157,6 +146,7 @@
             <div class="selectBox">
                 <form action="/serviceBoard/search">
                 <select name="searchCondition">
+                    <option value="category">카테고리</option>
                     <option value="member">작성자</option>
                     <option value="title">제목</option>
                     <option value="content">내용</option>
@@ -166,51 +156,6 @@
                 </form>
             </div>
         </div>
-<!--        <div class="tab-pane fade board" id="profile" role="tabpanel" aria-labelledby="profile-tab">-->
-<!--            <div class="limiter">-->
-<!--                <div class="container-table100">-->
-<!--                    <div class="wrap-table100">-->
-<!--                        <div class="table100 ver1 m-b-110">-->
-<!--                            <div class="table100-head">-->
-<!--                                <table >-->
-<!--                                    <thead>-->
-<!--                                    <tr class="row100 head">-->
-<!--                                        <th class="cell100 column1">No</th>-->
-<!--                                        <th class="cell100 column2">Title</th>-->
-<!--                                        <th class="cell100 column3">Category</th>-->
-<!--                                        <th class="cell100 column4">Date</th>-->
-<!--                                        <th class="cell100 column5">Writer</th>-->
-<!--                                    </tr>-->
-<!--                                    </thead>-->
-<!--                                </table>-->
-<!--                            </div>-->
-
-<!--                            <div class="table100-body">-->
-<!--                                <table id="after-table">-->
-<!--                                    <tbody>-->
-<!--                                    <tr class="row100 body" th:each="board : ${ boardList2 }">-->
-<!--                                        <td class="cell100 column1" th:text="${ board.no}"></td>-->
-<!--                                        <td class="cell100 column2" th:text="${ board.title}"></td>-->
-<!--                                        <td class="cell100 column3" th:text="${ board.boardCategory.name}"> </td>-->
-<!--                                        <td class="cell100 column4" th:text="${ board.creationDate}"> </td>-->
-<!--                                        <td class="cell100 column5" th:text="${ board.member.name}"> </td>-->
-<!--                                    </tr>-->
-<!--                                    </tbody>-->
-<!--                                </table>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="d-flex justify-content-center">-->
-<!--                <div class="justify-content-evenly mt-lg-5">-->
-<!--                    <th:block th:each="page : ${#numbers.sequence(pging2.startPage, pging2.endPage)}">-->
-<!--                        <button class="btn pagebtn" th:onclick="'location.href=\'/serviceBoard/list?page=' + @{${page}} + '\''"-->
-<!--                                th:text="${ page }" th:disabled="${ pging2.currentPage eq page }"></button>-->
-<!--                    </th:block>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 </div>
 <div th:include="/common/footer.html"></div>
@@ -233,43 +178,27 @@
     });
 
     // 테이블의 Row 클릭시 값 가져오기
-    $("#serviceBoard-table tr").click(function(){
+    $("#serviceBoard-table tr").click(function() {
 
         let tr = $(this);
         let td = tr.children();
 
         let boardNo = td.eq(0).text();
 
-        location.href="/serviceBoard/detail/" + boardNo;
+        $.ajax({
+           url: "/serviceBoard/secret",
+           data: { "boardNo" : boardNo },
+            success: function (data) {
+                if(data) {
+                    location.href="/serviceBoard/detail/" + boardNo;
+                } else {
+                    alert("비밀글 입니다.");
+                }
+            }
+        });
+
     });
 
-    // $(function(){
-    //     $.ajax({
-    //         url: "/member/detail",
-    //         data: { "memberNo" : 14 },
-    //         success: function(data) {
-    //
-    //             console.log(data);
-    //
-    //             console.log(data.memberDetail);
-    //
-    //             const $noTr = $("#noTr");
-    //             const $noTd = $("<td>").text(data.no);
-    //             const $nameTr = $("#nameTr");
-    //             const $nameTd = $("<td>").text(data.name);
-    //             const emailTr = $("#emailTr");
-    //             const emailTd = $("<td>").text(data.email);
-    //             const nicknameTr = $("#nicknameTr");
-    //             const nicknameTd = $("<td>").text(data.name);
-    //             const phoneTr = $("#phoneTr");
-    //             const phoneTd = $("<td>").text(data.phoneNum);
-    //             const introductionTr = $("#introductionTr");
-    //             const introductionTd = $("<td>").text(data.introduction);
-    //
-    //             $nameTr.append($nameTd);
-    //         }
-    //     });
-    // });
 </script>
 </body>
 </html>

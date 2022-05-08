@@ -128,11 +128,11 @@
                                 <div class="table100-body">
                                     <table id="before-table">
                                         <tbody>
-                                        <tr class="row100 body" th:each="tutee : ${ tuteeList }">
-                                            <td class="cell100 column1" th:text="${ tutee.no }"></td>
-                                            <td class="cell100 column2" th:text="${ tutee.name }"></td>
-                                            <td class="cell100 column3" th:text="${ tutee.email }"></td>
-                                            <td class="cell100 column4" th:text="${ tutee.registrationDate }"></td>
+                                        <tr class="row100 body" th:each="member : ${ memberList }">
+                                            <td class="cell100 column1" th:text="${ member.no }"></td>
+                                            <td class="cell100 column2" th:text="${ member.name }"></td>
+                                            <td class="cell100 column3" th:text="${ member.email }"></td>
+                                            <td class="cell100 column4" th:text="${ member.registrationDate }"></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -143,70 +143,10 @@
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="justify-content-evenly mt-lg-5">
-                        <th:block th:each="page : ${#numbers.sequence(tuteePaging.startPage, tuteePaging.endPage)}">
+                        <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
                             <button class="btn pagebtn"
                                     th:onclick="'location.href=\'/member/list?page=' + @{${page}} + '\''"
-                                    th:text="${ page }" th:disabled="${ tuteePaging.currentPage eq page }"></button>
-                        </th:block>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-pane fade board" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="limiter">
-                    <div class="container-table100">
-                        <div class="wrap-table100">
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                                            data-bs-target="#home" type="button"
-                                            role="tab" aria-controls="home" aria-selected="false">튜티
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-                                            data-bs-target="#profile" type="button"
-                                            role="tab" aria-controls="profile" aria-selected="true">튜터
-                                    </button>
-                                </li>
-                            </ul>
-                            <div class="table100 ver1 m-b-110">
-                                <div class="table100-head">
-
-                                    <table>
-                                        <thead>
-                                        <tr class="row100 head">
-                                            <th class="cell100 column1">회원번호</th>
-                                            <th class="cell100 column2">회원명</th>
-                                            <th class="cell100 column3">닉네임</th>
-                                            <th class="cell100 column4">가입일자</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-
-                                <div class="table100-body">
-                                    <table id="after-table">
-                                        <tbody>
-                                        <tr class="row100 body" th:each="tutor : ${ tutorList }">
-                                            <td class="cell100 column1" th:text="${ tutor.no }"></td>
-                                            <td class="cell100 column2" th:text="${ tutor.name }"></td>
-                                            <td class="cell100 column3" th:text="${ tutor.nickname }"></td>
-                                            <td class="cell100 column4" th:text="${ tutor.registrationDate }"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <div class="justify-content-evenly mt-lg-5">
-                        <th:block th:each="page : ${#numbers.sequence(tutorPaging.startPage, tutorPaging.endPage)}">
-                            <button class="btn pagebtn"
-                                    th:onclick="'location.href=\'/member/list?page=' + @{${page}} + '\''"
-                                    th:text="${ page }" th:disabled="${ tutorPaging.currentPage eq page }"></button>
+                                    th:text="${ page }" th:disabled="${ paging.currentPage eq page }"></button>
                         </th:block>
                     </div>
                 </div>

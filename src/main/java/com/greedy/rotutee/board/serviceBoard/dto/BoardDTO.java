@@ -32,7 +32,7 @@ public class BoardDTO {
     private int no;
     private String title;
     private String content;
-    private Timestamp creationDate;
+    private Date creationDate;
     private Date modifiedDate;
     private Date deletionDate;
     private char deleteYN;

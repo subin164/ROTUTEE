@@ -1,14 +1,15 @@
 package com.greedy.rotutee.board.FQABoard.controller;
 
+import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.board.FQABoard.dto.BoardDTO;
 import com.greedy.rotutee.board.FQABoard.service.FQABoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -39,9 +40,45 @@ public class FQABoardController {
 
         List<BoardDTO> boardList = fqaBoardService.findAllFQABoardList(categoryNo);
 
+//        for(BoardDTO board : boardList) {
+//            board.setContent(board.getContent().replaceAll("\r\n", "<br>"));
+//        }
+
         mv.addObject("boardList", boardList);
+        mv.addObject("categoryNo", categoryNo);
         mv.setViewName("/board/FQABoard/list");
 
         return mv;
+    }
+
+    @GetMapping("/regist")
+    public String registFQABoard(@ModelAttribute BoardDTO board, @RequestParam("categoryNo") int categoryNo,
+                                 @AuthenticationPrincipal CustomUser admin) {
+
+        board.setCreationDate(new Date(System.currentTimeMillis()));
+        board.setDeleteYN('N');
+        board.setBulletinBoardSecretYN('N');
+        board.setReportCount(0);
+        board.setViewCount(0);
+
+        fqaBoardService.registFQABoard(board, categoryNo, admin.getNo());
+
+        return "redirect:/FQABoard/list/" + categoryNo;
+    }
+
+    @GetMapping("/modify")
+    public String modifyFQABoard(@ModelAttribute BoardDTO board, @RequestParam("categoryNo") int categoryNo) {
+
+        fqaBoardService.modifyFQABoard(board);
+
+        return "redirect:/FQABoard/list/" + categoryNo;
+    }
+
+    @GetMapping("/remove")
+    public String removeFQABoard(@RequestParam("boardNo") int boardNo, @RequestParam("categoryNo") int categoryNo) {
+
+        fqaBoardService.removeFQABoard(boardNo);
+
+        return "redirect:/FQABoard/list/" + categoryNo;
     }
 }

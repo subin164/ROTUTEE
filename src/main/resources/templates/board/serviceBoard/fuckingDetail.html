@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -162,7 +162,7 @@
         <!--        <div class="answer-all-area">-->
         <div class="answer-regist-area">
             <h6>댓글</h6>
-            <th: sec:authorize="isAuthenticated()">
+            <th: sec:authorize="hasAnyRole('ADMIN', 'SUBADMIN')">
                 <div align="center">
                     <textarea id="answer-textarea" class="regist-textarea" placeholder="댓글을 작성해주세요"></textarea>
                     <input id="registAnswerBtn" type="button" value="댓글 등록" class="btn btn-secondary">

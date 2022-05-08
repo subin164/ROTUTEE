@@ -50,17 +50,11 @@ public class ServiceBoardController {
         Page<BoardDTO> boardList = serviceBoardService.findServiceBoardList(pageable);
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(boardList);
 
-//        Page<BoardDTO> boardList2 = serviceBoardService.findServiceBoardList2(pageable);
-//        PagingButtonInfo paging2 = Pagenation.getPagingButtonInfo(boardList2);
-
         System.out.println("boardList = " + boardList);
         System.out.println("paging = " + paging);
 
         mv.addObject("boardList", boardList);
         mv.addObject("paging", paging);
-//        mv.addObject("boardList2", boardList2);
-//        mv.addObject("paging2", paging2);
-
         mv.setViewName("/board/serviceBoard/list");
 
         return mv;
@@ -73,22 +67,25 @@ public class ServiceBoardController {
     }
 
     @PostMapping("/regist")
-    public String registServiceBoard(@ModelAttribute BoardDTO board, @AuthenticationPrincipal CustomUser loginMember) {
+    public String registServiceBoard(@ModelAttribute BoardDTO board, @AuthenticationPrincipal CustomUser loginMember, @RequestParam("categoryNo") int categoryNo) {
 
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        board.setCreationDate(timestamp);
+        board.setCreationDate(new Date(System.currentTimeMillis()));
         board.setDeleteYN('N');
         if(board.getBulletinBoardSecretYN() != 'Y') {
             board.setBulletinBoardSecretYN('N');
         }
-        board.setBoardCategory(serviceBoardService.findCategoryByNo(7));
+        board.setBoardCategory(serviceBoardService.findCategoryByNo(categoryNo));
         board.setViewCount(0);
         board.setMember(serviceBoardService.findMemberByNo(loginMember.getNo()));
         board.setReportCount(0);
 
+        System.out.println("categoryNo = " + categoryNo);
+        System.out.println("board = " + board);
+        System.out.println("board = " + board.getBoardCategory());
+
         serviceBoardService.registServiceBoard(board);
 
-        return "/board/serviceBoard/regist";
+        return "/board/serviceBoard/list";
     }
 
     @GetMapping("/detail/{boardNo}")
@@ -102,6 +99,33 @@ public class ServiceBoardController {
         mv.setViewName("/board/serviceBoard/fuckingDetail");
 
         return mv;
+    }
+    
+    @GetMapping("/secret")
+    @ResponseBody
+    public boolean secretCheck(@RequestParam("boardNo") int boardNo, @AuthenticationPrincipal CustomUser loginMember) {
+        
+        BoardDTO board = serviceBoardService.findBoardByBoardNo(boardNo);
+
+        String role;
+
+        if(loginMember == null) {
+            return false;
+        } else {
+            role = loginMember.getMemberRoleList().get(0).getRole().getName();
+        }
+
+        System.out.println("role = " + role);
+        
+        if (board.getMember().getNo() == loginMember.getNo() || ("ROLE_ADMIN").equals(role) || ("ROLE_SUBADMIN").equals(role)) {
+            return true;
+        } else {
+            if (board.getBulletinBoardSecretYN() == 'N') {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     @GetMapping("/modify/{boardNo}")

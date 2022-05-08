@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * packageName : com.greedy.rotutee.board.serviceBoard.repository
@@ -39,4 +40,16 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     @Query("select DISTINCT a from ServiceBoard_SerivceBoard a left join fetch a.boardCategory where a.no = :boardNo")
     Board findByNo(int boardNo);
+
+    Page<Board> findByBoardCategoryBoardCategoryNoAndDeleteYN(int upperCategoryNo, char status, Pageable pageable);
+
+    Page<Board> findByBoardCategoryUpperCategoryListNoAndDeleteYN(int upperCategoryNo, char status, Pageable pageable);
+
+    Page<Board> findByBoardCategoryBoardCategoryNoAndDeleteYNAndMemberNameContaining(int upperCategoryNo, char status, String searchValue, Pageable pageable);
+
+    Page<Board> findByBoardCategoryBoardCategoryNoAndDeleteYNAndTitleContaining(int upperCategoryNo, char status, String searchValue, Pageable pageable);
+
+    Page<Board> findByBoardCategoryBoardCategoryNoAndDeleteYNAndContentContaining(int upperCategoryNo, char status, String searchValue, Pageable pageable);
+
+    Page<Board> findByBoardCategoryBoardCategoryNoAndDeleteYNAndBoardCategoryNameContaining(int upperCategoryNo, char status, String searchValue, Pageable pageable);
 }
