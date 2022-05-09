@@ -5,7 +5,7 @@
 }
 
 /* 모집글 상세페이지 본문 */
-.study-status{
+.study-status {
     background-color: darkgreen;
     padding: 3px 5px;
     color: white;
@@ -13,26 +13,26 @@
     align-self: center;
 }
 
-.study-title{
+.study-title {
     font-size: 24px;
     font-weight: bold;
 
 }
 
-.study-content{
+.study-content {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 3; /* 라인수 */
     -webkit-box-orient: vertical;
-    word-wrap:break-word;
+    word-wrap: break-word;
     line-height: 1.2em;
     height: 3.6em; /* 라인높이 * 라인수 */
     white-space: pre-line;
 }
 
 /* 태그 */
-.study-tag{
+.study-tag {
     background-color: rgba(135, 206, 235, 0.2);
     padding: 3px 5px;
     border-radius: 5px;
@@ -42,30 +42,66 @@
 }
 
 
+/* 모집글 메인 */
+.main-content {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    padding: 30px;
+}
 
+.detail-item-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
+.detail-writer-editbtn {
+    display: flex;
+}
 
+.detail-item-nickanme {
+    font-weight: bold;
+    margin-right: 10px;
+    align-self: center;
+}
 
+.detail-item-registDate {
+    align-self: center;
+}
+
+.detail-item-nickanme:after {
+    content: " - ";
+}
+
+.detail-edit-btn {
+    margin-left: auto;
+}
+
+.detail-item-tags {
+    display: flex;
+    padding: 20px 0;
+}
+
+.detail-item-tags > div {
+    margin-right: 5px;
+    padding: 4px 8px;
+    background-color: lightblue;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: bold;
+
+}
 
 
 /* 모집글 상세페이지 댓글 */
-.study-detail-sideMenu{
+.main-wrapper {
     display: flex;
-    justify-content: center;
-    position: fixed;
-    left: 0;
-    width: 100%;
+    align-self: center;
 }
 
-.study-detail-sideMenu-left{
-    max-width: 200px;
-}
 
-.study-detail-sideMenu-right {
-}
 
-.study-detail-content{
-    width: 100%;
-    max-width: 800px;
-    margin: auto;
+.detail-relpy-wrapper{
+
 }

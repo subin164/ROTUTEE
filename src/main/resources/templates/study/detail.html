@@ -4,85 +4,100 @@
 <head>
     <meta charset="UTF-8">
 
-    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css}" rel="stylesheet">
-    <link th:href="@{../hg/css/study.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css}">
+    <link rel="stylesheet" th:href="@{../common/css/common.css}">
+    <link rel="stylesheet" th:href="@{../hg/css/study.css}">
 
     <title>Title</title>
 </head>
 <body>
 <div th:include="/common/topMenubar.html"></div>
-<main>
-    <section class="container">
-        <div class="study-detail-sideMenu">
-            <div class="study-detail-sideMenu-left">
-                뒤로가기
-            </div>
-            <div style="width: 100%; max-width: 800px;"></div>
-            <div class="study-detail-sideMenu-right">
-                <ul>
-                    <li> 모집상태</li>
-                    <li> 조회수</li>
-                </ul>
-            </div>
+<main style="min-height: 700px">
+    <section class="container main-wrapper">
+        <!-- 왼쪽 사이드메뉴 -->
+        <div class="sidemenu-left">
+            <button>뒤로가기</button>
         </div>
-    </section>
-    <section class="study-detail-content">
-        <div class="">
-            <div class="d-flex justify-content-end">
-                <button class="btn" data-bs-toggle="modal" data-bs-target="#studyModify" th:onclick="btn()">수정
-                </button>
-                <button class="btn" th:onclick="|location.href='@{/study/remove?no=}' + @{${studyDetail.studyNo}}|">
-                    삭제
-                </button>
-            </div>
-
-            <ul>
-                <input type="hidden" id="studyNo" th:value="${studyDetail.studyNo}"/>
-                <li class="w-100">
-                    <span class="fs-3 fw-bold mb-md-3" th:text="${ studyDetail.title}"/>
-                </li>
-                <li>
-                    <span th:text="${ studyDetail.content}"/>
-                </li>
-                <li>
-                    <span class="fw-bold" th:text="${ studyDetail.writer.getNickname()}"/>
-                    <span th:text="${studyDetail.startDate}"></span>
-                </li>
-            </ul>
-            <div calss="w-100" id="registReplyList">
-                <ul th:each="studyReplyList:${studyReplyList}">
-                    <li class="d-flex">
-                        <input type="hidden" id="repleNo" th:value="${studyReplyList.replyNo}">
-                        <input type="hidden" id="repleWriteDate" th:value="${studyReplyList.replyWriteDate}">
-                    <li th:text="${studyReplyList.writer.nickname}"></li>
-                    <li th:text="${studyReplyList.replyContent}"></li>
-                    <li th:if="${studyReplyList.writer.no} == ${#authentication.principal.no}">
-                        <button type="button" th:onclick="|studyReplyModify(${studyReplyList.replyNo})|">수정</button>
-                        <button type="button" th:onclick="|studyReplyRemove(${studyReplyList.replyNo})|">삭제</button>
-                    </li>
-                    </li>
-                </ul>
-            </div>
-
-            <div class=" reply-header">
-                <span th:text="${studyDetail.writer.nickname}"/>님 리플을 남겨보세요!
-            </div>
-
-            <form id="studyReplyFrom">
-                <textarea id="replyContent" style="width: 100%;">댓글입력</textarea>
-            </form>
+        <!-- 메인 컨텐츠 -->
+        <div class="main-content">
+            <!-- 모집글 상세보기 -->
             <div>
-                <button class="btn" id="registReply" type="button" form="studyReplyFrom">
-                    작성
-                </button>
+                <ul>
+                    <input type="hidden" id="studyNo" th:value="${studyDetail.studyNo}">
+                    <input type="hidden" id="endDate" th:value="${studyDetail.endDate}">
+                    <input type="hidden" id="limited" th:value="${studyDetail.limited}">
+                    <input type="hidden" id="linked" th:value="${studyDetail.linked}">
+
+                    <li class="detail-item-title" id="title">
+                        <div th:text="${ studyDetail.title}"/>
+                    </li>
+                    <li class="detail-writer-editbtn">
+                        <div class="detail-item-nickanme" id="nickname" th:text="${ studyDetail.writer.getNickname()}"/>
+                        <div class="detail-item-registDate" id="registDate" th:text="${studyDetail.startDate}"/>
+                        <div class="detail-edit-btn">
+                            <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#studyModify"
+                                    onclick="modifyButton()">
+                                수정
+                            </button>
+
+                            <button class="btn"
+                                    th:onclick="|location.href='@{/study/remove?no=}' + @{${studyDetail.studyNo}|">
+                                삭제
+                            </button>
+                        </div>
+                    </li>
+                    <li>
+                        <div id="content" th:text="${ studyDetail.content}"/>
+                    </li>
+                    <li class="detail-item-tags">
+                        <div th:each="studyTag:${studyByTagList}"
+                             th:if="${studyTag.study.studyNo}== ${studyDetail.getStudyNo()}">
+                            <div name="detailTag" th:text="'#' + ${studyTag.tag.tagName}"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 모집글 댓글 -->
+            <div class="detail-relpy-wrapper">
+                <div calss="w-100" id="registReplyList">
+                    <ul th:each="studyReplyList:${studyReplyList}">
+                        <li class="d-flex">
+                            <input type="hidden" id="repleNo" th:value="${studyReplyList.replyNo}">
+                            <input type="hidden" id="repleWriteDate" th:value="${studyReplyList.replyWriteDate}">
+                        <li th:text="${studyReplyList.writer.nickname}"></li>
+                        <li th:text="${studyReplyList.replyContent}"></li>
+                        <li th:if="${studyReplyList.writer.no} == ${#authentication.principal.no}">
+                            <button type="button" th:onclick="|studyReplyModify(${studyReplyList.replyNo})|">수정</button>
+                            <button type="button" th:onclick="|studyReplyRemove(${studyReplyList.replyNo})|">삭제</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class=" reply-header">
+                    <span th:text="${studyDetail.writer.nickname}"/>님 리플을 남겨보세요!
+                </div>
+
+                <form id="studyReplyFrom">
+                    <textarea id="replyContent" style="width: 100%;" placeholder="댓글을 입력하세요"></textarea>
+                </form>
+                <div>
+                    <button class="btn" id="registReply" type="button" form="studyReplyFrom">
+                        작성
+                    </button>
+                </div>
             </div>
         </div>
 
-
+        <!-- 오른쪽 사이드메뉴-->
+        <div class="sidebar-right">
+            <button>신청하기</button>
         </div>
     </section>
 </main>
+
+<div th:include="/common/footer.html"></div>
 
 <!-- Modal -->
 <div class="modal fade" id="studyModify" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -173,7 +188,6 @@
         }
     }
 
-
     document.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
@@ -181,34 +195,27 @@
         ;
     }, true);
 
-    function btn() {
+    function modifyButton() {
 
+        const studyNo = document.getElementById("studyNo");
+        const title = document.getElementById("title");
+        const content = document.getElementById("content");
+        const endDate = document.getElementById("endDate");
+        const limited = document.getElementById("limited");
+        const linked = document.getElementById("linked");
+        let taglist = [];
 
-        const tagList = {};
+        console.log(taglist = $("div[name=detailTag]").text());
+        console.log(taglist = $("div[name=detailTag]").text().substring(1).trim().split("#"));
 
-        let counter = 0;
-
-        // 태그를 추가한다.
-        // function addTag(value) {
-        //     tagList[counter] = value; // 태그를 Object 안에 추가
-        //     counter++; // counter 증가 삭제를 위한 del-btn 의 고유 id 가 된다.
-        // }
-
-        let tagValue = [];
-
-        /*[# th:each="n : ${studyByTagList}"]*/
-        tagValue.push("[(${n.getTag().getTagName()})]");
-        /*[/]*/
-
-        console.log(tagValue);
-        console.log(tagValue.length);
-        for (let i = 0; i < tagValue.length; i++) {
-
-            $("#tag-list")
-                .prepend("<li class='tag-item d-flex' id='tag-id'>" + "#" + tagValue[i] + "<span class='del-btn' idx='" + counter + "'><i class=\"bi bi-x\"></i></span> </li>");
-            console.log(i + "번째 값 : " + tagValue[i]);
-        }
-
+        //
+        // console.log(tagValue);
+        // console.log(tagValue.length);
+        // for (let i = 0; i < tagValue.length; i++) {
+        //
+        //     $("#tag-list")
+        //         .prepend("<li class='tag-item d-flex' id='tag-id'>" + "#" + tagValue[i] + "<span class='del-btn' idx='" + counter + "'><i class=\"bi bi-x\"></i></span> </li>");
+        //     console.log(i + "번째 값 : " + tagValue[i]);
     }
 
     function modifySubmit() {
@@ -273,9 +280,9 @@
 
                         $("#registReplyList").append(
                             "<ul class='d-flex'>" +
-                            "<input type='hidden' value="+ data.replyNo+ ">" +
+                            "<input type='hidden' value=" + data.replyNo + ">" +
                             "<input type='hidden' value=" + data.writer.replyWriteDate + ">" +
-                            "<li>" + registReplyContent + "</li>"+
+                            "<li>" + registReplyContent + "</li>" +
                             "<li>" + registReplyWriter + "</li>" +
                             "<li>" +
                             "<button class='btn' onclick='studyReplyRemove(" + data.replyNo + ")'> 삭제 </button>" +
