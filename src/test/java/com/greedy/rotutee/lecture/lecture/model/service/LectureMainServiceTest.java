@@ -138,7 +138,7 @@ public class LectureMainServiceTest {
         String content = "강의가 너무 체계적이네요.";
         int lectureNo = 2;
         //when
-        lectureMainService.registLectureReview(rating, content, lectureNo, memberNo);
+        lectureMainService.registLectureReviewAndPoint(rating, content, lectureNo, memberNo);
         //then
 
     }
