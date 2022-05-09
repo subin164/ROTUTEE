@@ -7,10 +7,10 @@ import com.greedy.rotutee.board.freeboard.entity.FreeBoard;
 import com.greedy.rotutee.board.freeboard.entity.FreeBoardAnswer;
 import com.greedy.rotutee.board.freeboard.entity.FreeBoardCategory;
 import com.greedy.rotutee.board.freeboard.entity.FreeBoardMember;
-import com.greedy.rotutee.board.freeboard.repository.FreeBoardCategoryRepository;
-import com.greedy.rotutee.board.freeboard.repository.FreeBoardRepository;
-import com.greedy.rotutee.board.freeboard.repository.FreeBoardAnswerRepository;
-import com.greedy.rotutee.board.freeboard.repository.FreeBoardMemberRepository;
+import com.greedy.rotutee.board.freeboard.service.repository.FreeBoardCategoryRepository;
+import com.greedy.rotutee.board.freeboard.service.repository.FreeBoardRepository;
+import com.greedy.rotutee.board.freeboard.service.repository.FreeBoardAnswerRepository;
+import com.greedy.rotutee.board.freeboard.service.repository.FreeBoardMemberRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,11 +21,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -92,17 +88,6 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
         return pageFreeBoards;
     }
-
-    // 페이징 용
-    /*@Override
-    public Page<FreeBoardDTO> findPageBoardList(Pageable pageable) {
-        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
-                pageable.getPageSize(), Sort.by("boardNo").descending());
-
-        Page<FreeBoardDTO> pageFreeBoardDTO =freeBoardRepository.findByBoardDeleteYN('N', pageable).map(FreeBoard -> modelMapper.map(FreeBoard, FreeBoardDTO.class));
-
-        return pageFreeBoardDTO;
-    }*/
 
     @Override
     @Transactional

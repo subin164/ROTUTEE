@@ -43,15 +43,16 @@
         <div> <h1>커뮤니티</h1> </div>
 
         <div class="inner-box">
-            <div> <h3>커뮤니티 상세</h3> </div>
+            <div> <h3>[ 커뮤니티 수정 ]</h3> </div>
             <form id="modify-form" action="/freeboard/modify" method="post">
                 <div class="category-box">
                     <div><h4>카테고리</h4></div>
                     <input id="categoryNo-input" type="hidden" name="categoryNo" th:value="${boardList.freeBoardCategory.boardCategoryNo}"/>
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1"  autocomplete="off" >
-                        <label class="btn btn-outline-primary" for="btnradio1">공지사항</label>
-
+                        <th:block sec:authorize="hasRole('ADMIN')">
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1"  autocomplete="off" >
+                            <label class="btn btn-outline-primary" for="btnradio1">공지사항</label>
+                        </th:block>
                         <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" >
                         <label class="btn btn-outline-primary" for="btnradio2">질물&답변</label>
 
@@ -70,7 +71,6 @@
                 <div class="form-group">
                     <h4>내용</h4>
                     <div class="content-area" >
-                        <!--<input class="boardTitle-input" type="hidden" name="boardContent" th:value="${boardList.boardContent}" required/>-->
                         <textarea class="board-content-textarea" name ="boardContent" th:text="${boardList.boardContent}"/>
                     </div>
 

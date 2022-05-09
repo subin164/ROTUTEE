@@ -43,7 +43,6 @@ public class FreeBoardController {
     private final FreeBoardService freeBoardService;
     private final MessageSource messageSource;
     private final AuthenticationService authenticationService;
-    private int boardNo;
 
     @Autowired
     public FreeBoardController(FreeBoardService freeBoardService, MessageSource messageSource,
@@ -73,10 +72,8 @@ public class FreeBoardController {
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(boardList);
 
         mv.addObject("paging", paging);
-
         mv.addObject("searchCondition", searchCondition);
         mv.addObject("searchValue", searchValue);
-
         mv.addObject("categoryNo", categoryNo);
         mv.addObject("boardList", boardList);
 
@@ -98,7 +95,6 @@ public class FreeBoardController {
             mv.addObject("answer",answer);
         }
 
-        System.out.println("cateogry" + freeBoardDTO.getFreeBoardCategory().getBoardCategoryNo());
 
         mv.addObject("board",freeBoardDTO);
         mv.setViewName("board/freeboard/detail");
@@ -139,13 +135,11 @@ public class FreeBoardController {
                                         RedirectAttributes rttr, ModelAndView mv){
 
         int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
-        System.out.println("cateogryNo : "+categoryNo + ", " + freeBoard);
 
         FreeBoardCategoryDTO categoryDTO = new FreeBoardCategoryDTO();
         categoryDTO.setBoardCategoryNo(categoryNo);
 
         freeBoard.setFreeBoardCategory(categoryDTO);
-        System.out.println("freeBoard : " + freeBoard);
         freeBoardService.modifyBoard(freeBoard);
 
         rttr.addFlashAttribute("successMessage", "수정 완료");
@@ -165,7 +159,6 @@ public class FreeBoardController {
 
         int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
 
-        System.out.println("freeboard :" + freeBoard);
         FreeBoardMemberDTO memberDTO = new FreeBoardMemberDTO();
 
         memberDTO.setMemberNo(customUser.getNo());
@@ -203,8 +196,6 @@ public class FreeBoardController {
         registAnswer.setAnswerContent(context);
         registAnswer.setFreeBoardMember(freeBoardMemberDTO);
         registAnswer.setFreeBoard(freeBoardDTO);
-
-        System.out.println(registAnswer);
 
         freeBoardService.insertAnswer(registAnswer);
 
@@ -250,7 +241,6 @@ public class FreeBoardController {
         modifyAnswer.setAnswerContent(context);
         modifyAnswer.setFreeBoardMember(freeBoardMemberDTO);
         modifyAnswer.setFreeBoard(freeBoardDTO);
-
 
         freeBoardService.updateAnswer(modifyAnswer);
 

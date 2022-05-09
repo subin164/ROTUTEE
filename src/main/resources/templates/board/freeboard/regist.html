@@ -49,13 +49,14 @@
         <form id="regist-form" action="/freeboard/regist" method="post">
             <div class="category-box">
                 <div><h4>카테고리</h4></div>
-                <input id="categoryNo-input" type="text" name="categoryNo" />
+                <input id="categoryNo-input" type="hidden" name="categoryNo" />
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1"  autocomplete="off" >
-                    <label class="btn btn-outline-primary" for="btnradio1">공지사항</label>
-
+                    <th:block sec:authorize="hasRole('ADMIN')">
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1"  autocomplete="off" >
+                        <label class="btn btn-outline-primary" for="btnradio1">공지사항</label>
+                    </th:block>
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" >
-                    <label class="btn btn-outline-primary" for="btnradio2">질물&답변</label>
+                    <label class="btn btn-outline-primary" for="btnradio2">질문&답변</label>
 
                     <input type="radio" class="btn-check"  name="btnradio" id="btnradio3"  autocomplete="off">
                     <label class="btn btn-outline-primary" for="btnradio3">자유</label>
@@ -71,7 +72,7 @@
             <div class="form-group">
                 <h4>내용</h4>
                 <div class="content-area" >
-                    <textarea class="board-content-textarea" name ="boardContent" placeholder="최대 2000자"></textarea>
+                    <textarea  id ="boardTextArea" class="board-content-textarea" name ="boardContent" placeholder="최대 2000자"></textarea>
                 </div>
                 <div>
                     <input id="backBtn" type="button" th:value="뒤로가기" class="btn btn-secondary"/>
@@ -105,30 +106,19 @@
     const $noticeradio1 = document.getElementById("btnradio1");
     const $askfadio2 = document.getElementById("btnradio2");
     const $freeradio3 = document.getElementById("btnradio3");
-    // const $flexCheckChecked = document.getElementById("flexCheckChecked");
     const $regist = document.getElementById("regist-ok");
     const $categoryNo = document.getElementById("categoryNo-input");
     const $backBtn = document.getElementById("backBtn");
 
     let categoryNo = 0;
-    /*console.log("@@@"+flexCheckChecked.value);
-
-
-    $flexCheckChecked.addEventListener("click", function (){
-        if($flexCheckChecked.value == 'N'){
-            flexCheckChecked.value = 'Y'
-            console.log(flexCheckChecked.value);
-        }else{
-            flexCheckChecked.value = 'N'
-            console.log(flexCheckChecked.value);
-        }
-    });*/
+    let contents = document.getElementById("boardTextArea");
 
     $backBtn.addEventListener("click", function (){
         window.location.href="list?categoryNo=" + categoryNo;
     });
 
     $regist.addEventListener("click", function (){
+        contents.value = contents.value.replace(/(\n|\r\n)/g, '<br>');
         document.getElementById("regist-form").submit();
     });
 
