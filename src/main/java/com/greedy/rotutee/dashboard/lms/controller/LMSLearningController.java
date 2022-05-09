@@ -37,17 +37,21 @@ public class LMSLearningController {
         this.lmsLearningService = lmsLearningService;
     }
 
+
+
     @GetMapping("/play")
     public ModelAndView findlecturePlay(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser, HttpServletRequest request){
-
+        System.out.println("야야야야야야야야야야야야야야야야야야야야야야야야야야야야");
         int memberNo = customUser.getNo();
-        HttpSession session = request.getSession();
-        int lectureNo = Integer.parseInt(String.valueOf(session.getAttribute("lectureNo")));
-
+//        HttpSession session = request.getSession();
+//        int lectureNo = (Integer)session.getAttribute("lectureNo");
+        int lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
         LecturePlayDTO lecturePlay = lmsLearningService.findLecturePlay(lectureNo, memberNo);
 
         System.out.println("memberNo = " + memberNo);
-        System.out.println("lectureNo = " + lectureNo);
+        System.out.println("lectureNo|||||||||||||||||||| = " + lectureNo);
+//        System.out.println("메뉴바 session 이다이다 = " + session);
+
 
         mv.addObject("lecturePlay", lecturePlay);
         mv.setViewName("lecture/lectureplay");

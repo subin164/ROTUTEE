@@ -138,6 +138,7 @@
         </div>
         <div class="lecturevideo">
             <video id="lecture-video" controls controlsList="nodownload" style="width: 35vw; height: 35vh;">
+                <source th:src="@{/video/} + ${lecturePlay.chapters[0].classesList[0].videoPath}">
             </video>
         </div>
         <div class="tutor-comment">
@@ -216,7 +217,7 @@
                     <input type="hidden" id="correctAnswer">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="closeModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button id="submit" type="button" class="btn" style="background-color: #d3e1f3; color: rgb(107, 107, 107);">
                         Submit
                     </button>
@@ -226,6 +227,8 @@
     </div>
 <!--</form>-->
 <script th:inline="javascript">
+
+
     $('.class-title').click(function () {
         $(this).children('.menu').slideToggle(600);
     });
@@ -248,7 +251,7 @@
         $('source').remove();
         const videoPath = $(this).children('input').eq(0).val();
         console.log(videoPath);
-        const totalPath = `<source th:src="@{/video/`+ videoPath + `}">`;
+        const totalPath = `<source src= /video/`+ videoPath + `>`;
         console.log(totalPath);
         $("#lecture-video").append(totalPath);
     })
@@ -320,6 +323,9 @@
                                 $('.resultArea').remove();
                                 $('.question').append(tmpHtml);
                             }
+                            $("#closeModal").click(function () {
+                                location.href = "/learning/play";
+                            })
                         }
                     });
                 }
