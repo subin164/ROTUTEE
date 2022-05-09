@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,9 +71,24 @@ public class MainServiceImpl implements MainService{
             LectureCategory interestCategory = memberInterestList.get(0).getCategory();
 
             List<AttachedFile> fileList = mainAttachedFileRepository.findByCategoryNo(interestCategory.getLectureCategoryNo());
-
             if (fileList != null) {
 
+//                List<AttachedFileDTO> fileDTOList = new ArrayList<>();
+//                for(AttachedFile file : fileList) {
+//                    AttachedFileDTO fileDTO = new AttachedFileDTO();
+//                    fileDTO.setAttachedFileNo(file.getAttachedFileNo());
+//                    fileDTO.setOriginalAttachedFileName(file.getOriginalAttachedFileName());
+//                    fileDTO.setSaveAttachedFileName(file.getSaveAttachedFileName());
+//                    fileDTO.setThumbnailFileName(file.getThumbnailFileName());
+//                    fileDTO.setStorageFile(file.getStorageFile());
+//                    fileDTO.setThumbnailFilePath(file.getThumbnailFilePath());
+//                    fileDTO.setDivision(file.getDivision());
+//                    fileDTO.setFileDeletionYN(file.getFileDeletionYN());
+//
+//                    fileDTOList.add(fileDTO);
+//                }
+//
+//                return fileDTOList;
                 return fileList.stream().map(file -> modelMapper.map(file, AttachedFileDTO.class)).collect(Collectors.toList());
             }
         } else {

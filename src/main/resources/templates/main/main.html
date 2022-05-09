@@ -10,30 +10,26 @@
 </head>
 <body>
 <div th:include="/common/topMenubar.html"></div>
-<th: sec:authorize="hasAnyRole('TUTEE', 'ADMIN', 'SUBADMIN')">
-    <button onclick="location.href='/point/productlist'">포인트상점</button>
-    <button onclick="location.href='/tutorApply/request'">튜터신청</button>
-</th:>
 <th:block th:if="${bannerList != null}">
-<div class="container p-0" style="max-width: none;">
-    <div id="bannereIndicators" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner" style="height: 40%;" th:each="banner : ${bannerList}">
-            <div class="carousel-item active">
-                <img th:src="@{/images/banner/} + ${banner.saveAttachedFileName}" class="d-block w-100" alt="..." style="height: 300px;">
+    <div class="container p-0" style="max-width: none;">
+        <div id="bannereIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner" style="height: 40%;" th:each="banner : ${bannerList}">
+                <div class="carousel-item active">
+                    <img th:src="@{/images/banner/} + ${banner.saveAttachedFileName}" class="d-block w-100" alt="..." style="height: 300px;">
+                </div>
             </div>
         </div>
-    </div>
-</div><!-- 슬라이드 배너 end -->
+    </div><!-- 슬라이드 배너 end -->
 </th:block>
 <!-- 배너 이름 -->
 <th:block th:if="${bannerList != null}">
-<section class="lecture-banner mt-lg-5">
-    <div class="container">
-        <ul class="d-flex justify-content-evenly" th:each="banner : ${bannerList}">
-            <li><button class="btn btn-outline-primary round" data-bs-target="#bannereIndicators" data-bs-slide-to="0" aria-current="true" aria-label="Slide 1" th:text="${banner.lecture.lectureName}"></button></li>
-        </ul>
-    </div>
-</section>
+    <section class="lecture-banner mt-lg-5">
+        <div class="container">
+            <ul class="d-flex justify-content-evenly" th:each="banner : ${bannerList}">
+                <li><button class="btn btn-outline-primary round" data-bs-target="#bannereIndicators" data-bs-slide-to="0" aria-current="true" aria-label="Slide 1" th:text="${banner.lecture.lectureName}"></button></li>
+            </ul>
+        </div>
+    </section>
 </th:block>
 <!-- 배너 이름 end -->
 <!-- 강의 검색 -->

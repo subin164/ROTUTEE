@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/css/sj/lectureregist.css">
 </head>
 <body>
-<div th:include="common/tutormypagemenubar.html"></div>
+<div th:include="common/adminsidebar.html"></div>
 <main>
     <form action="/request/approve" method="post">
         <input type="hidden" th:value="${lecture.lectureNo}" name="lectureNo" id="lectureNo">
@@ -158,8 +158,6 @@
                 <div class="tab-pane fade" id="curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
                     <div class="curriculum-area">
                         <p style="font-size: x-large; margin-left: 30px; margin-top: 50px;">커리큘럼</p>
-    <!--                    <button type="button" id="chapter-plus"><i class="bi bi-plus-circle" style="color: black;"></i>챕터 추가-->
-                        </button>
                         <div class="chapter-area">
                             <div th:each="chapter:${chapterList}">
                             <div class="chapter" style="border: 1px solid; width: 95%; height: 50px; margin-top: 20px; margin-left: 30px;">
@@ -172,7 +170,9 @@
                                     <div class="class-name-area">
                                         <input type="text" class="class-name" name="chapterList['+ index +'].classList[0].className" th:value="${chapter.classList[0].getClassName()}">
                                     </div>
-                                    <input type="file" class="video" accept="video/*">
+                                    <video controls controlsList="nodownload" style="width: 35vw; height: 35vh; margin-top: 20px; margin-left: 30px;">
+                                            <source th:src="@{/video/} + ${chapter.classList[0].videoPath}">
+                                        </video>
                                     <div class="quiz-area">
                                         <div class="quiz-title">
                                             <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[0].quizList[0].quizProblem" th:value="${chapter.classList[0].quizList[0].quizProblem}">
@@ -199,7 +199,9 @@
                                     <div class="class-name-area">
                                         <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[1].className" th:value="${chapter.classList[1].className}" readonly>
                                     </div>
-                                    <input type="file" class="video" accept="video/*">
+                                    <video controls controlsList="nodownload" style="width: 35vw; height: 35vh; margin-top: 10px;">
+                                        <source th:src="@{/video/} + ${chapter.classList[1].videoPath}">
+                                    </video>
                                     <div class="quiz-area">
                                         <div class="quiz-title">
                                             <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[1].quizList[0].quizProblem" th:value="${chapter.classList[1].quizList[0].quizProblem}" readonly>
@@ -226,7 +228,9 @@
                                     <div class="class-name-area">
                                         <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[2].className" th:value="${chapter.classList[2].className}" readonly>
                                     </div>
-                                    <input type="file" class="video" accept="video/*">
+                                    <video controls controlsList="nodownload" style="width: 35vw; height: 35vh; margin-top: 10px;">
+                                        <source th:src="@{/video/} + ${chapter.classList[2].videoPath}">
+                                    </video>
                                     <div class="quiz-area">
                                         <div class="quiz-title">
                                             <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[2].quizList[0].quizProblem" th:value="${chapter.classList[2].quizList[0].quizProblem}" readonly>
@@ -253,7 +257,9 @@
                                     <div class="class-name-area">
                                         <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[3].className" th:value="${chapter.classList[3].className}" readonly>
                                     </div>
-                                    <input type="file" class="video" accept="video/*">
+                                    <video controls controlsList="nodownload" style="width: 35vw; height: 35vh; margin-top: 10px;">
+                                        <source th:src="@{/video/} + ${chapter.classList[3].videoPath}">
+                                    </video>
                                     <div class="quiz-area">
                                         <div class="quiz-title">
                                             <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[3].quizList[0].quizProblem" th:value="${chapter.classList[3].quizList[0].quizProblem}" readonly>
