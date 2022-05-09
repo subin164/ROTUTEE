@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Table V04</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--===============================================================================================-->
+  <link rel="icon" type="image/png" th:href="@{/sg/images/icons/favicon.ico}"/>
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" th:href="@{/sg/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" th:href="@{/sg/vendor/animate/animate.css}">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" th:href="@{/sg/vendor/select2/select2.min.css}">
+
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" th:href="@{/sg/css/util.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/sg/css/main.css}">
+  <!--===============================================================================================-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <!-- font-family -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <script th:inline="javascript">
+    /* 비지니스 로직 성공 alert 메시지 처리 */
+    const message = [[${message}]];
+    if(message != null && message != '') {
+      alert(message);
+    }
+  </script>
+
+  <style>
+    tr:hover {
+      background-color: #F5F5F5;
+    }
+    .pagebtn{
+
+      background-color: #D1E4FA;
+    }
+    .pagebtn:focus{
+      background-color: #8397D7;
+    }
+    .categorybtn{
+      background-color: #F0F2FF;
+    }
+    .categorybtn:focus{
+      background-color: #8397D7;
+    }
+    .container{
+      padding-top: 60px;
+    }
+    .box{
+
+      width: 80%;
+      margin-top: 100px;
+      margin-left: 180px;
+
+    }
+    .head{
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 20px;
+    }
+    #myTab{
+      font-family: 'Noto Sans KR', sans-serif;
+      margin-left: 175px;
+      width: 77%;
+
+    }
+    .manageAdmin_wrap {
+      /*display: none;*/
+      width: 500px;
+      height: 200px;
+      position: absolute;
+      background:#fff;
+      margin-top: 0%;
+      margin-left: 25%;
+      margin-right: auto;
+      z-index: 2;
+      border-radius: 30px;
+      border: solid 1px;
+    }
+    .manageAdmin_wrap2 {
+      /*display: none;*/
+      width: 450px;
+      height: 150px;
+      position: absolute;
+      background:#fff;
+      margin-top: 5%;
+      margin-left: 5%;
+      margin-right: auto;
+      z-index: 2;
+    }
+    .myBtn {
+      border: solid 1px #b9bbbe;
+      border-radius: 10px;
+      background-color: #c6c8ca;
+      color: white;
+    }
+    #searchValue {
+      border: solid 1px #b9bbbe; !important;
+    }
+  </style>
+</head>
+<body>
+<div th:include="/common/topMenubar.html"></div>
+<div class="box">
+  <label class="head">관리자 목록</label>
+  <button id="manageAdmin">관리</button>
+  <div class="manageAdmin_wrap">
+    <div class="manageAdmin_wrap2">
+      <div align="center">
+        이메일 <input type="text" id="searchValue"> <button class="myBtn" id="searchBtn">검색</button>
+        <table id="search-table" border="1px solid">
+        </table>
+      </div>
+      <div align="right" style="margin-top: 10px">
+        <button class="myBtn" id="registAdminBtn" style="display: none">관리자 등록</button>
+        <button class="myBtn" id="removeAdminBtn" style="display: none">관리자 해임</button>
+        <button class="myBtn" id="closeBtn">취소</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <div class="limiter">
+        <div class="container-table100">
+          <div class="wrap-table100">
+            <div class="table100 ver1 m-b-110">
+              <div class="table100-head">
+                <table >
+                  <thead>
+                  <tr class="row100 head">
+                    <th class="cell100 column1">회원번호</th>
+                    <th class="cell100 column2">회원명</th>
+                    <th class="cell100 column3">이메일</th>
+                    <th class="cell100 column4">가입일</th>
+                  </tr>
+                  </thead>
+                </table>
+              </div>
+              <div class="table100-body">
+                <table id="before-table">
+                  <tbody>
+                  <tr class="row100 body" th:each="admin : ${ adminList }">
+                    <td th:text="${ admin.no }"></td>
+                    <td th:text="${ admin.name }"></td>
+                    <td th:text="${ admin.email }"></td>
+                    <td th:text="${ admin.registrationDate }"></td>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--paging button-->
+      <div class="d-flex justify-content-center">
+        <div class="justify-content-evenly mt-lg-5">
+          <button class="btn pagebtn" type="button"
+                  th:onclick="'location.href=\'/amdin/list?page=' + @{${paging.startPage}}  + '\''"
+                  th:disabled="${ adminList.first }"><<
+          </button>
+          <button class="btn pagebtn" type="button"
+                  th:onclick="'location.href=\'/amdin/list?page=' + @{${paging.currentPage - 1}}  + '\''"
+                  th:disabled="${ adminList.first }"><
+          </button>
+          <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+            <button class="btn pagebtn" type="button"
+                    th:onclick="'location.href=\'/amdin/list?page=' + @{${page}}  + '\''"
+                    th:text="${ page }"
+                    th:disabled="${ paging.currentPage eq page }">
+            </button>
+          </th:block>
+          <button class="btn pagebtn" type="button"
+                  th:onclick="'location.href=\'/amdin/list?page=' + @{${paging.currentPage + 1}}  + '\''"
+                  th:disabled="${ adminList.last }">>
+          </button>
+          <button class="btn pagebtn" type="button"
+                  th:onclick="'location.href=\'/amdin/list?page=' + @{${paging.endPage}}  + '\''"
+                  th:disabled="${ adminList.last }">>>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:include="/common/footer.html"></div>
+<!--===============================================================================================-->
+<script src="../../static/sg/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="../../static/sg/vendor/bootstrap/js/popper.js"></script>
+<script src="../../static/sg/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="../../static/sg/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+<script src="../../static/sg/js/main.js"></script>
+
+<script>
+
+  $("#registAdminBtn").click(function() {
+
+    let searchValue = $("#searchEmail").val();
+
+    $.ajax({
+      url: "/admin/regist",
+      type: "post",
+      data: {"searchValue" : searchValue},
+      success: function(data) {
+        alert("관리자 등록에 성공하셨습니다.");
+
+        location.href="/admin/list";
+      }
+    });
+  });
+
+  $("#removeAdminBtn").click(function() {
+
+    let searchValue = $("#searchEmail").val();
+
+    $.ajax({
+      url: "/admin/remove",
+      type: "post",
+      data: {"searchValue" : searchValue},
+      success: function(data) {
+        alert("관리자 해임에 성공하셨습니다.");
+
+        location.href="/admin/list";
+      }
+    });
+  });
+
+  $("#searchBtn").click(function() {
+
+    let searchValue = $("#searchValue").val();
+
+    $.ajax({
+      url: "/admin/search",
+      type: "get",
+      data: {"searchValue" : searchValue},
+      success: function(data) {
+
+        if (data.name != null) {
+          const $table = $("#search-table");
+
+          $table.html(" ");
+
+          const $firstTr = $("<tr>");
+          const $noTh = $("<th>").text("회원번호");
+          const $nameTh = $("<th>").text("회원명");
+          const $emailTh = $("<th>").text("이메일");
+
+
+          const $secondTr = $("<tr>");
+          const $noTd = $("<td>").val(data.no).text(data.no);
+          const $nameTd = $("<td>").val(data.name).text(data.name);
+          const $emailTd = $("<td id='searchEmail'>").val(data.email).text(data.email);
+
+          $firstTr.append($noTh);
+          $firstTr.append($nameTh);
+          $firstTr.append($emailTh);
+
+          $secondTr.append($noTd);
+          $secondTr.append($nameTd);
+          $secondTr.append($emailTd);
+
+          $table.append($firstTr);
+          $table.append($secondTr);
+
+          $("#registAdminBtn").css("display", "block");
+          $("#removeAdminBtn").css("display", "block");
+        } else {
+          alert("조회 결과가 없습니다.");
+
+          $("#registAdminBtn").css("display", "none");
+          $("#removeAdminBtn").css("display", "none");
+        }
+      }
+    });
+
+  });
+
+  $("#closeBtn").click(function() {
+
+    $("#searchValue").val(" ");
+    const $table = $("#search-table");
+
+    $table.html(" ");
+
+    document.querySelector('.manageAdmin_wrap').style.display ='none';
+  });
+
+  $("#manageAdmin").click(function(){
+
+    document.querySelector('.manageAdmin_wrap').style.display ='block';
+  });
+
+
+</script>
+</body>
+</html>

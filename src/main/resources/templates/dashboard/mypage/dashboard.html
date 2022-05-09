@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="UTF-8">
@@ -27,6 +27,7 @@
             text-align: center;
             display: flex;
         }
+
         .dashboard {
             font-family: 'Noto Sans KR', sans-serif;
             font-size: 20px;
@@ -73,19 +74,23 @@
             transform: translateZ(0);
             box-shadow: 0 0 1px rgba(0, 0, 0, 0);
         }
+
         .float:hover {
             transform: translateY(-5px);
         }
+
         .total {
             background-color: #D1E4FA !important;
             font-size: 12px !important;
-            width : 73px;
+            width: 73px;
             height: 24px;
             padding: 0px !important;
         }
+
         p {
             margin-bottom: 10px;
         }
+
         .btn-holder {
             position: absolute;
             bottom: 0;
@@ -95,6 +100,7 @@
         .notice {
             overflow: hidden;
         }
+
         .head-title {
             position: relative;
         }
@@ -114,7 +120,8 @@
             <div class="whitebox">
                 <div class="profile row" style="margin: 10px;">
                     <div class="col-4" style="text-align: left; margin-left: 1vw;">
-                        <img th:src="@{/sy/images/profile.PNG}" style=" width:100px; height: 100px; border-radius: 100%;">
+                        <img th:src="@{/sy/images/profile.PNG}"
+                             style=" width:100px; height: 100px; border-radius: 100%;">
                     </div>
                     <div class="col-7">
                         <h5 th:text="${dashboard.member.nickname}"></h5>
@@ -132,7 +139,7 @@
             <div class="whitebox">
                 <div class="content">
                     <th:block th:each="board : ${ dashboard.boardList }">
-                    <p th:text="${board.title}"></p>
+                        <p th:text="${board.title}"></p>
                     </th:block>
                 </div>
             </div>
@@ -148,7 +155,7 @@
             <div class="whitebox">
                 <div class="content">
                     <th:block th:each="basket : ${ dashboard.basketList }">
-                    <p th:text="${basket.lecture.lectureTitle}"></p>
+                        <p th:text="${basket.lecture.lectureTitle}"></p>
                     </th:block>
 
                 </div>
@@ -164,7 +171,7 @@
             <div class="whitebox">
                 <div class="content notice">
                     <th:block th:each="notice : ${ dashboard.noticeList }">
-                    <p th:text="${notice.content}"></p>
+                        <p th:text="${notice.content}"></p>
                     </th:block>
                 </div>
 
@@ -181,7 +188,7 @@
             <div class="whitebox">
                 <div class="content">
                     <th:block th:each="watch : ${ dashboard.watchList }">
-                    <p th:text="${ watch.lecture.lectureTitle }"></p>
+                        <p th:text="${ watch.lecture.lectureTitle }"></p>
                     </th:block>
                 </div>
 
@@ -196,7 +203,7 @@
             <div class="whitebox">
                 <div class="content">
                     <th:block th:each="complete : ${ dashboard.completedLectureInfoList }">
-                    <p th:text="${ complete.lectureTitle }"></p>
+                        <p th:text="${ complete.lectureTitle }"></p>
                     </th:block>
                 </div>
 
@@ -204,6 +211,170 @@
         </div>
     </div>
 </div>
-</body>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-head">
+                <span class="head-title">튜터 신청서</span>
+                <button type="button" class="btn-close close-btn" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <form action="/tutorApply/request" method="post">
+                <div class="modal-body">
+                    <table style="width: 600px">
+                        <h3>인적사항</h3>
+                        <tr>
+                            <th>이름</th>
+                            <th>이메일</th>
+                            <th>휴대폰</th>
+                        </tr>
+                        <tr>
+                            <td width="100px"><input type="text" th:value="${ dashboard.member.memberName }" name="name"
+                                                     required></td>
+                            <td width="150px"><input type="text" th:value="${ dashboard.member.email }" name="email"
+                                                     required></td>
+                            <td width="150px"><input type="text" th:value="${ dashboard.member.phone }" name="phoneNum"
+                                                     required></td>
+                        </tr>
+                    </table>
+                    <br>
+                    <hr align="left" width="600px">
+                    <h3>경력사항
+                        <button type="button" id="registCareer" style="font-size: small">항목 추가</button>
+                        <button type="button" id="deleteCareer" style="font-size: small">항목 삭제</button>
+                    </h3>
+                    <table id="career" style="width: 600px">
+                        <thead>
+                        <tr>
+                            <th colspan="2" width="30%">근무 기간</th>
+                            <th width="30%">근무처</th>
+                            <th width="15%">직급</th>
+                            <th width="25">담당업무</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <br>
+                    <hr align="left" width="600px">
+                    <h3>자격사항
+                        <button type="button" id="registQualification" style="font-size: small">항목 추가</button>
+                        <button type="button" id="deleteQualification" style="font-size: small">항목 삭제</button>
+                    </h3>
+                    <table id="qualification" style="width: 600px">
+                        <thead>
+                        <tr>
+                            <th width="30%">취득 일자</th>
+                            <th width="50%">자격 및 교육명</th>
+                            <th>등급</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <br>
+                    <hr align="left" width="600px">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="approve-btn" type="submit" class="btn modal-btn"
+                            style="background-color: #d3e1f3; color: rgb(107, 107, 107);">
+                        신청
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    $("#request-tutor-btn").click(function () {
+
+        $("#exampleModal").modal('show');
+    });
+
+    let careerCount = 0;
+    let qualificationCount = 0;
+    let filesCount = 0;
+
+    $("#deleteFiles").click(function () {
+
+        $('#files > tbody > tr:last').remove();
+
+        if (filesCount > 0) {
+            filesCount--;
+        }
+    });
+
+    $("#deleteCareer").click(function () {
+
+        $('#career > tbody > tr:last').remove();
+
+        if (careerCount > 0) {
+            careerCount--;
+        }
+    });
+
+    $("#deleteQualification").click(function () {
+
+        $('#qualification > tbody > tr:last').remove();
+
+        if (qualificationCount > 0) {
+            qualificationCount--;
+        }
+    });
+
+    $("#registFiles").click(function () {
+
+        const $table = $("#files");
+        const $tr = $("<tr>");
+        const $td = $("<td><input type='file' multiple='multiple' name='proofFiles' required></td>");
+
+        if (filesCount < 1) {
+            $tr.append($td);
+            $table.append($tr);
+            filesCount++;
+        }
+
+    });
+
+    $("#registCareer").click(function () {
+
+        const $table = $("#career");
+        const $tr = $("<tr id='tr " + careerCount + "'>");
+        const $td1 = $("<td><input type='date' name='careerList[" + careerCount + "].startDate' required></td>");
+        const $td2 = $("<td><input type='date' name='careerList[" + careerCount + "].endDate' required></td>");
+        const $td3 = $("<td><input type='text' name='careerList[" + careerCount + "].position' required></td>");
+        const $td4 = $("<td><input type='text' name='careerList[" + careerCount + "].company' required></td>");
+        const $td5 = $("<td><input type='text' name='careerList[" + careerCount + "].responsibilities' required></td>");
+
+        $tr.append($td1);
+        $tr.append($td2);
+        $tr.append($td3);
+        $tr.append($td4);
+        $tr.append($td5);
+
+        $table.append($tr);
+
+        careerCount++;
+    });
+
+    $("#registQualification").click(function () {
+
+        const $table = $("#qualification");
+        const $tr = $("<tr>");
+        const $td1 = $("<td><input type='date' name='qualificationList[" + qualificationCount + "].acquisitionDate' required></td>");
+        const $td2 = $("<td><input type='text' name='qualificationList[" + qualificationCount + "].name' required></td>");
+        const $td3 = $("<td><input type='text' name='qualificationList[" + qualificationCount + "].rating' required></td>");
+
+        $tr.append($td1);
+        $tr.append($td2);
+        $tr.append($td3);
+
+        $table.append($tr);
+
+        qualificationCount++
+    });
+</script>
 </html>

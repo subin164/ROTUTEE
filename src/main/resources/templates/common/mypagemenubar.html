@@ -245,7 +245,22 @@
                         <div>
                             <a href="#" class="w3-bar-item w3-button">업적확인</a>
                         </div>
-
+                    </div>
+                </div>
+                <div class="sidebar-menu">
+                    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc3()">
+                        튜터신청 <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div id="demoAcc3" class="w3-hide w3-white w3-card">
+                        <div>
+                            <button class="w3-bar-item w3-button" id="request-tutor-btn">신청하기</button>
+                        </div>
+                        <div>
+                            <a href="/tutorApply/mylist" class="w3-bar-item w3-button">신청현황</a>
+                        </div>
+                        <div>
+                            <a href="/member/myfiles" class="w3-bar-item w3-button">서류제출</a>
+                        </div>
                     </div>
                 </div>
             </li>
@@ -272,6 +287,18 @@
 
     function myAccFunc2() {
         var x = document.getElementById("demoAcc2");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " group1";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+                x.previousElementSibling.className.replace(" group1", "");
+        }
+    }
+
+    function myAccFunc3() {
+        var x = document.getElementById("demoAcc3");
         if (x.className.indexOf("w3-show") == -1) {
             x.className += " w3-show";
             x.previousElementSibling.className += " group1";

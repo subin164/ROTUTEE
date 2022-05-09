@@ -101,7 +101,7 @@ public class SuspensionHitory {
     public String toString() {
         return "SuspensionHitory{" +
                 "historyNo=" + historyNo +
-                ", MemberStatusHistory=" + MemberStatusHistory +
+//                ", MemberStatusHistory=" + MemberStatusHistory +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", reasons=" + reasons +

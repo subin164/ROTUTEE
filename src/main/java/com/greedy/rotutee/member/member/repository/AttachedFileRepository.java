@@ -1,6 +1,8 @@
 package com.greedy.rotutee.member.member.repository;
 
 import com.greedy.rotutee.member.member.entity.AttachedFile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,5 +26,5 @@ public interface AttachedFileRepository extends JpaRepository<AttachedFile, Inte
 
     List<AttachedFile> findByMemberNoAndDivision(int memberNo, String division);
 
-    List<AttachedFile> findByMemberNoAndDivisionAndFileDeletionYn(int memberNo, String division, String n);
+    Page<AttachedFile> findByMemberNoAndDivisionAndFileDeletionYn(int memberNo, String division, String n, Pageable pageable);
 }

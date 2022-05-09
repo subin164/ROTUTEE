@@ -199,7 +199,7 @@ public class MemberService {
 
 
 
-    public String findMemberStatus(int memberNo) {
+    public MemberStatusHistory findMemberStatus(int memberNo) {
 
         return memberStatusHistoryRepositoryQuery.findMemberStatus(entityManager, memberNo);
     }
@@ -247,13 +247,17 @@ public class MemberService {
         memberStatusHistoryRepository.save(memberStatusHistory);
     }
 
-    public List<AttachedFileDTO> findMemberAttachedFileList(int memberNo) {
+    public Page<AttachedFileDTO> findMemberAttachedFileList(int memberNo, Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("attachedFileNo").descending());
 
         String division = "서류";
 
-        List<AttachedFile> attachedFilesList = attachedFileRepository.findByMemberNoAndDivisionAndFileDeletionYn(memberNo, division, "N ");
+        Page<AttachedFile> attachedFilesList = attachedFileRepository.findByMemberNoAndDivisionAndFileDeletionYn(memberNo, division, "N ", pageable);
 
-        return attachedFilesList.stream().map(attachedFile -> modelMapper.map(attachedFile, AttachedFileDTO.class)).collect(Collectors.toList());
+        return attachedFilesList.map(attachedFile -> modelMapper.map(attachedFile, AttachedFileDTO.class));
     }
 
     @Transactional

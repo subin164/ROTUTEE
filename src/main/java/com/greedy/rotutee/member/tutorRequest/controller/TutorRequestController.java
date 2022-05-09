@@ -55,18 +55,42 @@ public class TutorRequestController {
     @GetMapping("/list")
     public ModelAndView requestList(ModelAndView mv, @PageableDefault Pageable pageable) {
 
+        Page<TutorApplyDTO> tutorApplyList = tutorRequestService.findAllRequestList(pageable);
+
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(tutorApplyList);
+
+        mv.addObject("tutorApplyList", tutorApplyList);
+        mv.addObject("paging", paging);
+
+        return mv;
+    }
+
+    @GetMapping("/search")
+    public ModelAndView requestSearchList(ModelAndView mv, @PageableDefault Pageable pageable,
+                                          @RequestParam("searchCondition") String searchCondition, @RequestParam("searchValue") String searchValue) {
+
+        Page<TutorApplyDTO> tutorApplyList = tutorRequestService.findSearchRequestList(pageable, searchCondition, searchValue);
+
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(tutorApplyList);
+
+        mv.addObject("tutorApplyList", tutorApplyList);
+        mv.addObject("paging", paging);
+        mv.setViewName("/tutorApply/list");
+
+        return mv;
+    }
+
+    @GetMapping("/mylist")
+    public ModelAndView myRequestList(ModelAndView mv, @PageableDefault Pageable pageable, @AuthenticationPrincipal CustomUser loginMember) {
+
         String status = "대기";
 
-        Page<TutorApplyDTO> tutorApplyBeforeList = tutorRequestService.findTutorRequestBeforeList(status, pageable);
-        Page<TutorApplyDTO> tutorApplyAfterList = tutorRequestService.findTutorRequestAfterList(status, pageable);
+        Page<TutorApplyDTO> tutorApplyList = tutorRequestService.findAllMyRequestList(pageable, loginMember.getNo());
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(tutorApplyList);
 
-        PagingButtonInfo beforePaging = Pagenation.getPagingButtonInfo(tutorApplyBeforeList);
-        PagingButtonInfo afterPaging = Pagenation.getPagingButtonInfo(tutorApplyAfterList);
-
-        mv.addObject("tutorApplyBeforeList", tutorApplyBeforeList);
-        mv.addObject("tutorApplyAfterList", tutorApplyAfterList);
-        mv.addObject("beforePaging", beforePaging);
-        mv.addObject("afterPaging", afterPaging);
+        mv.addObject("tutorApplyList", tutorApplyList);
+        mv.addObject("paging", paging);
+        mv.setViewName("/tutorApply/mylist");
 
         return mv;
     }
@@ -113,7 +137,7 @@ public class TutorRequestController {
 
         rttr.addFlashAttribute("message", "튜터신청에에 성공하셨습니다. 제출하실 증빙서류가 있다면 제출해주세요.");
 
-        return "/";
+        return "redirect:/dashboard/tuteedashboard";
     }
 
     @PostMapping("/filesupload")
@@ -122,7 +146,7 @@ public class TutorRequestController {
 
         tutorRequestService.proofFileUpload(fileHandler.UserFileUpload(proofFiles, loginMember.getNo()));
 
-        return "redirect:/";
+        return "redirect:/member/myfiles";
     }
 
     @GetMapping("/reject/{historyNo}")

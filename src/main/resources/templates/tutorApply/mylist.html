@@ -99,12 +99,12 @@
                             <div class="table100-body">
                                 <table id="before-table">
                                     <tbody>
-                                        <tr class="row100 body" th:each="tutorApply : ${ tutorApplyList }">
-                                            <td th:text="${ tutorApply.applyHistoryNo }">
-                                            <td th:text="${ tutorApply.member.name }">
-                                            <td th:text="${ tutorApply.applyDate }">
-                                            <td th:text="${ tutorApply.applyYn }">
-                                        </tr>
+                                    <tr class="row100 body" th:each="tutorApply : ${ tutorApplyList }">
+                                        <td th:text="${ tutorApply.applyHistoryNo }">
+                                        <td th:text="${ tutorApply.member.name }">
+                                        <td th:text="${ tutorApply.applyDate }">
+                                        <td th:text="${ tutorApply.applyYn }">
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -116,42 +116,30 @@
             <div class="d-flex justify-content-center">
                 <div class="justify-content-evenly mt-lg-5">
                     <button class="btn pagebtn" type="button"
-                            th:onclick="'location.href=\'/tutorApply/list?page=' + @{${paging.startPage}}  + '\''"
+                            th:onclick="'location.href=\'/tutorApply/mylist?page=' + @{${paging.startPage}}  + '\''"
                             th:disabled="${ tutorApplyList.first }"><<
                     </button>
                     <button class="btn pagebtn" type="button"
-                            th:onclick="'location.href=\'/tutorApply/list?page=' + @{${paging.currentPage - 1}}  + '\''"
+                            th:onclick="'location.href=\'/tutorApply/mylist?page=' + @{${paging.currentPage - 1}}  + '\''"
                             th:disabled="${ tutorApplyList.first }"><
                     </button>
                     <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
                         <button class="btn pagebtn" type="button"
-                                th:onclick="'location.href=\'/tutorApply/list?page=' + @{${page}}  + '\''"
+                                th:onclick="'location.href=\'/tutorApply/mylist?page=' + @{${page}}  + '\''"
                                 th:text="${ page }"
                                 th:disabled="${ paging.currentPage eq page }">
                         </button>
                     </th:block>
                     <button class="btn pagebtn" type="button"
-                            th:onclick="'location.href=\'/tutorApply/list?page=' + @{${paging.currentPage + 1}}  + '\''"
+                            th:onclick="'location.href=\'/tutorApply/mylist?page=' + @{${paging.currentPage + 1}}  + '\''"
                             th:disabled="${ tutorApplyList.last }">>
                     </button>
                     <button class="btn pagebtn" type="button"
-                            th:onclick="'location.href=\'/tutorApply/list?page=' + @{${paging.endPage}}  + '\''"
+                            th:onclick="'location.href=\'/tutorApply/mylist?page=' + @{${paging.endPage}}  + '\''"
                             th:disabled="${ tutorApplyList.last }">>>
                     </button>
                 </div>
             </div>
-            <!-- Search bar -->
-            <form th:action="@{/tutorApply/search}" method="get">
-                <div class="selectBox d-flex justify-content-center">
-                    <select name="searchCondition">
-                        <option value="name">회원명</option>
-                        <option value="email">이메일</option>
-                        <option value="status">처리현황</option>
-                    </select>
-                    <input id="search-box" type="text" placeholder="검색어입력" name="searchValue">
-                    <button class="btn search-btn">검색하기</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>

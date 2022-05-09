@@ -107,25 +107,32 @@ public class ServiceBoardController {
         
         BoardDTO board = serviceBoardService.findBoardByBoardNo(boardNo);
 
-        String role;
-
-        if(loginMember == null) {
+        if(board.getBulletinBoardSecretYN() == 'Y') {
             return false;
-        } else {
-            role = loginMember.getMemberRoleList().get(0).getRole().getName();
         }
 
-        System.out.println("role = " + role);
-        
-        if (board.getMember().getNo() == loginMember.getNo() || ("ROLE_ADMIN").equals(role) || ("ROLE_SUBADMIN").equals(role)) {
-            return true;
-        } else {
-            if (board.getBulletinBoardSecretYN() == 'N') {
-                return true;
-            } else {
-                return false;
-            }
-        }
+        return true;
+
+
+//        String role;
+//
+//        if(loginMember == null) {
+//
+//        } else {
+//            role = loginMember.getMemberRoleList().get(0).getRole().getName();
+//        }
+//
+//        System.out.println("role = " + role);
+//
+//        if (board.getMember().getNo() == loginMember.getNo() || ("ROLE_ADMIN").equals(role) || ("ROLE_SUBADMIN").equals(role)) {
+//            return true;
+//        } else {
+//            if (board.getBulletinBoardSecretYN() == 'N') {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
     }
 
     @GetMapping("/modify/{boardNo}")

@@ -6,6 +6,7 @@ import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import com.greedy.rotutee.member.member.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
 import com.greedy.rotutee.member.member.dto.ReasonsDTO;
+import com.greedy.rotutee.member.member.entity.MemberStatusHistory;
 import com.greedy.rotutee.member.member.service.MemberService;
 import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
 import com.greedy.rotutee.member.profile.entity.TutorInfoDTO;
@@ -138,13 +139,8 @@ public class MemberController {
     public ModelAndView memberDetail(ModelAndView mv, @PathVariable int memberNo) {
 
         MemberDTO member = memberService.findMember(memberNo);
-        System.out.println("권한 " + member.getMemberRoleList().get(0).getRole().getName());
         AttachedFileDTO attachedFile = profileService.findMemberProfile(memberNo);
-        String memberStatus = memberService.findMemberStatus(memberNo);
-
-        System.out.println("memberStatus = " + memberStatus);
-
-//        AchievementDTO achievement = profileService.findMemberAchievement(memberNo);
+        MemberStatusHistory memberStatus = memberService.findMemberStatus(memberNo);
 
         if(member.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
 
@@ -161,7 +157,6 @@ public class MemberController {
             mv.addObject("tutorInfo", tutorInfo);
         }
 
-//        mv.addObject("achievement", achievement);
         mv.addObject("attachedFile", attachedFile);
         mv.addObject("memberStatus", memberStatus);
         mv.addObject("member", member);
@@ -202,10 +197,13 @@ public class MemberController {
     @GetMapping("/myfiles")
     public ModelAndView memberFilesPage(@AuthenticationPrincipal CustomUser loginMember, @PageableDefault Pageable pageable,
                                         ModelAndView mv) {
-        List<AttachedFileDTO> attachedFileList = memberService.findMemberAttachedFileList(loginMember.getNo());
+
+        Page<AttachedFileDTO> attachedFileList = memberService.findMemberAttachedFileList(loginMember.getNo(), pageable);
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(attachedFileList);
 
         mv.addObject("attachedFileList", attachedFileList);
-        mv.setViewName("/member/myfiles");
+        mv.addObject("paging", paging);
+        mv.setViewName("/document/myfiles");
 
         return mv;
     }

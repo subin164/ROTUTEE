@@ -124,13 +124,44 @@ public class TutorRequestService {
         return tutorApplyRepository.findByApplyYn(status, pageable).map(tutorApply -> modelMapper.map(tutorApply, TutorApplyDTO.class));
     }
 
-    public Page<TutorApplyDTO> findTutorRequestAfterList(String status, Pageable pageable) {
+    public Page<TutorApplyDTO> findAllRequestList(Pageable pageable) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
                 pageable.getPageSize(),
                 Sort.by("applyHistoryNo").descending());
 
-        return tutorApplyRepository.findByApplyYnNot(status, pageable).map(tutorApply -> modelMapper.map(tutorApply, TutorApplyDTO.class));
+        return tutorApplyRepository.findAll(pageable).map(tutorApply -> modelMapper.map(tutorApply, TutorApplyDTO.class));
+    }
+
+    public Page<TutorApplyDTO> findSearchRequestList(Pageable pageable, String searchCondition, String searchValue) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("applyHistoryNo").descending());
+
+        Page<TutorApply> searchList = null;
+
+        if("name".equals(searchCondition)) {
+
+            searchList = tutorApplyRepository.findByMemberNameContaining(searchValue, pageable);
+        } else if("email".equals(searchCondition)) {
+
+            searchList = tutorApplyRepository.findByMemberEmailContaining(searchValue, pageable);
+        } else if("status".equals(searchCondition)) {
+
+            searchList = tutorApplyRepository.findByApplyYnContaining(searchValue, pageable);
+        }
+
+        return searchList.map(tutorApply -> modelMapper.map(tutorApply, TutorApplyDTO.class));
+    }
+
+    public Page<TutorApplyDTO> findAllMyRequestList(Pageable pageable, int memberNo) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("applyHistoryNo").descending());
+
+        return tutorApplyRepository.findByMemberNo(memberNo, pageable).map(tutorApply -> modelMapper.map(tutorApply, TutorApplyDTO.class));
     }
 
     public TutorApplyDTO findTutorRequestDetail(int historyNo) {
@@ -157,4 +188,7 @@ public class TutorRequestService {
         member.getMemberRoleList().get(0).setRole(role);
         tutorApply.setApplyYn("승인");
     }
+
+
+
 }
