@@ -186,20 +186,35 @@ public class LectureMainServiceImpl implements  LectureMainService{
             PointAcquisitionPlaceDTO acquisitionPlaceDTO = modelMapper.map(acquisitionPlace, PointAcquisitionPlaceDTO.class);
 
             List<PointHistory> historyList = lecturePointHistoryRepository.findByMemberOrderByHistoryNoDesc(memberEntity);
-            PointHistory recentHistory = historyList.get(0);
+            if(historyList.size() > 0) {
+                PointHistory recentHistory = historyList.get(0);
 
-            int finalPoint = acquisitionPlace.getPoint() + recentHistory.getFinalPoint();
-            String division = "획득";
+                int finalPoint = acquisitionPlace.getPoint() + recentHistory.getFinalPoint();
+                String division = "획득";
 
-            PointHistoryDTO newHistory = new PointHistoryDTO();
-            newHistory.setChangeDate(new Date(System.currentTimeMillis()));
-            newHistory.setChangePoint(acquisitionPlace.getPoint());
-            newHistory.setFinalPoint(finalPoint);
-            newHistory.setDivision(division);
-            newHistory.setMember(member);
-            newHistory.setPointAcquisitionPlace(acquisitionPlaceDTO);
+                PointHistoryDTO newHistory = new PointHistoryDTO();
+                newHistory.setChangeDate(new Date(System.currentTimeMillis()));
+                newHistory.setChangePoint(acquisitionPlace.getPoint());
+                newHistory.setFinalPoint(finalPoint);
+                newHistory.setDivision(division);
+                newHistory.setMember(member);
+                newHistory.setPointAcquisitionPlace(acquisitionPlaceDTO);
 
-            lecturePointHistoryRepository.save(modelMapper.map(newHistory, PointHistory.class));
+                lecturePointHistoryRepository.save(modelMapper.map(newHistory, PointHistory.class));
+            } else {
+
+                String division = "획득";
+
+                PointHistoryDTO newHistory = new PointHistoryDTO();
+                newHistory.setChangeDate(new Date(System.currentTimeMillis()));
+                newHistory.setChangePoint(acquisitionPlace.getPoint());
+                newHistory.setFinalPoint(acquisitionPlace.getPoint());
+                newHistory.setDivision(division);
+                newHistory.setMember(member);
+                newHistory.setPointAcquisitionPlace(acquisitionPlaceDTO);
+
+                lecturePointHistoryRepository.save(modelMapper.map(newHistory, PointHistory.class));
+            }
         } else {
 
             LectureReviewDTO lectureReview = new LectureReviewDTO();
