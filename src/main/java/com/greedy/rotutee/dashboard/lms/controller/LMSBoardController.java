@@ -23,6 +23,8 @@ public class LMSBoardController {
     @GetMapping("/list")
     public ModelAndView findNormalBoardList(ModelAndView mv) {
 
+
+
         mv.setViewName("dashboard/lms/normalBoard");
         return mv;
     }

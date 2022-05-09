@@ -15,10 +15,14 @@ import java.sql.Date;
  * -----------------------------------------------------------
  * 2022-04-25 SeoYoung 최초 생성
  */
+import lombok.*;
+
+import lombok.*;
+
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
+@Getter
 @ToString
 public class ToDoDTO {
 

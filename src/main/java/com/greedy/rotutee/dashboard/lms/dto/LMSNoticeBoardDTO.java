@@ -1,5 +1,6 @@
 package com.greedy.rotutee.dashboard.lms.dto;
 
+import com.greedy.rotutee.dashboard.mypage.dto.tutee.DashboardMemberDTO;
 import lombok.*;
 
 import java.sql.Date;
@@ -31,7 +32,7 @@ public class LMSNoticeBoardDTO {
     private String deleteStatus;
     private int count;
     private int categoryNo;
-    private int memberNo;
+    private DashboardMemberDTO member;
     private int reportCount;
     private String secretStatus;
 
