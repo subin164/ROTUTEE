@@ -1,33 +1,30 @@
-.coupon-header {
-    width: 100%;
-}
+/* 쿠폰 본문*/
 
-
-.menu-title {
-    padding: 8px 16px;
+.section-title {
+    font-family: 'Noto Sans KR', sans-serif;
     font-size: 20px;
-    font-weight: bold;
 }
 
-.menu-item{
-    padding: 8px 16px;
-    font-size: 16px;
-    font-weight: normal;
+.coupon-thead {
+    font-size: 14px;
+    font-font: Lato-Bold;
+    background-color: #D1E4FA;
+    color: #8397D7;
+    pointer-events: none;
 }
 
-.menu-item li{
-    padding: 8px 16px;
+.coupon-thead th {
+    padding: 18px 10px;
 }
 
-
-/* 쿠폰 컨탠츠 본문 */
-.coupon-content{
-    min-width: 800px;
-    margin: 0 auto;
+.coupon-tbody td{
+    padding: 10px 0;
+}
+.coupon-content {
     padding: 30px;
 }
 
 /* 쿠폰 발행*/
-.publish-coupon-item{
+.publish-coupon-item {
     padding: 5px 10px;
 }

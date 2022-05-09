@@ -1,85 +1,79 @@
+<!--
+** 작성일 : 2022-05-09
+** 작성자 : 김형경
+** 파일이름 : footer.html
+** 파일내용 : footer작성
+-->
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/common/css/common.css}">
+
+
 </head>
 <body>
 <footer>
-    <div class="bg-dark text-light">
-        <div class="row">
-            <div class="col">
-                ROTUTEE
+    <section class="bg-dark text-light">
+        <div class="container">
+            <div class="footer-menu-top">
+                <div>
+                    <div class="menu-item">ROTUTEE</div>
+                    <div class="menu-item-link">공지사항</div>
+                    <div class="menu-item-link">ROTUTEE 소개</div>
+                    <div class="menu-item-link">채용안내</div>
+                </div>
+                <div>
+                    <div class="menu-item">고객센터</div>
+                    <div class="menu-item-link">자주묻는질문</div>
+                    <div class="menu-item-link">문의하기</div>
+                    <div class="menu-item-link">이용약관</div>
+                    <div class="menu-item-link">개인정보취급방침</div>
+                </div>
+                <div>
+                    <div class="menu-item">튜터등록</div>
+                    <div class="menu-item-link">튜터신청하기</div>
+                </div>
+                <div>
+                    <div class="menu-item">강의</div>
+                    <div class="menu-item-link">맞춤강의</div>
+                    <div class="menu-item-link">추천강의</div>
+                    <div class="menu-item-link">내강의목록</div>
+                </div>
+                <div>
+                    <div class="menu-item">커뮤니티</div>
+                    <div class="menu-item-link">자유게시판</div>
+                    <div class="menu-item-link">질문&답변</div>
+                    <div class="menu-item-link">스터디참여</div>
+                </div>
             </div>
-            <div class="col">
-                이용약관
-            </div>
-            <div class="col">
-                개인정보취급방
-            </div>
-            <div class="col">
-                공지사항
-            </div>
-            <div class="col">
-                고객센터
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                소개
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-                자주묻는질문
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                채용안내
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-                개인정보 취급
+            <hr>
+            <div class="footer-menu-bottom">
+                <div class="footer-info">
+                    <div class="footer-info-header">
+                            <img width="50px" height="50px"><a>ROTUTEE</a>
+                        <span><a>개인정보 취급방침</a>
+                        </span>
+                        <span><a> 이용약관</a></span>
+                    </div>
+                </div>
+                <div class="footer-info-body">
+                    <span><a href="#">공동대표 : 김진호, 김도래</a></span> <span><a href="#">사업자번호: 499-87-xxxxx</a></span><br>
+                    <span><a href="#">통신판매업 : 2018-성남분당-00062</a></span> <span><a href="#">Email : djWjrhwjWjrh@gmail.com</a></span><br>
+                    <span><a href="#">주소 : 서울특별시 서초구 강남대로 441(서산빌딩) 4, 5층</a></span>
+                </div>
             </div>
         </div>
-        <br>
-        <br>
-        <div class="row">
-            <div class="col-3">
-                (주)ROTUTEE 공동대표 : 김진호, 김도래
-            </div>
-            <div class="col-3">
-                사업자번호: 499-87-xxxxx
-            </div>
-            <div class="col-3">
-                통신판매업 : 2018-성남분당-00062
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-5">
-                주소 : 서울특별시 서초구 강남대로 441(서산빌딩) 4, 5층
-            </div>
-        </div>
-    </div>
+
+    </section>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"/>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"/>
+
 </body>
 </html>

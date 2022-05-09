@@ -1,33 +1,134 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
+    <title>Table V04</title>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/vendor/animate/animate.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/vendor/select2/select2.min.css}">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../common/css/common.css">
-    <link rel="stylesheet" href="../hg/css/coupon.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/css/util.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/hg/css/coupon.css}">
+    <!-- font-family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        tr:hover {
+            background-color: #F5F5F5;
+        }
+
+        .pagebtn {
+
+            background-color: #D1E4FA !important;
+        }
+
+        .pagebtn:focus {
+            background-color: #8397D7;
+        }
+
+        .categorybtn {
+            background-color: #F0F2FF;
+        }
+
+        .categorybtn:focus {
+            background-color: #8397D7;
+        }
+
+        .tablewrap {
+            padding-top: 60px;
+        }
+
+        .head {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 20px;
+        }
+
+        #myTab {
+            font-family: 'Noto Sans KR', sans-serif;
+            width: 77%;
+        }
+
+        #exampleModal {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .selectBox {
+            height: 30px;
+            display: flex;
+            align-content: center;
+            margin-top: 20px;
+
+        }
+
+        .search-btn {
+            background-color: #8DB6E7 !important;
+            color: white !important;
+            width: 70px;
+            height: 35px;
+            font-size: 12px !important;
+            padding: 0 !important;
+        }
+
+        #search-box {
+            border: solid 1px;
+        }
+
+        .modal-withdraw {
+            display: none;
+        }
+
+    </style>
 </head>
 <body>
-
-<header>
-    <div th:include="/common/topMenubar.html"></div>
-</header>
+<div th:include="/common/adminsidebar.html"></div>
 <main>
-    <div class="d-flex">
-        <div>
-            <div th:include="/common/adminSideMenuBar.html"></div>
-        </div>
+    <section>
+        <span class="section-title">쿠폰발행</span>
+        <hr class="mb-md-5">
+        <div class="container">
+            <table style="box-shadow: 0 2px 4px 0 rgb(0 0 0 / 8%);">
 
-        <div class="coupon-content">
-            <div>
-                <h2 class="fs-3">쿠폰 목록</h2>
-            </div>
-
-            <hr>
-
+                <thead>
+                <tr class="coupon-thead text-center">
+                    <th>쿠폰선택</th>
+                    <th>쿠폰명</th>
+                    <th>쿠폰내용</th>
+                    <th>쿠폰생성일자</th>
+                    <th>할인률</th>
+                    <th>사용기간</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="coupon:${couponList}" class="coupon-tbody text-center" id="couponList">
+                    <td>
+                        <input id="couponNo" name="couponNo" type="checkbox" th:value="${coupon.couponNo}"
+                               style="margin: auto; transform: scale(1.5);">
+                    </td>
+                    <td th:text="${coupon.couponName}"></td>
+                    <td th:text="${coupon.couponContent}"></td>
+                    <td th:text="${coupon.couponRegistDate}"></td>
+                    <td th:text="${coupon.discountRate}"></td>
+                    <td th:text="${coupon.expirationDate}"></td>
+                    <td>
+                        <button type="button" class="btn" data-bs-toggle="modal"
+                                data-bs-target="#couponModifyModal" name="couponModifyButton" )>쿠폰변경
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
             <ul class="d-flex">
                 <li>
                     <button class="btn" data-bs-toggle="modal"
@@ -43,39 +144,116 @@
                     </button>
                 </li>
             </ul>
+        </div>
+    </section>
 
-            <table class="table table-hover">
-                <thead>
-                <td>선택</td>
-                <td>쿠폰명</td>
-                <td>쿠폰내용</td>
-                <td>쿠폰등록일자</td>
-                <td>할인률</td>
-                <td>사용기간</td>
-                <td></td>
-                </thead>
-
-                <tbody>
-                <tr th:each="coupon:${couponList}" id="couponList">
-                    <td>
-                        <input id="couponNo" name="couponNo" type="checkbox" th:value="${coupon.couponNo}">
-                    </td>
-                    <td th:text="${coupon.couponName}"></td>
-                    <td th:text="${coupon.couponContent}"></td>
-                    <td th:text="${coupon.couponRegistDate}"></td>
-                    <td th:text="${coupon.discountRate}"></td>
-                    <td th:text="${coupon.expirationDate}"></td>
-                    <td>
-                        <button type="button" class="btn" data-bs-toggle="modal"
-                                data-bs-target="#couponModifyModal" name="couponModifyButton" )>쿠폰변경
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+    <hr>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="limiter">
+            </div>
         </div>
     </div>
+    <!--paging button-->
+    <!--        <div class="d-flex justify-content-center">-->
+    <!--            <div class="justify-content-evenly mt-lg-5">-->
+    <!--                <button class="btn pagebtn" type="button"-->
+    <!--                        th:onclick="'location.href=\'/lecturenotice/list?page=' + @{${paging.startPage}}  + '\''"-->
+    <!--                        th:disabled="${ notices.first }"><<-->
+    <!--                </button>-->
+    <!--                <button class="btn pagebtn" type="button"-->
+    <!--                        th:onclick="'location.href=\'/lecturenotice/list?page=' + @{${paging.currentPage - 1}}  + '\''"-->
+    <!--                        th:disabled="${ notices.first }"><-->
+    <!--                </button>-->
+    <!--                <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">-->
+    <!--                    <button class="btn pagebtn" type="button"-->
+    <!--                            th:onclick="'location.href=\'/lecturenotice/list?page=' + @{${page}}  + '\''"-->
+    <!--                            th:text="${ page }"-->
+    <!--                            th:disabled="${ paging.currentPage eq page }">-->
+    <!--                    </button>-->
+    <!--                </th:block>-->
+    <!--                <button class="btn pagebtn" type="button"-->
+    <!--                        th:onclick="'location.href=\'/lecturenotice/list?page=' + @{${paging.currentPage + 1}}  + '\''"-->
+    <!--                        th:disabled="${ notices.last }">>-->
+    <!--                </button>-->
+    <!--                <button class="btn pagebtn" type="button"-->
+    <!--                        th:onclick="'location.href=\'/lecturenotice/list?page=' + @{${paging.endPage}}  + '\''"-->
+    <!--                        th:disabled="${ notices.last }">>>-->
+    <!--                </button>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        &lt;!&ndash; Search bar &ndash;&gt;-->
+    <!--        <form th:action="@{/lecturenotice/list}" method="get">-->
+    <!--            <div class="selectBox d-flex justify-content-center">-->
+    <!--                <select name="searchCondition">-->
+    <!--                    <option value="title">제목</option>-->
+    <!--                </select>-->
+    <!--                <input id="search-box" type="text" placeholder="검색어입력" name="searchValue">-->
+    <!--                <button class="btn search-btn">검색하기</button>-->
+    <!--            </div>-->
+    <!--        </form>-->
 </main>
+
+
+<!--<main>-->
+<!--    <div class="d-flex">-->
+<!--        <div class="container coupon-content">-->
+<!--            <div>-->
+<!--                <h2 class="fs-3">쿠폰 목록</h2>-->
+<!--            </div>-->
+
+<!--            <hr>-->
+
+<!--            <ul class="d-flex">-->
+<!--                <li>-->
+<!--                    <button class="btn" data-bs-toggle="modal"-->
+<!--                            data-bs-target="#couponRegistModal">쿠폰등록-->
+<!--                    </button>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <button class="btn" type="button" onclick="couponRemove()">쿠폰삭제</button>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <button class="btn" data-bs-toggle="modal"-->
+<!--                            data-bs-target="#couponPublishModal" onclick="publishCouponList()">쿠폰발행-->
+<!--                    </button>-->
+<!--                </li>-->
+<!--            </ul>-->
+
+<!--            <table class="table table-hover">-->
+<!--                <thead>-->
+<!--                <td>선택</td>-->
+<!--                <td>쿠폰명</td>-->
+<!--                <td>쿠폰내용</td>-->
+<!--                <td>쿠폰등록일자</td>-->
+<!--                <td>할인률</td>-->
+<!--                <td>사용기간</td>-->
+<!--                <td></td>-->
+<!--                </thead>-->
+
+<!--                <tbody>-->
+<!--                <tr th:each="coupon:${couponList}" id="couponList">-->
+<!--                    <td>-->
+<!--                        <input id="couponNo" name="couponNo" type="checkbox" th:value="${coupon.couponNo}">-->
+<!--                    </td>-->
+<!--                    <td th:text="${coupon.couponName}"></td>-->
+<!--                    <td th:text="${coupon.couponContent}"></td>-->
+<!--                    <td th:text="${coupon.couponRegistDate}"></td>-->
+<!--                    <td th:text="${coupon.discountRate}"></td>-->
+<!--                    <td th:text="${coupon.expirationDate}"></td>-->
+<!--                    <td>-->
+<!--                        <button type="button" class="btn" data-bs-toggle="modal"-->
+<!--                                data-bs-target="#couponModifyModal" name="couponModifyButton" )>쿠폰변경-->
+<!--                        </button>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</main>-->
+
+<div th:include="/common/footer.html"></div>
 
 
 <!-- Modal -->
@@ -234,14 +412,25 @@
         </div>
     </div>
 </div>
-</div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+
+<script th:inline="javascript">
+</script>
+<!--===============================================================================================-->
+<!--<script th:src="@{/sy/vendor/bootstrap/js/popper.js}"></script>-->
+<!--<script th:src="@{/sy/vendor/bootstrap/js/bootstrap.min.js}"></script>-->
+<!--===============================================================================================-->
+<script th:src="@{/sy/vendor/select2/select2.min.js}"></script>
+<!--===============================================================================================-->
+
+
+<!--===============================================================================================-->
+<script th:src="@{/sy/js/main.js}"></script>
+
 
 <script>
+
+
     function couponRemove() {
 
         let couponArray = [];
