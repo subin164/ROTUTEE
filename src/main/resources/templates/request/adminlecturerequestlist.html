@@ -97,11 +97,29 @@
                 </table>
                 <div class="d-flex justify-content-center">
                     <div class="justify-content-evenly mt-lg-5">
-                        <button class="btn pagebtn">1</button>
-                        <button class="btn pagebtn">2</button>
-                        <button class="btn pagebtn">3</button>
-                        <button class="btn pagebtn">4</button>
-                        <button class="btn pagebtn">5</button>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/request/lecturelist?page=' + @{${paging1.startPage}}  + '\''"
+                                th:disabled="${ requestList.first }"><<
+                        </button>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/request/lecturelist?page=' + @{${paging1.currentPage - 1}}  + '\''"
+                                th:disabled="${ requestList.first }"><
+                        </button>
+                        <th:block th:each="page : ${#numbers.sequence(paging1.startPage, paging1.endPage)}">
+                            <button class="btn pagebtn" type="button"
+                                    th:onclick="'location.href=\'/request/lecturelist?page=' + @{${page}}  + '\''"
+                                    th:text="${ page }"
+                                    th:disabled="${ paging1.currentPage eq page }">
+                            </button>
+                        </th:block>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/request/lecturelist?page=' + @{${paging1.currentPage + 1}}  + '\''"
+                                th:disabled="${ requestList.last }">>
+                        </button>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/request/lecturelist?page=' + @{${paging1.endPage}}  + '\''"
+                                th:disabled="${ requestList.last }">>>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -131,11 +149,29 @@
                 </table>
                 <div class="d-flex justify-content-center">
                     <div class="justify-content-evenly mt-lg-5">
-                        <button class="btn pagebtn">1</button>
-                        <button class="btn pagebtn">2</button>
-                        <button class="btn pagebtn">3</button>
-                        <button class="btn pagebtn">4</button>
-                        <button class="btn pagebtn">5</button>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/request/lecturelist?page=' + @{${paging2.startPage}}  + '\''"
+                                th:disabled="${ recordList.first }"><<
+                        </button>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/request/lecturelist?page=' + @{${paging2.currentPage - 1}}  + '\''"
+                                th:disabled="${ recordList.first }"><
+                        </button>
+                        <th:block th:each="page : ${#numbers.sequence(paging2.startPage, paging2.endPage)}">
+                            <button class="btn pagebtn" type="button"
+                                    th:onclick="'location.href=\'/request/lecturelist?page=' + @{${page}}  + '\''"
+                                    th:text="${ page }"
+                                    th:disabled="${ paging2.currentPage eq page }">
+                            </button>
+                        </th:block>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/request/lecturelist?page=' + @{${paging2.currentPage + 1}}  + '\''"
+                                th:disabled="${ recordList.last }">>
+                        </button>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/request/lecturelist?page=' + @{${paging2.endPage}}  + '\''"
+                                th:disabled="${ recordList.last }">>>
+                        </button>
                     </div>
                 </div>
             </div>

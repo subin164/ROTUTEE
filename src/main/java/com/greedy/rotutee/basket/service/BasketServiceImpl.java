@@ -60,6 +60,7 @@ public class BasketServiceImpl implements BasketService{
         ClassBasket basket = classBasketRepository.findByLectureAndMember(lectureEntity, memberEntity);
 
         if(basket != null) {
+
            ClassBasketDTO basketDTO = new ClassBasketDTO();
            basketDTO.setClassBasketNo(basket.getClassBasketNo());
            basketDTO.setMember(modelMapper.map(basket.getMember(), MemberDTO.class));
@@ -103,7 +104,6 @@ public class BasketServiceImpl implements BasketService{
 
             int increasedDegree = memberInterest.getInterestDegree() + 2;
             memberInterest.setInterestDegree(increasedDegree);
-
         }
     }
 
@@ -111,7 +111,6 @@ public class BasketServiceImpl implements BasketService{
     public List<ClassBasketDTO> findByMemberNo(int memberNo) {
 
         Member member = classBasketMemberRepository.findByNo(memberNo);
-        System.out.println("member = " + member);
 
         List<ClassBasket> basketList = classBasketRepository.findByMember(member);
         List<ClassBasketDTO> basketDTOList = new ArrayList<>();

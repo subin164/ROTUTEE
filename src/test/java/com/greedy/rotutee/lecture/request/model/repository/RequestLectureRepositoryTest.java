@@ -10,6 +10,8 @@ import com.greedy.rotutee.lecture.request.repository.RequestLectureRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
@@ -52,22 +54,22 @@ public class RequestLectureRepositoryTest {
     }
 
     @Test
-    public void 대기_상태_강의_조회_테스트() {
+    public void 대기_상태_강의_조회_테스트(Pageable pageable) {
         //given
         String status = "대기";
         //when
-        List<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatus(status);
+        Page<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatus(status, pageable);
         //then
         assertNotNull(lectureList);
     }
 
     @Test
-    public void 대기_상태가_아닌_강의_조회() {
+    public void 대기_상태가_아닌_강의_조회(Pageable pageable) {
         //given
         String status1 = "승인";
         String status2 = "거절";
         //when
-        List<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatusOrLectureApprovalStatus(status1, status2);
+        Page<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatusOrLectureApprovalStatus(status1, status2, pageable);
         //then
         assertNotNull(lectureList);
     }

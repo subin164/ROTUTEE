@@ -65,17 +65,21 @@ public class MainServiceImpl implements MainService{
         Member member = mainMemberRepository.findById(no).get();
 
         List<MemberInterest> memberInterestList = mainMemberInterestRepository.findByMemberOrderByInterestDegreeDesc(member);
+
         if(memberInterestList != null && memberInterestList.size() > 0) {
             LectureCategory interestCategory = memberInterestList.get(0).getCategory();
 
             List<AttachedFile> fileList = mainAttachedFileRepository.findByCategoryNo(interestCategory.getLectureCategoryNo());
 
             if (fileList != null) {
+
                 return fileList.stream().map(file -> modelMapper.map(file, AttachedFileDTO.class)).collect(Collectors.toList());
             }
         } else {
+
             return null;
         }
+
         return null;
     }
 }

@@ -82,7 +82,6 @@ public class LectureMainServiceImpl implements  LectureMainService{
         String division = "프로필";
         String deletion = "N ";
         AttachedFile image = lectureAttachedFileRepository.findByMemberNoAndDivisionAndFileDeletionYN(lecture.getTutor().getNo(), division, deletion);
-        System.out.println("image = " + image);
         if(image != null) {
             lecture.getTutor().setImageName(image.getSaveAttachedFileName());
         }
@@ -108,6 +107,7 @@ public class LectureMainServiceImpl implements  LectureMainService{
         for(LectureReviewDTO review : lectureReviewList) {
             String division = "프로필";
             String deletion = "N";
+
             AttachedFile image = lectureAttachedFileRepository.findByMemberNoAndDivisionAndFileDeletionYN(review.getWriter().getNo(), division, deletion);
             if(image != null) {
                 review.getWriter().setImageName(image.getSaveAttachedFileName());
@@ -129,6 +129,7 @@ public class LectureMainServiceImpl implements  LectureMainService{
     public int findGradeAverageByLectureNo(int lectureNo) {
 
         int result = 0;
+
         Integer avg = lectureReviewMainRepository.findfindGradeAverageByLectureNo(lectureNo);
 
         if(avg != null) {

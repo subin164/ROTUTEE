@@ -1,10 +1,15 @@
 package com.greedy.rotutee.lecture.request.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
+import com.greedy.rotutee.common.paging.Pagenation;
+import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import com.greedy.rotutee.lecture.request.dto.*;
 import com.greedy.rotutee.lecture.request.entity.Lecture;
 import com.greedy.rotutee.lecture.request.service.LectureRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -37,16 +42,6 @@ public class LectureRequestController {
         int memberNo = customUser.getNo();
         List<LectureDTO> lectureList = lectureRequestService.findLectureListBytutorNo(memberNo);
 
-        for(LectureDTO lecture : lectureList) {
-            System.out.println("lecture.getImageList().size() = " + lecture.getImageList().size());
-
-            List<AttachedFileDTO> fileList = lecture.getImageList();
-            for(AttachedFileDTO file : fileList) {
-                System.out.println("file.getStorageFile() = " + file.getStorageFile());
-            }
-
-        }
-
         mv.addObject("lectureList", lectureList);
         mv.setViewName("/request/myrequestlist");
 
@@ -69,6 +64,7 @@ public class LectureRequestController {
 
         List<MultipartFile> requestFileList = new ArrayList<>();
         requestFileList.add(thumbnailImg);
+
         if(!bannerImg.isEmpty()) {
             requestFileList.add(bannerImg);
         }
@@ -80,18 +76,25 @@ public class LectureRequestController {
 
         rttr.addFlashAttribute("message", "강의 개설 신청을 성공하였습니다.");
         mv.setViewName("redirect:/request/list");
+
         return mv;
     }
 
     @GetMapping("lecturelist")
-    public ModelAndView findLectureRequestList(ModelAndView mv) {
+    public ModelAndView findLectureRequestList(ModelAndView mv , @PageableDefault Pageable pageable) {
 
-        List<LectureDTO> requestList = lectureRequestService.findStatusOfLectureIsWaiting();
-        List<LectureDTO> recordList = lectureRequestService.findStatusOfLectureIsNotWaiting();
+        Page<LectureDTO> requestList = lectureRequestService.findStatusOfLectureIsWaiting(pageable);
+        PagingButtonInfo paging1 = Pagenation.getPagingButtonInfo(requestList);
+
+        Page<LectureDTO> recordList = lectureRequestService.findStatusOfLectureIsNotWaiting(pageable);
+        PagingButtonInfo paging2 = Pagenation.getPagingButtonInfo(recordList);
 
         mv.addObject("requestList",requestList);
+        mv.addObject("paging1", paging1);
         mv.addObject("recordList", recordList);
+        mv.addObject("paging2", paging2);
         mv.setViewName("request/adminlecturerequestlist");
+
         return mv;
     }
 
@@ -104,6 +107,7 @@ public class LectureRequestController {
         mv.addObject("chapterList", chapterList);
         mv.addObject("lecture", lecture);
         mv.setViewName("request/lecturerequestdetail");
+
         return mv;
     }
 
@@ -114,6 +118,7 @@ public class LectureRequestController {
 
         rttr.addFlashAttribute("message", "강의가 개설되었습니다.");
         mv.setViewName("redirect:/request/lecturelist");
+
         return mv;
     }
 
@@ -122,13 +127,11 @@ public class LectureRequestController {
                                                             , @RequestParam int rejectionCategoryNo
                                                             , RedirectAttributes rttr) {
 
-
-        System.out.println("lectureNo = " + lectureNo);
-        System.out.println("rejectionCategoryNo = " + rejectionCategoryNo);
         lectureRequestService.rejectLecture(lectureNo, rejectionCategoryNo);
 
         rttr.addFlashAttribute("message", "해당 강의를 거절하였습니다.");
         mv.setViewName("redirect:/request/lecturelist");
+
         return mv;
     }
 

@@ -31,6 +31,7 @@ public class LectureMainController {
 
         mv.addObject("lectureList", lectureList);
         mv.setViewName("lecture/lecturelist");
+
         return mv;
     }
 
@@ -41,6 +42,7 @@ public class LectureMainController {
 
         mv.addObject("lectureList", lectureList);
         mv.setViewName("lecture/lecturelist");
+
         return mv;
     }
 
@@ -107,6 +109,7 @@ public class LectureMainController {
         }
 
         mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
+
         return mv;
     }
 
@@ -117,6 +120,7 @@ public class LectureMainController {
         lectureMainService.modifyReviewContent(lectureReviewNo, lectureReviewContent);
 
         mv.setViewName("jsonView");
+
         return mv;
     }
 
@@ -128,6 +132,7 @@ public class LectureMainController {
 
         rttr.addFlashAttribute("message", "강의평을 삭제하였습니다.");
         mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
+
         return mv;
     }
 }
