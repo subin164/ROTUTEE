@@ -19,4 +19,6 @@ import java.util.List;
 public interface LMSBoardRepository extends JpaRepository<LMSBoard, Integer> {
 
     List<LMSBoard> findByCategoryNoOrderByBoardNoDesc(int categoryNo);
+
+    List<LMSBoard> findByCategoryNoAndLectureNoOrderByBoardNoDesc(int categoryNo, int lectureNo);
 }

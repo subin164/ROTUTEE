@@ -19,11 +19,10 @@ import java.util.List;
  * 2022-05-09 SeoYoung 최초 생성
  */
 public interface LMSNoticeRepository extends JpaRepository<LMSNotice, Integer> {
-    Page<LMSNotice> findAllByTitleContaining(String searchValue, Pageable pageable);
-
-    Page<LMSNotice> findByCategoryNo(int categoryNo, Pageable pageable);
-
-    Page<LMSNotice> findByCategoryNoAndTitleContaining(int categoryNo, String searchValue, Pageable pageable);
 
     List<LMSNotice> findByCategoryNo(int categoryNo);
+
+    Page<LMSNotice> findByCategoryNoAndLectureNo(int categoryNo, int lectureNo, Pageable pageable);
+
+    Page<LMSNotice> findByCategoryNoAndLectureNoAndTitleContaining(int categoryNo, int lectureNo, String searchValue, Pageable pageable);
 }

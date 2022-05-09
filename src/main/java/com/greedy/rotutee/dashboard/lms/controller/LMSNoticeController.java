@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +44,9 @@ public class LMSNoticeController {
     @GetMapping("/list")
     public ModelAndView findNoticeList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
 
+        HttpSession session = request.getSession();
+        int lectureNo = Integer.parseInt(String.valueOf(session.getAttribute("lectureNo")));
+
         String searchCondition = request.getParameter("searchCondition");
         String searchValue = request.getParameter("searchValue");
 
@@ -53,7 +57,7 @@ public class LMSNoticeController {
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
 
-        Page<LMSNoticeBoardDTO> notices = lmsNoticeBoardService.findNoticeList(pageable, searchMap);
+        Page<LMSNoticeBoardDTO> notices = lmsNoticeBoardService.findNoticeList(pageable, searchMap, lectureNo);
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(notices);
 
         mv.addObject("notices", notices);

@@ -1,5 +1,6 @@
 package com.greedy.rotutee.dashboard.lms.entity;
 
+import com.greedy.rotutee.dashboard.mypage.entity.DashboardMember;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,20 +57,24 @@ public class LMSBoard {
     @Column(name = "BOARD_DELETION_DATE")
     private Date deletedDate;
 
-    @Column(name = "BOARD_DELETE_YN")
-    private String deleteStatus;
-
     @Column(name = "BOARD_VIEW_COUNT")
     private int count;
 
     @Column(name = "BOARD_CATEGORY_NO")
     private int categoryNo;
 
-    @Column(name = "MEMBER_NO")
-    private int memberNo;
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_NO")
+    private DashboardMember member;
 
     @Column(name = "BOARD_REPORT_COUNT")
     private int reportCount;
+
+    @Column(name = "LECTURE_NO")
+    private int lectureNo;
+
+    @Column(name = "BOARD_DELETE_YN")
+    private String deleteStatus;
 
     @Column(name = "BULLETIN_BOARD_SECRET_YN")
     private String secretStatus;
@@ -83,11 +88,12 @@ public class LMSBoard {
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
                 ", deletedDate=" + deletedDate +
-                ", deleteStatus='" + deleteStatus + '\'' +
                 ", count=" + count +
                 ", categoryNo=" + categoryNo +
-                ", memberNo=" + memberNo +
+                ", member=" + member +
                 ", reportCount=" + reportCount +
+                ", lectureNo=" + lectureNo +
+                ", deleteStatus='" + deleteStatus + '\'' +
                 ", secretStatus='" + secretStatus + '\'' +
                 '}';
     }
