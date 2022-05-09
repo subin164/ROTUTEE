@@ -5,6 +5,10 @@ import com.greedy.rotutee.lecture.request.entity.*;
 import com.greedy.rotutee.lecture.request.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -208,26 +212,31 @@ public class LectureRequestServiceImpl implements LectureRequestService{
             }
 
         requestLectureRepository.save(modelMapper.map(newLecture, Lecture.class));
-
     }
 
     @Override
-    public List<LectureDTO> findStatusOfLectureIsWaiting() {
+    public Page<LectureDTO> findStatusOfLectureIsWaiting(Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() -1, pageable.getPageSize(),
+                Sort.by("lectureNo").descending());
 
         String status = "대기";
-        List<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatus(status);
+        Page<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatus(status, pageable);
 
-        return lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+        return lectureList.map(lecture -> modelMapper.map(lecture, LectureDTO.class));
     }
 
     @Override
-    public List<LectureDTO> findStatusOfLectureIsNotWaiting() {
+    public Page<LectureDTO> findStatusOfLectureIsNotWaiting(Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() -1, pageable.getPageSize(),
+                Sort.by("lectureNo").descending());
 
         String status1 = "승인";
         String status2 = "거절";
-        List<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatusOrLectureApprovalStatus(status1, status2);
+        Page<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatusOrLectureApprovalStatus(status1, status2, pageable);
 
-        return lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+        return lectureList.map(lecture -> modelMapper.map(lecture, LectureDTO.class));
     }
 
     @Override

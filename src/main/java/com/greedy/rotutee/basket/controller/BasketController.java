@@ -45,6 +45,7 @@ public class BasketController {
                                                   , RedirectAttributes rttr) {
 
         if(customUser == null) {
+
             rttr.addFlashAttribute("message", "로그인이 필요한 서비스입니다.");
             mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
         } else {
@@ -54,15 +55,18 @@ public class BasketController {
             ClassBasketDTO basket = basketService.findByLectureNoAndMemberNo(lectureNo, memberNo);
 
             if (basket == null) {
+
                 basketService.registLectureToCart(lectureNo, memberNo);
 
                 rttr.addFlashAttribute("message", "수강바구니에 추가되었습니다.");
                 mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
             } else {
+
                 rttr.addFlashAttribute("message", "이미 추가되어있습니다.");
                 mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
             }
         }
+
         return mv;
     }
 
@@ -72,9 +76,9 @@ public class BasketController {
 
         int memberNo = customUser.getNo();
         List<ClassBasketDTO> cartList = basketService.findByMemberNo(memberNo);
+
         for(ClassBasketDTO cart : cartList) {
             List<AttachedFileDTO> fileList = cart.getLecture().getImageList();
-            System.out.println("fileList = " + fileList);
         }
 
         mv.addObject("cartList", cartList);
@@ -94,6 +98,7 @@ public class BasketController {
 
         rttr.addFlashAttribute("message", "해당 강의를 제거하였습니다.");
         mv.setViewName("redirect:/basket/list");
+
         return mv;
     }
 }
