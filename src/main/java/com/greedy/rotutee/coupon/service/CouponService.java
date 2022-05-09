@@ -4,6 +4,7 @@ package com.greedy.rotutee.coupon.service;
 import com.greedy.rotutee.coupon.dto.CouponDTO;
 import com.greedy.rotutee.coupon.dto.MemberCouponBoxDTO;
 import com.greedy.rotutee.coupon.entity.Coupon;
+import com.greedy.rotutee.coupon.entity.MemberCouponBox;
 import com.greedy.rotutee.coupon.repository.CouponRepository;
 import com.greedy.rotutee.coupon.repository.MemberCouponBoxRepository;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
@@ -100,6 +101,8 @@ public class CouponService {
                 memberCouponBoxDTO.setReceivingDate(new Date(System.currentTimeMillis()));
                 memberCouponBoxDTO.setCouponNo(modelMapper.map(coupon, CouponDTO.class));
                 memberCouponBoxDTO.setMemberNo(modelMapper.map(memberList.get(i), MemberDTO.class));
+
+                memberCouponBoxRepository.save(modelMapper.map(memberCouponBoxDTO, MemberCouponBox.class));
             }
         }
 
