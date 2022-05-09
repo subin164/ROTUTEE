@@ -103,7 +103,7 @@ public class LectureMainController {
             } else if(customUser != null && lectureMainService.findMemberInLecture(memberNo, lectureNo) == null) {
                 rttr.addFlashAttribute("message", "수강하신 회원만 작성할 수 있습니다.");
             } else {
-                lectureMainService.registLectureReview(rating, content, lectureNo, memberNo);
+                lectureMainService.registLectureReviewAndPoint(rating, content, lectureNo, memberNo);
                 rttr.addFlashAttribute("message", "강의평을 작성하였습니다.");
             }
         }

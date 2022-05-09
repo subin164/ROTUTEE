@@ -23,9 +23,11 @@ public class LectureMainServiceImpl implements  LectureMainService{
     private final LectureAttachedFileRepository lectureAttachedFileRepository;
     private final LectureMemberInterestRepository lectureMemberInterestRepository;
     private final MemberRepository memberRepository;
+    private final LecturePointHistoryRepository lecturePointHistoryRepository;
+    private final LecturePointAcquisitionPlaceRepository lecturePointAcquisitionPlaceRepository;
 
     @Autowired
-    public LectureMainServiceImpl(LectureMainRepository lectureMainRepository, ModelMapper modelMapper, ChapterRepository chapterRepository, LectureReviewMainRepository lectureReviewMainRepository, MemberLectureMainRepository memberLectureMainRepository, LectureAttachedFileRepository lectureAttachedFileRepository, LectureMemberInterestRepository lectureMemberInterestRepository, MemberRepository memberRepository) {
+    public LectureMainServiceImpl(LectureMainRepository lectureMainRepository, ModelMapper modelMapper, ChapterRepository chapterRepository, LectureReviewMainRepository lectureReviewMainRepository, MemberLectureMainRepository memberLectureMainRepository, LectureAttachedFileRepository lectureAttachedFileRepository, LectureMemberInterestRepository lectureMemberInterestRepository, MemberRepository memberRepository, LecturePointHistoryRepository lecturePointHistoryRepository, LecturePointAcquisitionPlaceRepository lecturePointAcquisitionPlaceRepository) {
         this.lectureMainRepository = lectureMainRepository;
         this.modelMapper = modelMapper;
         this.chapterRepository = chapterRepository;
@@ -34,6 +36,8 @@ public class LectureMainServiceImpl implements  LectureMainService{
         this.lectureAttachedFileRepository = lectureAttachedFileRepository;
         this.lectureMemberInterestRepository = lectureMemberInterestRepository;
         this.memberRepository = memberRepository;
+        this.lecturePointHistoryRepository = lecturePointHistoryRepository;
+        this.lecturePointAcquisitionPlaceRepository = lecturePointAcquisitionPlaceRepository;
     }
 
     @Override
@@ -153,21 +157,76 @@ public class LectureMainServiceImpl implements  LectureMainService{
 
     @Override
     @Transactional
-    public void registLectureReview(int rating, String content, int lectureNo, int memberNo) {
+    public void registLectureReviewAndPoint(int rating, String content, int lectureNo, int memberNo) {
 
-        MemberDTO writer = new MemberDTO();
-        writer.setNo(memberNo);
 
-        LectureReviewDTO lectureReview = new LectureReviewDTO();
-        lectureReview.setLectureGrade(rating);
-        lectureReview.setLectureReviewContent(content);
-        lectureReview.setLectureReviewDate(new Date(System.currentTimeMillis()));
-        lectureReview.setLectureReviewRemoveYN("N");
-        lectureReview.setLectureNo(lectureNo);
-        lectureReview.setWriter(writer);
+        Member memberEntity = memberRepository.findById(memberNo).get();
+        MemberDTO member = modelMapper.map(memberEntity, MemberDTO.class);
 
-        lectureReviewMainRepository.save(modelMapper.map(lectureReview, LectureReview.class));
+        List<LectureReview> reviewEntityList = lectureReviewMainRepository.findByWriterAndLectureNo(memberEntity, lectureNo);
 
+        System.out.println("reviewEntityList = " + reviewEntityList);
+        System.out.println("reviewEntityList.size() = " + reviewEntityList.size());
+
+        if(reviewEntityList.size() <= 0) {
+
+            LectureReviewDTO lectureReview = new LectureReviewDTO();
+            lectureReview.setLectureGrade(rating);
+            lectureReview.setLectureReviewContent(content);
+            lectureReview.setLectureReviewDate(new Date(System.currentTimeMillis()));
+            lectureReview.setLectureReviewRemoveYN("N");
+            lectureReview.setLectureNo(lectureNo);
+            lectureReview.setWriter(member);
+
+            lectureReviewMainRepository.save(modelMapper.map(lectureReview, LectureReview.class));
+
+            String place = "강의평";
+            PointAcquisitionPlace acquisitionPlace = lecturePointAcquisitionPlaceRepository.findByPlaceName(place);
+
+            PointAcquisitionPlaceDTO acquisitionPlaceDTO = modelMapper.map(acquisitionPlace, PointAcquisitionPlaceDTO.class);
+
+            List<PointHistory> historyList = lecturePointHistoryRepository.findByMemberOrderByHistoryNoDesc(memberEntity);
+            if(historyList.size() > 0) {
+                PointHistory recentHistory = historyList.get(0);
+
+                int finalPoint = acquisitionPlace.getPoint() + recentHistory.getFinalPoint();
+                String division = "획득";
+
+                PointHistoryDTO newHistory = new PointHistoryDTO();
+                newHistory.setChangeDate(new Date(System.currentTimeMillis()));
+                newHistory.setChangePoint(acquisitionPlace.getPoint());
+                newHistory.setFinalPoint(finalPoint);
+                newHistory.setDivision(division);
+                newHistory.setMember(member);
+                newHistory.setPointAcquisitionPlace(acquisitionPlaceDTO);
+
+                lecturePointHistoryRepository.save(modelMapper.map(newHistory, PointHistory.class));
+            } else {
+
+                String division = "획득";
+
+                PointHistoryDTO newHistory = new PointHistoryDTO();
+                newHistory.setChangeDate(new Date(System.currentTimeMillis()));
+                newHistory.setChangePoint(acquisitionPlace.getPoint());
+                newHistory.setFinalPoint(acquisitionPlace.getPoint());
+                newHistory.setDivision(division);
+                newHistory.setMember(member);
+                newHistory.setPointAcquisitionPlace(acquisitionPlaceDTO);
+
+                lecturePointHistoryRepository.save(modelMapper.map(newHistory, PointHistory.class));
+            }
+        } else {
+
+            LectureReviewDTO lectureReview = new LectureReviewDTO();
+            lectureReview.setLectureGrade(rating);
+            lectureReview.setLectureReviewContent(content);
+            lectureReview.setLectureReviewDate(new Date(System.currentTimeMillis()));
+            lectureReview.setLectureReviewRemoveYN("N");
+            lectureReview.setLectureNo(lectureNo);
+            lectureReview.setWriter(member);
+
+            lectureReviewMainRepository.save(modelMapper.map(lectureReview, LectureReview.class));
+        }
     }
 
     @Override
