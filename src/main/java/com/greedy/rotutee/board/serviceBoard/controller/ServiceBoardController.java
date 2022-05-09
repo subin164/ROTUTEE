@@ -209,9 +209,6 @@ public class ServiceBoardController {
     public ModelAndView searchBoardList(@RequestParam("searchValue") String searchValue, @RequestParam("searchCondition") String searchCondition,
                                   @PageableDefault Pageable pageable, ModelAndView mv) {
 
-        System.out.println("searchValue = " + searchValue);
-        System.out.println("searchCondition = " + searchCondition);
-
         Page<BoardDTO> boardList = serviceBoardService.findSearchServiceBoardList(searchValue, searchCondition, pageable);
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(boardList);
 

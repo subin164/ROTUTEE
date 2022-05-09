@@ -118,6 +118,22 @@ public class MemberController {
         return mv;
     }
 
+    @GetMapping("/search")
+    public ModelAndView searchMemberList(ModelAndView mv,@RequestParam("searchCondition") String searchCondition,
+                                         @RequestParam("searchValue") String searchValue, @PageableDefault Pageable pageable) {
+
+        Page<MemberDTO> memberList = memberService.findSearchMemberList(searchCondition, searchValue, pageable);
+
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(memberList);
+
+        mv.addObject("memberList", memberList);
+        mv.addObject("paging", paging);
+
+        mv.setViewName("/member/list");
+
+        return mv;
+    }
+
     @GetMapping("/detail/{memberNo}")
     public ModelAndView memberDetail(ModelAndView mv, @PathVariable int memberNo) {
 
@@ -134,8 +150,14 @@ public class MemberController {
 
             TutorInfoDTO tutorInfo = profileService.findTutorInfo(memberNo);
 
-            tutorInfo.setAddress(tutorInfo.getAddress().replace("&", " "));
-
+            if(tutorInfo != null) {
+                tutorInfo.setAddress(tutorInfo.getAddress().replace("&", " "));
+            } else {
+                tutorInfo = new TutorInfoDTO();
+                tutorInfo.setAddress("미입력");
+                tutorInfo.setAccountNumber("미입력");
+                tutorInfo.setBankName("미입력");
+            }
             mv.addObject("tutorInfo", tutorInfo);
         }
 

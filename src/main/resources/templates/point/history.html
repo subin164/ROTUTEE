@@ -78,17 +78,6 @@
 <div class="box">
     <label class="head">포인트 내역</label>
     <hr>
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
-                    role="tab" aria-controls="home" aria-selected="true">획득</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
-                    role="tab" aria-controls="profile" aria-selected="false">사용</button>
-        </li>
-    </ul>
-
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="limiter">
@@ -100,10 +89,10 @@
                                     <thead>
                                     <tr class="row100 head">
                                         <th class="cell100 column1">번호</th>
-                                        <th class="cell100 column2">획득 포인트</th>
-                                        <th class="cell100 column2">획득 후 포인트</th>
-                                        <th class="cell100 column4">획득처</th>
-                                        <th class="cell100 column3">획득일</th>
+                                        <th class="cell100 column2">변경 포인트</th>
+                                        <th class="cell100 column2">변경 후 포인트</th>
+                                        <th class="cell100 column4">획득/사용처</th>
+                                        <th class="cell100 column3">변경일</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -130,51 +119,6 @@
                     <th:block th:each="page : ${#numbers.sequence(achievePaging.startPage, achievePaging.endPage)}">
                         <button class="btn pagebtn" th:onclick="'location.href=\'/tutorApply/list?page=' + @{${page}} + '\''"
                                 th:text="${ page }" th:disabled="${ achievePaging.currentPage eq page }"></button>
-                    </th:block>
-                </div>
-            </div>
-        </div>
-        <div class="tab-pane fade board" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <div class="limiter">
-                <div class="container-table100">
-                    <div class="wrap-table100">
-                        <div class="table100 ver1 m-b-110">
-                            <div class="table100-head">
-                                <table >
-                                    <thead>
-                                    <tr class="row100 head">
-                                        <th class="cell100 column1">번호</th>
-                                        <th class="cell100 column2">사용 포인트</th>
-                                        <th class="cell100 column3">사용 후 포인트</th>
-                                        <th class="cell100 column4">사용처</th>
-                                        <th class="cell100 column4">사용일</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
-
-                            <div class="table100-body">
-                                <table id="after-table">
-                                    <tbody>
-                                    <tr class="row100 body" th:each="useHistory : ${ useHistoryList }">
-                                        <td th:text="${ useHistory.historyNo }">
-                                        <td th:text="${ useHistory.changePoint }">
-                                        <td th:text="${ useHistory.finalPoint }">
-                                        <td th:text="${ useHistory.pointProduct.productName }">
-                                        <td th:text="${ useHistory.changeDate }">
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex justify-content-center">
-                <div class="justify-content-evenly mt-lg-5">
-                    <th:block th:each="page : ${#numbers.sequence(usePaging.startPage, usePaging.endPage)}">
-                        <button class="btn pagebtn" th:onclick="'location.href=\'/tutorApply/list?page=' + @{${page}} + '\''"
-                                th:text="${ page }" th:disabled="${ usePaging.currentPage eq page }"></button>
                     </th:block>
                 </div>
             </div>

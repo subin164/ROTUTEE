@@ -263,4 +263,29 @@ public class MemberService {
 
         attachedFile.setFileDeletionYn("Y");
     }
+
+    public Page<MemberDTO> findSearchMemberList(String searchCondition, String searchValue, Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("no").descending());
+
+        Page<Member> memberList = null;
+
+        if("name".equals(searchCondition)) {
+
+            memberList = memberRepository.findByNameContaining(searchValue, pageable);
+        } else if("email".equals(searchCondition)) {
+
+            memberList = memberRepository.findByEmailContaining(searchValue, pageable);
+        } else if("category".equals(searchCondition) && "튜터".equals(searchValue)) {
+
+            memberList = memberRepository.findByMemberRoleListRoleNo(4, pageable);
+        } else if("category".equals(searchCondition) && "튜티".equals(searchValue)) {
+
+            memberList = memberRepository.findByMemberRoleListRoleNo(3, pageable);
+        }
+
+        return memberList.map(member -> modelMapper.map(member, MemberDTO.class));
+    }
 }

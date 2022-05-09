@@ -113,7 +113,7 @@ public class TutorRequestController {
 
         rttr.addFlashAttribute("message", "튜터신청에에 성공하셨습니다. 제출하실 증빙서류가 있다면 제출해주세요.");
 
-        return "/tutorApply/requestFiles";
+        return "/";
     }
 
     @PostMapping("/filesupload")

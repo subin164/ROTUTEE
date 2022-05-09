@@ -50,14 +50,6 @@
             background-color: #8397D7;
         }
 
-        .categorybtn {
-            background-color: #F0F2FF;
-        }
-
-        .categorybtn:focus {
-            background-color: #8397D7;
-        }
-
         .container {
             padding-top: 60px;
         }
@@ -72,18 +64,52 @@
 
         }
 
-        .memberDetail_wrap {
-            display: none;
-            width: auto;
-            height: auto;
-            position: absolute;
-            background: #fff;
-            margin-top: 0%;
-            margin-left: 25%;
-            margin-right: auto;
-            z-index: 2;
-            background-color: #f5c6cb;
+        tr:hover {
+            background-color: #F5F5F5;
         }
+
+        .pagebtn {
+
+            background-color: #D1E4FA !important;
+        }
+
+        .pagebtn:focus {
+            background-color: #8397D7;
+        }
+
+        .head {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 20px;
+        }
+
+        #myTab {
+            font-family: 'Noto Sans KR', sans-serif;
+            width: 77%;
+        }
+
+
+
+        .selectBox {
+            height: 30px;
+            display: flex;
+            align-content: center;
+            margin-top: 20px;
+
+        }
+
+        .search-btn {
+            background-color: #8DB6E7 !important;
+            color: white !important;
+            width: 70px;
+            height: 35px;
+            font-size: 12px !important;
+            padding: 0 !important;
+        }
+
+        #search-box {
+            border: solid 1px;
+        }
+
     </style>
 </head>
 <body>
@@ -97,23 +123,8 @@
                 <div class="limiter">
                     <div class="container-table100">
                         <div class="wrap-table100">
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                                            data-bs-target="#home" type="button"
-                                            role="tab" aria-controls="home" aria-selected="true">튜티
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-                                            data-bs-target="#profile" type="button"
-                                            role="tab" aria-controls="profile" aria-selected="false">튜터
-                                    </button>
-                                </li>
-                            </ul>
                             <div class="table100 ver1 m-b-110">
                                 <div class="table100-head">
-
                                     <table>
                                         <thead>
                                         <tr class="row100 head">
@@ -141,19 +152,51 @@
                         </div>
                     </div>
                 </div>
+                <!--paging button-->
                 <div class="d-flex justify-content-center">
                     <div class="justify-content-evenly mt-lg-5">
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/member/list?page=' + @{${paging.startPage}}  + '\''"
+                                th:disabled="${ memberList.first }"><<
+                        </button>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/member/list?page=' + @{${paging.currentPage - 1}}  + '\''"
+                                th:disabled="${ memberList.first }"><
+                        </button>
                         <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-                            <button class="btn pagebtn"
-                                    th:onclick="'location.href=\'/member/list?page=' + @{${page}} + '\''"
-                                    th:text="${ page }" th:disabled="${ paging.currentPage eq page }"></button>
+                            <button class="btn pagebtn" type="button"
+                                    th:onclick="'location.href=\'/member/list?page=' + @{${page}}  + '\''"
+                                    th:text="${ page }"
+                                    th:disabled="${ paging.currentPage eq page }">
+                            </button>
                         </th:block>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/member/list?page=' + @{${paging.currentPage + 1}}  + '\''"
+                                th:disabled="${ memberList.last }">>
+                        </button>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/member/list?page=' + @{${paging.endPage}}  + '\''"
+                                th:disabled="${ memberList.last }">>>
+                        </button>
                     </div>
                 </div>
+                <!-- Search bar -->
+                <form th:action="@{/member/search}" method="get">
+                    <div class="selectBox d-flex justify-content-center">
+                        <select name="searchCondition">
+                            <option value="name">회원명</option>
+                            <option value="email">이메일</option>
+                            <option value="category">튜티/튜터</option>
+                        </select>
+                        <input id="search-box" type="text" placeholder="검색어입력" name="searchValue">
+                        <button class="btn search-btn">검색하기</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+<br><br>
 <div th:include="/common/footer.html"></div>
 
 <!--===============================================================================================-->
