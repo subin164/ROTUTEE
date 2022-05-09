@@ -37,149 +37,149 @@
 
 </head>
 <body>
-    <div th:include="common/mypagemenubar.html"></div>
+<div th:include="common/mypagemenubar.html"></div>
 
-    <div class="box">
-        <div> <h1>커뮤니티</h1> </div>
+<div class="box">
+    <div> <h1>커뮤니티</h1> </div>
 
-        <div class="inner-box">
-            <div> <h3>[ 커뮤니티 수정 ]</h3> </div>
-            <form id="modify-form" action="/freeboard/modify" method="post">
-                <div class="category-box">
-                    <div><h4>카테고리</h4></div>
-                    <input id="categoryNo-input" type="hidden" name="categoryNo" th:value="${boardList.freeBoardCategory.boardCategoryNo}"/>
-                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <th:block sec:authorize="hasRole('ADMIN')">
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1"  autocomplete="off" >
-                            <label class="btn btn-outline-primary" for="btnradio1">공지사항</label>
-                        </th:block>
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" >
-                        <label class="btn btn-outline-primary" for="btnradio2">질물&답변</label>
+    <div class="inner-box">
+        <div> <h3>[ 커뮤니티 수정 ]</h3> </div>
+        <form id="modify-form" action="/freeboard/modify" method="post">
+            <div class="category-box">
+                <div><h4>카테고리</h4></div>
+                <input id="categoryNo-input" type="hidden" name="categoryNo" th:value="${boardList.freeBoardCategory.boardCategoryNo}"/>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <th:block sec:authorize="hasRole('ADMIN')">
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1"  autocomplete="off" >
+                        <label class="btn btn-outline-primary" for="btnradio1">공지사항</label>
+                    </th:block>
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" >
+                    <label class="btn btn-outline-primary" for="btnradio2">질물&답변</label>
 
-                        <input type="radio" class="btn-check"  name="btnradio" id="btnradio3"  autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio3">자유</label>
-                    </div>
+                    <input type="radio" class="btn-check"  name="btnradio" id="btnradio3"  autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio3">자유</label>
                 </div>
-                <br>
-                <div class="boardTitle-area">
-                    <div class="boardTitle-box">제목</div>
-                    <input type="hidden" name="boardNo" th:value="${boardList.boardNo}"/>
-                    <input class="boardTitle-input" type="text" name="boardTitle" th:value="${boardList.boardTitle}" required/>
+            </div>
+            <br>
+            <div class="boardTitle-area">
+                <div class="boardTitle-box">제목</div>
+                <input type="hidden" name="boardNo" th:value="${boardList.boardNo}"/>
+                <input class="boardTitle-input" type="text" name="boardTitle" th:value="${boardList.boardTitle}" required/>
 
+            </div>
+            <br>
+            <div class="form-group">
+                <h4>내용</h4>
+                <div class="content-area" >
+                    <textarea class="board-content-textarea" name ="boardContent" th:text="${boardList.boardContent}"/>
                 </div>
-                <br>
-                <div class="form-group">
-                    <h4>내용</h4>
-                    <div class="content-area" >
-                        <textarea class="board-content-textarea" name ="boardContent" th:text="${boardList.boardContent}"/>
-                    </div>
 
-                    <div>
-                        <input id="backBtn" type="button" th:value="뒤로가기" class="btn btn-secondary"/>
+                <div>
+                    <input id="backBtn" type="button" th:value="뒤로가기" class="btn btn-secondary"/>
 
-                        <input id="modifyBoardBtn" type="button" th:value="수정완료" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
-                    </div>
+                    <input id="modifyBoardBtn" type="button" th:value="수정완료" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
+</div>
 
-    <!-- Button trigger modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">수정 하기</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    게시글 수정 하시겠습니까?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="modify-ok" type="button" class="btn btn-primary">Sure</button>
-                </div>
+<!-- Button trigger modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">수정 하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                게시글 수정 하시겠습니까?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="modify-ok" type="button" class="btn btn-primary">Sure</button>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        const $modifyBtn = document.getElementById("modify-ok");
-        const $btnradio1 =document.getElementById("btnradio1");
-        const $btnradio2 = document.getElementById("btnradio2");
-        const $btnradio3 = document.getElementById("btnradio3");
-        const $modifyform = document.getElementById("modify-form");
-        const $backBtn =document.getElementById("backBtn");
-        let $categoryNo = document.getElementById("categoryNo-input");
+<script>
+    const $modifyBtn = document.getElementById("modify-ok");
+    const $btnradio1 =document.getElementById("btnradio1");
+    const $btnradio2 = document.getElementById("btnradio2");
+    const $btnradio3 = document.getElementById("btnradio3");
+    const $modifyform = document.getElementById("modify-form");
+    const $backBtn =document.getElementById("backBtn");
+    let $categoryNo = document.getElementById("categoryNo-input");
 
-        let categoryNo =0;
-        let boardNo = 0;
-        document.addEventListener("DOMContentLoaded", function() {
+    let categoryNo =0;
+    let boardNo = 0;
+    document.addEventListener("DOMContentLoaded", function() {
 
-            const url = window.location.href;
+        const url = window.location.href;
 
-            boardNo = url.split("=");
-            boardNo= boardNo[1];
-            categoryNo = $categoryNo.value;
+        boardNo = url.split("=");
+        boardNo= boardNo[1];
+        categoryNo = $categoryNo.value;
 
-            switch (categoryNo){
-                case '6': $btnradio1.checked = true;
-                    console.log("notice");
-                    break;
-                case '5': $btnradio2.checked = true;
-                    console.log("ask");
-                    break;
-               default : $btnradio3.checked = true;
-                   console.log("free");
-                   break;
-            }
-        });
-
-        $backBtn.addEventListener("click", function(){
-            window.location.href="detail?boardNo="+boardNo;
-        });
-
-        $modifyBtn.addEventListener("click", function (){
-            $modifyform.submit();
-        });
-
-        $btnradio1.addEventListener("click", function (){
-            categoryNo =6;
-            $categoryNo.value=categoryNo;
-        });
-
-        $btnradio2.addEventListener("click", function (){
-            categoryNo =5;
-            $categoryNo.value=categoryNo;
-        });
-
-        $btnradio3.addEventListener("click", function (){
-            categoryNo =4;
-            $categoryNo.value=categoryNo;
-        });
-
-    </script>
-    <!--<script type="text/javascript">
-        function modify_post_to_url(path, params, method) {
-
-            const form = document.createElement("form");
-            form.setAttribute("method", method);
-            form.setAttribute("action", path);
-            for(let key in params) {
-                let hiddenField = document.createElement("input");
-                hiddenField.setAttribute("type", "hidden");
-                hiddenField.setAttribute("name", key);
-                hiddenField.setAttribute("value",params[key]);
-
-                console.log("key"+key);
-                console.log("param"+params[key]);
-
-                form.appendChild(hiddenField);
-            }
-            document.body.appendChild(form);
-            form.submit();
+        switch (categoryNo){
+            case '6': $btnradio1.checked = true;
+                console.log("notice");
+                break;
+            case '5': $btnradio2.checked = true;
+                console.log("ask");
+                break;
+            default : $btnradio3.checked = true;
+                console.log("free");
+                break;
         }
-    </script>-->
+    });
+
+    $backBtn.addEventListener("click", function(){
+        window.location.href="detail?boardNo="+boardNo;
+    });
+
+    $modifyBtn.addEventListener("click", function (){
+        $modifyform.submit();
+    });
+
+    $btnradio1.addEventListener("click", function (){
+        categoryNo =6;
+        $categoryNo.value=categoryNo;
+    });
+
+    $btnradio2.addEventListener("click", function (){
+        categoryNo =5;
+        $categoryNo.value=categoryNo;
+    });
+
+    $btnradio3.addEventListener("click", function (){
+        categoryNo =4;
+        $categoryNo.value=categoryNo;
+    });
+
+</script>
+<!--<script type="text/javascript">
+    function modify_post_to_url(path, params, method) {
+
+        const form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+        for(let key in params) {
+            let hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value",params[key]);
+
+            console.log("key"+key);
+            console.log("param"+params[key]);
+
+            form.appendChild(hiddenField);
+        }
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>-->
 
 
 
