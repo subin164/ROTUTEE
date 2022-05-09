@@ -40,6 +40,7 @@ public class LMSNoticeBoardServiceImpl implements LMSNoticeBoardService {
     public Page<LMSNoticeBoardDTO> findNoticeList(Pageable pageable, Map<String, String> searchMap) {
 
         System.out.println("pageable = " + pageable);
+        int categoryNo = 10;
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() -1, pageable.getPageSize(),
                 Sort.by("boardNo").descending());
@@ -49,9 +50,9 @@ public class LMSNoticeBoardServiceImpl implements LMSNoticeBoardService {
 
         Page<LMSNotice> noticeEntities = null;
         if(searchCondition == null || searchCondition.equals("")) {
-            noticeEntities = lmsNoticeRepository.findAll(pageable);
+            noticeEntities = lmsNoticeRepository.findByCategoryNo(categoryNo, pageable);
         } else if(searchCondition.equals("title")) {
-            noticeEntities = lmsNoticeRepository.findAllByTitleContaining(searchValue, pageable);
+            noticeEntities = lmsNoticeRepository.findByCategoryNoAndTitleContaining(categoryNo, searchValue, pageable);
         }
 
         return noticeEntities.map(Lms_Notice -> modelMapper.map(Lms_Notice, LMSNoticeBoardDTO.class));

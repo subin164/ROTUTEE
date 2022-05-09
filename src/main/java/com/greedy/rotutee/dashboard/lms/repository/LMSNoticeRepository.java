@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.repository
  * fileName : LMSNoticeRepository
@@ -18,4 +20,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface LMSNoticeRepository extends JpaRepository<LMSNotice, Integer> {
     Page<LMSNotice> findAllByTitleContaining(String searchValue, Pageable pageable);
+
+    Page<LMSNotice> findByCategoryNo(int categoryNo, Pageable pageable);
+
+    Page<LMSNotice> findByCategoryNoAndTitleContaining(int categoryNo, String searchValue, Pageable pageable);
+
+    List<LMSNotice> findByCategoryNo(int categoryNo);
 }
