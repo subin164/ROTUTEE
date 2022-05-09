@@ -168,11 +168,11 @@ public class MemberRepositoryTests {
         int memberNo = 14;
 
         //when
-        String memberStatus = memberStatusHistoryRepositoryQuery.findMemberStatus(entityManager, memberNo);
+//        String memberStatus = memberStatusHistoryRepositoryQuery.findMemberStatus(entityManager, memberNo);
         
         //then
-        assertNotNull(memberStatus);
-        System.out.println("memberStatus = " + memberStatus);
+//        assertNotNull(memberStatus);
+//        System.out.println("memberStatus = " + memberStatus);
     }
 
     @Test

@@ -23,7 +23,7 @@ import java.sql.Date;
         initialValue = 1,
         allocationSize = 1
 )
-public class MemberStatusHistory {
+public class   MemberStatusHistory {
 
     @Id
     @Column(name = "MEMBER_STATUS_HISTORY_NO")
@@ -102,6 +102,7 @@ public class MemberStatusHistory {
                 ", status='" + status + '\'' +
                 ", historyDate=" + historyDate +
                 ", member=" + member +
+                ", suspensionHitory=" + suspensionHitory +
                 '}';
     }
 }

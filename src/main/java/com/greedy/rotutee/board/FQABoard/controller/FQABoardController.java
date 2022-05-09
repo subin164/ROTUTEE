@@ -61,6 +61,9 @@ public class FQABoardController {
         board.setReportCount(0);
         board.setViewCount(0);
 
+        System.out.println("board = " + board);
+        System.out.println("fqaBoardService = " + fqaBoardService);
+
         fqaBoardService.registFQABoard(board, categoryNo, admin.getNo());
 
         return "redirect:/FQABoard/list/" + categoryNo;

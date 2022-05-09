@@ -11,43 +11,75 @@
 </head>
 <body>
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+<button type="button" id="request-tutor-btn">
   Launch demo modal
 </button>
 
-
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" style="width : 860px;">
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel2">증빙 서류</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header modal-head">
+        <span class="head-title">튜터 신청서</span>
+        <button type="button" class="btn-close close-btn" data-bs-dismiss="modal"
+                aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="/tutorApply/filesupload" method="post" enctype="multipart/form-data">
-          <h2>첨부파일
-            <button type="button" id="registFiles">파일 추가</button>
-            <button type="button" id="deleteFiles">파일 삭제</button>
-          </h2>
-          <table border="1px" id="files" style="width: 600px">
-            <thead>
-            <tr>
-              <th width="475px">증빙서류제출</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td><input type='file' multiple='multiple' name='proofFiles' required></td>
-            </tr>
-            </tbody>
-          </table>
-          <br>
-          <hr align="left" width="600px">
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
-          </div>
-        </form>
+        <table style="width: 600px">
+          <h2>인적사항</h2>
+          <tr>
+            <th>이름</th>
+            <th>이메일</th>
+            <th>휴대폰</th>
+          </tr>
+          <tr>
+            <td width="100px"><input type="text" th:value="${ member.name }" name="name" required></td>
+            <td width="150px"><input type="text" th:value="${ member.email }" name="email" required></td>
+            <td width="150px"><input type="text" th:value="${ member.phoneNum }" name="phoneNum" required></td>
+          </tr>
+        </table>
+        <br>
+        <hr align="left" width="600px">
+        <h2>경력사항
+          <button type="button" id="registCareer" style="font-size: small">항목 추가</button>
+          <button type="button" id="deleteCareer" style="font-size: small">항목 삭제</button>
+        </h2>
+        <table id="career" style="width: 600px">
+          <thead>
+          <tr>
+            <th colspan="2" width="30%">근무 기간</th>
+            <th width="30%">근무처</th>
+            <th width="15%">직급</th>
+            <th width="25">담당업무</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <br>
+        <hr align="left" width="600px">
+        <h2>자격사항
+          <button type="button" id="registQualification" style="font-size: small">항목 추가</button>
+          <button type="button" id="deleteQualification" style="font-size: small">항목 삭제</button>
+        </h2>
+        <table id="qualification" style="width: 600px">
+          <thead>
+          <tr>
+            <th width="30%">취득 일자</th>
+            <th width="50%">자격 및 교육명</th>
+            <th>등급</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <br>
+        <hr align="left" width="600px">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button id="approve-btn" type="button" class="btn modal-btn"
+                style="background-color: #d3e1f3; color: rgb(107, 107, 107);">
+          신청
+        </button>
       </div>
     </div>
   </div>
@@ -58,6 +90,11 @@
   })
 </script>
 <script>
+
+  $("#request-tutor-btn").click(function(){
+
+    $("#exampleModal").modal('show');
+  });
 
   let careerCount = 0;
   let qualificationCount = 0;

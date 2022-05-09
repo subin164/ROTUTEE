@@ -1,5 +1,6 @@
 package com.greedy.rotutee.member.member.repository;
 
+import com.greedy.rotutee.member.member.entity.MemberStatusHistory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -20,15 +21,15 @@ import java.util.List;
 @Repository
 public class MemberStatusHistoryRepositoryQuery {
 
-    public String findMemberStatus(EntityManager entityManager, int memberNo) {
+    public MemberStatusHistory findMemberStatus(EntityManager entityManager, int memberNo) {
 
-        String jpql = "SELECT a.status " +
+        String jpql = "SELECT a " +
                 "FROM Member_MemberStatusHistory a " +
                 "WHERE a.historyNo = " +
                 "(SELECT max(b.historyNo) " +
                 "FROM Member_MemberStatusHistory b " +
                 "WHERE b.member.no = :memberNo)";
 
-        return (String) entityManager.createQuery(jpql).setParameter("memberNo", memberNo).getSingleResult();
+        return (MemberStatusHistory) entityManager.createQuery(jpql).setParameter("memberNo", memberNo).getSingleResult();
     }
 }

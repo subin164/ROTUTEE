@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Table V04</title>
     <meta charset="UTF-8">
@@ -91,7 +91,6 @@
     <label class="head">문의 게시판</label>
     <button onclick="location.href='/serviceBoard/regist'">글작성</button>
     <hr>
-
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="limiter">
@@ -107,6 +106,7 @@
                                             <th class="cell100 column3">Category</th>
                                             <th class="cell100 column4">Date</th>
                                             <th class="cell100 column5">Writer</th>
+                                            <th class="cell100 column6">비밀글여부</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -116,15 +116,11 @@
                                     <tbody>
                                     <tr id="board-tr" class="row100 body" th:each="board : ${ boardList }">
                                         <td class="cell100 column1" style="width: 10%;" th:text="${ board.no}"></td>
-                                        <th:block th:if="${ board.bulletinBoardSecretYN == 'Y'}">
-                                            <td class="cell100 column1" style="width: 30%;" >비밀글 입니다.</td>
-                                        </th:block>
-                                        <th:block th:if="${ board.bulletinBoardSecretYN == 'N'}">
-                                            <td class="cell100 column2" style="width: 30%;" th:text="${ board.title}"></td>
-                                        </th:block>
+                                        <td class="cell100 column2" style="width: 30%;" th:text="${ board.title}"></td>
                                         <td class="cell100 column3" th:text="${ board.boardCategory.name}"> </td>
                                         <td class="cell100 column4" th:text="${ board.creationDate}"> </td>
                                         <td class="cell100 column5" th:text="${ board.member.name}"> </td>
+                                        <td class="cell100 column6" th:text="${ board.bulletinBoardSecretYN}"> </td>
                                     </tbody>
                                 </table>
                             </div>
@@ -132,32 +128,51 @@
                     </div>
                 </div>
             </div>
-
+            <!--paging button-->
             <div class="d-flex justify-content-center">
                 <div class="justify-content-evenly mt-lg-5">
+                    <button class="btn pagebtn" type="button"
+                            th:onclick="'location.href=\'/serviceBoard/list?page=' + @{${paging.startPage}}  + '\''"
+                            th:disabled="${ boardList.first }"><<
+                    </button>
+                    <button class="btn pagebtn" type="button"
+                            th:onclick="'location.href=\'/serviceBoard/list?page=' + @{${paging.currentPage - 1}}  + '\''"
+                            th:disabled="${ boardList.first }"><
+                    </button>
                     <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-                        <button class="btn pagebtn" th:onclick="'location.href=\'/serviceBoard/list?page=' + @{${page}} + '\''"
-                                th:text="${ page }" th:disabled="${ paging.currentPage eq page }"></button>
+                        <button class="btn pagebtn" type="button"
+                                th:onclick="'location.href=\'/serviceBoard/list?page=' + @{${page}}  + '\''"
+                                th:text="${ page }"
+                                th:disabled="${ paging.currentPage eq page }">
+                        </button>
                     </th:block>
+                    <button class="btn pagebtn" type="button"
+                            th:onclick="'location.href=\'/serviceBoard/list?page=' + @{${paging.currentPage + 1}}  + '\''"
+                            th:disabled="${ boardList.last }">>
+                    </button>
+                    <button class="btn pagebtn" type="button"
+                            th:onclick="'location.href=\'/serviceBoard/list?page=' + @{${paging.endPage}}  + '\''"
+                            th:disabled="${ boardList.last }">>>
+                    </button>
                 </div>
             </div>
-        </div>
-        <div class="select d-flex justify-content-end container">
-            <div class="selectBox">
-                <form action="/serviceBoard/search">
-                <select name="searchCondition">
-                    <option value="category">카테고리</option>
-                    <option value="member">작성자</option>
-                    <option value="title">제목</option>
-                    <option value="content">내용</option>
-                </select>
-                <input type="text" name="searchValue" placeholder="검색어입력">
-                <button type="submit" class="btn search-btn">검색하기</button>
-                </form>
-            </div>
+            <!-- Search bar -->
+            <form th:action="@{/serviceBoard/search}" method="get">
+                <div class="selectBox d-flex justify-content-center">
+                    <select name="searchCondition">
+                        <option value="category">카테고리</option>
+                        <option value="member">작성자</option>
+                        <option value="title">제목</option>
+                        <option value="content">내용</option>
+                    </select>
+                    <input id="search-box" type="text" placeholder="검색어입력" name="searchValue">
+                    <button class="btn search-btn">검색하기</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+<br>
 <div th:include="/common/footer.html"></div>
 
 <!--===============================================================================================-->
@@ -184,6 +199,7 @@
         let td = tr.children();
 
         let boardNo = td.eq(0).text();
+
 
         $.ajax({
            url: "/serviceBoard/secret",

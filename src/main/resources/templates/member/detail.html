@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -44,42 +44,76 @@
 
 <div class="container">
     <div class="row fs-2">
-        <div>회원 상세 정보</div>
-        <th:block th:if="${ memberStatus == '활동'}">
-            <button type="button" id="memberStopBtn">회원정지</button>
-        </th:block>
-        <th:block th:if="${ memberStatus == '정지'}">
-            <button type="button" id="memberPlayBtn">정지철회</button>
-        </th:block>
+        <div>
+            회원 상세 정보
+            <button type="button" id="memberManage" style="width: 100px; height: 30px; font-size: small">회원관리</button>
+        </div>
         <hr>
     </div>
-    <div class="memberStatus_wrap">
-        <form action="/member/stop" method="post">
-            <input type="hidden" th:value="${ member.no }" name="memberNo">
-            <table border="1px">
-                <tr>
-                    <th>정지사유</th>
-                    <td width="200px">
-                        <select id="stopReasons" name="stopReasons">
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>정지일</th>
-                    <td>
-                        <select id="stopDate" name="stopDate">
-                            <option value="1">1</option>
-                            <option value="3">3</option>
-                            <option value="7">7</option>
-                            <option value="30">30</option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-            <div>
-                <input type="submit" value="확인"> <button type="button" id="closeBtn">취소</button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header modal-head">
+                    <span class="head-title">회원관리</span>
+                    <button type="button" class="btn-close close-btn" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <form action="/member/stop" method="post">
+                <div class="modal-body">
+                    <div class="report-list">
+                        <th:block th:if="${ memberStatus.status == '활동'}">
+                            <input type="hidden" th:value="${ member.no }" name="memberNo">
+                            <table>
+                                <tr>
+                                    <th>정지사유</th>
+                                    <td width="200px">
+                                        <select id="stopReasons" name="stopReasons">
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>정지일</th>
+                                    <td>
+                                        <select id="stopDate" name="stopDate">
+                                            <option value="1">1</option>
+                                            <option value="3">3</option>
+                                            <option value="7">7</option>
+                                            <option value="30">30</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </th:block>
+                        <th:block th:if="${ memberStatus.status == '정지' }">
+                            <h5>정지사유 <th:block th:text="${ memberStatus.suspensionHitory.reasons.content }"></th:block></h5>
+                            <h5>정지일  <th:block th:text="${ memberStatus.suspensionHitory.startDate }"></th:block></h5>
+                            <h5>해지일  <th:block th:text="${ memberStatus.suspensionHitory.endDate }"></th:block></h5>
+                        </th:block>
+                    </div>
+                    <input type="hidden" id="modal-reportNo" name="reportNo">
+                    <input type="hidden" id="modal-boardNo" name="boardNo">
+                    <input type="hidden" id="modal-answerNo" name="answerNo">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <th:block th:if="${ memberStatus.status == '활동'}">
+                    <button id="approve-btn" type="submit" class="btn modal-btn"
+                            style="background-color: #d3e1f3; color: rgb(107, 107, 107);">
+                        정지
+                    </button>
+                    </th:block>
+                    <th:block th:if="${ memberStatus.status == '정지'}">
+                    </button>
+                    <button id="withdraw-btn" type="button" class="btn modal-withdraw"
+                            style="background-color: #f3abb2; color: rgb(107, 107, 107);">
+                        철회
+                    </button>
+                    </th:block>
+                </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
     <br>
     <div class="row" style=" height: 200px; width: 1200px;">
@@ -99,7 +133,7 @@
         <div style="margin-left: 50px; margin-top: 30px; ">
             <p>
                 활동상태　
-                <span th:text="${ memberStatus }"></span>
+                <span th:text="${ memberStatus.status }"></span>
             </p>
             <p>
                 이름　　　
@@ -177,7 +211,7 @@
         });
     });
 
-    $("#memberPlayBtn").click(function() {
+    $("#withdraw-btn").click(function() {
 
         let memberNo = "[[${ member.no }]]";
 
@@ -189,9 +223,10 @@
         document.querySelector('.memberStatus_wrap').style.display ='none';
     });
 
-    $("#memberStopBtn").click(function(){
+    $("#memberManage").click(function(){
 
-        document.querySelector('.memberStatus_wrap').style.display ='block';
+        $("#exampleModal").modal('show');
+
     });
 
 </script>
