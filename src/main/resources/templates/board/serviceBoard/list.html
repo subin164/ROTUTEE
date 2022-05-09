@@ -114,7 +114,6 @@
                                         <th class="cell100 column3">Category</th>
                                         <th class="cell100 column4">Date</th>
                                         <th class="cell100 column5">Writer</th>
-                                        <th class="cell100 column6">비밀글여부</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -124,11 +123,15 @@
                                     <tbody>
                                     <tr id="board-tr" class="row100 body" th:each="board : ${ boardList }">
                                         <td class="cell100 column1" style="width: 10%;" th:text="${ board.no}"></td>
-                                        <td class="cell100 column2" style="width: 30%;" th:text="${ board.title}"></td>
-                                        <td class="cell100 column3" th:text="${ board.boardCategory.name}"> </td>
+                                        <th:block th:if="${ board.bulletinBoardSecretYN.toString().equals('Y') }">
+                                            <td class="cell100 column2" style="width: 30%;" >비밀글</td>
+                                        </th:block>
+                                        <th:block th:if="${ board.bulletinBoardSecretYN.toString().equals('N') }">
+                                            <td class="cell100 column2" style="width: 30%;" th:text="${ board.title}"></td>
+                                        </th:block>
+                                        <td class="cell100 column3" th:text="${ board.boardCategory.name}"></td>
                                         <td class="cell100 column4" th:text="${ board.creationDate}"> </td>
                                         <td class="cell100 column5" th:text="${ board.member.name}"> </td>
-                                        <td class="cell100 column6" th:text="${ board.bulletinBoardSecretYN}"> </td>
                                     </tbody>
                                 </table>
                             </div>
@@ -216,7 +219,7 @@
                 if(data) {
                     location.href="/serviceBoard/detail/" + boardNo;
                 } else {
-                    alert("비밀글 입니다.");
+                    alert("비밀글입니다.");
                 }
             }
         });

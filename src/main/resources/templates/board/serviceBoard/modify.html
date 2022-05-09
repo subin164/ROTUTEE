@@ -35,8 +35,8 @@
         }
 
         .content {
-          width: 100%;
-          height: 100%;
+            width: 100%;
+            height: 100%;
         }
 
         .boardTitle-tr {
@@ -52,8 +52,8 @@
         }
 
         .modify-board-button {
-          text-align: center;
-          margin-top: 10px;
+            text-align: center;
+            margin-top: 10px;
         }
     </style>
 
@@ -65,8 +65,8 @@
     <div><h1>문의게시판</h1></div>
 
     <div class="inner-box">
-      <form action="/serviceBoard/modify" method="post">
-        <div class="boardTitle-area">
+        <form action="/serviceBoard/modify" method="post">
+            <div class="boardTitle-area">
                 <table class="boardTitle-table">
                     <tr class="boardTitle-tr">
                         <input id="boardNo" name="no" type="hidden" th:value="${ modifyBoard.no }">
@@ -77,66 +77,29 @@
                         <td class="boardTitle-td" th:text="${ modifyBoard.viewCount }"></td>
                     </tr>
                 </table>
-        </div>
-        <div class="form-group">
-            <h4>내용</h4>
-            <br>
-
-            <div class="content-area">
-                <textarea type="text" name="content" class="content" th:text="${ modifyBoard.content }"></textarea>
             </div>
+            <div class="form-group">
+                <h4>내용</h4>
+                <br>
 
-            <div class="modify-board-button">
-                <input id="boardListBtn" type="button" th:value="취소" class="btn btn-secondary"
-                       onclick="location.href='/serviceBoard/detail/' + boardNo">
-                <input id="modifyBoardBtn" type="submit" th:value="완료" class="btn btn-primary">
+                <div class="content-area">
+                    <textarea type="text" name="content" class="content" th:text="${ modifyBoard.content }"></textarea>
+                </div>
+
+                <div class="modify-board-button">
+                    <input id="boardListBtn" type="button" th:value="취소" class="btn btn-secondary"
+                           onclick="location.href='/serviceBoard/detail/' + boardNo">
+                    <input id="modifyBoardBtn" type="submit" th:value="완료" class="btn btn-primary">
+                </div>
             </div>
-        </div>
         </form>
     </div>
 </div>
-    <!-- delete modal -->
-    <!--<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
-    <!--    <div class="modal-dialog modal-dialog-centered">-->
-    <!--        <div class="modal-content">-->
-    <!--            <div class="modal-header">-->
-    <!--                <h5 class="modal-title" id="staticBackdropLabel">삭제 하기</h5>-->
-    <!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-    <!--            </div>-->
-    <!--            <div class="modal-body">-->
-    <!--                삭제 하시겠습니까?-->
-    <!--            </div>-->
-    <!--            <div class="modal-footer">-->
-    <!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-    <!--                <button id="delete-ok" type="button" class="btn btn-primary">Sure</button>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-    <!--</div>-->
+<div th:include="/common/footer.html"></div>
+<script>
 
-    <!--  declaration Answer modal -->
-    <!--<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
-    <!--    <div class="modal-dialog modal-dialog-centered">-->
-    <!--        <div class="modal-content">-->
-    <!--            <div class="modal-header">-->
-    <!--                <h5 class="modal-title" id="staticBackdropLabel1">신고 하기</h5>-->
-    <!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-    <!--            </div>-->
-    <!--            <div class="modal-body">-->
-    <!--                신고 하시겠습니까?-->
-    <!--            </div>-->
-    <!--            <div class="modal-footer">-->
-    <!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-    <!--                <button id="declaration-ok" type="button" class="btn btn-primary">Sure</button>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-    <!--</div>-->
-    <div th:include="/common/footer.html"></div>
-    <script>
+    const boardNo = "[[${ modifyBoard.no }]]";
 
-        const boardNo = "[[${ modifyBoard.no }]]";
-
-    </script>
+</script>
 </body>
 </html>
