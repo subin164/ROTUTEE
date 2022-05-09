@@ -2,7 +2,6 @@ package com.greedy.rotutee.member.member.entity;
 
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity(name = "Role")
 @Table(name = "TBL_ROLE")
