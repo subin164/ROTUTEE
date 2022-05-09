@@ -92,7 +92,7 @@ public class MemberService {
         memberRepository.save(modelMapper.map(member, Member.class));
 
         setMemberStatus(member);
-        setMemberAchievement(member);
+//        setMemberAchievement(member);
         setMemberRole(member);
     }
 
@@ -198,7 +198,6 @@ public class MemberService {
     }
 
 
-
     public MemberStatusHistory findMemberStatus(int memberNo) {
 
         return memberStatusHistoryRepositoryQuery.findMemberStatus(entityManager, memberNo);
@@ -292,4 +291,5 @@ public class MemberService {
 
         return memberList.map(member -> modelMapper.map(member, MemberDTO.class));
     }
+
 }

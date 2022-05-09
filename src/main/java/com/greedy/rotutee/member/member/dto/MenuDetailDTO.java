@@ -8,8 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ToString
-public class RoleDTO {
+public class MenuDetailDTO {
 
-    private int no;           //권한코트
-    private String name;        //권한명
+    private int no;
+    private String name;
 }

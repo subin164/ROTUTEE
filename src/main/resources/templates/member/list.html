@@ -82,13 +82,6 @@
             font-size: 20px;
         }
 
-        #myTab {
-            font-family: 'Noto Sans KR', sans-serif;
-            width: 77%;
-        }
-
-
-
         .selectBox {
             height: 30px;
             display: flex;
@@ -197,7 +190,7 @@
     </div>
 </div>
 <br><br>
-<div th:include="/common/footer.html"></div>
+<!--<div th:include="/common/footer.html"></div>-->
 
 <!--===============================================================================================-->
 <script src="../../static/sg/vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -224,38 +217,9 @@
 
         let memberNo = td.eq(0).text();
 
-        // document.querySelector('.memberDetail_wrap').style.display ='block';
-
         location.href = "/member/detail/" + memberNo;
     });
 
-    // $(function(){
-    //     $.ajax({
-    //         url: "/member/detail",
-    //         data: { "memberNo" : 14 },
-    //         success: function(data) {
-    //
-    //             console.log(data);
-    //
-    //             console.log(data.memberDetail);
-    //
-    //             const $noTr = $("#noTr");
-    //             const $noTd = $("<td>").text(data.no);
-    //             const $nameTr = $("#nameTr");
-    //             const $nameTd = $("<td>").text(data.name);
-    //             const emailTr = $("#emailTr");
-    //             const emailTd = $("<td>").text(data.email);
-    //             const nicknameTr = $("#nicknameTr");
-    //             const nicknameTd = $("<td>").text(data.name);
-    //             const phoneTr = $("#phoneTr");
-    //             const phoneTd = $("<td>").text(data.phoneNum);
-    //             const introductionTr = $("#introductionTr");
-    //             const introductionTd = $("<td>").text(data.introduction);
-    //
-    //             $nameTr.append($nameTd);
-    //         }
-    //     });
-    // });
 </script>
 </body>
 </html>

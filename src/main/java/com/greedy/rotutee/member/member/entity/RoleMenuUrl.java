@@ -11,15 +11,15 @@ public class RoleMenuUrl {
     @Column(name = "ROLE_URL_NO")
     private int roleMenuUrlNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MENU_URL_NO")
     private MenuUrl menuUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MENU_DETAIL_NO")
     private MenuDetail menuDetail;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ROLE_NO")
     private Role role;
 

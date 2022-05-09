@@ -24,7 +24,7 @@ public class MemberDTO {
     private Date withdrawalDate;
     private String leaveStatusYn;
     private String rouletteChance;
-    @JsonIgnoreProperties(value = {"member"})
+
     private List<MemberRoleDTO> memberRoleList;
 
     @Override

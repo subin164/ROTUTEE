@@ -63,7 +63,7 @@ public class ServiceBoardController {
     @GetMapping("/regist")
     public String registPage() {
 
-        return "/board/serviceBoard/regist"; 
+        return "/board/serviceBoard/regist";
     }
 
     @PostMapping("/regist")
@@ -100,39 +100,32 @@ public class ServiceBoardController {
 
         return mv;
     }
-    
+
     @GetMapping("/secret")
     @ResponseBody
     public boolean secretCheck(@RequestParam("boardNo") int boardNo, @AuthenticationPrincipal CustomUser loginMember) {
-        
+
         BoardDTO board = serviceBoardService.findBoardByBoardNo(boardNo);
 
-        if(board.getBulletinBoardSecretYN() == 'Y') {
-            return false;
+        if(loginMember == null) {
+            if(board.getBulletinBoardSecretYN() == 'Y') {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            String role = loginMember.getMemberRoleList().get(0).getRole().getName();
+
+            if (board.getMember().getNo() == loginMember.getNo() || ("ROLE_ADMIN").equals(role) || ("ROLE_SUBADMIN").equals(role)) {
+                return true;
+            } else {
+                if (board.getBulletinBoardSecretYN() == 'N') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
-
-        return true;
-
-
-//        String role;
-//
-//        if(loginMember == null) {
-//
-//        } else {
-//            role = loginMember.getMemberRoleList().get(0).getRole().getName();
-//        }
-//
-//        System.out.println("role = " + role);
-//
-//        if (board.getMember().getNo() == loginMember.getNo() || ("ROLE_ADMIN").equals(role) || ("ROLE_SUBADMIN").equals(role)) {
-//            return true;
-//        } else {
-//            if (board.getBulletinBoardSecretYN() == 'N') {
-//                return true;
-//            } else {
-//                return false;
-//            }
-//        }
     }
 
     @GetMapping("/modify/{boardNo}")
@@ -169,7 +162,7 @@ public class ServiceBoardController {
 
     @GetMapping("/registAnswer")
     public ModelAndView registAnswer(@RequestParam("boardNo") int boardNo, @RequestParam("answerContent") String answerContent,
-                             @AuthenticationPrincipal CustomUser loginMember, ModelAndView mv) {
+                                     @AuthenticationPrincipal CustomUser loginMember, ModelAndView mv) {
 
         BoardAnswerDTO boardAnswer = new BoardAnswerDTO();
         boardAnswer.setAnswerYn('N');
@@ -188,7 +181,7 @@ public class ServiceBoardController {
 
     @PostMapping("/modifyAnswer")
     public ModelAndView modifyAnswerContent(@RequestParam("boardNo") int boardNo, @RequestParam("answerNo") int answerNo,
-                             @RequestParam("modifyContent") String modifyContent, ModelAndView mv) {
+                                            @RequestParam("modifyContent") String modifyContent, ModelAndView mv) {
 
         BoardAnswerDTO boardAnswer = serviceBoardService.findAnswerByAnswerNo(answerNo);
 
@@ -214,7 +207,7 @@ public class ServiceBoardController {
 
     @GetMapping("/search")
     public ModelAndView searchBoardList(@RequestParam("searchValue") String searchValue, @RequestParam("searchCondition") String searchCondition,
-                                  @PageableDefault Pageable pageable, ModelAndView mv) {
+                                        @PageableDefault Pageable pageable, ModelAndView mv) {
 
         Page<BoardDTO> boardList = serviceBoardService.findSearchServiceBoardList(searchValue, searchCondition, pageable);
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(boardList);
