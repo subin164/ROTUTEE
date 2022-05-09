@@ -49,11 +49,21 @@ public class LMSDashboardController {
      * @param request
      * @return model and view
      */
+
     @GetMapping("/dashboardlist")
     public ModelAndView findLMSDashboard(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser, HttpServletRequest request){
 
         int memberNo = customUser.getNo();
         int lectureNo = Integer.parseInt(request.getParameter("no"));
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("lectureNo");
+        session.setAttribute("lectureNo", lectureNo);
+        int testtest = (Integer)session.getAttribute("lectureNo");
+
+        System.out.println("넣어주는 session이다!!!!!!!!!!!!!!!!!!!!!! = " + session);
+        System.out.println("lectureNo==================================================== = " + lectureNo);
+        System.out.println("우에에에에에에에에엥에에에에에에에에에엥에ㅔ = " + testtest);
 
         ToDoDTO todo = new ToDoDTO();
         todo.setMemberNo(memberNo);
@@ -61,24 +71,7 @@ public class LMSDashboardController {
 
         LMSDashboardDTO dashboard = lmsDashboardService.findLMSDashboard(todo);
 
-//        List<ToDoDTO> todos = dashboard.getTodos();
-//        for (ToDoDTO toDoDTO : todos) {
-//            System.out.println("toDoDTO = " + toDoDTO);
-//        }
-//        List<LMSNoticeBoardDTO> notices = dashboard.getNoticeBoards();
-//        for (LMSNoticeBoardDTO notice : notices) {
-//            System.out.println("notice = " + notice);
-//        }
-//        List<LMSNormalBoardDTO> normals = dashboard.getNormalBoards();
-//        for (LMSNormalBoardDTO normal : normals) {
-//            System.out.println("normal = " + normal);
-//        }
-//        List<LMSLatelyViewDTO> watch = dashboard.getWatching();
-//        for (LMSLatelyViewDTO lMSLatelyViewDTO : watch) {
-//            System.out.println("dashboardLectureWatchDTO = " + lMSLatelyViewDTO);
-//        }
-        HttpSession session = request.getSession();
-        session.setAttribute("lectureNo", lectureNo);
+        mv.addObject("lectureNo", lectureNo);
         mv.addObject("dashboard", dashboard);
         mv.setViewName("dashboard/lms/dashboard");
         return mv;
