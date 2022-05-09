@@ -1,26 +1,17 @@
 package com.greedy.rotutee.basket.service;
 
-import com.greedy.rotutee.basket.dto.ClassBasketDTO;
-import com.greedy.rotutee.basket.dto.LectureDTO;
-import com.greedy.rotutee.basket.dto.MemberDTO;
-import com.greedy.rotutee.basket.dto.MemberInterestDTO;
-import com.greedy.rotutee.basket.entity.ClassBasket;
-import com.greedy.rotutee.basket.entity.Lecture;
-import com.greedy.rotutee.basket.entity.Member;
-import com.greedy.rotutee.basket.repository.ClassBasketLectureRepository;
-import com.greedy.rotutee.basket.repository.ClassBasketMemberInterestRepository;
-import com.greedy.rotutee.basket.repository.ClassBasketMemberRepository;
-import com.greedy.rotutee.basket.repository.ClassBasketRepository;
-import com.greedy.rotutee.basket.entity.LectureCategory;
-import com.greedy.rotutee.basket.entity.MemberInterest;
+import com.greedy.rotutee.basket.dto.*;
+import com.greedy.rotutee.basket.entity.*;
+import com.greedy.rotutee.basket.repository.*;
+import com.greedy.rotutee.dashboard.lms.dto.LMSSubmissionQuizDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * packageName      : com.greedy.rotutee.basket.service
@@ -41,14 +32,15 @@ public class BasketServiceImpl implements BasketService{
     private final ClassBasketLectureRepository classBasketLectureRepository;
     private final ClassBasketMemberRepository classBasketMemberRepository;
     private final ClassBasketMemberInterestRepository classBasketMemberInterestRepository;
-
+    private final ClassBasketMemberCouponBoxRepository classBasketMemberCouponBoxRepository;
     @Autowired
-    public BasketServiceImpl(ModelMapper modelMapper, ClassBasketRepository classBasketRepository, ClassBasketLectureRepository classBasketLectureRepository, ClassBasketMemberRepository classBasketMemberRepository, ClassBasketMemberInterestRepository classBasketMemberInterestRepository) {
+    public BasketServiceImpl(ModelMapper modelMapper, ClassBasketRepository classBasketRepository, ClassBasketLectureRepository classBasketLectureRepository, ClassBasketMemberRepository classBasketMemberRepository, ClassBasketMemberInterestRepository classBasketMemberInterestRepository, ClassBasketMemberCouponBoxRepository classBasketMemberCouponBoxRepository) {
         this.modelMapper = modelMapper;
         this.classBasketRepository = classBasketRepository;
         this.classBasketLectureRepository = classBasketLectureRepository;
         this.classBasketMemberRepository = classBasketMemberRepository;
         this.classBasketMemberInterestRepository = classBasketMemberInterestRepository;
+        this.classBasketMemberCouponBoxRepository = classBasketMemberCouponBoxRepository;
     }
 
     @Override
@@ -70,6 +62,22 @@ public class BasketServiceImpl implements BasketService{
         }
 
         return null;
+    }
+
+    @Override
+    public List<BasketMemberCouponBoxDTO> selectCouponList(int memberNo) {
+
+        List<BasketMemberCouponBox> basketMemberCouponBox = classBasketMemberCouponBoxRepository.findByMemberNoAndCouponStatus(memberNo, "미사용");
+        System.out.println( "basketMemberCouponBox : "+basketMemberCouponBox);
+
+        List<BasketMemberCouponBoxDTO> basketMemberCouponBoxDTO = basketMemberCouponBox.stream().map(BasketMemberCouponBox -> modelMapper.map(BasketMemberCouponBox, BasketMemberCouponBoxDTO.class)).collect(Collectors.toList());
+        System.out.println( "basketMemberCouponBoxDTO : "+basketMemberCouponBoxDTO);
+
+       /* List<BasketMemberCouponBox> basketMemberCouponBox = classBasketMemberCouponBoxRepository.findAll();
+
+        List<BasketMemberCouponBoxDTO> basketMemberCouponBoxDTO = basketMemberCouponBox.stream().map(BasketMemberCouponBox -> modelMapper.map(BasketMemberCouponBox, BasketMemberCouponBoxDTO.class)).collect(Collectors.toList());
+*/
+        return basketMemberCouponBoxDTO;
     }
 
     @Override
