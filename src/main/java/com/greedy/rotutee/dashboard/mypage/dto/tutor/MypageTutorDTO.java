@@ -17,12 +17,13 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2022-04-22 SeoYoung 최초 생성
  */
+import lombok.*;
+
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
+@Getter
 @ToString
-@Builder
 public class MypageTutorDTO {
 
  private DashboardMemberDTO member;
