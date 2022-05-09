@@ -57,7 +57,6 @@ public class FreeBoardController {
     public ModelAndView CategoryFreeBoardList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable)  {
 
         int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
-        System.out.println(categoryNo);
 
         String searchCondition = request.getParameter("searchCondition");
         String searchValue = request.getParameter("searchValue");
@@ -94,7 +93,6 @@ public class FreeBoardController {
 
             mv.addObject("answer",answer);
         }
-
 
         mv.addObject("board",freeBoardDTO);
         mv.setViewName("board/freeboard/detail");
@@ -223,7 +221,7 @@ public class FreeBoardController {
 
     @PostMapping(value = "/modifyAnswer")
     public ModelAndView updateAnswer( ModelAndView mv, HttpServletRequest request, RedirectAttributes rttr
-                                    , @AuthenticationPrincipal CustomUser customUser){
+            , @AuthenticationPrincipal CustomUser customUser){
 
         int boardNo = Integer.parseInt(request.getParameter("boardNo"));
         int answerNo = Integer.parseInt(request.getParameter("answerNo"));

@@ -168,50 +168,50 @@
 
         <div class="answer-all-area">
 
-                <div class="answer-regist-area">
-                    <h6>댓글 작성</h6>
-                    <div align="center">
-                        <textarea id="textarea" class="regist-textarea" placeholder="댓글을 작성해주세요"></textarea>
-                        <input id="registAnswerBtn" type="button" value="댓글 등록" class="btn btn-secondary">
-                    </div>
+            <div class="answer-regist-area">
+                <h6>댓글 작성</h6>
+                <div align="center">
+                    <textarea id="textarea" class="regist-textarea" placeholder="댓글을 작성해주세요"></textarea>
+                    <input id="registAnswerBtn" type="button" value="댓글 등록" class="btn btn-secondary">
                 </div>
+            </div>
 
-                <div id="answertable" class="answer-borderbox" th:if="${answer != null}">
-                    <div id="answerbody" class="answer-tbody" >
-                        <div id="answertr" class="answer-tr" th:each="answer : ${answer}" >
-                            <div id="answer" th:attrappend="id=${ answer.answerNo }" class="answer-area">
-                                <div class="answer-content-info" >
-                                    <input id="answerNo" type="hidden" th:value="${answer.answerNo}"/>
-                                    <div class="answer-column" th:text="${answer.freeBoardMember.memberName}"></div>
-                                    <div class="answer-column" th:text="${answer.answerContent}"></div>
-                                    <div class="answer-column" th:text="${answer.answerCreatedDate}"></div>
-                                </div>
-                                <div class="answer-content-btn">
-                                    <th:block th:if="${ answer.freeBoardMember.memberNo } == ${#authentication.principal.no }">
-                                        <button class ="modifyanswer" id="modifyAnswer" name="수정" type="button" th:value="${answer.answerNo}">수정</button>
-                                        <button id="deleteAnswer"  th:value="${answer.answerNo}" class="deleteAnswer">삭제</button>
-                                    </th:block>
-                                    <th:block th:if="${ answer.freeBoardMember.memberNo } != ${ #authentication.principal.no }">
-                                        <button id="declarationAnswer"  th:value="${answer.answerNo}" class="declarationAnswer">신고</button>
-                                    </th:block>
-                                </div>
-
+            <div id="answertable" class="answer-borderbox" th:if="${answer != null}">
+                <div id="answerbody" class="answer-tbody" >
+                    <div id="answertr" class="answer-tr" th:each="answer : ${answer}" >
+                        <div id="answer" th:attrappend="id=${ answer.answerNo }" class="answer-area">
+                            <div class="answer-content-info" >
+                                <input id="answerNo" type="hidden" th:value="${answer.answerNo}"/>
+                                <div class="answer-column" th:text="${answer.freeBoardMember.memberName}"></div>
+                                <div class="answer-column" th:text="${answer.answerContent}"></div>
+                                <div class="answer-column" th:text="${answer.answerCreatedDate}"></div>
                             </div>
-                            <div id="inputanswer" th:attrappend="id=${ answer.answerNo }"  style="display: none" class="input-answer-area" >
-                                <div class="answer-content-info">
-                                    <input id="modifyanswerNo" type="hidden" th:value="${answer.answerNo}"/>
-                                    <input id="modifyanswercontentinput" type="hidden" th:value="${answer.answerContent}"/>
-                                    <div class="input-answer-column" th:text="${answer.freeBoardMember.memberName}"></div>
-                                    <textarea id="modifyAnswerContent" class="modify-answer-textarea" th:text="${answer.answerContent}"></textarea>
-                                </div>
-                                <div class="answer-input-content-btn">
-                                    <button id="modifyAnswerOk" class="modifyAnswerOk" th:value="${answer.answerNo}">확인</button>
-                                    <button id="modifyAnswerCancel" class="answerAnswerCancal" th:value="${answer.answerNo}">취소</button>
-                                </div>
+                            <div class="answer-content-btn">
+                                <th:block th:if="${ answer.freeBoardMember.memberNo } == ${#authentication.principal.no }">
+                                    <button class ="modifyanswer" id="modifyAnswer" name="수정" type="button" th:value="${answer.answerNo}">수정</button>
+                                    <button id="deleteAnswer"  th:value="${answer.answerNo}" class="deleteAnswer">삭제</button>
+                                </th:block>
+                                <th:block th:if="${ answer.freeBoardMember.memberNo } != ${ #authentication.principal.no }">
+                                    <button id="declarationAnswer"  th:value="${answer.answerNo}" class="declarationAnswer">신고</button>
+                                </th:block>
+                            </div>
+
+                        </div>
+                        <div id="inputanswer" th:attrappend="id=${ answer.answerNo }"  style="display: none" class="input-answer-area" >
+                            <div class="answer-content-info">
+                                <input id="modifyanswerNo" type="hidden" th:value="${answer.answerNo}"/>
+                                <input id="modifyanswercontentinput" type="hidden" th:value="${answer.answerContent}"/>
+                                <div class="input-answer-column" th:text="${answer.freeBoardMember.memberName}"></div>
+                                <textarea id="modifyAnswerContent" class="modify-answer-textarea" th:text="${answer.answerContent}"></textarea>
+                            </div>
+                            <div class="answer-input-content-btn">
+                                <button id="modifyAnswerOk" class="modifyAnswerOk" th:value="${answer.answerNo}">확인</button>
+                                <button id="modifyAnswerCancel" class="answerAnswerCancal" th:value="${answer.answerNo}">취소</button>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>
@@ -291,6 +291,7 @@
         }
 
         //수정 버튼 클릭시
+
         $(".modifyanswer").click(function () {
             let answerNo = $(this).val();
 
@@ -331,18 +332,18 @@
         //삭제 버튼 클릭시
         $(".deleteAnswer").click(function () {
             let answerNo = $(this).val();
-                const params = {
-                    "answerNo": answerNo,
-                    "answerContent": $(".modify-answer-textarea").value,
-                    "boardNo": boardNo
-                };
+            const params = {
+                "answerNo": answerNo,
+                "answerContent": $(".modify-answer-textarea").value,
+                "boardNo": boardNo
+            };
 
-                console.log(params);
+            console.log(params);
 
-                from_url("/freeboard/deleteAnswer",params,'post');
-                $("#answer" + answerNo).show();
-                $("#inputanswer" + answerNo).hide();
-            });
+            from_url("/freeboard/deleteAnswer",params,'post');
+            $("#answer" + answerNo).show();
+            $("#inputanswer" + answerNo).hide();
+        });
 
         $registAnswer.addEventListener("click", function () {
             const params = {"boardNo":boardNo, "answerContent":$textarea.value};
@@ -354,9 +355,11 @@
             window.location.href="list?categoryNo=" + categoryNo;
         });
 
-        $modifyBoardBtn.addEventListener("click",function (){
-            window.location.href="modify?boardNo=" + boardNo;
-        });
+        if($modifyBoardBtn != null){
+            $modifyBoardBtn.addEventListener("click",function (){
+                window.location.href="modify?boardNo=" + boardNo;
+            });
+        }
 
         $deleteBtn.addEventListener("click",function (){
             const params = {"boardNo":boardNo, "categoryNo":categoryNo};
