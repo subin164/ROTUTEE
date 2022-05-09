@@ -4,6 +4,8 @@ import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
 import com.greedy.rotutee.config.RotuteeApplication;
 import com.greedy.rotutee.dashboard.lms.dto.LMSLatelyViewDTO;
+import com.greedy.rotutee.dashboard.lms.dto.LMSNormalBoardDTO;
+import com.greedy.rotutee.dashboard.lms.dto.LMSNoticeBoardDTO;
 import com.greedy.rotutee.dashboard.lms.entity.LMSBoard;
 import com.greedy.rotutee.dashboard.lms.entity.LMSLatelyViewClass;
 import com.greedy.rotutee.dashboard.lms.entity.ToDo;
@@ -30,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @SpringBootTest
@@ -66,25 +69,64 @@ public class LMSDashboardServiceTest {
     }
     @Test
     public void 공지사항_조회_확인() {
+
         //given
         int categoryNo = 10;
-        //when
-        List<LMSBoard> boardEntities = boardRepository.findByCategoryNoOrderByBoardNoDesc(categoryNo);
-        int latelyBoardsCount = 4;
+        int lectureNo = 36;
 
-        List<DashboardBoardDTO> boards = new ArrayList<>();
-        if(boardEntities.size() > latelyBoardsCount){
-            for(int i = 0; i < latelyBoardsCount; i++){
-                LMSBoard boardEntity = boardEntities.get(i);
-                DashboardBoardDTO board = modelMapper.map(boardEntity, DashboardBoardDTO.class);
-                boards.add(board);
+        //when
+        List<LMSBoard> noticeEntities = boardRepository.findByCategoryNoAndLectureNoOrderByBoardNoDesc(categoryNo, lectureNo);
+        int numberOfViews = 4;
+        List<LMSNoticeBoardDTO> notices = new ArrayList<>();
+        if(noticeEntities.size() > numberOfViews){
+            for(int i = 0; i < numberOfViews; i++){
+                LMSBoard boardEntity = noticeEntities.get(i);
+                LMSNoticeBoardDTO board = modelMapper.map(boardEntity, LMSNoticeBoardDTO.class);
+                notices.add(board);
             }
-        } else if(boardEntities.size() <= latelyBoardsCount) {
-            boards = boardEntities.stream().map(Lms_Board -> modelMapper.map(Lms_Board, DashboardBoardDTO.class)).collect(Collectors.toList());
+        } else if(noticeEntities.size() <= numberOfViews) {
+            if(noticeEntities == null){
+                noticeEntities = null;
+            } else {
+                notices = noticeEntities.stream().map(Lms_Board -> modelMapper.map(Lms_Board, LMSNoticeBoardDTO.class)).collect(Collectors.toList());
+            }
         }
+
         //then
-        assertNotNull(boardEntities);
-        boards.forEach(System.out::println);
+        for (LMSNoticeBoardDTO notice : notices) {
+            System.out.println("notice = " + notice);
+        }
+//        assertEquals(notices.size(), 4);
+
+    }
+
+    @Test
+    public void 일반게시판_조회() {
+
+        //given
+        int lectureNo = 36;
+        int categoryNo = 9;
+
+        List<LMSBoard> NormalEntities = boardRepository.findByCategoryNoAndLectureNoOrderByBoardNoDesc(categoryNo, lectureNo);
+        int numberOfViews = 4;
+        List<LMSNormalBoardDTO> normals = new ArrayList<>();
+        if(NormalEntities.size() > numberOfViews){
+            for(int i = 0; i < numberOfViews; i++){
+                LMSBoard boardEntity = NormalEntities.get(i);
+                LMSNormalBoardDTO board = modelMapper.map(boardEntity, LMSNormalBoardDTO.class);
+                normals.add(board);
+            }
+        } else if(NormalEntities.size() <= numberOfViews) {
+            if(NormalEntities == null) {
+                NormalEntities = null;
+            }
+            normals = NormalEntities.stream().map(Lms_Board -> modelMapper.map(Lms_Board, LMSNormalBoardDTO.class)).collect(Collectors.toList());
+        }
+
+        //then
+        for (LMSNormalBoardDTO normal : normals) {
+            System.out.println("normal = " + normal);
+        }
     }
 
 //    @Test

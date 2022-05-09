@@ -74,9 +74,9 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
         /*ToDo 진행률 계산 --보류*/
         List<Integer> progress = getProgress(todoEntities);
         /* 공지사항 조회 */
-        List<LMSNoticeBoardDTO> notices = getNotices();
+        List<LMSNoticeBoardDTO> notices = getNotices(lectureNo);
         /* 일반게시판 조회 */
-        List<LMSNormalBoardDTO> normals = getNormals();
+        List<LMSNormalBoardDTO> normals = getNormals(lectureNo);
         /*최근 시청강의 조회 */
         List<LMSLatelyViewDTO> watching = getWatching(lectureNo, memberNo);
         /* 프로필 조회 */
@@ -124,10 +124,10 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
         return watching;
     }
 
-    private List<LMSNoticeBoardDTO> getNotices() {
+    private List<LMSNoticeBoardDTO> getNotices(int lectureNo) {
 
         int categoryNo = 10;
-        List<LMSBoard> noticeEntities = boardRepository.findByCategoryNoOrderByBoardNoDesc(categoryNo);
+        List<LMSBoard> noticeEntities = boardRepository.findByCategoryNoAndLectureNoOrderByBoardNoDesc(categoryNo, lectureNo);
         int numberOfViews = 4;
         List<LMSNoticeBoardDTO> notices = new ArrayList<>();
         if(noticeEntities.size() > numberOfViews){
@@ -137,16 +137,20 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
                 notices.add(board);
             }
         } else if(noticeEntities.size() <= numberOfViews) {
-            notices = noticeEntities.stream().map(Lms_Board -> modelMapper.map(Lms_Board, LMSNoticeBoardDTO.class)).collect(Collectors.toList());
+            if(noticeEntities == null){
+                noticeEntities = null;
+            } else {
+                notices = noticeEntities.stream().map(Lms_Board -> modelMapper.map(Lms_Board, LMSNoticeBoardDTO.class)).collect(Collectors.toList());
+            }
         }
 
         return notices;
     }
 
-    private List<LMSNormalBoardDTO> getNormals() {
+    private List<LMSNormalBoardDTO> getNormals(int lectureNo) {
 
         int categoryNo = 9;
-        List<LMSBoard> NormalEntities = boardRepository.findByCategoryNoOrderByBoardNoDesc(categoryNo);
+        List<LMSBoard> NormalEntities = boardRepository.findByCategoryNoAndLectureNoOrderByBoardNoDesc(categoryNo, lectureNo);
         int numberOfViews = 4;
         List<LMSNormalBoardDTO> normals = new ArrayList<>();
         if(NormalEntities.size() > numberOfViews){
@@ -156,6 +160,9 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
                 normals.add(board);
             }
         } else if(NormalEntities.size() <= numberOfViews) {
+            if(NormalEntities == null) {
+                NormalEntities = null;
+            }
             normals = NormalEntities.stream().map(Lms_Board -> modelMapper.map(Lms_Board, LMSNormalBoardDTO.class)).collect(Collectors.toList());
         }
 

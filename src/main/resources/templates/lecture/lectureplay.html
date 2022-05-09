@@ -137,7 +137,8 @@
             <div>신나는 자바</div>
         </div>
         <div class="lecturevideo">
-            <video id="lecture-video" style="width: 40vw; height: 35vh;"></video>
+            <video id="lecture-video" controls controlsList="nodownload" style="width: 35vw; height: 35vh;">
+            </video>
         </div>
         <div class="tutor-comment">
             <span th:text="${ lecturePlay.lectureSummary }"></span>
@@ -157,6 +158,7 @@
                         <div class="openmenu"
                              th:each="lectureClass, status : ${lecturePlay.chapters[stat.index].classesList}">
                             <th:block th:text="${lectureClass.className}"></th:block>
+                            <input id="videoPath" type="hidden" th:value="${lectureClass.videoPath}">
                             <th:block th:if="${lectureClass.quiz.submissionStatus.toString().equals('Y')}">
                                 <span class="badge text-light" style="background-color: #f3c3c3">완료</span>
                             </th:block>
@@ -223,15 +225,8 @@
         </div>
     </div>
 <!--</form>-->
-<script>
+<script th:inline="javascript">
     $('.class-title').click(function () {
-        // if ($(this).children('.menu').css('display') == 'none') {
-        //     $(this).children('.menu').css('display', 'block');
-        //     $(this).css('padding', 0);
-        // } else {
-        //     $(this).children('.menu').css('display', 'none');
-        //     $(this).css('padding', 13);
-        // }
         $(this).children('.menu').slideToggle(600);
     });
 
@@ -247,6 +242,15 @@
         // $(this).parent('class-title').css('background-color', 'white');
     }, function () {
         $(this).css('background-color', 'white');
+    })
+
+    $('.openmenu').click(function() {
+        $('source').remove();
+        const videoPath = $(this).children('input').eq(0).val();
+        console.log(videoPath);
+        const totalPath = `<source th:src="@{/video/`+ videoPath + `}">`;
+        console.log(totalPath);
+        $("#lecture-video").append(totalPath);
     })
 
     $(".quiz").click(function () {
@@ -328,7 +332,7 @@
 
 
 
-    // th:src="@{/video/}"
+
 
 
 </script>

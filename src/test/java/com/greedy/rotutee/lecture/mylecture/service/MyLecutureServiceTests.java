@@ -97,16 +97,18 @@ public class MyLecutureServiceTests {
 
         /* 듣고있는 강의 수강번호 */
         String jpql1 = "SELECT memberLecture.memberLectureNo FROM Mypage_MemberLecture memberLecture " +
-                "WHERE memberLecture.member.memberNo = :memberNo ";
+                "WHERE memberLecture.member.memberNo = :memberNo " +
+                "ORDER BY memberLecture.memberLectureNo ASC";
         Query query2 = entityManager.createQuery(jpql1).setParameter("memberNo", memberNo);
         List<Integer> memberLectureNums = query2.getResultList();
 
-        memberLectureNums.forEach(System.out::println);
+        for (Integer memberLectureNum : memberLectureNums) {
+            System.out.println("memberLectureNum = " + memberLectureNum);
+        }
 
         /* 회원별 수강번호에 따른 클래스리스트가 담겨있는 리스트*/
         List<List> completedLectureCategoryEntityList = new ArrayList<>();
         for(int i = 0; i < memberLectureNums.size(); i++){
-
             int memberLectureNo = memberLectureNums.get(i);
             /* 수강번호로 누적시간 테이블에서 회원이 듣고있는 강의의 모든 클래스 상태 읽어옴 */
             String jpql2 = "SELECT complete FROM Dashboard_Completedlecture  as complete " +

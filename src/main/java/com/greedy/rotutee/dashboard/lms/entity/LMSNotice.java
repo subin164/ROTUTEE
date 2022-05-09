@@ -70,6 +70,9 @@ public class LMSNotice {
     @Column(name = "BOARD_REPORT_COUNT")
     private int reportCount;
 
+    @Column(name = "LECTURE_NO")
+    private int lectureNo;
+
     @Column(name = "BULLETIN_BOARD_SECRET_YN")
     private String secretStatus;
 }

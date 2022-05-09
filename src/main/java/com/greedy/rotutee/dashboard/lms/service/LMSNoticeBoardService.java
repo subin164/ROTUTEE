@@ -19,5 +19,5 @@ import java.util.Map;
  * 2022-05-09 SeoYoung 최초 생성
  */
 public interface LMSNoticeBoardService {
-    Page<LMSNoticeBoardDTO> findNoticeList(Pageable pageable, Map<String, String> searchMap);
+    Page<LMSNoticeBoardDTO> findNoticeList(Pageable pageable, Map<String, String> searchMap, int lectureNo);
 }

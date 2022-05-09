@@ -34,6 +34,7 @@ public class LMSNoticeBoardDTO {
     private int categoryNo;
     private DashboardMemberDTO member;
     private int reportCount;
+    private int lectureNo;
     private String secretStatus;
 
 }

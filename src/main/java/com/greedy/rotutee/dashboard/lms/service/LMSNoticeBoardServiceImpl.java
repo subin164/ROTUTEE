@@ -1,6 +1,5 @@
 package com.greedy.rotutee.dashboard.lms.service;
 
-import com.greedy.rotutee.dashboard.lms.dto.LMSNormalBoardDTO;
 import com.greedy.rotutee.dashboard.lms.dto.LMSNoticeBoardDTO;
 import com.greedy.rotutee.dashboard.lms.entity.LMSNotice;
 import com.greedy.rotutee.dashboard.lms.repository.LMSNoticeRepository;
@@ -32,12 +31,13 @@ public class LMSNoticeBoardServiceImpl implements LMSNoticeBoardService {
     private ModelMapper modelMapper;
 
     @Autowired
-    public LMSNoticeBoardServiceImpl(LMSNoticeRepository lmsNoticeRepository) {
+    public LMSNoticeBoardServiceImpl(LMSNoticeRepository lmsNoticeRepository, ModelMapper modelMapper) {
         this.lmsNoticeRepository = lmsNoticeRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public Page<LMSNoticeBoardDTO> findNoticeList(Pageable pageable, Map<String, String> searchMap) {
+    public Page<LMSNoticeBoardDTO> findNoticeList(Pageable pageable, Map<String, String> searchMap, int lectureNo) {
 
         System.out.println("pageable = " + pageable);
         int categoryNo = 10;
@@ -50,9 +50,9 @@ public class LMSNoticeBoardServiceImpl implements LMSNoticeBoardService {
 
         Page<LMSNotice> noticeEntities = null;
         if(searchCondition == null || searchCondition.equals("")) {
-            noticeEntities = lmsNoticeRepository.findByCategoryNo(categoryNo, pageable);
+            noticeEntities = lmsNoticeRepository.findByCategoryNoAndLectureNo(categoryNo, lectureNo, pageable);
         } else if(searchCondition.equals("title")) {
-            noticeEntities = lmsNoticeRepository.findByCategoryNoAndTitleContaining(categoryNo, searchValue, pageable);
+            noticeEntities = lmsNoticeRepository.findByCategoryNoAndLectureNoAndTitleContaining(categoryNo, lectureNo, searchValue, pageable);
         }
 
         return noticeEntities.map(Lms_Notice -> modelMapper.map(Lms_Notice, LMSNoticeBoardDTO.class));

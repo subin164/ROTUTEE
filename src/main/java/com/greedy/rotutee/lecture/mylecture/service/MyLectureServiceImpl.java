@@ -72,7 +72,8 @@ public class MyLectureServiceImpl implements MyLectureService{
 
         /* 듣고있는 강의 수강번호 */
         String jpql1 = "SELECT memberLecture.memberLectureNo FROM Mypage_MemberLecture memberLecture " +
-                "WHERE memberLecture.member.memberNo = :memberNo ";
+                "WHERE memberLecture.member.memberNo = :memberNo " +
+                "ORDER BY memberLecture.memberLectureNo ASC";
         Query query2 = entityManager.createQuery(jpql1).setParameter("memberNo", memberNo);
         List<Integer> memberLectureNums = query2.getResultList();
 
