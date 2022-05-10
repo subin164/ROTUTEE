@@ -60,7 +60,7 @@ public class MemberServiceTests {
         MemberDTO member = new MemberDTO();
 
         //when
-        memberService.registMember(member);
+//        memberService.registMember(member);
 
         //then
     }
