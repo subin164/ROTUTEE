@@ -149,8 +149,9 @@ public class StudyController {
      * */
     @PostMapping("/modify")
     public String studyMddify(HttpServletRequest request) {
+String str = request.getParameter("modifyTagList");
 
-//        tagArray[] =request.getParameter("tagList").
+        System.out.println("str = " + str);
 
         return "redirect:/study/list";
 
