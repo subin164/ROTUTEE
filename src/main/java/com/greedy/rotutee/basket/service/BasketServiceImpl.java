@@ -102,6 +102,7 @@ public class BasketServiceImpl implements BasketService{
         if(memberInterest == null) {
 
             int degree = 1;
+
             MemberInterestDTO interest = new MemberInterestDTO();
             interest.setMember(member);
             interest.setCategory(lecture.getCategory());

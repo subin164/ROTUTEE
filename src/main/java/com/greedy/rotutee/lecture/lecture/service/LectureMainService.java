@@ -28,4 +28,6 @@ public interface LectureMainService {
     void removeReview(int lectureReviewNo);
 
     void registInterestDegree(int no, LectureCategoryDTO category);
+
+    List<LectureDTO> findLectureByCategoryName(String categoryName);
 }

@@ -125,10 +125,10 @@
                                 </div>
                                 <div class="col-4"></div>
                                 <div class="col-4 button-area" style="margin-top: 10px">
-                                    <th:block th:if="${lectureReview.writer} != ${#authentication.principal}">
+                                    <th:block th:if="${lectureReview.writer.no} != ${#authentication.principal.no}">
                                         <button type="button" class="btn btn-danger report">신고</button>
                                     </th:block>
-                                    <th:block th:if="${lectureReview.writer} == ${#authentication.principal}">
+                                    <th:block th:if="${lectureReview.writer.no} == ${#authentication.principal.no}">
                                         <button type="button" class="btn btn-danger remove">삭제</button>
                                         <button type="button" class="btn btn-success modifybutton">수정</button>
                                     </th:block>

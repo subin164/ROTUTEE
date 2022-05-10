@@ -56,7 +56,7 @@
         </button>
 
         <a class="navbar-brand text-light fs-3 fw-bold" href="/" style="display: contents;">
-            <img width="80">ROTUTEE</a>
+            <img th:src="@{/common/image/} + 'rotutee.png'" style="width: 40px; height: 45px; margin-right: 10px;">ROTUTEE</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -222,7 +222,7 @@
                     <a href="#" class="w3-bar-item w3-button category" id="category">알림</a>
                 </div>
                 <div class="sidebar-menu">
-                    <a href="#" class="w3-bar-item w3-button category" id="category">나의 강의</a>
+                    <a href="/mylecture/tutorlist/" class="w3-bar-item w3-button category">나의 강의</a>
                 </div>
                 <div class="sidebar-menu">
                     <a href="#" class="w3-bar-item w3-button category" id="category">작성 게시글</a>

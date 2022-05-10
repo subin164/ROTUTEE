@@ -85,7 +85,7 @@
                 aria-controls="offcanvasScrolling"><i style="font-size: 20px" class="fa-solid fa-list"></i></button>
 
         <a class="navbar-brand text-light fs-3 fw-bold" href="/" style="display: contents;">
-            <img width="80">ROTUTEE</a>
+            <img th:src="@{/common/image/} + 'rotutee.png'" style="width: 40px; height: 45px; margin-right: 10px;">ROTUTEE</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -273,7 +273,7 @@
                     </button>
                     <ul class="dropdown-menu" id="demoAcc2" aria-labelledby="dropdownMenu2">
                         <div>
-                            <a href="#" class="dropdown-item">강의신청목록</a>
+                            <a href="/request/lecturelist" class="dropdown-item">강의신청목록</a>
                         </div>
                         <div>
                             <a href="#" class="dropdown-item">전체강의목록</a>
