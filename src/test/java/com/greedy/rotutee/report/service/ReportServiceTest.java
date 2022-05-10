@@ -3,7 +3,10 @@ package com.greedy.rotutee.report.service;
 import com.greedy.rotutee.config.BeanConfiguration;
 import com.greedy.rotutee.config.JPAConfiguration;
 import com.greedy.rotutee.config.RotuteeApplication;
+import com.greedy.rotutee.report.dto.ReportBoardDTO;
+import com.greedy.rotutee.report.dto.ReportCategoryDTO;
 import com.greedy.rotutee.report.dto.ReportDTO;
+import com.greedy.rotutee.report.dto.ReportMemberDTO;
 import com.greedy.rotutee.report.entity.Report;
 import com.greedy.rotutee.report.entity.ReportCategory;
 import com.greedy.rotutee.report.repository.ReportRepository;
@@ -11,11 +14,13 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
  * packageName : com.greedy.rotutee.report.repository
@@ -213,6 +220,49 @@ public class ReportServiceTest {
         for (ReportDTO report : reports) {
             System.out.println("report = " + report);
         }
+    }
+
+    @Test
+    @Transactional
+    public void 게시판_신고_등록_테스트() {
+
+        //given
+        int memberNo = 27;
+        int writerNo = 13;
+        String division = "게시판";
+        String content = "아 신고할거라구요 진짜 그냥 할거에요 뿡뿡 기분이 나쁘그등요!!!";
+        int boardNo = 902;
+        String processStatus = "대기";
+        int reasonNo = 1;
+
+        ReportDTO report = new ReportDTO();
+        ReportMemberDTO member = new ReportMemberDTO();
+        ReportMemberDTO accusedMember = new ReportMemberDTO();
+        ReportBoardDTO board = new ReportBoardDTO();
+        ReportCategoryDTO reportCategory = new ReportCategoryDTO();
+
+        member.setNo(memberNo);
+        accusedMember.setNo(writerNo);
+        board.setBoardNo(boardNo);
+        reportCategory.setReportCategoryNo(reasonNo);
+        report.setMember(member);
+        report.setDivision(division);
+        report.setAccusedMember(accusedMember);
+        report.setContent(content);
+        report.setBoard(board);
+        report.setProcessStatus(processStatus);
+        report.setReportCategory(reportCategory);
+
+        //when
+        Report reportEntity = modelMapper.map(report, Report.class);
+        reportRepository.save(reportEntity);
+
+        //then
+        List<Report> findReportEntities = reportRepository.findAll(Sort.by(Sort.Direction.ASC, "reportNo"));
+        for (Report findReportEntity : findReportEntities) {
+            System.out.println("findReportEntity = " + findReportEntity);
+        }
+
     }
 
 

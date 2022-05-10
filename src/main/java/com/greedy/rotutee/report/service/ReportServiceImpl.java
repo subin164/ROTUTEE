@@ -254,5 +254,15 @@ public class ReportServiceImpl implements ReportService{
         return true;
     }
 
+    @Override
+    @Transactional
+    public boolean registBoardReport(ReportDTO report) {
+
+        Report reportEntity = modelMapper.map(report, Report.class);
+        reportRepository.save(reportEntity);
+
+        return true;
+    }
+
 
 }

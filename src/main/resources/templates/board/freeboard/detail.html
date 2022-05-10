@@ -2,8 +2,11 @@
 <html xmlns:th="https://thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 
 <head>
     <meta charset="UTF-8">
@@ -14,28 +17,33 @@
     </script>
     <style>
 
-        .box{
+        .box {
             width: 80%;
-            margin-top: 100px;
+            margin-top: 50px;
             margin-left: 300px;
         }
-        .inner-box{
+
+        .inner-box {
             border: 1px ridge #bcbcbc;
             padding: 20px;
+            margin: 30px;
         }
-        .content-area{
+
+        .content-area {
             width: 100%;
             height: 300px;
             border: 1px ridge #bcbcbc;
         }
-        .category-box{
+
+        .category-box {
             border: 1px ridge #bcbcbc;
         }
-        .answer-all-area{
+
+        .answer-all-area {
             height: auto;
         }
 
-        .regist-textarea{
+        .regist-textarea {
             float: left;
             width: 93%;
             height: 100px;
@@ -43,65 +51,71 @@
             padding: 10px;
         }
 
-        #registAnswerBtn{
+        #registAnswerBtn {
             width: 7%;
             float: left;
             height: 100px;
         }
 
-        .content-area{
+        .content-area {
             width: 100%;
             height: 500px;
         }
 
-        .answer{
+        .answer {
             width: 90%;
             margin-top: auto;
         }
-        .boardTitle-tr{
+
+        .boardTitle-tr {
             width: 90%;
             margin-top: auto;
             border: 1px ridge #bcbcbc;
             padding: 10px;
 
         }
-        .boardTitle-td{
+
+        .boardTitle-td {
             border: 1px ridge #bcbcbc;
         }
-        .answer-tr{
+
+        .answer-tr {
             border: 1px ridge #bcbcbc;
             height: auto;
         }
 
-        .detail-board-button{
+        .detail-board-button {
             text-align: center;
             margin-top: 10px;
         }
 
-        .modify-answer-textarea{
+        .modify-answer-textarea {
             width: 90%;
             padding: 10px;
             height: 100px;
             resize: none;
         }
-        .answer-content-info{
+
+        .answer-content-info {
             width: 80%;
             bottom-padding: 10px;
         }
 
-        .answer-content-btn{
+        .answer-content-btn {
             width: 20%;
         }
 
 
-        .answer-borderbox{
+        .answer-borderbox {
             height: auto;
             margin-top: 100px;
         }
-        .content{
+
+        .content {
             padding: 10px;
         }
-        .answer-area{
+
+        .answer-area {
             padding: 10px;
         }
     </style>
@@ -112,22 +126,25 @@
 <body>
 <div th:include="common/mypagemenubar.html"></div>
 
-<div class="box">
-    <div> <h1>커뮤니티</h1> </div>
+<div class="box container">
+    <div><h1>커뮤니티</h1></div>
 
     <div class="inner-box">
-        <div> <h3>커뮤니티 상세</h3> </div>
+        <div><h3>커뮤니티 상세</h3></div>
 
         <div class="category-box">
             <div><h4>카테고리</h4></div>
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" onclick="return(false);">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
+                       onclick="return(false);">
                 <label class="btn btn-outline-primary" for="btnradio1">공지사항</label>
 
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" onclick="return(false);">
-                <label class="btn btn-outline-primary" for="btnradio2">질물&답변</label>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"
+                       onclick="return(false);">
+                <label class="btn btn-outline-primary" for="btnradio2">질문&답변</label>
 
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" onclick="return(false);">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"
+                       onclick="return(false);">
                 <label class="btn btn-outline-primary" for="btnradio3">자유</label>
             </div>
         </div>
@@ -137,6 +154,7 @@
                 <tr class="boardTitle-tr">
                     <input id="boardNo" type="hidden" th:value="${board.boardNo}">
                     <input id="category" type="hidden" th:value="${board.freeBoardCategory.boardCategoryNo}">
+                    <input id="writerNo" type="hidden" th:value="${board.freeBoardMember.memberNo}">
                     <td class="boardTitle-td" th:text="제목"></td>
                     <td class="boardTitle-td" th:text="${board.boardTitle}"></td>
                     <td class="boardTitle-td" th:text="${board.freeBoardMember.memberName}"></td>
@@ -150,7 +168,7 @@
             <h4>내용</h4>
             <br>
 
-            <div class="content-area" >
+            <div class="content-area">
                 <div class="content" th:text="${board.boardContent}"></div>
             </div>
 
@@ -158,10 +176,12 @@
                 <input id="boardListBtn" type="button" th:value="목록" class="btn btn-secondary">
                 <th:block th:if="${ board.freeBoardMember.memberNo } == ${#authentication.principal.no }">
                     <input id="modifyBoardBtn" type="button" th:value="수정" class="btn btn-primary">
-                    <input id="deleteBoardBtn" type="button" th:value="삭제" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
+                    <input id="deleteBoardBtn" type="button" th:value="삭제" class="btn btn-primary"
+                           data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
                 </th:block>
                 <th:block th:if="${ board.freeBoardMember.memberNo } != ${ #authentication.principal.no }">
-                    <input id="BoardBtn" type="button" th:value="신고" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop1"/>
+                    <input id="BoardBtn" type="button" th:value="신고" class="btn btn-primary" data-bs-toggle="modal"
+                           data-bs-target="#staticBackdrop1"/>
                 </th:block>
             </div>
         </div>
@@ -177,36 +197,50 @@
             </div>
 
             <div id="answertable" class="answer-borderbox" th:if="${answer != null}">
-                <div id="answerbody" class="answer-tbody" >
-                    <div id="answertr" class="answer-tr" th:each="answer : ${answer}" >
+                <div id="answerbody" class="answer-tbody">
+                    <div id="answertr" class="answer-tr" th:each="answer : ${answer}">
                         <div id="answer" th:attrappend="id=${ answer.answerNo }" class="answer-area">
-                            <div class="answer-content-info" >
+                            <div class="answer-content-info" id="answerBox">
                                 <input id="answerNo" type="hidden" th:value="${answer.answerNo}"/>
+                                <input type="hidden" th:value="${answer.freeBoardMember.memberNo}">
                                 <div class="answer-column" th:text="${answer.freeBoardMember.memberName}"></div>
                                 <div class="answer-column" th:text="${answer.answerContent}"></div>
                                 <div class="answer-column" th:text="${answer.answerCreatedDate}"></div>
                             </div>
                             <div class="answer-content-btn">
-                                <th:block th:if="${ answer.freeBoardMember.memberNo } == ${#authentication.principal.no }">
-                                    <button class ="modifyanswer" id="modifyAnswer" name="수정" type="button" th:value="${answer.answerNo}">수정</button>
-                                    <button id="deleteAnswer"  th:value="${answer.answerNo}" class="deleteAnswer">삭제</button>
+                                <th:block
+                                        th:if="${ answer.freeBoardMember.memberNo } == ${#authentication.principal.no }">
+                                    <button class="modifyanswer" id="modifyAnswer" name="수정" type="button"
+                                            th:value="${answer.answerNo}">수정
+                                    </button>
+                                    <button id="deleteAnswer" th:value="${answer.answerNo}" class="deleteAnswer">삭제
+                                    </button>
                                 </th:block>
-                                <th:block th:if="${ answer.freeBoardMember.memberNo } != ${ #authentication.principal.no }">
-                                    <button id="declarationAnswer"  th:value="${answer.answerNo}" class="declarationAnswer">신고</button>
+                                <th:block
+                                        th:if="${ answer.freeBoardMember.memberNo } != ${ #authentication.principal.no }">
+                                    <button id="declarationAnswer" th:value="${answer.answerNo}"
+                                            class="declarationAnswer" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop2">신고
+                                    </button>
                                 </th:block>
                             </div>
 
                         </div>
-                        <div id="inputanswer" th:attrappend="id=${ answer.answerNo }"  style="display: none" class="input-answer-area" >
+                        <div id="inputanswer" th:attrappend="id=${ answer.answerNo }" style="display: none"
+                             class="input-answer-area">
                             <div class="answer-content-info">
                                 <input id="modifyanswerNo" type="hidden" th:value="${answer.answerNo}"/>
                                 <input id="modifyanswercontentinput" type="hidden" th:value="${answer.answerContent}"/>
                                 <div class="input-answer-column" th:text="${answer.freeBoardMember.memberName}"></div>
-                                <textarea id="modifyAnswerContent" class="modify-answer-textarea" th:text="${answer.answerContent}"></textarea>
+                                <textarea id="modifyAnswerContent" class="modify-answer-textarea"
+                                          th:text="${answer.answerContent}"></textarea>
                             </div>
                             <div class="answer-input-content-btn">
-                                <button id="modifyAnswerOk" class="modifyAnswerOk" th:value="${answer.answerNo}">확인</button>
-                                <button id="modifyAnswerCancel" class="answerAnswerCancal" th:value="${answer.answerNo}">취소</button>
+                                <button id="modifyAnswerOk" class="modifyAnswerOk" th:value="${answer.answerNo}">확인
+                                </button>
+                                <button id="modifyAnswerCancel" class="answerAnswerCancal"
+                                        th:value="${answer.answerNo}">취소
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -217,7 +251,8 @@
 </div>
 
 <!-- delete modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -236,19 +271,78 @@
 </div>
 
 <!--  declaration Answer modal -->
-<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel1">신고 하기</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                신고 하시겠습니까?
+                <span>신고사유</span>
+                <div class="category-buttons-1">
+                    <input type="radio" class="btn-check" id="btn-category1" autocomplete="off" name="reasonNo"
+                           value="1">
+                    <label class="btn btn-outline-primary" for="btn-category1">욕설</label>
+                    <input type="radio" class="btn-check" id="btn-category2" autocomplete="off" name="reasonNo"
+                           value="2">
+                    <label class="btn btn-outline-primary" for="btn-category2">광고성</label>
+                    <input type="radio" class="btn-check" id="btn-category3" autocomplete="off" name="reasonNo"
+                           value="3">
+                    <label class="btn btn-outline-primary" for="btn-category3">도배</label>
+                    <input type="radio" class="btn-check" id="btn-category4" autocomplete="off" name="reasonNo"
+                           value="4">
+                    <label class="btn btn-outline-primary" for="btn-category4">기타</label>
+                </div>
+                <hr>
+                <span>명예훼손 또는 저작권침해 관련 신고는 </span><a href="/service/boardlist">문의하기</a><span>를 이용해 주세요</span>
+                <hr>
+                <span>내용입력</span><br>
+                <textarea cols="50" rows="7" id="reportContent"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="declaration-ok" type="button" class="btn btn-primary">Sure</button>
+                <button id="declaration-ok" type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  declaration Answer modal -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel2">신고 하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span>신고사유</span>
+                <div class="category-buttons-1">
+                    <input type="radio" class="btn-check" id="btn-category5" autocomplete="off" name="answerReasonNo"
+                           value="1">
+                    <label class="btn btn-outline-primary" for="btn-category1">욕설</label>
+                    <input type="radio" class="btn-check" id="btn-category6" autocomplete="off" name="answerReasonNo"
+                           value="2">
+                    <label class="btn btn-outline-primary" for="btn-category2">광고성</label>
+                    <input type="radio" class="btn-check" id="btn-category7" autocomplete="off" name="answerReasonNo"
+                           value="3">
+                    <label class="btn btn-outline-primary" for="btn-category3">도배</label>
+                    <input type="radio" class="btn-check" id="btn-category8" autocomplete="off" name="answerReasonNo"
+                           value="4">
+                    <label class="btn btn-outline-primary" for="btn-category4">기타</label>
+                </div>
+                <hr>
+                <span>명예훼손 또는 저작권침해 관련 신고는 </span><a href="/service/boardlist">문의하기</a><span>를 이용해 주세요</span>
+                <hr>
+                <span>내용입력</span><br>
+                <textarea cols="50" rows="7" id="answerReportContent"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="answer-declaration-ok" type="button" class="btn btn-primary">Submit</button>
             </div>
         </div>
     </div>
@@ -270,7 +364,7 @@
     let boardNo = 0;
     let categoryNo = 0;
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const url = window.location.href;
 
         boardNo = url.split("=");
@@ -313,17 +407,16 @@
             let answerNo = $(this).val();
             console.log($(".modify-answer-textarea").val());
 
-            if($(".modify-answer-textarea").val().trim()==""){
+            if ($(".modify-answer-textarea").val().trim() == "") {
                 $(".modify-answer-textarea").val("");
                 alert("댓글 입력해주세요");
-            }
-            else{
+            } else {
                 const params = {
                     "answerNo": answerNo,
                     "answerContent": $(".modify-answer-textarea").val(),
                     "boardNo": boardNo
                 };
-                from_url("/freeboard/modifyAnswer",params,'post');
+                from_url("/freeboard/modifyAnswer", params, 'post');
 
                 $("#answer" + answerNo).show();
                 $("#inputanswer" + answerNo).hide();
@@ -340,32 +433,87 @@
 
             console.log(params);
 
-            from_url("/freeboard/deleteAnswer",params,'post');
+            from_url("/freeboard/deleteAnswer", params, 'post');
             $("#answer" + answerNo).show();
             $("#inputanswer" + answerNo).hide();
         });
 
         $registAnswer.addEventListener("click", function () {
-            const params = {"boardNo":boardNo, "answerContent":$textarea.value};
-            from_url("/freeboard/registanswer",params,'post');
-            $textarea.value =""
+            const params = {"boardNo": boardNo, "answerContent": $textarea.value};
+            from_url("/freeboard/registanswer", params, 'post');
+            $textarea.value = ""
         });
 
-        $boardListBtn.addEventListener("click",function (){
-            window.location.href="list?categoryNo=" + categoryNo;
+        $boardListBtn.addEventListener("click", function () {
+            window.location.href = "list?categoryNo=" + categoryNo;
         });
 
-        if($modifyBoardBtn != null){
-            $modifyBoardBtn.addEventListener("click",function (){
-                window.location.href="modify?boardNo=" + boardNo;
+        if ($modifyBoardBtn != null) {
+            $modifyBoardBtn.addEventListener("click", function () {
+                window.location.href = "modify?boardNo=" + boardNo;
             });
         }
 
-        $deleteBtn.addEventListener("click",function (){
-            const params = {"boardNo":boardNo, "categoryNo":categoryNo};
-            from_url("/freeboard/delete",params,'post');
+        $deleteBtn.addEventListener("click", function () {
+            const params = {"boardNo": boardNo, "categoryNo": categoryNo};
+            from_url("/freeboard/delete", params, 'post');
         });
     });
+
+    $("#declaration-ok").click(function () {
+        const division = "게시판";
+        const writerNo = $("#writerNo").val();
+        const reportContent = $("#reportContent").val();
+        const boardNo = $("#boardNo").val();
+        const reasonNo = $('input:radio[name="reasonNo"]').val();
+        console.log(writerNo);
+        $.ajax({
+            url: "/report/board",
+            type: "get",
+            data: {
+                division: division,
+                writerNo: writerNo,
+                content: reportContent,
+                boardNo: boardNo,
+                reasonNo: reasonNo
+            },
+            success: function (data) {
+                console.log(data)
+                if (data === true) {
+                    alert("신고가 완료되었습니다.");
+                    location.href = "/freeboard/detail?boardNo=" + boardNo;
+                }
+            }
+        })
+    })
+
+    $("#answer-declaration-ok").click(function () {
+        const division = "댓글";
+        const writerNo = $(this).parent().prev('#answerBox').children('input').eq(1);
+        const reportContent = $("#answerReportContent").val();
+        const boardNo = $("#boardNo").val();
+        const reasonNo = $('input:radio[name="answerReasonNo"]').val();
+        console.log(writerNo);
+        // $.ajax({
+        //     url: "/report/answer",
+        //     type: "get",
+        //     data: {
+        //         division: division,
+        //         writerNo: writerNo,
+        //         content: reportContent,
+        //         boardNo: boardNo,
+        //         reasonNo: reasonNo
+        //     },
+        //     success: function (data) {
+        //         console.log(data)
+        //         if (data === true) {
+        //             alert("댓글신고가 완료되었습니다.");
+        //             location.href = "/freeboard/detail?boardNo=" + boardNo;
+        //         }
+        //     }
+        // })
+    })
+
 </script>
 
 <script type="text/javascript">
@@ -374,14 +522,14 @@
         const form = document.createElement("form");
         form.setAttribute("method", method);
         form.setAttribute("action", path);
-        for(let key in params) {
+        for (let key in params) {
             let hiddenField = document.createElement("input");
             hiddenField.setAttribute("type", "hidden");
             hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value",params[key]);
+            hiddenField.setAttribute("value", params[key]);
 
-            console.log("key"+key);
-            console.log("param"+params[key]);
+            console.log("key" + key);
+            console.log("param" + params[key]);
 
             form.appendChild(hiddenField);
         }

@@ -1,6 +1,7 @@
 package com.greedy.rotutee.lecture.mylecture.service;
 
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.DashboardLectureDTO;
+import com.greedy.rotutee.lecture.mylecture.dto.MyLectureDTO;
 
 import java.util.List;
 
@@ -19,4 +20,5 @@ public interface MyLectureService {
     List<DashboardLectureDTO> findLearningList(int memberNo);
 
 
+    List<MyLectureDTO> findMyLectureList(int memberNo);
 }
