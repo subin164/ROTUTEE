@@ -46,7 +46,7 @@ public class BasketCoupon {
     @Column(name ="COUPON_EXPIRATION_DATE")
     private int couponExpirationDate;
 
-    @Column(name = "COUPON_ACTICATION_YN")
+    @Column(name = "COUPON_ACTIVATION_YN")
     private String couponActivationYn;
 
     @Column(name = "COUPON_DELETION_DATE")
@@ -59,8 +59,8 @@ public class BasketCoupon {
     }
 
     public BasketCoupon(int couponNo, String couponName, String couponContent, Date couponRegistrationDate
-                        , int couponDiscountRate, int couponExpirationDate, String couponActivationYn
-                        , Date couponDeletionDate, Date couponModifiedDate) {
+            , int couponDiscountRate, int couponExpirationDate, String couponActivationYn
+            , Date couponDeletionDate, Date couponModifiedDate) {
         this.couponNo = couponNo;
         this.couponName = couponName;
         this.couponContent = couponContent;

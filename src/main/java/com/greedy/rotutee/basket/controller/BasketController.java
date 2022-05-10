@@ -1,5 +1,9 @@
 package com.greedy.rotutee.basket.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.basket.dto.AttachedFileDTO;
 import com.greedy.rotutee.basket.dto.BasketMemberCouponBoxDTO;
@@ -14,7 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * packageName      : com.greedy.rotutee.basket.controller
@@ -40,8 +47,8 @@ public class BasketController {
 
     @GetMapping("/regist/{lectureNo}")
     public ModelAndView addLecture(ModelAndView mv, @PathVariable int lectureNo
-                                                  , @AuthenticationPrincipal CustomUser customUser
-                                                  , RedirectAttributes rttr) {
+            , @AuthenticationPrincipal CustomUser customUser
+            , RedirectAttributes rttr) {
 
         if(customUser == null) {
 
@@ -88,8 +95,8 @@ public class BasketController {
 
     @GetMapping("/remove/{lectureNo}")
     public ModelAndView removeOneBasket(ModelAndView mv, @PathVariable int lectureNo
-                                                             , @AuthenticationPrincipal CustomUser customUser
-                                                             , RedirectAttributes rttr) {
+            , @AuthenticationPrincipal CustomUser customUser
+            , RedirectAttributes rttr) {
 
         int memberNo = customUser.getNo();
 
@@ -100,18 +107,20 @@ public class BasketController {
 
         return mv;
     }
-
+    @ResponseBody
+    @JsonIgnoreProperties
     @GetMapping(value = "/coupon/list", produces = "application/json; charset=UTF-8")
-    public ModelAndView findCouponList(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
+    public ModelAndView findCouponList(ModelAndView mv, HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
+
+        int lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
 
         int memberNo = customUser.getNo();
-        System.out.println("couponList memberNo: " + memberNo);
 
         List<BasketMemberCouponBoxDTO> couponBoxs = basketService.selectCouponList(memberNo);
 
-        couponBoxs.forEach(System.out::println);
-        mv.addObject("couponBoxs",couponBoxs);
+        mv.addObject("couponBoxs", couponBoxs);
         mv.setViewName("jsonView");
+
         return mv;
     }
 
