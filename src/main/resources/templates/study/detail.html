@@ -112,7 +112,7 @@
             <div class="modal-body">
                 <form action="/study/modify" method="post" id="detailModifyForm">
                     <input type="hidden" id="detailModifyStudyNo">
-                    <div class=".detail-modify-item-row">
+                    <div class="detail-modify-item-row">
                         <div>
                             <div>모집마감일</div>
                             <input class="detail-modify-item" id="detailModifyEndDate" name="endDate" type="date"
@@ -128,9 +128,8 @@
                         <input class="detail-modify-item" id="detailModifyLinked" name="linked" type="text">
                     </div>
                     <div>#태그
-                        <ul class="d-flex" id="tagList">
-                            <li>#tag</li>
-                            <input class="detail-modify-item" id="detailModifyTag" name="tageList" type="text"
+                        <ul class="modify-item-tags" id="tagList">
+                            <input class="detail-modify-item" id="detailModifyTagInput" name="tageList" type="text"
                                    placeholder="#태그">
                         </ul>
                     </div>
@@ -156,21 +155,22 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 <script th:inline="javascript">
+    function noSpaceTag(event) {
 
-    // function noSpaceTag(event) {
-    //
-    //     if (event.keyCode == 32) {
-    //         event.preventDefault();
-    //     }
-    // }
-    //
-    // document.addEventListener('keydown', function (event) {
-    //     if (event.keyCode === 13) {
-    //         event.preventDefault();
-    //     }
-    //     ;
-    // }, true);
+        if (event.keyCode == 32) {
+            event.preventDefault();
+        }
+    }
 
+    document.addEventListener('keydown', function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+        }
+        ;
+    }, true);
+
+
+    /* 상세페이지 수정 눌렀을때 이전 값 조회 */
     function detailModifyButton() {
 
         const studyNo = document.getElementById("studyNo").value;
@@ -189,18 +189,109 @@
         document.getElementById("detailModifyLimited").value = limited;
         document.getElementById("detailModifyLinked").value = linked;
 
-        // taglist.length.each(function(){
-        //     document.getElementById("tagList").append("<div>");
-        // })
+        let div = document.createElement("div");
 
-        document.getElementById("detailModifyTag").value = taglist;
+        for (let i = 0; i < taglist.length; i++) {
+            $("#tagList").prepend("<li>" + "#" + taglist[i] + "</li>");
+        }
+
         document.getElementById("detaileModifyTitle").value = title;
         document.getElementById("detailModifyContent").value = content;
 
     }
 
-    /*스터디 댓글 작성*/
+    $(document).ready(function () {
+        $("#detailModifyTagInput")
+            .on("keyup", function (e) {
+                const self = $(this);
+                console.log("keypress");
+                console.log(self.val());
 
+
+                // input 에 focus 되있을 때 엔터 및 스페이스바 입력시 구동
+                if (e.key === "Enter") {
+                    const tagValue = self.val();
+
+                    const addTag = ("<li class='tag-item'>" + "#" + tagValue + "<span> " + "x" + " </span>" + "</li>");
+
+                    $("#detailModifyTagInput").before(addTag);
+
+                    $("#detailModifyTagInput").val("");
+
+                }
+            })
+    });
+
+    // $(document).ready(function () {
+    //
+    //     const tagList = {};
+    //     let counter = 0;
+    //
+    //     // 태그를 추가한다.
+    //     function addTag(value) {
+    //         tagList[counter] = value; // 태그를 Object 안에 추가
+    //         counter++; // counter 증가 삭제를 위한 del-btn 의 고유 id 가 된다.
+    //     }
+    //
+    //     // 최종적으로 서버에 넘길때 tag 안에 있는 값을 array type 으로 만들어서 넘긴다.
+    //     function marginTag() {
+    //         return Object.values(tagList)
+    //             .filter(function (word) {
+    //                 return word !== "";
+    //             });
+    //     }
+    //
+    //     $("#detailModifyTagInput")
+    //         .on("keyup", function (e) {
+    //                 const self = $(this);
+    //                 console.log("keypress");
+    //
+    //
+    //                 // input 에 focus 되있을 때 엔터 및 스페이스바 입력시 구동
+    //                 if (e.key === "Enter") {
+    //
+    //                     const tagValue = self.val(); // 값 가져오기
+    //
+    //                     // 값이 없으면 동작 안합니다.
+    //                     if (tagValue !== "" || tagValue != null) {
+    //
+    //                         // 같은 태그가 있는지 검사한다. 있다면 해당값이 array 로 return 된다.
+    //                         const result = Object.values(tag)
+    //                             .filter(function (word) {
+    //                                 return word === tagValue;
+    //                             })
+    //
+    //                         // 태그 중복 검사
+    //                         if (result.length == 0) {
+    //                             $("#tagList")
+    //                                 .prepend("<li class='tag-item d-flex' id='tag-id'>" + "#" + tagValue + "<span class='del-btn' idx='" + counter + "'><i class=\"bi bi-x\"></i></span> </li>");
+    //
+    //                             addTag(tagValue);
+    //                             self.val("");
+    //                         } else {
+    //                             alert("태그값이 중복됩니다.");
+    //                         }
+    //                     }
+    //                     e.preventDefault(); // SpaceBar 시 빈공간이 생기지 않도록 방지
+    //                 }
+    //             }
+    //         )
+    //     ;
+    //
+    //     // 삭제 버튼
+    //     // 삭제 버튼은 비동기적 생성이므로 document 최초 생성시가 아닌 검색을 통해 이벤트를 구현시킨다.
+    //     $(document)
+    //         .on("click", ".del-btn", function (e) {
+    //             const index = $(this)
+    //                 .attr("idx");
+    //             tag[index] = "";
+    //             $(this)
+    //                 .parent()
+    //                 .remove();
+    //         });
+    // });
+
+    /*스터디 댓글 작성*/
     if (document.getElementById("registReply")) {
 
         const $registReply = document.getElementById("registReply");

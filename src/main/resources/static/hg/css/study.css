@@ -101,6 +101,21 @@
 
 }
 
+.modify-item-tags{
+    display: flex;
+    flex-flow: wrap;
+}
+
+
+.tag-item{
+    padding: 8px 10px;
+    background-color: skyblue;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 5px;
+    border-radius: 5px;
+}
+
 
 /* 모집글 상세페이지 댓글 */
 
@@ -119,6 +134,8 @@
     height: 100%;
 
 }
+
+
 
 
 
