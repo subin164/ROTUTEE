@@ -46,13 +46,26 @@ public class   MemberStatusHistory {
     @OneToOne(mappedBy = "MemberStatusHistory", cascade = CascadeType.PERSIST)
     private SuspensionHitory suspensionHitory;
 
+    @OneToOne(mappedBy = "MemberStatusHistory", cascade = CascadeType.PERSIST)
+    private MemberSecessionHistory memberSecessionHistory;
+
     public MemberStatusHistory() {}
 
-    public MemberStatusHistory(int historyNo, String status, Date historyDate, Member member) {
+    public MemberStatusHistory(int historyNo, String status, Date historyDate, Member member, SuspensionHitory suspensionHitory, MemberSecessionHistory memberSecessionHistory) {
         this.historyNo = historyNo;
         this.status = status;
         this.historyDate = historyDate;
         this.member = member;
+        this.suspensionHitory = suspensionHitory;
+        this.memberSecessionHistory = memberSecessionHistory;
+    }
+
+    public MemberSecessionHistory getMemberSecessionHistory() {
+        return memberSecessionHistory;
+    }
+
+    public void setMemberSecessionHistory(MemberSecessionHistory memberSecessionHistory) {
+        this.memberSecessionHistory = memberSecessionHistory;
     }
 
     public SuspensionHitory getSuspensionHitory() {

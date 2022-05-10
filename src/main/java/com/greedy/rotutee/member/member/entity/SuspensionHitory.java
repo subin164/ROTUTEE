@@ -33,7 +33,7 @@ public class SuspensionHitory {
     )
     private int historyNo;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "MEMBER_STATUS_HISTORY_NO")
     private MemberStatusHistory MemberStatusHistory;
 
