@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">>
 <head>
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}|">
     <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css}">
     <link rel="stylesheet" th:href="@{../common/css/common.css}">
     <link rel="stylesheet" th:href="@{../hg/css/study.css}">
@@ -38,15 +38,9 @@
                         <div class="detail-item-registDate" id="registDate" th:text="${studyDetail.startDate}"/>
                         <div class="detail-edit-btn">
                             <button type="button" class="btn" data-bs-toggle="modal"
-                                    data-bs-target="#studyModifyModal">
-                                <!--                            onclick="modifyButton()"-->
+                                    data-bs-target="#studyModifyModal" onclick="detailModifyButton()">
                                 수정
                             </button>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop">
-                                Launch static backdrop modal
-                            </button>
-
                             <button class="btn"
                                     th:onclick="|location.href='@{/study/remove?no=}' + @{${studyDetail.studyNo}|">
                                 삭제
@@ -54,9 +48,11 @@
                         </div>
                     </li>
                     <li>
-                        <div id="content" th:text="${ studyDetail.content}"/>
+                        <div class="detail-item-content" id="content" th:text="${ studyDetail.content}"/>
                     </li>
                     <li class="detail-item-tags">
+
+
                         <div th:each="studyTag:${studyByTagList}"
                              th:if="${studyTag.study.studyNo} == ${studyDetail.getStudyNo()}">
                             <div name="detailTag" th:text="'#' + ${studyTag.tag.tagName}"></div>
@@ -65,37 +61,37 @@
                 </ul>
             </div>
 
-            <!-- 모집글 댓글 -->
-            <div class="detail-relpy-wrapper">
-                <div calss="w-100" id="registReplyList">
-                    <ul th:each="studyReplyList:${studyReplyList}">
-                        <li class="d-flex">
-                            <input type="hidden" id="repleNo" th:value="${studyReplyList.replyNo}">
-                            <input type="hidden" id="repleWriteDate" th:value="${studyReplyList.replyWriteDate}">
-                        <li th:text="${studyReplyList.writer.nickname}"></li>
-                        <li th:text="${studyReplyList.replyContent}"></li>
-                        <li th:if="${studyReplyList.writer.no} == ${#authentication.principal.no}">
-                            <button type="button" th:onclick="|studyReplyModify(${studyReplyList.replyNo})|">수정</button>
-                            <button type="button" th:onclick="|studyReplyRemove(${studyReplyList.replyNo})|">삭제</button>
-                        </li>
-                    </ul>
+            <!-- 모집글 댓글목록 -->
+            <div class="card" th:each="studyReply:${studyReplyList}">
+                <div class="card-header d-flex w-100">
+                    <div>
+                        <div th:text="${studyReply.writer.nickname}" style="margin-bottom: 20px"></div>
+                        <div th:text="${studyReply.replyWriteDate}"></div>
+                    </div>
+                    <div class="detaile-replay-edit-button">
+                        <div th:if="${#authentication.principal.nickname.toString()} eq ${studyReply.writer.nickname.toString()}">
+                            <button class="btn" onclick="detailModifyButton()">수정</button>
+                            <button class="btn">삭재</button>
+                        </div>
+                    </div>
                 </div>
-
-                <div class=" reply-header">
-                    <span th:text="${studyDetail.writer.nickname}"/>님 리플을 남겨보세요!
-                </div>
-
-                <form id="studyReplyFrom">
-                    <textarea id="replyContent" style="width: 100%;" placeholder="댓글을 입력하세요"></textarea>
-                </form>
-                <div>
-                    <button class="btn" id="registReply" type="button" form="studyReplyFrom">
-                        작성
-                    </button>
+                <div class="card-body">
+                    <div th:text="${studyReply.replyContent}"/>
                 </div>
             </div>
-        </div>
 
+            <!-- 댓글 작성 -->
+            <div class="card mt-md-5 ">
+                <div class="card-header p-md-3">
+                    <div sec:authentication="principal.nickname"></div>
+                </div>
+                <div class="card-body p-0">
+                    <textarea class="reply-content" placeholder="댓글 입력.. ㅎ ㅐ  주 ㅓ."></textarea>
+                </div>
+            </div>
+
+        </div>
+        </div>
         <!-- 오른쪽 사이드메뉴-->
         <div class="sidebar-right">
             <button>신청하기</button>
@@ -105,20 +101,49 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="studyModifyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <h5 class="modal-title" id="modifyStudyTitle">모집글 머시꺵이</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ...
+                <form action="/study/modify" method="post" id="detailModifyForm">
+                    <input type="hidden" id="detailModifyStudyNo">
+                    <div class=".detail-modify-item-row">
+                        <div>
+                            <div>모집마감일</div>
+                            <input class="detail-modify-item" id="detailModifyEndDate" name="endDate" type="date"
+                                   value="">
+                        </div>
+                        <div>
+                            <div>모집인원</div>
+                            <input class="detail-modify-item" id="detailModifyLimited" name="limited" type="text"
+                                   value="">
+                        </div>
+                    </div>
+                    <div>Link
+                        <input class="detail-modify-item" id="detailModifyLinked" name="linked" type="text">
+                    </div>
+                    <div>#태그
+                        <ul class="d-flex" id="tagList">
+                            <li>#tag</li>
+                            <input class="detail-modify-item" id="detailModifyTag" name="tageList" type="text"
+                                   placeholder="#태그">
+                        </ul>
+                    </div>
+                    <div>제목
+                        <input class="detail-modify-item" id="detaileModifyTitle" name="title" type="text"></div>
+                    <div>
+                        <textarea class="detail-modify-item-content" id="detailModifyContent" name="content"></textarea>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="submit" class="btn btn-primary" form="detailModifyForm">수정</button>
             </div>
         </div>
     </div>
@@ -126,9 +151,10 @@
 
 <div th:include="/common/footer.html"></div>
 
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"/>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 <script th:inline="javascript">
 
     // function noSpaceTag(event) {
@@ -145,19 +171,33 @@
     //     ;
     // }, true);
 
-    // function modifyButton() {
-    //
-    //     const studyNo = document.getElementById("studyNo");
-    //     const title = document.getElementById("title");
-    //     const content = document.getElementById("content");
-    //     const endDate = document.getElementById("endDate");
-    //     const limited = document.getElementById("limited");
-    //     const linked = document.getElementById("linked");
-    //     let taglist = [];
-    //
-    //     console.log(taglist = $("div[name=detailTag]").text());
-    //     console.log(taglist = $("div[name=detailTag]").text().substring(1).trim().split("#"));
+    function detailModifyButton() {
 
+        const studyNo = document.getElementById("studyNo").value;
+        const title = document.getElementById("title").innerText;
+        const content = document.getElementById("content").innerText;
+        const endDate = document.getElementById("endDate").value;
+        const limited = document.getElementById("limited").value;
+        const linked = document.getElementById("linked").value;
+        let taglist = [];
+
+        console.log(taglist = $("div[name=detailTag]").text());
+        console.log(taglist = $("div[name=detailTag]").text().substring(1).trim().split("#"));
+
+        document.getElementById("detailModifyStudyNo").value = studyNo;
+        document.getElementById("detailModifyEndDate").value = endDate;
+        document.getElementById("detailModifyLimited").value = limited;
+        document.getElementById("detailModifyLinked").value = linked;
+
+        // taglist.length.each(function(){
+        //     document.getElementById("tagList").append("<div>");
+        // })
+
+        document.getElementById("detailModifyTag").value = taglist;
+        document.getElementById("detaileModifyTitle").value = title;
+        document.getElementById("detailModifyContent").value = content;
+
+    }
 
     /*스터디 댓글 작성*/
 

@@ -188,16 +188,16 @@ public class StudyService {
      * content :
      * */
     @Transactional
-    public void studyModify(StudyDTO studyDTO) {
-        Study study = studyRepository.findById(studyDTO.getStudyNo()).get();
-
-        study.setTitle(studyDTO.getTitle());
-        study.setContent(studyDTO.getContent());
-        study.setEndDate(studyDTO.getEndDate());
-        study.setLimited(studyDTO.getLimited());
-        study.setLinked(studyDTO.getLinked());
-        study.setRecruitStatus(studyDTO.getRecruitStatus());
-    }
+//    public void studyModify(StudyDTO studyDTO) {
+//        Study study = studyRepository.findById(studyDTO.getStudyNo()).get();
+//
+//        study.setTitle(studyDTO.getTitle());
+//        study.setContent(studyDTO.getContent());
+//        study.setEndDate(studyDTO.getEndDate());
+//        study.setLimited(studyDTO.getLimited());
+//        study.setLinked(studyDTO.getLinked());
+//        study.setRecruitStatus(studyDTO.getRecruitStatus());
+//    }
     /*
      * writer : 김형경
      * writerDate : 22/05/01 ~ 22/05/01
