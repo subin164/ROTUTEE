@@ -34,7 +34,7 @@ public class BasketMemberCouponBox {
     @Column(name = "COUPON_EXPIRATION_DATE")
     private Date couponExpirationDate;
 
-    @Column(name = "COUPON_RECEVING_DATE")
+    @Column(name = "COUPON_RECEIVING_DATE")
     private Date couponRecevingDate;
 
 
@@ -49,11 +49,10 @@ public class BasketMemberCouponBox {
     @Column(name = "COUPON_STATUS")
     private String couponStatus;
 
-    public BasketMemberCouponBox() {
-    }
+    public BasketMemberCouponBox() {}
 
     public BasketMemberCouponBox(int couponBoxNo, Date couponExpirationDate, Date couponRecevingDate
-                                    , BasketCoupon basketCoupon, Member member, String couponStatus) {
+            , BasketCoupon basketCoupon, Member member, String couponStatus) {
         this.couponBoxNo = couponBoxNo;
         this.couponExpirationDate = couponExpirationDate;
         this.couponRecevingDate = couponRecevingDate;

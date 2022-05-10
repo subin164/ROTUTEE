@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class BasketServiceImpl implements BasketService{
     private final ClassBasketMemberRepository classBasketMemberRepository;
     private final ClassBasketMemberInterestRepository classBasketMemberInterestRepository;
     private final ClassBasketMemberCouponBoxRepository classBasketMemberCouponBoxRepository;
+
     @Autowired
     public BasketServiceImpl(ModelMapper modelMapper, ClassBasketRepository classBasketRepository, ClassBasketLectureRepository classBasketLectureRepository, ClassBasketMemberRepository classBasketMemberRepository, ClassBasketMemberInterestRepository classBasketMemberInterestRepository, ClassBasketMemberCouponBoxRepository classBasketMemberCouponBoxRepository) {
         this.modelMapper = modelMapper;
@@ -53,12 +55,12 @@ public class BasketServiceImpl implements BasketService{
 
         if(basket != null) {
 
-           ClassBasketDTO basketDTO = new ClassBasketDTO();
-           basketDTO.setClassBasketNo(basket.getClassBasketNo());
-           basketDTO.setMember(modelMapper.map(basket.getMember(), MemberDTO.class));
-           basketDTO.setLecture(modelMapper.map(basketDTO.getLecture(), LectureDTO.class));
+            ClassBasketDTO basketDTO = new ClassBasketDTO();
+            basketDTO.setClassBasketNo(basket.getClassBasketNo());
+            basketDTO.setMember(modelMapper.map(basket.getMember(), MemberDTO.class));
+            basketDTO.setLecture(modelMapper.map(basketDTO.getLecture(), LectureDTO.class));
 
-           return basketDTO;
+            return basketDTO;
         }
 
         return null;
@@ -68,15 +70,23 @@ public class BasketServiceImpl implements BasketService{
     public List<BasketMemberCouponBoxDTO> selectCouponList(int memberNo) {
 
         List<BasketMemberCouponBox> basketMemberCouponBox = classBasketMemberCouponBoxRepository.findByMemberNoAndCouponStatus(memberNo, "미사용");
-        System.out.println( "basketMemberCouponBox : "+basketMemberCouponBox);
 
-        List<BasketMemberCouponBoxDTO> basketMemberCouponBoxDTO = basketMemberCouponBox.stream().map(BasketMemberCouponBox -> modelMapper.map(BasketMemberCouponBox, BasketMemberCouponBoxDTO.class)).collect(Collectors.toList());
-        System.out.println( "basketMemberCouponBoxDTO : "+basketMemberCouponBoxDTO);
+        List<BasketMemberCouponBoxDTO> basketMemberCouponBoxDTO = new ArrayList<>();
+        for(BasketMemberCouponBox basketMemberCouponBox1 :basketMemberCouponBox) {
+            MemberDTO member = modelMapper.map(basketMemberCouponBox1.getMember(), MemberDTO.class);
+            BasketCouponDTO basketCouponDTO = modelMapper.map(basketMemberCouponBox1.getBasketCoupon(), BasketCouponDTO.class);
 
-       /* List<BasketMemberCouponBox> basketMemberCouponBox = classBasketMemberCouponBoxRepository.findAll();
+            BasketMemberCouponBoxDTO basketMemberCouponBoxDTO1 = new BasketMemberCouponBoxDTO();
+            basketMemberCouponBoxDTO1.setCouponBoxNo(basketMemberCouponBox1.getCouponBoxNo());
+            basketMemberCouponBoxDTO1.setCouponExpirationDate(basketMemberCouponBox1.getCouponExpirationDate());
+            basketMemberCouponBoxDTO1.setCouponRecevingDate(basketMemberCouponBox1.getCouponRecevingDate());
+            basketMemberCouponBoxDTO1.setCoupon(basketCouponDTO);
+            basketMemberCouponBoxDTO1.setMember(member);
+            basketMemberCouponBoxDTO1.setCouponStatus(basketMemberCouponBox1.getCouponStatus());
 
-        List<BasketMemberCouponBoxDTO> basketMemberCouponBoxDTO = basketMemberCouponBox.stream().map(BasketMemberCouponBox -> modelMapper.map(BasketMemberCouponBox, BasketMemberCouponBoxDTO.class)).collect(Collectors.toList());
-*/
+            basketMemberCouponBoxDTO.add(basketMemberCouponBoxDTO1);
+        }
+
         return basketMemberCouponBoxDTO;
     }
 
@@ -136,7 +146,7 @@ public class BasketServiceImpl implements BasketService{
             basketDTOList.add(basketDTO);
         }
 
-            return basketDTOList;
+        return basketDTOList;
     }
 
     @Override
