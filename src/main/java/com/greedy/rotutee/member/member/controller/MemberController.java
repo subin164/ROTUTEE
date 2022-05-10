@@ -46,10 +46,13 @@ public class MemberController {
     @GetMapping("/regist")
     public void memberRegistPage() {}
 
-    @PostMapping("/regist")
-    public String registMember(@ModelAttribute MemberDTO member, RedirectAttributes rttr) {
+    @GetMapping("/secession")
+    public void memberSecessionPage() {}
 
-        memberService.registMember(member);
+    @PostMapping("/regist")
+    public String registMember(@ModelAttribute MemberDTO member,@RequestParam("categoryNo") int[] categoryNo, RedirectAttributes rttr) {
+
+        memberService.registMember(member, categoryNo);
 
         rttr.addFlashAttribute("message", "회원가입에 성공하셨습니다 로그인을 해주세요");
 

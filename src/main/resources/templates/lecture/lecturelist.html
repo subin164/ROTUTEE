@@ -14,7 +14,7 @@
 <main>
     <section class="search mt-lg-5">
         <div class="container d-flex justify-content-end">
-            <form class="position-relative ms-3 searchbar shoadow" action="/lecture/search" method="get">
+            <form class="position-relative ms-3 searchbar shoadow" action="/lecture/search" method="get" style="display: flex">
                 <select class="form-select shoadow" name="searchCondition">
                     <option selected value="1">강의명</option>
                     <option value="2">강사이름</option>
@@ -28,27 +28,27 @@
     </section>
     <br>
     <div class="container">
-        <input type="button" class="btn btn-secondary btn-sm" value="Python">
-        <input type="button" class="btn btn-secondary btn-sm" value="JAVA">
-        <input type="button" class="btn btn-secondary btn-sm" value="Node.js">
-        <input type="button" class="btn btn-secondary btn-sm" value="Kotlin">
-        <input type="button" class="btn btn-secondary btn-sm" value="Spring">
-        <input type="button" class="btn btn-secondary btn-sm" value="DBMS">
-        <input type="button" class="btn btn-secondary btn-sm" value="JavaScript">
-        <input type="button" class="btn btn-secondary btn-sm" value="React">
-        <input type="button" class="btn btn-secondary btn-sm" value="HTML">
-        <input type="button" class="btn btn-secondary btn-sm" value="CSS">
-        <input type="button" class="btn btn-secondary btn-sm" value="Swift">
-        <input type="button" class="btn btn-secondary btn-sm" value="기타">
+        <input type="button" class="btn btn-secondary btn-sm category" value="Python">
+        <input type="button" class="btn btn-secondary btn-sm category" value="JAVA">
+        <input type="button" class="btn btn-secondary btn-sm category" value="Node.js">
+        <input type="button" class="btn btn-secondary btn-sm category" value="Kotlin">
+        <input type="button" class="btn btn-secondary btn-sm category" value="Spring">
+        <input type="button" class="btn btn-secondary btn-sm category" value="DBMS">
+        <input type="button" class="btn btn-secondary btn-sm category" value="JavaScript">
+        <input type="button" class="btn btn-secondary btn-sm category" value="React">
+        <input type="button" class="btn btn-secondary btn-sm category" value="HTML">
+        <input type="button" class="btn btn-secondary btn-sm category" value="CSS">
+        <input type="button" class="btn btn-secondary btn-sm category" value="Swift">
+        <input type="button" class="btn btn-secondary btn-sm category" value="기타">
     </div>
     <br>
     <div class="container" style="border: 1px solid gray;">
         <div class="row">
             <div class="col-sm-3" th:each="lecture : ${lectureList}">
-                <div class="card">
+                <div class="card" style="width: 215px; height: 215px; margin-top: 10px;">
                     <input type="hidden" th:value="${lecture.lectureNo}" name="lectureNo" class="lectureNo">
                     <th:block th:if="${lecture.saveFileName != null}">
-                        <img th:src="@{/images/thumbnail/} + ${lecture.saveFileName}" class="card-img-top" alt="...">
+                        <img th:src="@{/images/thumbnail/} + ${lecture.saveFileName}" class="card-img-top" alt="..." style="height: 85px;">
                     </th:block>
                     <div class="card-body">
                         <input class="lecture-price-box" type="text" th:value="${lecture.lecturePrice} + WON" disabled>
@@ -66,8 +66,11 @@
 <script>
     $(".card").click(function () {
         const lectureNo = $(this).children(".lectureNo").val();
-        console.log(lectureNo);
         location.href = "/lecture/detail?lectureNo=" + lectureNo;
+    })
+    $("div > .category").click(function() {
+        let categoryName = $(this).val();
+        location.href = "/lecture/list?categoryName=" + categoryName;
     })
 </script>
 </body>

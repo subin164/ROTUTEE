@@ -42,15 +42,15 @@ public class AttachedFile {
     private String fileDeletionYN;
 
     @JoinColumn(name = "MEMBER_NO")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
     @JoinColumn(name = "LECTURE_NO")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Lecture lecture;
 
     @JoinColumn(name = "CLASS_NO")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Class classes;
 
     public AttachedFile() {

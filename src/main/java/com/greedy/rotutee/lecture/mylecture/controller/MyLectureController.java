@@ -2,6 +2,7 @@ package com.greedy.rotutee.lecture.mylecture.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.DashboardLectureDTO;
+import com.greedy.rotutee.lecture.mylecture.dto.MyLectureDTO;
 import com.greedy.rotutee.lecture.mylecture.service.MyLectureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,6 +44,20 @@ public class MyLectureController {
 
         mv.addObject("learning", learning);
         mv.setViewName("dashboard/mypage/mylearninglist");
+
+        return mv;
+    }
+
+    @GetMapping("/tutorlist")
+    public ModelAndView findMyLectureList(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
+
+        int memberNo = customUser.getNo();
+        List<MyLectureDTO> lectures = myLectureService.findMyLectureList(memberNo);
+
+        System.out.println("여기까지는 오냐?");
+
+        mv.addObject("lectures", lectures);
+        mv.setViewName("dashboard/mypage/mylecturelist");
 
         return mv;
     }

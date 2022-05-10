@@ -22,4 +22,6 @@ public interface MainService {
     List<LectureDTO> findPopularLectureList();
 
     List<AttachedFileDTO> findBannerListByMemberNo(int no);
+
+    List<AttachedFileDTO> findRecentBannerList();
 }

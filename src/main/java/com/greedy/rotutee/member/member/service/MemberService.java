@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 public class MemberService {
 
     private final LectureCategoryRepository lectureCategoryRepository;
+    private final MemberInterestPartRepository memberInterestPartRepository;
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final MemberRoleRepository memberRoleRepository;
@@ -46,9 +47,10 @@ public class MemberService {
     private EntityManager entityManager;
 
     @Autowired
-    public MemberService(LectureCategoryRepository lectureCategoryRepository, PasswordEncoder passwordEncoder, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleRepository roleRepository, ModelMapper modelMapper, AchievementRepository achievementRepository, MemberAchievementRepository memberAchievementRepository, MemberAchievementHistoryRepository memberAchievementHistoryRepository, MemberStatusHistoryRepository memberStatusHistoryRepository, MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery, ReasonsRepository reasonsRepository, AttachedFileRepository attachedFileRepository) {
+    public MemberService(LectureCategoryRepository lectureCategoryRepository, MemberInterestPartRepository memberInterestPartRepository, PasswordEncoder passwordEncoder, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleRepository roleRepository, ModelMapper modelMapper, AchievementRepository achievementRepository, MemberAchievementRepository memberAchievementRepository, MemberAchievementHistoryRepository memberAchievementHistoryRepository, MemberStatusHistoryRepository memberStatusHistoryRepository, MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery, ReasonsRepository reasonsRepository, AttachedFileRepository attachedFileRepository) {
 
         this.lectureCategoryRepository = lectureCategoryRepository;
+        this.memberInterestPartRepository = memberInterestPartRepository;
         this.passwordEncoder = passwordEncoder;
         this.memberRepository = memberRepository;
         this.memberRoleRepository = memberRoleRepository;
@@ -80,7 +82,7 @@ public class MemberService {
 
     /* 사용자 등록용 메서드 */
     @Transactional
-    public void registMember(MemberDTO member) {
+    public void registMember(MemberDTO member, int[] categoryNo) {
 
         String encodePwd = passwordEncoder.encode(member.getPwd());
         member.setPwd(encodePwd);
@@ -91,13 +93,34 @@ public class MemberService {
 
         memberRepository.save(modelMapper.map(member, Member.class));
 
+        setMemberInterest(member, categoryNo);
         setMemberStatus(member);
 //        setMemberAchievement(member);
         setMemberRole(member);
     }
 
+    /* 사용자 등록시 관심분야 등록용 메서드 */
+    private void setMemberInterest(MemberDTO member, int[] categoryNo) {
+
+        Member foundMember = memberRepository.findMemberByEmail(member.getEmail());
+        List<LectureCategory> lectureCategoryList = lectureCategoryRepository.findAll();
+
+        for(LectureCategory lectureCategory : lectureCategoryList) {
+            MemberInterestPart memberInterestPart = new MemberInterestPart();
+            memberInterestPart.setMember(foundMember);
+            memberInterestPart.setLectureCategory(lectureCategory);
+            memberInterestPart.setInterestDegree(0);
+            for(int i = 0; i < categoryNo.length; i++) {
+                if(categoryNo[i] == memberInterestPart.getLectureCategory().getNo()) {
+                    memberInterestPart.setInterestDegree(10);
+                }
+            }
+            memberInterestPartRepository.save(memberInterestPart);
+        }
+    }
+
     /* 사용자 등록시 상태등록용 메서드 */
-    public void setMemberStatus(MemberDTO member) {
+    private void setMemberStatus(MemberDTO member) {
 
         Member foundMember = memberRepository.findMemberByEmail(member.getEmail());
         MemberStatusHistory memberStatusHistory = new MemberStatusHistory();

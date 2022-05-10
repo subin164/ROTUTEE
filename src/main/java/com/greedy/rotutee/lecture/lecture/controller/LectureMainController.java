@@ -25,12 +25,19 @@ public class LectureMainController {
     }
 
     @GetMapping("/list")
-    public ModelAndView findAllApproveLectures(ModelAndView mv) {
+    public ModelAndView findAllApproveLectures(ModelAndView mv, @RequestParam(required = false, defaultValue = "null") String categoryName) {
 
-        List<LectureDTO> lectureList = lectureMainService.findAllLecture();
+        if(categoryName.equals("null")) {
+            List<LectureDTO> lectureList = lectureMainService.findAllLecture();
 
-        mv.addObject("lectureList", lectureList);
-        mv.setViewName("lecture/lecturelist");
+            mv.addObject("lectureList", lectureList);
+            mv.setViewName("lecture/lecturelist");
+        } else {
+            List<LectureDTO> lectureList = lectureMainService.findLectureByCategoryName(categoryName);
+
+            mv.addObject("lectureList", lectureList);
+            mv.setViewName("lecture/lecturelist");
+        }
 
         return mv;
     }

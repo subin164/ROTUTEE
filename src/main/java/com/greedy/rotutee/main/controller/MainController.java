@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,9 +30,11 @@ public class MainController {
 
         if(customUser == null) {
 
+            List<AttachedFileDTO> bannerList = mainService.findRecentBannerList();
             List<LectureDTO> recentLectureList = mainService.findRecentLectureList();
             List<LectureDTO> popularLectureList = mainService.findPopularLectureList();
 
+            mv.addObject("bannerList", bannerList);
             mv.addObject("popularLectureList", popularLectureList);
             mv.addObject("recentLectureList", recentLectureList);
             mv.setViewName("/main/main");

@@ -30,6 +30,7 @@
             height: 250px;
             border: 2px solid;
             border-radius: 10px;
+            display:inline-block;
         }
         .modal-body-coupon:hover{
             color: #9e9b9b;
@@ -45,6 +46,10 @@
             width: 90%;
             height: 45%;
             margin-top: 10px;
+            background-image: url("static/common/image/rotutee.png");
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .close {
@@ -81,26 +86,26 @@
                         <p class="coupon-title"> </p>
                     </div>
                     <div class="row g-0">
-                         <div class="col-md-1">
-                             <input class="form-check-input" type="checkbox" style="margin-left: 15px; margin-top: 55px;">
-                         </div>
-                         <div class="col-md-4">
-                             <th:block th:if="${cart.lecture.imageList.size() > 0}">
+                        <div class="col-md-1">
+                            <input class="form-check-input" type="checkbox" style="margin-left: 15px; margin-top: 55px;">
+                        </div>
+                        <div class="col-md-4">
+                            <th:block th:if="${cart.lecture.imageList.size() > 0}">
                                 <img th:src="@{/images/thumbnail/} + ${cart.lecture.imageList[0].saveAttachedFileName}" class="img-fluid rounded-start" alt="..." style="height: 143px;">
-                             </th:block>
-                         </div>
-                         <div class="col-md-7">
-                             <div class="card-body">
-                                 <input type="hidden" class="lectureNo" th:value="${cart.lecture.lectureNo}">
-                                 <h5 class="card-title" th:text="${cart.lecture.lectureName}"></h5>
-                                 <p class="card-text"><small class="text-muted" th:text="${cart.lecture.tutor.name}"></small></p>
-                                 <p class="lecturePrice" th:text="'￦ ' + ${cart.lecture.lecturePrice}" style="text-decoration: line-through"></p>
-                                 <p class="lectureDiscountPrice"th:text="'￦ ' + ${cart.lecture.lecturePrice - 100}"></p>
-                                 <button class="btn btn-outline-secondary btn-sm couponBtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float: right; margin-bottom: 10px">쿠폰함</button>
-                                 <button class="btn btn-outline-secondary btn-sm remove" style="float: right; margin-bottom: 10px">삭제</button>
-                             </div>
-                         </div>
-                     </div>
+                            </th:block>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <input type="hidden" class="lectureNo" th:value="${cart.lecture.lectureNo}">
+                                <h5 class="card-title" th:text="${cart.lecture.lectureName}"></h5>
+                                <p class="card-text"><small class="text-muted" th:text="${cart.lecture.tutor.name}"></small></p>
+                                <p class="lecturePrice" th:text="'￦ ' + ${cart.lecture.lecturePrice}" style="text-decoration: line-through"></p>
+                                <p class="lectureDiscountPrice"th:text="'￦ ' + ${cart.lecture.lecturePrice - 100}"></p>
+                                <button class="btn btn-outline-secondary btn-sm couponBtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float: right; margin-bottom: 10px">쿠폰함</button>
+                                <button class="btn btn-outline-secondary btn-sm remove" style="float: right; margin-bottom: 10px">삭제</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-4">
@@ -135,13 +140,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id="modalBody" class="modal-body">
-                    <!--<div class="modal-body-coupon">
-                        <img class="modal-img" />
-                        <hr class="modal-coupon-hr">
-                        <p class="modal-coupon-title">[1주년 쿠폰]</p>
-                        <p class="modal-coupon-Day">D - 3</p>
-                        <p class="modal-coupon-discount"> 10% 할인 </p>
-                    </div>-->
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -150,10 +149,6 @@
             </div>
         </div>
     </div>
-
-
-
-
 
 </main>
 <script>
@@ -164,34 +159,42 @@
     })
 
     $(".couponBtn").click(function (){
+
+        let lectureNo = $(".lectureNo").val();
+
         $.ajax({
-            url: "/coupon/list",
+            url: "/basket/coupon/list",
             type: "GET",
-            data: {},
-            success: function (data) {
+            data:{ "lectureNo" : lectureNo},
+            success: function (data, status, xhr) {
+
                 alert("쿠폰 조회 성공!");
 
-                $("#modalBody").innerHTML="";
-                console.log("@@@"+data);
+                $modalBody = $("#modalBody");
+                //$div = $("<div class='modal-body-coupon' style='border: 1px; solid black; width: 100px; height: 100px;'></div>");
 
                 for (var index in data) {
-                    $div = $("<div class='modal-body-coupon'>")
-                    $image = $("<img class='modal-img'>");
-                    $hr = $("<hr class='modal-coupon-hr'>");
-                    $pTitle = $("<p>")
-                    $pDay = $("<p>")
-                    $pDiscount = $("<p>")
 
-                    //$div.append("<input type='hidden' id=' + ${ data[index].no } + ' value=' + data[index].no + '>");
-                    $div.append($image);
-                    $div.append($hr);
-                    $div.append($pTitle);
-                    $div.append($pDay);
-                    $div.append($pDiscount);
+                        $div = $("<div class='modal-body-coupon'>")
+                        $image = $("<img class='modal-img'>");
+                        $hr = $("<hr class='modal-coupon-hr'>");
+                        $pTitle = $("<p>").text(data[index].couponName);
+                        /*$pDay = $("<p>").text(data[index].couponExpirationDate);
+                        $pDiscount = $("<p>").text(data[index].couponDiscountRate);*/
+
+                        //$div.append("<input type='hidden' id=' + ${ data[index].no } + ' value=' + data[index].no + '>");
+                        $div.append($image);
+                        $div.append($hr);
+                       $div.append($pTitle);
+                       /*
+                        $div.append($pDay);
+                        $div.append($pDiscount);*/
+                        $modalBody.append($div);
+
+
                 }
             }, error:function(data){
-                console.log(data);
-                alert("쿠폰 애러ㅗ");
+                alert("쿠폰 애러");
             }
         });
 

@@ -4,7 +4,9 @@ import com.greedy.rotutee.dashboard.mypage.dto.tutee.DashboardLectureDTO;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardCompletedLecture;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardLecture;
 import com.greedy.rotutee.dashboard.mypage.repository.MypageMemberLectureRepository;
-import com.greedy.rotutee.dashboard.mypage.entity.DashboardMember;
+import com.greedy.rotutee.lecture.mylecture.dto.MyLectureDTO;
+import com.greedy.rotutee.lecture.mylecture.entity.MyLecture;
+import com.greedy.rotutee.lecture.mylecture.repository.MyLectureRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,14 +33,16 @@ import java.util.stream.Collectors;
 public class MyLectureServiceImpl implements MyLectureService{
 
     private MypageMemberLectureRepository memberLectureRepository;
+    private MyLectureRepository myLectureRepository;
     private ModelMapper modelMapper;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public MyLectureServiceImpl(MypageMemberLectureRepository memberLectureRepository, ModelMapper modelMapper) {
+    public MyLectureServiceImpl(MypageMemberLectureRepository memberLectureRepository, MyLectureRepository myLectureRepository, ModelMapper modelMapper) {
         this.memberLectureRepository = memberLectureRepository;
+        this.myLectureRepository = myLectureRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -119,6 +123,15 @@ public class MyLectureServiceImpl implements MyLectureService{
         }
 
         return learning;
+    }
+
+    @Override
+    public List<MyLectureDTO> findMyLectureList(int memberNo) {
+
+        List<MyLecture> lectureEntities = myLectureRepository.findByMemberMemberNo(memberNo);
+        List<MyLectureDTO> lectures = lectureEntities.stream().map(My_Lecture -> modelMapper.map(My_Lecture, MyLectureDTO.class)).collect(Collectors.toList());
+
+        return lectures;
     }
 
 

@@ -25,9 +25,10 @@ public class LectureMainServiceImpl implements  LectureMainService{
     private final MemberRepository memberRepository;
     private final LecturePointHistoryRepository lecturePointHistoryRepository;
     private final LecturePointAcquisitionPlaceRepository lecturePointAcquisitionPlaceRepository;
+    private final LectureCategoryMainRepository lectureCategoryRepository;
 
     @Autowired
-    public LectureMainServiceImpl(LectureMainRepository lectureMainRepository, ModelMapper modelMapper, ChapterRepository chapterRepository, LectureReviewMainRepository lectureReviewMainRepository, MemberLectureMainRepository memberLectureMainRepository, LectureAttachedFileRepository lectureAttachedFileRepository, LectureMemberInterestRepository lectureMemberInterestRepository, MemberRepository memberRepository, LecturePointHistoryRepository lecturePointHistoryRepository, LecturePointAcquisitionPlaceRepository lecturePointAcquisitionPlaceRepository) {
+    public LectureMainServiceImpl(LectureMainRepository lectureMainRepository, ModelMapper modelMapper, ChapterRepository chapterRepository, LectureReviewMainRepository lectureReviewMainRepository, MemberLectureMainRepository memberLectureMainRepository, LectureAttachedFileRepository lectureAttachedFileRepository, LectureMemberInterestRepository lectureMemberInterestRepository, MemberRepository memberRepository, LecturePointHistoryRepository lecturePointHistoryRepository, LecturePointAcquisitionPlaceRepository lecturePointAcquisitionPlaceRepository, LectureCategoryMainRepository lectureCategoryRepository) {
         this.lectureMainRepository = lectureMainRepository;
         this.modelMapper = modelMapper;
         this.chapterRepository = chapterRepository;
@@ -38,6 +39,7 @@ public class LectureMainServiceImpl implements  LectureMainService{
         this.memberRepository = memberRepository;
         this.lecturePointHistoryRepository = lecturePointHistoryRepository;
         this.lecturePointAcquisitionPlaceRepository = lecturePointAcquisitionPlaceRepository;
+        this.lectureCategoryRepository = lectureCategoryRepository;
     }
 
     @Override
@@ -276,5 +278,15 @@ public class LectureMainServiceImpl implements  LectureMainService{
             memberInterest.setInterestDegree(increasedDegree);
         }
 
+    }
+
+    @Override
+    public List<LectureDTO> findLectureByCategoryName(String categoryName) {
+
+        LectureCategory category = lectureCategoryRepository.findByLectureCategoryName(categoryName);
+
+        List<Lecture> lectureList = lectureMainRepository.findByLectureCategory(category);
+
+        return lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
     }
 }
