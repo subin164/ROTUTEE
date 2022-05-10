@@ -111,7 +111,7 @@
             </div>
             <div class="modal-body">
                 <form action="/study/modify" method="post" id="detailModifyForm">
-                    <input type="hidden" id="detailModifyStudyNo" th:value="${studyDetail.studyNo}">
+                    <input type="hidden" id="detailModifyStudyNo" name="studyNo" th:value="${studyDetail.studyNo}">
                     <input type="hidden" id="modifyTagList" name="modifyTagList" value="">
 
                     <div class="detail-modify-item-row">
@@ -194,7 +194,7 @@
         let div = document.createElement("div");
 
         for (let i = 0; i < taglist.length; i++) {
-            $("#tagList").prepend(("<li class='tag-item' name='tagItem'>" + "#" + taglist[i] + "<span class='del-btn'><i class='bi bi-x'></i> </span>" + "</li>"));
+            $("#tagList").prepend("<li class='tag-item'>" + "<div name='addItem'>" + taglist[i] + "<span class='del-btn'><i class='bi bi-x'></i> </span>" + "</div>" + "</li>");
         }
 
         document.getElementById("detaileModifyTitle").value = title;
@@ -202,6 +202,7 @@
     }
 
 
+    /* 상세페이지 모집글 수정 - 태그 */
     $(document).ready(function () {
 
         const tagList = {};
@@ -223,7 +224,7 @@
                 if (e.key === "Enter") {
                     const tagValue = self.val();
 
-                    const addTagItem = ("<li class='tag-item' name='tagItem'>" + "#" + tagValue + "<span class='del-btn'><i class='bi bi-x'></i> </span>" + "</li>");
+                    const addTagItem = ("<li class='tag-item'>" + "<div name='addItem'>" + tagValue + "<span class='del-btn'><i class='bi bi-x'></i> </span>" + "</div>" + "</li>");
 
                     $("#detailModifyTagInput").before(addTagItem);
 
@@ -231,14 +232,16 @@
 
                     addTag(tagValue);
 
-                    $("#modifyTagList").val("");
+                    let modifyTagArray = [];
 
-                    const tagArray = [];
-                    $("li[name=tagItem]").each(function(){
-                        tagArray.push(this.val());
+                    $("div[name=addItem]").each(function () {
+
+                        modifyTagArray.push(($(this).text()));
+
+                        console.log(modifyTagArray)
+
+                        $("#modifyTagList").val(modifyTagArray);
                     });
-
-                    $("#modifyTagList").val(tagArray);
 
                     self.val("");
 
@@ -247,9 +250,10 @@
             });
         $(document)
             .on("click", ".del-btn", function () {
-                $(this).parent().remove();
+                $(this).closest("li").remove();
             });
-    });
+    })
+    ;
 
 
     /*스터디 댓글 작성*/

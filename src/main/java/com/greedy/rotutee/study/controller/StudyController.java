@@ -148,10 +148,20 @@ public class StudyController {
      * content : 작성한 모집글 수정 요청
      * */
     @PostMapping("/modify")
-    public String studyMddify(HttpServletRequest request) {
-String str = request.getParameter("modifyTagList");
+    public String studyMddify(@RequestParam(value = "modifyTagList") List<String> modifyTagList,
+                              HttpServletRequest request, StudyDTO studyDTO) {
 
-        System.out.println("str = " + str);
+        studyDTO.setTitle(request.getParameter("title"));
+        studyDTO.setContent(request.getParameter("content"));
+        studyDTO.setEndDate(Date.valueOf(request.getParameter("endDate")));
+        studyDTO.setLimited(Integer.parseInt(request.getParameter("limited")));
+        studyDTO.setLinked(request.getParameter("linked"));
+        studyDTO.setModifyDate(new Date(System.currentTimeMillis()));
+        System.out.println("studyDTO = " + studyDTO);
+
+        studyService.studyDetailModify(studyDTO, modifyTagList);
+
+
 
         return "redirect:/study/list";
 
@@ -176,7 +186,7 @@ String str = request.getParameter("modifyTagList");
 
     @PostMapping("/replyRegist")
     @ResponseBody
-    public StudyReplyDTO studyReplyRegist(StudyReplyDTO replyDTO, HttpServletRequest request){
+    public StudyReplyDTO studyReplyRegist(StudyReplyDTO replyDTO, HttpServletRequest request) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -196,17 +206,16 @@ String str = request.getParameter("modifyTagList");
         replyDTO.setWriter(memberDTO);
 
 
-
         replyDTO = studyService.studyReplyRegist(replyDTO);
 
         System.out.println("리플 ajax 반환값 확인 : " + replyDTO);
 
-        return  replyDTO;
+        return replyDTO;
     }
 
     @PostMapping("/replyRemove")
     @ResponseBody
-    public void studyReplyRemove(StudyReplyDTO replyDTO){
+    public void studyReplyRemove(StudyReplyDTO replyDTO) {
 
         System.out.println("컨트롤 리플넘버" + replyDTO);
         studyService.studyReplyRemove(replyDTO);
