@@ -1,6 +1,8 @@
 package com.greedy.rotutee.member.member.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
@@ -52,7 +54,7 @@ public class Member {
 
     @Column(name = "ROULETTE_CHANCE")
     private String rouletteChance;
-
+    @JsonIgnoreProperties(value = "member")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
     List<MemberRole> memberRoleList;
 

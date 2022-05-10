@@ -3,6 +3,7 @@ package com.greedy.rotutee.member.member.service;
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.member.member.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
+import com.greedy.rotutee.member.member.dto.MemberStatusHistoryDTO;
 import com.greedy.rotutee.member.member.dto.ReasonsDTO;
 import com.greedy.rotutee.member.member.entity.*;
 import com.greedy.rotutee.member.member.entity.AttachedFile;
@@ -221,9 +222,9 @@ public class MemberService {
     }
 
 
-    public MemberStatusHistory findMemberStatus(int memberNo) {
+    public MemberStatusHistoryDTO findMemberStatus(int memberNo) {
 
-        return memberStatusHistoryRepositoryQuery.findMemberStatus(entityManager, memberNo);
+        return modelMapper.map(memberStatusHistoryRepositoryQuery.findMemberStatus(entityManager, memberNo), MemberStatusHistoryDTO.class);
     }
 
     @Transactional

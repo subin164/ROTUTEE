@@ -5,6 +5,7 @@ import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import com.greedy.rotutee.member.member.dto.LectureCategoryDTO;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
+import com.greedy.rotutee.member.member.dto.MemberStatusHistoryDTO;
 import com.greedy.rotutee.member.member.dto.ReasonsDTO;
 import com.greedy.rotutee.member.member.entity.MemberStatusHistory;
 import com.greedy.rotutee.member.member.service.MemberService;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/member")
@@ -137,13 +140,20 @@ public class MemberController {
 
         return mv;
     }
-
-    @GetMapping("/detail/{memberNo}")
-    public ModelAndView memberDetail(ModelAndView mv, @PathVariable int memberNo) {
+    @ResponseBody
+    @GetMapping("/detail")
+    public Map<String, Object> memberDetail(ModelAndView mv, @RequestParam("memberNo") int memberNo) {
 
         MemberDTO member = memberService.findMember(memberNo);
         AttachedFileDTO attachedFile = profileService.findMemberProfile(memberNo);
-        MemberStatusHistory memberStatus = memberService.findMemberStatus(memberNo);
+        MemberStatusHistoryDTO memberStatus = memberService.findMemberStatus(memberNo);
+
+        Map<String, Object> memberDetailMap = new HashMap<>();
+
+        memberDetailMap.put("member", member);
+        memberDetailMap.put("attachedFile", attachedFile);
+        memberDetailMap.put("memberStatus", memberStatus);
+        memberDetailMap.put("memberRole", member.getMemberRoleList().get(0).getRole().getName());
 
         if(member.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
 
@@ -157,15 +167,18 @@ public class MemberController {
                 tutorInfo.setAccountNumber("미입력");
                 tutorInfo.setBankName("미입력");
             }
-            mv.addObject("tutorInfo", tutorInfo);
+            memberDetailMap.put("tutorInfo", tutorInfo);
+
+//            mv.addObject("tutorInfo", tutorInfo);
         }
 
-        mv.addObject("attachedFile", attachedFile);
-        mv.addObject("memberStatus", memberStatus);
-        mv.addObject("member", member);
-        mv.setViewName("/member/detail");
+//        mv.addObject("attachedFile", attachedFile);
+//        mv.addObject("memberStatus", memberStatus);
+//        mv.addObject("member", member);
+//        mv.setViewName("/member/detail");
+//        return mv;
 
-        return mv;
+        return memberDetailMap;
     }
 
     @PostMapping("/stop")

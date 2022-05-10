@@ -1,5 +1,7 @@
 package com.greedy.rotutee.member.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -43,10 +45,12 @@ public class   MemberStatusHistory {
     @JoinColumn(name = "MEMBER_NO")
     private Member member;
 
-    @OneToOne(mappedBy = "MemberStatusHistory", cascade = CascadeType.PERSIST)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(mappedBy = "MemberStatusHistory", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private SuspensionHitory suspensionHitory;
 
-    @OneToOne(mappedBy = "MemberStatusHistory", cascade = CascadeType.PERSIST)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(mappedBy = "MemberStatusHistory", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private MemberSecessionHistory memberSecessionHistory;
 
     public MemberStatusHistory() {}
