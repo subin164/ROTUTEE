@@ -6,7 +6,10 @@ import com.google.gson.GsonBuilder;
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
+import com.greedy.rotutee.report.dto.ReportBoardDTO;
+import com.greedy.rotutee.report.dto.ReportCategoryDTO;
 import com.greedy.rotutee.report.dto.ReportDTO;
+import com.greedy.rotutee.report.dto.ReportMemberDTO;
 import com.greedy.rotutee.report.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -157,6 +160,50 @@ public class ReportController {
                 .create();
 
         return gson.toJson(result);
+    }
+
+    @GetMapping(value = "/board", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String registBoardReport(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser){
+
+        int memberNo = customUser.getNo();
+        String division = request.getParameter("division");
+        int writerNo = Integer.parseInt(request.getParameter("writerNo"));
+        String content = request.getParameter("content");
+        int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+        int reasonNo = Integer.parseInt(request.getParameter("reasonNo"));
+        String processStatus = "대기";
+
+        ReportDTO report = new ReportDTO();
+        ReportMemberDTO member = new ReportMemberDTO();
+        ReportMemberDTO accusedMember = new ReportMemberDTO();
+        ReportBoardDTO board = new ReportBoardDTO();
+        ReportCategoryDTO reportCategory = new ReportCategoryDTO();
+
+        member.setNo(memberNo);
+        accusedMember.setNo(writerNo);
+        board.setBoardNo(boardNo);
+        reportCategory.setReportCategoryNo(reasonNo);
+        report.setMember(member);
+        report.setDivision(division);
+        report.setAccusedMember(accusedMember);
+        report.setContent(content);
+        report.setBoard(board);
+        report.setProcessStatus(processStatus);
+        report.setReportCategory(reportCategory);
+
+
+        boolean result = reportService.registBoardReport(report);
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls().disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(result);
+
     }
 
     private int getRequestNo(HttpServletRequest request, String mapString) {

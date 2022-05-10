@@ -14,6 +14,8 @@ import com.greedy.rotutee.dashboard.mypage.entity.DashboardMember;
 import com.greedy.rotutee.dashboard.mypage.entity.MyPageMemberLecture;
 import com.greedy.rotutee.dashboard.mypage.repository.DashboardLectureRepository;
 import com.greedy.rotutee.dashboard.mypage.repository.MypageMemberLectureRepository;
+import com.greedy.rotutee.lecture.mylecture.entity.MyLecture;
+import com.greedy.rotutee.lecture.mylecture.repository.MyLectureRepository;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,8 @@ public class MyLecutureServiceTests {
     private DashboardLectureRepository lectureRepository;
     @Autowired
     private LMSLatelyViewRepository lmsLatelyViewRepository;
+    @Autowired
+    private MyLectureRepository myLectureRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -153,10 +157,13 @@ public class MyLecutureServiceTests {
     }
 
     @Test
-    public void 진행률_계산_조회() {
+    public void 나의_강의_조회() {
 
         //given
-        int memberNo = 27;
+        int memberNo = 29;
+
+        //when
+        List<MyLecture> lectureEntities = myLectureRepository.findByMemberMemberNo(memberNo);
 
 
     }
