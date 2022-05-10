@@ -148,16 +148,9 @@ public class StudyController {
      * content : 작성한 모집글 수정 요청
      * */
     @PostMapping("/modify")
-    public String studyMddify(HttpServletRequest request, StudyDTO studyDTO, String inputTag) {
+    public String studyMddify(HttpServletRequest request) {
 
-        MemberDTO member = new MemberDTO();
-
-        studyDTO.setModifyDate(new Date(System.currentTimeMillis()));
-        studyDTO.setWriter(member);
-
-        System.out.println("수정된 모집글 : " + studyDTO);
-        System.out.println(inputTag);
-        studyService.studyModify(studyDTO);
+//        tagArray[] =request.getParameter("tagList").
 
         return "redirect:/study/list";
 
