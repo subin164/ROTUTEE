@@ -29,6 +29,7 @@ public class LMSDashboardDTO {
     private List<LMSNormalBoardDTO> normalBoards;
     private List<LMSLatelyViewDTO> watching;
     private DashboardMemberDTO member;
+    private int memberLectureNo;
 
 
 }

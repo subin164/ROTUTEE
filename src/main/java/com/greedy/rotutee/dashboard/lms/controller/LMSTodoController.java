@@ -1,16 +1,17 @@
 package com.greedy.rotutee.dashboard.lms.controller;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.dashboard.lms.dto.ToDoDTO;
 import com.greedy.rotutee.dashboard.lms.service.LMSTodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 
 /**
@@ -48,9 +49,44 @@ public class LMSTodoController {
 
         return "redirect:/lms/dashboardlist?no=" + lectureNo;
 
+    }
 
+    @PostMapping("/modify")
+    @ResponseBody
+    public String modifyTodo(HttpServletRequest request) {
 
+        String content = request.getParameter("content");
+        int todoNo = Integer.parseInt(request.getParameter("todoNo"));
 
+        boolean result = lmsTodoService.modifyTodo(content, todoNo);
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls().disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(result);
+
+    }
+
+    @GetMapping("/remove")
+    @ResponseBody
+    public String removeTodo(HttpServletRequest request){
+
+        int todoNo = Integer.parseInt(request.getParameter("todoNo"));
+
+        boolean result = lmsTodoService.removeTodo(todoNo);
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls().disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(result);
     }
 
 

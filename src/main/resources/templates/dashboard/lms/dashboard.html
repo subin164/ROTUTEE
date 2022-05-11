@@ -18,6 +18,9 @@
 
     <!-- button -->
     <link rel="stylesheet" type="text/css" th:href="@{/sy/css/button.css}">
+
+    <!-- icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         @import url(https://fonts.googleapis.com/css?family=Lato:300);
 
@@ -29,7 +32,7 @@
         .container {
             display: flex;
             justify-content: center;
-            text-align: center;
+            /*text-align: center;*/
 
         }
 
@@ -51,7 +54,7 @@
             height: 520px;
             margin: 20px;
             position: relative;
-            text-align: center;
+            /*text-align: center;*/
 
         }
 
@@ -253,6 +256,21 @@
         .head {
             margin: 15px;
         }
+
+        .todo-delete-btn, .todo-modify-btn {
+            cursor: pointer;
+            padding: 4px;
+            color: #d3d7d8;
+        }
+        .todo-delete-btn:hover {
+            background-color: #65b9da;
+            border-radius: 2px;
+        }
+        .todo-modify-btn:hover {
+            background-color: #bfdfec;
+            border-radius: 2px;
+
+        }
     </style>
 </head>
 
@@ -270,7 +288,12 @@
             </div>
             <div class="todo-content">
                 <div th:each="todo : ${ dashboard.todos }">
-                    <input style="margin: 10px;" type="checkbox" name="todo" th:text="${todo.content}">
+                    <input style="margin: 10px;" type="checkbox" value="Y">
+                    <input class="todoContent" name="todo" th:value="${todo.content}" readonly>
+                    <input class="todoNo" type="hidden" th:value="${todo.todoNo}">
+                    <input class="memberLectureNo" type="hidden" th:value="${dashboard.memberLectureNo}">
+                    <label  class="todo-modify-btn"><i style="font-size:14px" class="fa">&#xf040;</i></label>
+                    <label  class="todo-delete-btn"><i style="font-size:14px" class="fa">&#xf014;</i></label>
                 </div>
             </div>
             <div class="addtodo">
@@ -297,7 +320,7 @@
                 </div>
                 <div class="content">
                     <th:block th:each="notice : ${dashboard.noticeBoards}">
-                        <p th:text="${notice.title}"></p>
+                        <p style="text-align: center" th:text="${notice.title}"></p>
                     </th:block>
                 </div>
             </div>
@@ -313,7 +336,7 @@
                 </div>
                 <div class="content">
                     <th:block th:each="normal : ${dashboard.normalBoards}">
-                        <p th:text="${normal.title}"></p>
+                        <p style="text-align: center" th:text="${normal.title}"></p>
                     </th:block>
                 </div>
             </div>
@@ -323,7 +346,7 @@
                 <span style="color: #3583D3;">Profile</span>
                 <hr class="line">
             </div>
-            <div class="content">
+            <div class="content" style="text-align: center;">
                 <img th:src="@{/sy/images/profile.PNG}" style="width: 250px; height: 200px;">
             </div>
             <div style="text-align: left; padding-left: 50px;">
@@ -372,7 +395,7 @@
         <div class="current-lecture">
             <div class="header">
                 <div class="head">
-                    <span style="color: #3583D3;">최근 강의</span>
+                    <span  style="color: #3583D3;">최근 강의</span>
                     <button class="w-btn w-btn-gra1 w-btn-gra-anim all-board">
                         전체보기
                     </button>
@@ -381,7 +404,7 @@
             </div>
             <div class="content">
                 <th:block th:each="watch : ${dashboard.watching}">
-                    <p th:text="${watch.lmsClass.className}"></p>
+                    <p style="text-align: center" th:text="${watch.lmsClass.className}"></p>
                 </th:block>
             </div>
         </div>
@@ -493,6 +516,50 @@
 
         console.log(checkStatus);
     }
+
+    $(".todo-modify-btn").click(function() {
+
+        const todoNo = $(this).siblings(".todoNo").val();
+
+        const lectureNo = [[${lectureNo}]];
+        const memberLectureNo = $(this).siblings(".memberLectureNo").val();
+        console.log(todoNo);
+        $(this).siblings('.todoContent').attr("readonly",false);
+
+        $(".todo-modify-btn").click(function (){
+            const content = $(this).siblings(".todoContent").val();
+            $.ajax({
+                url: "/todo/modify",
+                type: "post",
+                data: {
+                    todoNo : todoNo,
+                    content : content,
+
+                },
+                success: function (data) {
+                    console.log(data)
+                }
+            })
+        })
+
+    })
+
+    $(".todo-delete-btn").click(function() {
+        const todoNo = $(this).siblings(".todoNo").val();
+        const lectureNo = [[${lectureNo}]];
+        console.log(todoNo);
+        $.ajax({
+            url: "/todo/remove",
+            type: "get",
+            data: {
+                todoNo : todoNo
+            },
+            success: function (data) {
+                location.href = "/lms/dashboardlist?no=" + lectureNo;
+            }
+        })
+    })
+
 
 
 </script>
