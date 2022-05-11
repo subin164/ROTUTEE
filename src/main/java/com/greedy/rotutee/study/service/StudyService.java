@@ -31,7 +31,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -230,30 +229,43 @@ public class StudyService {
         study.setLinked(studyDTO.getLinked());
         study.setModifyDate(studyDTO.getModifyDate());
 
-        List<StudyByTag> studyByTagList = studyByTagRepository.findByStudyStudyNo(studyDTO.getStudyNo());
 
-        if (modifyTagList.isEmpty()) {
-            System.out.println("입력한 태그가 없음");
+        List<StudyTag> studyTagList = studyTagRepository.findAll();
 
-            return;
+        TagDTO tagDTO = new TagDTO();
 
-        } else {
-            StudyByTagDTO studyByTagDTO = new StudyByTagDTO();
-
-            TagDTO tagDTO = new TagDTO();
-
-            studyByTagDTO.setStudy(studyDTO);
+        StudyByTagDTO studyByTagDTO = new StudyByTagDTO();
 
 
-            for (int i = 0; i < modifyTagList.size(); i++) {
+        for (int i = 0; i < modifyTagList.size(); i++) {
+
+            boolean duplicated = false;
+
+            for (int j = 0; j < studyTagList.size(); j++) {
+
+                TagDTO duplicatedTag = modelMapper.map(studyTagList.get(j), TagDTO.class);
+
+                if (duplicatedTag.getTagName().equals(modifyTagList.get(i))) {
+                    tagDTO.setTagName(modifyTagList.get(i));
+
+                    duplicated = true;
+
+                    studyByTagDTO.setTag(duplicatedTag);
+
+                }
+            }
+            if (duplicated == false) {
 
                 tagDTO.setTagName(modifyTagList.get(i));
+                StudyTag studyTag = studyTagRepository.save(modelMapper.map(tagDTO, StudyTag.class));
 
-                studyByTagDTO.setTag(tagDTO);
-
-                System.out.println("studyByTagDTO : " +  studyByTagDTO);
+                studyByTagDTO.setTag(modelMapper.map(studyTag, TagDTO.class));
 
             }
+
+            studyByTagDTO.setStudy(modelMapper.map(study, StudyDTO.class));
+
+            studyByTagRepository.save(modelMapper.map(studyByTagDTO, StudyByTag.class));
         }
 
 
