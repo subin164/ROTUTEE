@@ -11,5 +11,4 @@ public interface StudyByTagRepository extends JpaRepository<StudyByTag, Integer>
 
     List<StudyByTag> findByStudyStudyNo(int no);
 
-    void deleteByStudyStudyNo(int studyNo);
 }

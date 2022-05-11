@@ -210,6 +210,18 @@ public class LMSDashboardServiceTest {
 
     }
 
+    @Test
+    public void 투두_조회() {
+
+        //given
+        int memberNo = 29;
+        int lectureNo = 9;
+
+        MyPageMemberLecture memberLecture = memberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
+
+        System.out.println("memberLecture = " + memberLecture);
+    }
+
 
 
 }

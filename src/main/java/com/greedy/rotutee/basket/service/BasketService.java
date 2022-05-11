@@ -26,4 +26,10 @@ public interface BasketService {
     ClassBasketDTO findByLectureNoAndMemberNo(int lectureNo, int memberNo);
 
     List<BasketMemberCouponBoxDTO> selectCouponList(int memberNo);
+
+/*
+    ClassBasketDTO modifyCouponList(int lecture, int couponNo);
+*/
+
+    void removeOneCoupon(int lecture, int couponNo);
 }

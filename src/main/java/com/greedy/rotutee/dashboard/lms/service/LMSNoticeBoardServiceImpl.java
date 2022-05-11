@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.sql.Date;
 import java.util.Map;
 
 /**
@@ -57,4 +59,49 @@ public class LMSNoticeBoardServiceImpl implements LMSNoticeBoardService {
 
         return noticeEntities.map(Lms_Notice -> modelMapper.map(Lms_Notice, LMSNoticeBoardDTO.class));
     }
+
+    @Override
+    @Transactional
+    public LMSNoticeBoardDTO findNoticeDetail(int noticeNo) {
+
+        LMSNotice noticeDetailEntity = lmsNoticeRepository.findByBoardNo(noticeNo);
+        int currentCount = noticeDetailEntity.getCount();
+        int incrementCount = currentCount + 1;
+        noticeDetailEntity.setCount(incrementCount);
+
+        LMSNoticeBoardDTO noticeDetail = modelMapper.map(noticeDetailEntity, LMSNoticeBoardDTO.class);
+
+        return noticeDetail;
+    }
+
+    @Override
+    @Transactional
+    public void registNotice(LMSNoticeBoardDTO notice) {
+
+        LMSNotice noticeEntity = modelMapper.map(notice, LMSNotice.class);
+        lmsNoticeRepository.save(noticeEntity);
+
+    }
+
+    @Override
+    @Transactional
+    public void modifyNotice(LMSNoticeBoardDTO notice) {
+
+        LMSNotice noticeDetailEntity = lmsNoticeRepository.findByBoardNo(notice.getBoardNo());
+        noticeDetailEntity.setContent(notice.getContent());
+        noticeDetailEntity.setTitle(notice.getTitle());
+        noticeDetailEntity.setModifiedDate(notice.getModifiedDate());
+
+    }
+
+    @Override
+    public void removeNotice(int boardNo) {
+
+        LMSNotice noticeDetailEntity = lmsNoticeRepository.findByBoardNo(boardNo);
+        noticeDetailEntity.setDeleteStatus("Y");
+        noticeDetailEntity.setDeletedDate(new Date(System.currentTimeMillis()));
+
+    }
+
+
 }

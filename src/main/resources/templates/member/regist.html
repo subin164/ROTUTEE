@@ -396,11 +396,13 @@
                 for(let index in data) {
 
                     const $checkBox = $('<input type="checkbox" class="btn-check" id="btn-category" autoComplete="off" name="categoryNo">');
-                    const $label = $('<label class="btn btn-outline-primary" for="btn-category" name="categoryLabel"/>').text(data[index].name);
+                    const $label = $('<label class="btn btn-outline-primary" id="tests" for="btn-category" name="categoryLabel"/>').text(data[index].name);
 
-                    let categoryId = "btn-category" + index;
+                    let categoryId = "btn-category" + index+1;
 
                     $("#btn-category").attr('id',categoryId);
+                    $("#tests").attr('id', categoryId);
+                    $("#tests").attr('for', categoryId);
 
                     console.log($('input[name="categoryNo"]:eq(' + index + ')').val());
                     console.log($checkBox);

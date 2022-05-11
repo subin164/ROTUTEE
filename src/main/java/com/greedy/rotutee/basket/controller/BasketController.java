@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -87,6 +88,7 @@ public class BasketController {
             List<AttachedFileDTO> fileList = cart.getLecture().getImageList();
         }
 
+        cartList.forEach(System.out::println);
         mv.addObject("cartList", cartList);
         mv.setViewName("basket/basketlist");
 
@@ -108,27 +110,38 @@ public class BasketController {
         return mv;
     }
     @ResponseBody
-    @JsonIgnoreProperties
     @GetMapping(value = "/coupon/list", produces = "application/json; charset=UTF-8")
-    public ModelAndView findCouponList(ModelAndView mv, HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
+    public List<BasketMemberCouponBoxDTO> findCouponList(ModelAndView mv,  @AuthenticationPrincipal CustomUser customUser) {
 
-        int lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
 
         int memberNo = customUser.getNo();
 
         List<BasketMemberCouponBoxDTO> couponBoxs = basketService.selectCouponList(memberNo);
 
-        mv.addObject("couponBoxs", couponBoxs);
-        mv.setViewName("jsonView");
+        System.out.println( " @@@@ " + couponBoxs);
 
-        return mv;
-    }
 
-    @PostMapping(value = "/coupon/modify", produces = "application/json; charset=UTF-8")
-    public void modifyCoupon(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
+        return couponBoxs;
 
     }
 
+  /*  @PostMapping(value = "/coupon/modify", produces = "application/json; charset=UTF-8")
+    public ClassBasketDTO modifyCoupon(HttpServletRequest request, ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
 
+        int lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
+        int couponNo = Integer.parseInt(request.getParameter("couponNo"));
+
+        *//*ClassBasketDTO basketDTOList = basketService.modifyCouponList(lectureNo, couponNo);*//*
+        return basketDTOList;
+    }*/
+
+    @GetMapping(value = "/coupon/remove", produces = "application/json; charset=UTF-8")
+    public void removeCoupon(HttpServletRequest request){
+
+        int lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
+        int couponNo = Integer.parseInt(request.getParameter("couponNo"));
+
+        basketService.removeOneCoupon(lectureNo, couponNo);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.greedy.rotutee.dashboard.lms.repository;
 
+import com.greedy.rotutee.dashboard.lms.dto.LMSNoticeBoardDTO;
 import com.greedy.rotutee.dashboard.lms.entity.LMSNotice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +26,6 @@ public interface LMSNoticeRepository extends JpaRepository<LMSNotice, Integer> {
     Page<LMSNotice> findByCategoryNoAndLectureNo(int categoryNo, int lectureNo, Pageable pageable);
 
     Page<LMSNotice> findByCategoryNoAndLectureNoAndTitleContaining(int categoryNo, int lectureNo, String searchValue, Pageable pageable);
+
+    LMSNotice findByBoardNo(int noticeNo);
 }

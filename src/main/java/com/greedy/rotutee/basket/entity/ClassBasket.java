@@ -39,14 +39,20 @@ public class ClassBasket {
     @ManyToOne(fetch = FetchType.LAZY)
     private Lecture lecture;
 
+    @JoinColumn(name = "COUPON_NO")
+    @ManyToOne(fetch= FetchType.LAZY)
+    private BasketCoupon coupon;
+
     public ClassBasket() {
     }
 
-    public ClassBasket(int classBasketNo, Member member, Lecture lecture) {
+    public ClassBasket(int classBasketNo, Member member, Lecture lecture,BasketCoupon coupon) {
         this.classBasketNo = classBasketNo;
         this.member = member;
         this.lecture = lecture;
+        this.coupon = coupon;
     }
+
 
     public int getClassBasketNo() {
         return classBasketNo;
@@ -72,12 +78,18 @@ public class ClassBasket {
         this.lecture = lecture;
     }
 
+    public BasketCoupon getCoupon() { return coupon; }
+
+    public void setCoupon(BasketCoupon coupon) { this.coupon = coupon; }
+
     @Override
     public String toString() {
         return "ClassBasket{" +
                 "classBasketNo=" + classBasketNo +
                 ", member=" + member +
                 ", lecture=" + lecture +
+                ", coupon=" + coupon+
                 '}';
     }
+
 }

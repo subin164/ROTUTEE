@@ -184,7 +184,10 @@
                            data-bs-target="#staticBackdrop1"/>
                 </th:block>
             </div>
-        </div>
+        </div>dkwlr
+
+
+
 
         <div class="answer-all-area">
 
@@ -272,11 +275,11 @@
 
 <!--  declaration Answer modal -->
 <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+     aria-labelledby="staticBackdropLabel1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel1">신고 하기</h5>
+                <h5 class="modal-title" id="staticBackdropLabel1">게시물 신고 하기</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -311,28 +314,28 @@
 
 <!--  declaration Answer modal -->
 <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+     aria-labelledby="staticBackdropLabel2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel2">신고 하기</h5>
+                <h5 class="modal-title" id="staticBackdropLabel2">답글 신고 하기</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <span>신고사유</span>
-                <div class="category-buttons-1">
+                <div class="category-buttons-2">
                     <input type="radio" class="btn-check" id="btn-category5" autocomplete="off" name="answerReasonNo"
                            value="1">
-                    <label class="btn btn-outline-primary" for="btn-category1">욕설</label>
+                    <label class="btn btn-outline-primary" for="btn-category5">욕설</label>
                     <input type="radio" class="btn-check" id="btn-category6" autocomplete="off" name="answerReasonNo"
                            value="2">
-                    <label class="btn btn-outline-primary" for="btn-category2">광고성</label>
+                    <label class="btn btn-outline-primary" for="btn-category6">광고성</label>
                     <input type="radio" class="btn-check" id="btn-category7" autocomplete="off" name="answerReasonNo"
                            value="3">
-                    <label class="btn btn-outline-primary" for="btn-category3">도배</label>
+                    <label class="btn btn-outline-primary" for="btn-category7">도배</label>
                     <input type="radio" class="btn-check" id="btn-category8" autocomplete="off" name="answerReasonNo"
                            value="4">
-                    <label class="btn btn-outline-primary" for="btn-category4">기타</label>
+                    <label class="btn btn-outline-primary" for="btn-category8">기타</label>
                 </div>
                 <hr>
                 <span>명예훼손 또는 저작권침해 관련 신고는 </span><a href="/service/boardlist">문의하기</a><span>를 이용해 주세요</span>
@@ -486,33 +489,43 @@
             }
         })
     })
-
-    $("#answer-declaration-ok").click(function () {
-        const division = "댓글";
-        const writerNo = $(this).parent().prev('#answerBox').children('input').eq(1);
-        const reportContent = $("#answerReportContent").val();
-        const boardNo = $("#boardNo").val();
-        const reasonNo = $('input:radio[name="answerReasonNo"]').val();
+    $("#declarationAnswer").click(function () {
+        const writerNo = $(this).parent().prev('#answerBox').children('input').eq(1).val();
         console.log(writerNo);
-        // $.ajax({
-        //     url: "/report/answer",
-        //     type: "get",
-        //     data: {
-        //         division: division,
-        //         writerNo: writerNo,
-        //         content: reportContent,
-        //         boardNo: boardNo,
-        //         reasonNo: reasonNo
-        //     },
-        //     success: function (data) {
-        //         console.log(data)
-        //         if (data === true) {
-        //             alert("댓글신고가 완료되었습니다.");
-        //             location.href = "/freeboard/detail?boardNo=" + boardNo;
-        //         }
-        //     }
-        // })
+        const answerNo = $(this).val();
+        console.log(answerNo);
+
+        $("#answer-declaration-ok").click(function () {
+            const division = "댓글";
+            const reportContent = $("#answerReportContent").val();
+            const boardNo = $("#boardNo").val();
+            const reasonNo = $('input:radio[name="answerReasonNo"]').val();
+
+            console.log(reasonNo);
+
+            $.ajax({
+                url: "/report/answer",
+                type: "get",
+                data: {
+                    division : division,
+                    writerNo : writerNo,
+                    content : reportContent,
+                    boardNo : boardNo,
+                    reasonNo : reasonNo,
+                    answerNo : answerNo
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data === true) {
+                        alert("댓글신고가 완료되었습니다.");
+                        location.href = "/freeboard/detail?boardNo=" + boardNo;
+                    }
+                }
+            })
+        })
     })
+
+
 
 </script>
 

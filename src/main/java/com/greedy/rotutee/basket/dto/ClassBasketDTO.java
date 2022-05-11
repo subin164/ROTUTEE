@@ -1,5 +1,6 @@
 package com.greedy.rotutee.basket.dto;
 
+import com.greedy.rotutee.basket.entity.BasketCoupon;
 import com.greedy.rotutee.basket.entity.Lecture;
 import com.greedy.rotutee.basket.entity.Member;
 
@@ -19,14 +20,24 @@ public class ClassBasketDTO {
     private int classBasketNo;
     private MemberDTO member;
     private LectureDTO lecture;
+    private BasketCouponDTO memberCoupon;
 
     public ClassBasketDTO() {
     }
 
-    public ClassBasketDTO(int classBasketNo, MemberDTO member, LectureDTO lecture) {
+    public BasketCouponDTO getMemberCoupon() {
+        return memberCoupon;
+    }
+
+    public void setMemberCoupon(BasketCouponDTO memberCoupon) {
+        this.memberCoupon = memberCoupon;
+    }
+
+    public ClassBasketDTO(int classBasketNo, MemberDTO member, LectureDTO lecture, BasketCouponDTO memberCoupon) {
         this.classBasketNo = classBasketNo;
         this.member = member;
         this.lecture = lecture;
+        this.memberCoupon = memberCoupon;
     }
 
     public int getClassBasketNo() {
@@ -59,6 +70,7 @@ public class ClassBasketDTO {
                 "classBasketNo=" + classBasketNo +
                 ", member=" + member +
                 ", lecture=" + lecture +
+                ", memberCoupon=" + memberCoupon +
                 '}';
     }
 }

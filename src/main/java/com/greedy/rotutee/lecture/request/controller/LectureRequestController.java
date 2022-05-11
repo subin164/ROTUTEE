@@ -4,7 +4,6 @@ import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import com.greedy.rotutee.lecture.request.dto.*;
-import com.greedy.rotutee.lecture.request.entity.Lecture;
 import com.greedy.rotutee.lecture.request.service.LectureRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,12 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/request")
@@ -81,19 +79,18 @@ public class LectureRequestController {
     }
 
     @GetMapping("lecturelist")
-    public ModelAndView findLectureRequestList(ModelAndView mv , @PageableDefault Pageable pageable) {
+    public ModelAndView findLectureRequestList(ModelAndView mv , @PageableDefault Pageable pageable, @RequestParam(required = false, defaultValue = "") String searchCondition, @RequestParam(required = false, defaultValue = "") String searchValue) {
 
-        Page<LectureDTO> requestList = lectureRequestService.findStatusOfLectureIsWaiting(pageable);
-        PagingButtonInfo paging1 = Pagenation.getPagingButtonInfo(requestList);
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
 
-        Page<LectureDTO> recordList = lectureRequestService.findStatusOfLectureIsNotWaiting(pageable);
-        PagingButtonInfo paging2 = Pagenation.getPagingButtonInfo(recordList);
+        Page<LectureDTO> requestList = lectureRequestService.findAllLecture(pageable, searchMap);
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(requestList);
 
         mv.addObject("requestList",requestList);
-        mv.addObject("paging1", paging1);
-        mv.addObject("recordList", recordList);
-        mv.addObject("paging2", paging2);
-        mv.setViewName("request/adminlecturerequestlist");
+        mv.addObject("paging", paging);
+        mv.setViewName("/request/adminlecturerequestlist");
 
         return mv;
     }

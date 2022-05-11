@@ -22,6 +22,14 @@
 
     <!--Jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script th:inline="javascript">
+        /* 비지니스 로직 성공 alert 메시지 처리 */
+        const message = [[${message}]];
+        if(message != null && message != '') {
+            alert(message);
+        }
+    </script>
     <style>
         tr:hover {
             background-color: #F5F5F5;
@@ -87,13 +95,27 @@
             display: none;
         }
 
+        .header {
+            position: relative;
+        }
+
+        .regist-btn {
+            float: right;
+            background-color: #d3e1f3;
+        }
+
     </style>
 </head>
 <body>
-<div th:include="/common/adminsidebar.html"></div>
+<div th:include="/common/lmssidebar.html"></div>
 <div class="container tablewrap">
     <div class="box">
-        <label class="head">공지사항</label>
+        <div class="header">
+            <label class="head">공지사항</label>
+            <th:block sec:authorize="hasRole('TUTOR')">
+                <button class="btn regist-btn" id="regist-btn" style="background-color: #8DB6E7; color: white">작성하기</button>
+            </th:block>
+        </div>
         <hr>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -177,6 +199,16 @@
 
 
 <script th:inline="javascript">
+    $("#notice-table tr").click(function () {
+        let tr = $(this);
+        let td = tr.children();
+        let noticeNo = td.eq(1).text();
+        console.log(noticeNo);
+        location.href = "/lecturenotice/detail?noticeNo=" + noticeNo;
+    })
+    $("#regist-btn").click(function () {
+        location.href = "/lecturenotice/regist";
+    })
 </script>
 <!--===============================================================================================-->
 <!--<script th:src="@{/sy/vendor/bootstrap/js/popper.js}"></script>-->

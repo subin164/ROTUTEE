@@ -25,8 +25,8 @@ public interface ClassBasketRepository extends JpaRepository<ClassBasket, Intege
 
     ClassBasket findByLectureAndMember(Lecture lectureEntity, Member memberEntity);
 
-
     void deleteByLectureAndMember(Lecture lectureEntity, Member memberEntity);
 
     List<ClassBasket> findByMember(Member member);
+
 }
