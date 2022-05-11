@@ -1,6 +1,7 @@
 package com.greedy.rotutee.member.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -35,11 +36,14 @@ public class MemberSecessionHistory {
             generator = "MEMBER_SECESSION_SEQ_GENERATOR"
     )
     private int historyNo;
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
+
+//    @JsonIgnoreProperties(value = "memberSecessionHistory")
+    @JsonManagedReference
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "MEMBER_STATUS_HISTORY_NO")
     private MemberStatusHistory MemberStatusHistory;
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
+    @JsonIgnoreProperties
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SECESSION_REASON_NO")
     private SecessionReason secessionReason;

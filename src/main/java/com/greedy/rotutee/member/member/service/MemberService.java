@@ -43,12 +43,14 @@ public class MemberService {
     private final MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery;
     private final ReasonsRepository reasonsRepository;
     private final AttachedFileRepository attachedFileRepository;
+    private final SecessionReasonRepository secessionReasonRepository;
+    private final MemberSecessionHistoryRepository memberSecessionHistoryRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public MemberService(LectureCategoryRepository lectureCategoryRepository, MemberInterestPartRepository memberInterestPartRepository, PasswordEncoder passwordEncoder, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleRepository roleRepository, ModelMapper modelMapper, AchievementRepository achievementRepository, MemberAchievementRepository memberAchievementRepository, MemberAchievementHistoryRepository memberAchievementHistoryRepository, MemberStatusHistoryRepository memberStatusHistoryRepository, MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery, ReasonsRepository reasonsRepository, AttachedFileRepository attachedFileRepository) {
+    public MemberService(LectureCategoryRepository lectureCategoryRepository, MemberInterestPartRepository memberInterestPartRepository, PasswordEncoder passwordEncoder, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleRepository roleRepository, ModelMapper modelMapper, AchievementRepository achievementRepository, MemberAchievementRepository memberAchievementRepository, MemberAchievementHistoryRepository memberAchievementHistoryRepository, MemberStatusHistoryRepository memberStatusHistoryRepository, MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery, ReasonsRepository reasonsRepository, AttachedFileRepository attachedFileRepository, SecessionReasonRepository secessionReasonRepository, MemberSecessionHistoryRepository memberSecessionHistoryRepository) {
 
         this.lectureCategoryRepository = lectureCategoryRepository;
         this.memberInterestPartRepository = memberInterestPartRepository;
@@ -64,6 +66,8 @@ public class MemberService {
         this.memberStatusHistoryRepositoryQuery = memberStatusHistoryRepositoryQuery;
         this.reasonsRepository = reasonsRepository;
         this.attachedFileRepository = attachedFileRepository;
+        this.secessionReasonRepository = secessionReasonRepository;
+        this.memberSecessionHistoryRepository = memberSecessionHistoryRepository;
     }
 
     /* 사용자번호로 사용자 정보 조회용 메서드 */
@@ -314,6 +318,23 @@ public class MemberService {
         }
 
         return memberList.map(member -> modelMapper.map(member, MemberDTO.class));
+    }
+
+    @Transactional
+    public void secessionMember(int memberNo, int reasonNo, String content) {
+
+        MemberStatusHistory memberStatusHistory = new MemberStatusHistory();
+        memberStatusHistory.setMember(memberRepository.findById(memberNo).get());
+        memberStatusHistory.setStatus("탈퇴");
+        memberStatusHistory.setHistoryDate(new Date(System.currentTimeMillis()));
+
+        MemberSecessionHistory memberSecessionHistory = new MemberSecessionHistory();
+        memberSecessionHistory.setSecessionDate(new Date(System.currentTimeMillis()));
+        memberSecessionHistory.setSecessionReason(secessionReasonRepository.findById(reasonNo).get());
+        memberSecessionHistory.setContent(content);
+        memberSecessionHistory.setMemberStatusHistory(memberStatusHistory);
+
+        memberSecessionHistoryRepository.save(memberSecessionHistory);
     }
 
 }

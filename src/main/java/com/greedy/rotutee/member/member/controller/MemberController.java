@@ -199,7 +199,7 @@ public class MemberController {
 
         memberService.memberStatusPlay(memberNo);
 
-        return "redirect:/member/detail/" + memberNo;
+        return "redirect:/member/list";
     }
 
     @GetMapping(value = "/reasons", produces = "application/json; charset=UTF-8")
@@ -230,5 +230,13 @@ public class MemberController {
         memberService.removeMemberFiles(Integer.parseInt(filesNo));
 
         return "redirect:/member/myfiles";
+    }
+
+    @PostMapping("/secession")
+    public String secessionMember(@RequestParam("memberNo") int memberNo, @RequestParam("reasonNo") int reasonNo, @RequestParam("content") String content) {
+
+        memberService.secessionMember(memberNo, reasonNo, content);
+
+        return "redirect:/member/logout";
     }
 }

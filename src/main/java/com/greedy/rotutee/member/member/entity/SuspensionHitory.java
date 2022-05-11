@@ -34,6 +34,7 @@ public class SuspensionHitory {
             generator = "SUSPENSION_HISTORY_SEQ_GENERATOR"
     )
     private int historyNo;
+
     @JsonIgnoreProperties(value = "suspensionHitory")
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "MEMBER_STATUS_HISTORY_NO")
