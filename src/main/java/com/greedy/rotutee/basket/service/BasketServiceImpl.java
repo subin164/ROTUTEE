@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -88,6 +90,33 @@ public class BasketServiceImpl implements BasketService{
         }
 
         return basketMemberCouponBoxDTO;
+    }
+
+ /*   @Override
+    @Transactional
+    public ClassBasketDTO modifyCouponList(int lectureNo, int couponNo) {
+
+        ClassBasket classBasket = ClassBasketRepository.
+        Member memberEntity = classBasketMemberRepository.findByNo(memberNo);
+
+        ClassBasket basket = classBasketRepository.findByLectureAndMember(lectureEntity, memberEntity);
+
+        if(basket != null) {
+
+            ClassBasketDTO basketDTO = new ClassBasketDTO();
+            basketDTO.setClassBasketNo(basket.getClassBasketNo());
+            basketDTO.setMember(modelMapper.map(basket.getMember(), MemberDTO.class));
+            basketDTO.setLecture(modelMapper.map(basketDTO.getLecture(), LectureDTO.class));
+
+            return basketDTO;
+        }
+
+        return null;
+    }*/
+
+    @Override
+    public void removeOneCoupon(int basketNo, int couponNo) {
+
     }
 
     @Override
