@@ -33,12 +33,13 @@
 
 /* 태그 */
 .study-tag {
-    background-color: rgba(135, 206, 235, 0.2);
-    padding: 3px 5px;
+    margin-right: 5px;
+    padding: 4px 8px;
+    background-color: orangered;
     border-radius: 5px;
-    color: orangered;
+    font-size: 13px;
     font-weight: bold;
-    box-shadow: 1px 1px 3px 1px rgba(135, 206, 235, 0.2);
+    color: white;
 }
 
 
@@ -88,16 +89,17 @@
 
 .detail-item-tags {
     display: flex;
-    padding: 20px 0;
+    padding: 10px 0;
 }
 
 .detail-item-tags > div {
     margin-right: 5px;
     padding: 4px 8px;
-    background-color: lightblue;
+    background-color: orangered;
     border-radius: 5px;
     font-size: 13px;
     font-weight: bold;
+    color: white;
 
 }
 
@@ -106,7 +108,6 @@
     flex-flow: wrap;
 }
 
-
 .tag-item{
     padding: 4px 8px;
     background-color: skyblue;
@@ -114,6 +115,16 @@
     font-weight: bold;
     margin: 5px;
     border-radius: 5px;
+}
+
+.sideMenu{
+    min-width: 100px;
+    margin-top: 30px;
+}
+
+.sidebar-right{
+    min-width: 100px;
+
 }
 
 

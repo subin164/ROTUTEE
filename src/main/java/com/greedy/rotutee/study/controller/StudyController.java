@@ -10,7 +10,6 @@ import com.greedy.rotutee.study.dto.StudyDTO;
 import com.greedy.rotutee.study.dto.StudyReplyDTO;
 import com.greedy.rotutee.study.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -32,13 +31,12 @@ public class StudyController {
 
     private final StudyService studyService;
     private final AuthenticationService authenticationService;
-    private final MessageSource messageSource;
+
 
     @Autowired
-    public StudyController(StudyService studyService, AuthenticationService authenticationService, MessageSource messageSource) {
+    public StudyController(StudyService studyService, AuthenticationService authenticationService) {
         this.studyService = studyService;
         this.authenticationService = authenticationService;
-        this.messageSource = messageSource;
     }
 
     /*
@@ -186,7 +184,7 @@ public class StudyController {
 
     @PostMapping("/replyRegist")
     @ResponseBody
-    public StudyReplyDTO studyReplyRegist(StudyReplyDTO replyDTO, HttpServletRequest request) {
+    public StudyReplyDTO studyReplyRegist(StudyReplyDTO replyDTO) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -198,19 +196,14 @@ public class StudyController {
 
         memberDTO.setNo(customUser.getNo());
 
-        int studyNo = Integer.parseInt(request.getParameter("studyNo"));
-
         replyDTO.setReplyStatus("N");
-        replyDTO.setReplyReportCount(0);
         replyDTO.setReplyWriteDate(new Date(System.currentTimeMillis()));
         replyDTO.setWriter(memberDTO);
 
+        StudyReplyDTO studyReplyDTO = studyService.studyReplyRegist(replyDTO);
 
-        replyDTO = studyService.studyReplyRegist(replyDTO);
+        return studyReplyDTO;
 
-        System.out.println("리플 ajax 반환값 확인 : " + replyDTO);
-
-        return replyDTO;
     }
 
     @PostMapping("/replyRemove")
@@ -219,6 +212,21 @@ public class StudyController {
 
         System.out.println("컨트롤 리플넘버" + replyDTO);
         studyService.studyReplyRemove(replyDTO);
+    }
+
+    @PostMapping("/replyModify")
+    @ResponseBody
+    public void studyReplyModify(StudyReplyDTO replyDTO){
+
+        System.out.println("요청은 왔어요?");
+
+    }
+
+
+    @GetMapping("/listBack")
+    public String studyListBack(){
+
+        return "redirect:/study/list";
     }
 
 }

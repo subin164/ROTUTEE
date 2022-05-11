@@ -102,8 +102,9 @@
                                     <span class="study-tag" th:text="${studyTagList.getTag().getTagName()}"></span>
                                 </div>
                             </li>
-                            <li>
-                                <span class="fw-bold" th:text="${study.getWriter().getNickname()}"></span>
+                            <li class="mt-md-3">
+                                <span class="fw-bold me-md-3" th:text="${study.getWriter().getNickname()}"></span>
+                                <span th:text="${study.startDate}"></span>
                             </li>
 
                             <hr>

@@ -30,6 +30,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -178,7 +179,9 @@ public class StudyService {
     public void removeStudy(int no) {
         Study study = studyRepository.findById(no).get();
 
+
         study.setPostStatus("Y");
+        study.setRemoveDate(new Date(System.currentTimeMillis()));
     }
 
     /*
@@ -232,9 +235,10 @@ public class StudyService {
 
         List<StudyTag> studyTagList = studyTagRepository.findAll();
 
-        TagDTO tagDTO = new TagDTO();
 
         StudyByTagDTO studyByTagDTO = new StudyByTagDTO();
+
+        TagDTO tagDTO = new TagDTO();
 
 
         for (int i = 0; i < modifyTagList.size(); i++) {
@@ -243,27 +247,27 @@ public class StudyService {
 
             for (int j = 0; j < studyTagList.size(); j++) {
 
-                TagDTO duplicatedTag = modelMapper.map(studyTagList.get(j), TagDTO.class);
+                if (studyTagList.get(j).getTagName().equals(modifyTagList.get(i))) {
 
-                if (duplicatedTag.getTagName().equals(modifyTagList.get(i))) {
                     tagDTO.setTagName(modifyTagList.get(i));
 
                     duplicated = true;
 
-                    studyByTagDTO.setTag(duplicatedTag);
+                    studyByTagDTO.setTag(tagDTO);
 
                 }
+
             }
             if (duplicated == false) {
 
                 tagDTO.setTagName(modifyTagList.get(i));
+
                 StudyTag studyTag = studyTagRepository.save(modelMapper.map(tagDTO, StudyTag.class));
 
                 studyByTagDTO.setTag(modelMapper.map(studyTag, TagDTO.class));
-
             }
 
-            studyByTagDTO.setStudy(modelMapper.map(study, StudyDTO.class));
+            studyByTagDTO.setStudy(studyDTO);
 
             studyByTagRepository.save(modelMapper.map(studyByTagDTO, StudyByTag.class));
         }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">>
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
 
@@ -17,8 +17,8 @@
 <main style="min-height: 700px">
     <section class="container main-wrapper">
         <!-- 왼쪽 사이드메뉴 -->
-        <div class="sidemenu-left">
-            <button>뒤로가기</button>
+        <div class="sideMenu">
+            <button class="btn btn-outline-primary" onclick="location.href='/study/listBack'">뒤로가기</button>
         </div>
         <!-- 메인 컨텐츠 -->
         <div class="main-content">
@@ -42,7 +42,7 @@
                                 수정
                             </button>
                             <button class="btn"
-                                    th:onclick="|location.href='@{/study/remove?no=}' + @{${studyDetail.studyNo}|">
+                                    th:onclick="|location.href='@{/study/remove?no=}' + @{${studyDetail.studyNo}}|">
                                 삭제
                             </button>
                         </div>
@@ -70,8 +70,10 @@
                     </div>
                     <div class="detaile-replay-edit-button">
                         <div th:if="${#authentication.principal.nickname.toString()} eq ${studyReply.writer.nickname.toString()}">
-                            <button class="btn" onclick="detailModifyButton()">수정</button>
-                            <button class="btn">삭재</button>
+                            <button class="btn" data-bs-toggle="modal" data-bs-target="#replyModifyModal"
+                                    th:onclick="|replyModifyBtn()|">수정
+                            </button>
+                            <button class="btn" th:onclick="|replyRemoveBtn(${studyReply.replyNo})|">삭재</button>
                         </div>
                     </div>
                 </div>
@@ -86,15 +88,22 @@
                     <div sec:authentication="principal.nickname"></div>
                 </div>
                 <div class="card-body p-0">
-                    <textarea class="reply-content" placeholder="댓글 입력.. ㅎ ㅐ  주 ㅓ."></textarea>
+                    <form>
+                        <textarea class="reply-content" id="replyContent" placeholder="댓글 입력.. ㅎ ㅐ  주 ㅓ."></textarea>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline-primary" th:onclick="|replyRegistBtn()|">답변등록</button>
                 </div>
             </div>
 
         </div>
         </div>
+
         <!-- 오른쪽 사이드메뉴-->
-        <div class="sidebar-right">
-            <button>신청하기</button>
+        <div class="sideMenu">
+            <button class="btn btn-outline-primary mb-md-3">모집중</button>
+            <button class="btn btn-outline-primary">신청하기</button>
         </div>
     </section>
 </main>
@@ -145,6 +154,27 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                 <button type="submit" class="btn btn-primary" form="detailModifyForm">수정</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="replyModifyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">답변 수정</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/study/replyModify" method="post" id="replyModifyform">
+                    <input type="hidden">
+                    <textarea class="detail-modify-item-content" id="replyModifyContent" name="replyContent"></textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="submit" class="btn btn-primary" form="replyModifyform">수정</button>
             </div>
         </div>
     </div>
@@ -257,62 +287,61 @@
 
 
     /*스터디 댓글 작성*/
-    if (document.getElementById("registReply")) {
+    function replyRegistBtn() {
 
-        const $registReply = document.getElementById("registReply");
+        let studyNo = $("#studyNo").val();
+        let replyContent = $("#replyContent").val();
 
-        $registReply.onclick = function () {
-            let studyNo = document.getElementById("studyNo").value;
-            let replyContent = document.getElementById("replyContent").value;
-
-            if (replyContent.trim() == "") {
-                alert("휴먼 댓글을 먼저 입력하세요!!")
-            } else {
-                $.ajax({
-                    url: "/study/replyRegist",
-                    type: "post",
-                    data: {"replyContent": replyContent, "studyNo": studyNo},
-                    success: function (data) {
-
-                        const registReplyContent = data.replyContent;
-                        const registReplyWriter = data.writer.nickname;
-
-                        $("#registReplyList").append(
-                            "<ul class='d-flex'>" +
-                            "<input type='hidden' value=" + data.replyNo + ">" +
-                            "<input type='hidden' value=" + data.writer.replyWriteDate + ">" +
-                            "<li>" + registReplyContent + "</li>" +
-                            "<li>" + registReplyWriter + "</li>" +
-                            "<li>" +
-                            "<button class='btn' onclick='studyReplyRemove(" + data.replyNo + ")'> 삭제 </button>" +
-                            "</li>" +
-                            "</ul>");
-
-                    }, error: function (data) {
-
-                        alert("댓글작성이 실패라능");
-                    }
-                });
+        $.ajax({
+            url: "/study/replyRegist",
+            type: "post",
+            data: {replyContent: replyContent, studyNo: studyNo},
+            success: function (data) {
+                alert("성공");
+            },
+            error: function (data) {
+                alert("실패");
             }
-        }
+        });
     }
 
     // 스터디 댓글 삭제
-    function studyReplyRemove(replyNo) {
+    function replyRemoveBtn(replyNo) {
+
         let studyNo = $("#studyNo").val();
+
         $.ajax({
             url: "/study/replyRemove",
             type: "post",
             data: {studyNo: studyNo, replyNo: replyNo},
             success: function (data) {
-
+                alert("조심스럽게 성공인가요?");
             },
             error: function (data) {
+                alert("실패야..");
             }
 
         });
-
     }
+
+    function replyModifyBtn(){
+
+        const replyContent = $("#replyContent");
+        alert("ㄴ왜또..");
+        // $.ajax({
+        //     url: "/study/replyModify",
+        //     type: "post",
+        //     data: {replyContent: replyContent},
+        //     success: function (data) {
+        //         alert("성공인가요?");
+        //     },
+        //     error: function (data) {
+        //         alert("실패야..");
+        //     }
+        //
+        // });
+    }
+
 </script>
 
 </body>
