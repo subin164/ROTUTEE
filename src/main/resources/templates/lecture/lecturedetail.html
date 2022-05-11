@@ -23,7 +23,12 @@
                     <p style="margin-left: 75px; font-size: xx-large;" th:text="${lecture.lectureName}"></p>
                     <br>
                     <img th:src="@{/images/thumbnail/} + ${lecture.saveFileName}" style="width: 800px; margin-left: 75px;">
-                    <div class="lecture-intro" th:text="${lecture.lectureSummary}"></div>
+                    <div class="lecture-intro">
+                        <p style="margin-top: 10px; margin-left: 10px;" th:text="${lecture.lectureSummary}"></p>
+                    </div>
+                    <div class="lecture-intro">
+                        <p style="margin-top: 10px; margin-left: 10px;" th:text="${lecture.lecturedetails}"></p>
+                    </div>
                     <p style="margin-left: 75px; margin-top: 30px; font-size: x-large;">커리큘럼</p>
                     <div th:each="chapter : ${chapterList}">
                         <div class="chapter mt-lg-3">
@@ -36,7 +41,7 @@
                         <p style="margin-left: 30px; margin-top:30px; font-size: x-large;">강의평</p>
                         <div class="d-flex review-area">
                             <div class="review-info">
-                                <p style="margin-left: 75px; margin-top: 10px; font-size: x-large;" th:text="${gradeAverage}"></p>
+                                <p style="margin-left: 75px; margin-top: 40px; font-size: x-large;" th:text="${gradeAverage} + '점'"></p>
                                 <div style="margin-left: 15px; margin-top:10px; font-size: xx-large;">
                                     <th:block th:if="${gradeAverage} <= 0">
 
@@ -59,42 +64,21 @@
                                 </div>
                                 <p style="margin-left: 50px; margin-top: 20px; font-size: large;" th:text="${lectureReviewList.size()} + '명 참여'"></p>
                             </div>
-<!--                            <div class="grade-list">-->
-<!--                                <div class="progress" style="margin-top: 10px;">-->
-<!--                                    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>-->
-<!--                                </div>-->
-<!--                                <br>-->
-<!--                                <div class="progress">-->
-<!--                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>-->
-<!--                                </div>-->
-<!--                                <br>-->
-<!--                                <div class="progress">-->
-<!--                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>-->
-<!--                                </div>-->
-<!--                                <br>-->
-<!--                                <div class="progress">-->
-<!--                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>-->
-<!--                                </div>-->
-<!--                                <br>-->
-<!--                                <div class="progress">-->
-<!--                                    <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-                        </div>
-                        <div class="review-write">
-                            <form name="myform" id="myform" method="post" action="/lecture/writereview">
-                                <input type="hidden" id="lectureNo" name="lectureNo" th:value="${lecture.lectureNo}">
-                                <fieldset>
-                                    <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
-                                    <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
-                                    <input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
-                                    <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
-                                    <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
-                                </fieldset>
-                                <p style="margin-left: 330px; margin-top: 10px; font-size: x-large;">별점을 선택해 주세요</p>
-                                <textarea id="reviewForm" placeholder="강의평을 작성해주세요" cols="103" rows="3" name="content"></textarea>
-                                <button type="submit" class="btn btn-primary btn-sm" id="writeReview">작성</button>
-                            </form>
+                            <div class="review-write">
+                                <form name="myform" id="myform" method="post" action="/lecture/writereview">
+                                    <input type="hidden" id="lectureNo" name="lectureNo" th:value="${lecture.lectureNo}">
+                                    <fieldset>
+                                        <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
+                                        <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
+                                        <input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
+                                        <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
+                                        <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
+                                    </fieldset>
+                                    <p style="margin-left: 250px; margin-top: 10px; font-size: x-large;">별점을 선택해 주세요</p>
+                                    <textarea id="reviewForm" placeholder="강의평을 작성해주세요" cols="80" rows="4" name="content"></textarea>
+                                    <button type="submit" class="btn btn-primary btn-sm" id="writeReview">작성</button>
+                                </form>
+                            </div>
                         </div>
                         <!-- 댓글 리스트 -->
                         <div class="review-list">
@@ -124,18 +108,14 @@
                                     <p style="margin-left: 10px;" th:text="${lectureReview.writer.name}"></p>
                                 </div>
                                 <div class="col-4"></div>
-                                <div class="col-4 button-area" style="margin-top: 10px">
-                                    <th:block th:if="${lectureReview.writer.no} != ${#authentication.principal.no}">
-                                        <button type="button" class="btn btn-danger report">신고</button>
-                                    </th:block>
-                                    <th:block th:if="${lectureReview.writer.no} == ${#authentication.principal.no}">
-                                        <button type="button" class="btn btn-danger remove">삭제</button>
-                                        <button type="button" class="btn btn-success modifybutton">수정</button>
-                                    </th:block>
+                                <div class="col-4 button-area" style="margin-top: 10px" sec:authorize="isAuthenticated()">
+                                    <button type="button" class="btn btn-danger report" th:if="${lectureReview.writer.no} != ${#authentication.principal.no}">신고</button>
+                                    <button type="button" class="btn btn-danger remove" th:if="${lectureReview.writer.no} == ${#authentication.principal.no}">삭제</button>
+                                    <button type="button" class="btn btn-success modifybutton" th:if="${lectureReview.writer.no} == ${#authentication.principal.no}">수정</button>
                                 </div>
                                 <div class="review-text">
                                     <input type="hidden" class="lectureReviewNo" name="lectureReviewNo" th:value="${lectureReview.lectureReviewNo}">
-                                    <textarea th:text="${lectureReview.lectureReviewContent}" class="reviewsBody" name="reviewsBody" cols="90", rows="4" disabled></textarea>
+                                    <textarea th:text="${lectureReview.lectureReviewContent}" class="reviewsBody" name="reviewsBody" cols="85", rows="5" disabled></textarea>
                                     <button type="button" class="btn btn-primary btn-sm modify" style="display:none; margin-bottom: 25px">저장</button>
                                     <button type="reset" class="btn btn-secondary btn-sm cancel" style="display:none; margin-bottom: 25px">취소</button>
                                 </div>
@@ -149,7 +129,7 @@
             <div class="d-flex" style="flex-direction: column;">
                 <div class="tutor-detail">
                     <button class="btn btn-success addcart">수강 바구니에 담기</button>
-                    <p style="margin-left: 65px; margin-top: 20px;" th:text="|현재 ${lectureMemberCount} 명이 수강중입니다.|"></p>
+                    <p style="margin-left: 65px; margin-top: 20px;" th:text="|현재 ${lectureMemberCount - 1} 명이 수강중입니다.|"></p>
                     <div class="d-flex tutor-info">
                         <div class="tutor-image">
                             <img th:src="@{/sg/image/} + ${lecture.tutor.imageName}" style="width: 140px; height: 140px;">

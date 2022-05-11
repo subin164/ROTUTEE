@@ -47,7 +47,12 @@ public class WebAccessDeniedHandler implements AccessDeniedHandler {
                 req.setAttribute("message", "접근권한 없는 사용자입니다123.");
                 req.setAttribute("nextPage", "/");;
                 System.out.println("오긴오냐잉");
-            } else {
+            } else if(authentication != null &&
+                    ((User) authentication.getPrincipal()).getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TUTOR"))) {
+                req.setAttribute("message", "접근권한 없는 사용자입니다123.");
+                req.setAttribute("nextPage", "/");;
+                System.out.println("오긴오냐잉");
+            }else {
                 req.setAttribute("message", "로그인 권한이 없는 아이디입니다123.");
                 req.setAttribute("nextPage", "/member/login");
                 res.setStatus(HttpStatus.UNAUTHORIZED.value());
