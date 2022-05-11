@@ -18,4 +18,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RequestLectureCategoryRepository extends JpaRepository<LectureCategory, Integer> {
     LectureCategory findByLectureCategoryNo(int categoryNo);
+
+    LectureCategory findByLectureCategoryName(String searchValue);
 }

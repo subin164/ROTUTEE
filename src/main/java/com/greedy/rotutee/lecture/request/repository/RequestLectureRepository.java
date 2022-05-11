@@ -1,6 +1,7 @@
 package com.greedy.rotutee.lecture.request.repository;
 
 import com.greedy.rotutee.lecture.request.entity.Lecture;
+import com.greedy.rotutee.lecture.request.entity.LectureCategory;
 import com.greedy.rotutee.lecture.request.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,4 +19,8 @@ public interface RequestLectureRepository extends JpaRepository<Lecture, Integer
     Page<Lecture> findByLectureApprovalStatusOrLectureApprovalStatus(String status1, String status2, Pageable pageable);
 
     Lecture findByLectureNo(int lectureNo);
+
+    Page<Lecture> findByLectureNameContaining(String searchValue, Pageable pageable);
+
+    Page<Lecture> findByLectureCategory(LectureCategory category, Pageable pageable);
 }

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -31,9 +32,12 @@ public class LectureRequestServiceImpl implements LectureRequestService{
     private final RequestLectureCategoryRepository requestLectureCategoryRepository;
     private final RequestLectureRejectionReasonRepository requestLectureRejectionReasonRepository;
     private final RequestLectureRequestProcessingHistoryRepository requestLectureRequestProcessingHistoryRepository;
+    private final RequestNoticeRepository requestNoticeRepository;
+    private final RequestNoticeCategoryRepository requestNoticeCategoryRepository;
+    private final RequestMemberLectureRepository requestMemberLectureRepository;
 
     @Autowired
-    public LectureRequestServiceImpl(ModelMapper modelMapper, RequestLectureRepository requestLectureRepository, RequestMemberRepository requestMemberRepository, RequestAttachedFileRepository requestAttachedFileRepository, RequestLectureCategoryRepository requestLectureCategoryRepository, RequestLectureRejectionReasonRepository requestLectureRejectionReasonRepository, RequestLectureRequestProcessingHistoryRepository requestLectureRequestProcessingHistoryRepository) {
+    public LectureRequestServiceImpl(ModelMapper modelMapper, RequestLectureRepository requestLectureRepository, RequestMemberRepository requestMemberRepository, RequestAttachedFileRepository requestAttachedFileRepository, RequestLectureCategoryRepository requestLectureCategoryRepository, RequestLectureRejectionReasonRepository requestLectureRejectionReasonRepository, RequestLectureRequestProcessingHistoryRepository requestLectureRequestProcessingHistoryRepository, RequestNoticeRepository requestNoticeRepository, RequestNoticeCategoryRepository requestNoticeCategoryRepository, RequestMemberLectureRepository requestMemberLectureRepository) {
         this.modelMapper = modelMapper;
         this.requestLectureRepository = requestLectureRepository;
         this.requestMemberRepository = requestMemberRepository;
@@ -41,6 +45,9 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         this.requestLectureCategoryRepository = requestLectureCategoryRepository;
         this.requestLectureRejectionReasonRepository = requestLectureRejectionReasonRepository;
         this.requestLectureRequestProcessingHistoryRepository = requestLectureRequestProcessingHistoryRepository;
+        this.requestNoticeRepository = requestNoticeRepository;
+        this.requestNoticeCategoryRepository = requestNoticeCategoryRepository;
+        this.requestMemberLectureRepository = requestMemberLectureRepository;
     }
 
     @Override
@@ -215,31 +222,6 @@ public class LectureRequestServiceImpl implements LectureRequestService{
     }
 
     @Override
-    public Page<LectureDTO> findStatusOfLectureIsWaiting(Pageable pageable) {
-
-        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() -1, pageable.getPageSize(),
-                Sort.by("lectureNo").descending());
-
-        String status = "대기";
-        Page<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatus(status, pageable);
-
-        return lectureList.map(lecture -> modelMapper.map(lecture, LectureDTO.class));
-    }
-
-    @Override
-    public Page<LectureDTO> findStatusOfLectureIsNotWaiting(Pageable pageable) {
-
-        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() -1, pageable.getPageSize(),
-                Sort.by("lectureNo").descending());
-
-        String status1 = "승인";
-        String status2 = "거절";
-        Page<Lecture> lectureList = requestLectureRepository.findByLectureApprovalStatusOrLectureApprovalStatus(status1, status2, pageable);
-
-        return lectureList.map(lecture -> modelMapper.map(lecture, LectureDTO.class));
-    }
-
-    @Override
     public LectureDTO findLectureByLectureNo(int lectureNo) {
 
         Lecture lecture = requestLectureRepository.findByLectureNo(lectureNo);
@@ -254,6 +236,31 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         Lecture lecture = requestLectureRepository.findByLectureNo(lectureNo);
         lecture.setLectureApprovalStatus("승인");
         lecture.setLectureOpeningDate(new Date(System.currentTimeMillis()));
+
+        LectureDTO lectureDTO = modelMapper.map(lecture, LectureDTO.class);
+
+        MemberLectureDTO memberLectureDTO = new MemberLectureDTO();
+        memberLectureDTO.setLectureNo(lectureNo);
+        memberLectureDTO.setMemberNo(lecture.getTutor().getNo());
+
+        requestMemberLectureRepository.save(modelMapper.map(memberLectureDTO, MemberLecture.class));
+
+        int categoryNo = 7;
+
+        NoticeCategory noticeCategoryEntity = requestNoticeCategoryRepository.findById(categoryNo).get();
+        NoticeCategoryDTO noticeCategory = modelMapper.map(noticeCategoryEntity, NoticeCategoryDTO.class);
+
+        String content = "[" + lecture.getLectureName() + "] 강의가 개설되었습니다.";
+
+        MemberDTO member = modelMapper.map(lecture.getTutor(), MemberDTO.class);
+
+        NoticeDTO notice = new NoticeDTO();
+        notice.setNoticeCategory(noticeCategory);
+        notice.setNoticeContent(content);
+        notice.setMember(member);
+        notice.setNoticeTime(new Date(System.currentTimeMillis()));
+
+        requestNoticeRepository.save(modelMapper.map(notice, Notice.class));
     }
 
     @Override
@@ -276,6 +283,49 @@ public class LectureRequestServiceImpl implements LectureRequestService{
 
         requestLectureRequestProcessingHistoryRepository.save(modelMapper.map(history, LectureRequestProcessingHistory.class));
 
+        int categoryNo = 7;
+
+        NoticeCategory noticeCategoryEntity = requestNoticeCategoryRepository.findById(categoryNo).get();
+        NoticeCategoryDTO noticeCategory = modelMapper.map(noticeCategoryEntity, NoticeCategoryDTO.class);
+
+        String content = "[" + lecture.getLectureName() + "] 강의 개설이 거절되었습니다. 이유 : [" + reason.getLectureRejectionContentReason() + "]";
+
+        MemberDTO member = modelMapper.map(lecture.getTutor(), MemberDTO.class);
+
+        NoticeDTO notice = new NoticeDTO();
+        notice.setNoticeCategory(noticeCategory);
+        notice.setNoticeContent(content);
+        notice.setMember(member);
+        notice.setNoticeTime(new Date(System.currentTimeMillis()));
+
+        requestNoticeRepository.save(modelMapper.map(notice, Notice.class));
+    }
+
+    @Override
+    public Page<LectureDTO> findAllLecture(Pageable pageable, Map<String, String> searchMap) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() -1, pageable.getPageSize(),
+                Sort.by("lectureNo").descending());
+
+        String searchCondition = searchMap.get("searchCondition");
+        String searchValue = searchMap.get("searchValue");
+
+        Page<Lecture> lectureEntityList = null;
+        if(searchCondition == null || searchCondition.equals("")) {
+            lectureEntityList = requestLectureRepository.findAll(pageable);
+        } else if(searchCondition.equals("title")){
+            lectureEntityList = requestLectureRepository.findByLectureNameContaining(searchValue, pageable);
+        } else if(searchCondition.equals("category")) {
+
+            LectureCategory category = requestLectureCategoryRepository.findByLectureCategoryName(searchValue);
+
+            lectureEntityList = requestLectureRepository.findByLectureCategory(category, pageable);
+        } else if(searchCondition.equals("status")) {
+
+            lectureEntityList = requestLectureRepository.findByLectureApprovalStatus(searchValue, pageable);
+        }
+
+        return lectureEntityList.map(lectureEntity -> modelMapper.map(lectureEntity, LectureDTO.class));
     }
 
 }
