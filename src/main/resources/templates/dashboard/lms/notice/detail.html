@@ -152,7 +152,7 @@
                 </div>
                 <div class="detail-board-button">
                     <input id="boardListBtn" type="button" th:value="목록" class="btn btn-secondary"
-                           onclick="location.href='/lecturenotice/list'">
+                           onclick= "myfunc();">
                     <th: sec:authorize="isAuthenticated()">
                         <th:block th:if="${ noticeDetail.member.memberNo } == ${ #authentication.principal.no }">
                             <input id="modifyBoardBtn" type="button" th:value="수정" class="btn btn-primary"
@@ -173,6 +173,10 @@
 <!--<div th:include="/common/footer.html"></div>-->
 <script>
     const boardNo = "[[${ noticeDetail.boardNo }]]";
+
+    function myfunc() {
+        location.href='/lecturenotice/list?lectureNo='+ [[${noticeDetail.lectureNo}]];
+    }
 
 </script>
 </body>

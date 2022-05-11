@@ -81,15 +81,26 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
         List<LMSLatelyViewDTO> watching = getWatching(lectureNo, memberNo);
         /* 프로필 조회 */
         DashboardMemberDTO member = getProfile(memberNo);
+        /* 수강번호 조회 */
+        int memberLectureNo = getMemberLectureNo(lectureNo, memberNo);
 
         dashboard.setTodos(todos);
         dashboard.setNoticeBoards(notices);
         dashboard.setNormalBoards(normals);
         dashboard.setWatching(watching);
         dashboard.setMember(member);
+        dashboard.setMemberLectureNo(memberLectureNo);
 
         return dashboard;
 
+    }
+
+    private int getMemberLectureNo(int lectureNo, int memberNo) {
+
+        MyPageMemberLecture memberLecture =  mypageMemberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
+        int memberLectureNo = memberLecture.getMemberLectureNo();
+
+        return memberLectureNo;
     }
 
     private List<Integer> getProgress(List<ToDo> todoEntities) {

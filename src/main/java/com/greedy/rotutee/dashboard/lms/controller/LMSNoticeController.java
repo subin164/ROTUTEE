@@ -48,8 +48,14 @@ public class LMSNoticeController {
     @GetMapping("/list")
     public ModelAndView findNoticeList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
 
+        int lectureNo = 0;
         HttpSession session = request.getSession();
-        int lectureNo = Integer.parseInt(String.valueOf(session.getAttribute("lectureNo")));
+        if(session.getAttribute("lectureNo") != null){
+            lectureNo = Integer.parseInt(String.valueOf(session.getAttribute("lectureNo")));
+        } else {
+            lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
+        }
+
 
         String searchCondition = request.getParameter("searchCondition");
         String searchValue = request.getParameter("searchValue");

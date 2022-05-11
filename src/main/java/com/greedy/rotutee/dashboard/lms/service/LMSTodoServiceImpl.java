@@ -9,6 +9,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.service
  * fileName : LMSTodoServiceImpl
@@ -48,4 +50,27 @@ public class LMSTodoServiceImpl implements LMSTodoService{
         ToDo todoEntity = modelMapper.map(todo, ToDo.class);
         todoRepository.save(todoEntity);
     }
+
+    @Override
+    @Transactional
+    public boolean modifyTodo(String content, int todoNo) {
+
+        ToDo todo = todoRepository.findById(todoNo).get();
+        System.out.println("content = " + content);
+        todo.setContent(content);
+        todoRepository.save(todo);
+
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean removeTodo(int todoNo) {
+
+        todoRepository.deleteById(todoNo);
+
+        return true;
+    }
+
+
 }

@@ -15,4 +15,8 @@ import com.greedy.rotutee.dashboard.lms.dto.ToDoDTO;
  */
 public interface LMSTodoService {
     void registTodo(ToDoDTO todo);
+
+    boolean modifyTodo(String content, int todoNo);
+
+    boolean removeTodo(int todoNo);
 }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Table V04</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/vendor/animate/animate.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/vendor/select2/select2.min.css}">
+
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/css/util.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/sy/css/main.css}">
+    <!-- font-family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        .container {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 14px;
+
+        }
+
+    </style>
+</head>
+<body>
+<th:block sec:authorize="hasRole('TUTEE')">
+    <div th:include="/common/mypagemenubar.html"></div>
+</th:block>
+<th:block sec:authorize="hasRole('TUTOR')">
+    <div th:include="/common/tutormypagemenubar.html"></div>
+</th:block>
+<div class="container">
+    <div class="header">
+        <label class="head">신고관리</label>
+        <hr>
+    </div>
+    <div th:each="notice : ${notices}">
+        <div th:text="${notice.noticeContent}"></div>
+    </div>
+    <!--paging button-->
+    <div class="d-flex justify-content-center">
+        <div class="justify-content-evenly mt-lg-5">
+            <button class="btn pagebtn" type="button"
+                    th:onclick="'location.href=\'/notice/list?page=' + @{${paging.startPage}}  + '\''"
+                    th:disabled="${ notices.first }"><<
+            </button>
+            <button class="btn pagebtn" type="button"
+                    th:onclick="'location.href=\'/notice/list?page=' + @{${paging.currentPage - 1}}  + '\''"
+                    th:disabled="${ notices.first }"><
+            </button>
+            <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+                <button class="btn pagebtn" type="button"
+                        th:onclick="'location.href=\'/notice/list?page=' + @{${page}}  + '\''"
+                        th:text="${ page }"
+                        th:disabled="${ paging.currentPage eq page }">
+                </button>
+            </th:block>
+            <button class="btn pagebtn" type="button"
+                    th:onclick="'location.href=\'/notice/list?page=' + @{${paging.currentPage + 1}}  + '\''"
+                    th:disabled="${ notices.last }">>
+            </button>
+            <button class="btn pagebtn" type="button"
+                    th:onclick="'location.href=\'/notice/list?page=' + @{${paging.endPage}}  + '\''"
+                    th:disabled="${ notices.last }">>>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+
+</script>
+<!--===============================================================================================-->
+<!--<script th:src="@{/sy/vendor/bootstrap/js/popper.js}"></script>-->
+<!--<script th:src="@{/sy/vendor/bootstrap/js/bootstrap.min.js}"></script>-->
+<!--===============================================================================================-->
+<script th:src="@{/sy/vendor/select2/select2.min.js}"></script>
+<!--===============================================================================================-->
+
+
+<!--===============================================================================================-->
+<script th:src="@{/sy/js/main.js}"></script>
+
+</body>
+</html>
