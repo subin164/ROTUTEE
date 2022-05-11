@@ -16,4 +16,10 @@ public class ErrorController {
         rttr.addFlashAttribute("message", "아이디 혹은 비밀번호를 확인해주세요.");
         return "redirect:/member/login";
     }
+
+    @GetMapping("/denied")
+    public String accessDenied(){
+        return "/error/denied";
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.greedy.rotutee.config;
 
 import com.greedy.rotutee.Authentication.service.AuthenticationService;
+import com.greedy.rotutee.main.controller.WebAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,11 +20,14 @@ import java.util.Map;
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationService authenticationService;
+    private final WebAccessDeniedHandler webAccessDeniedHandler;
 
     @Autowired
-    public SpringSecurityConfiguration(AuthenticationService authenticationService) {
+    public SpringSecurityConfiguration(AuthenticationService authenticationService, WebAccessDeniedHandler webAccessDeniedHandler) {
         this.authenticationService = authenticationService;
+        this.webAccessDeniedHandler = webAccessDeniedHandler;
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -76,8 +80,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)  // 세션정보를 무효화시키겠다
                 .logoutSuccessUrl("/")  // 성공시 이곳으로 가겠다
                 .and()
-                .exceptionHandling()
-                .accessDeniedPage("/error/denied");
+                .exceptionHandling().accessDeniedHandler(webAccessDeniedHandler).and().exceptionHandling();
+//                .accessDeniedPage("/error/denied");
     }
 
     @Override

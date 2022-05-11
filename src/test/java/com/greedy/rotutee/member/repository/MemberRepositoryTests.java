@@ -69,6 +69,12 @@ public class MemberRepositoryTests {
     @Autowired
     private MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery;
 
+    @Autowired
+    private SecessionReasonRepository secessionReasonRepository;
+
+    @Autowired
+    private MemberSecessionHistoryRepository memberSecessionHistoryRepository;
+
     @PersistenceContext
     private EntityManager entityManager;
     
@@ -288,5 +294,25 @@ public class MemberRepositoryTests {
         System.out.println("findMember = " + findMember);
     }
 
+    @Test
+    public void 회원_탈퇴_테스트_메서드() {
+
+        //given
+        int memberNo = 30;
+        int reasonNo = 1;
+
+        MemberStatusHistory memberStatusHistory = new MemberStatusHistory();
+        memberStatusHistory.setMember(memberRepository.findById(memberNo).get());
+        memberStatusHistory.setStatus("탈퇴");
+        memberStatusHistory.setHistoryDate(new Date(System.currentTimeMillis()));
+
+        MemberSecessionHistory memberSecessionHistory = new MemberSecessionHistory();
+        memberSecessionHistory.setSecessionDate(new Date(System.currentTimeMillis()));
+        memberSecessionHistory.setSecessionReason(secessionReasonRepository.findById(reasonNo).get());
+        memberSecessionHistory.setContent("ㅈ같이 참여 안 함");
+        memberSecessionHistory.setMemberStatusHistory(memberStatusHistory);
+
+        memberSecessionHistoryRepository.save(memberSecessionHistory);
+    }
 
 }

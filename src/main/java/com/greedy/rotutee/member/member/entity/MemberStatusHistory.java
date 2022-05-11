@@ -1,5 +1,8 @@
 package com.greedy.rotutee.member.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -43,16 +46,32 @@ public class   MemberStatusHistory {
     @JoinColumn(name = "MEMBER_NO")
     private Member member;
 
-    @OneToOne(mappedBy = "MemberStatusHistory", cascade = CascadeType.PERSIST)
+//    @JsonIgnoreProperties(value = "MemberStatusHistory")
+    @OneToOne(mappedBy = "MemberStatusHistory", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private SuspensionHitory suspensionHitory;
+
+    @JsonIgnoreProperties(value = "MemberStatusHistory")
+    @JsonManagedReference
+    @OneToOne(mappedBy = "MemberStatusHistory", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private MemberSecessionHistory memberSecessionHistory;
 
     public MemberStatusHistory() {}
 
-    public MemberStatusHistory(int historyNo, String status, Date historyDate, Member member) {
+    public MemberStatusHistory(int historyNo, String status, Date historyDate, Member member, SuspensionHitory suspensionHitory, MemberSecessionHistory memberSecessionHistory) {
         this.historyNo = historyNo;
         this.status = status;
         this.historyDate = historyDate;
         this.member = member;
+        this.suspensionHitory = suspensionHitory;
+        this.memberSecessionHistory = memberSecessionHistory;
+    }
+
+    public MemberSecessionHistory getMemberSecessionHistory() {
+        return memberSecessionHistory;
+    }
+
+    public void setMemberSecessionHistory(MemberSecessionHistory memberSecessionHistory) {
+        this.memberSecessionHistory = memberSecessionHistory;
     }
 
     public SuspensionHitory getSuspensionHitory() {

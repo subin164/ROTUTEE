@@ -10,6 +10,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
     </script>
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" th:href="@{/sg/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
     <!--===============================================================================================-->
@@ -107,6 +110,96 @@
 </head>
 <body>
 <div th:include="/common/adminsidebar.html"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #4994EC; height: 50px;">
+                <h5 class="modal-title" id="exampleModalLabel">회원 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-4" style="height: 200px;">
+                            <img id="profile" th:src="@{/sg/image/profile.PNG}" style="width: 140px; height: 180px;">
+                        </div>
+                        <div class="col-8" style="height: 200px;">
+                            <p>이름 : <span id="name"></span></p>
+                            <p>이메일 : <span id="email"></span></p>
+                            <p>닉네임 : <span id="nickname"></span></p>
+                            <p>상태 : <span id="status"></span></p>
+                            <p>권한 : <span id="role"></span></p>
+                        </div>
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" id="manager-btn" class="btn btn-danger">관리</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/member/stop" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="memberNo" name="memberNo">
+                    <label>정지일</label>
+                    <select id="stopDate" name="stopDate">
+                        <option value="1">1</option>
+                        <option value="3">3</option>
+                        <option value="7">7</option>
+                        <option value="30">30</option>
+                        <option value="90">90</option>
+                        <option value="180">180</option>
+                        <option value="365">365</option>
+                    </select>
+                    <label>정지사유</label>
+                    <select id="stopReasons" name="stopReasons">
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="submit" class="btn btn-danger">회원정지</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel3">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-8" style="height: 100px;">
+                        <p>정지사유 : <sanp id="content"></sanp></p>
+                        <p>시작일 : <sanp id="startDate"></sanp></p>
+                        <p>종료일 : <sanp id="endDate"></sanp></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" id="play-btn" class="btn btn-danger">정지철회</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="box">
         <label class="head">회원 목록</label>
@@ -204,7 +297,39 @@
 
 <script>
 
-    $("#closeDetail").click(function () {
+    let status;
+    let playMemberNo;
+
+    $(function(){
+        $.ajax({
+            url: "/member/reasons",
+            success: function(data) {
+                const stopReasons = $("#stopReasons");
+                stopReasons.html("");
+                console.log(data);
+
+                for(let index in data) {
+                    stopReasons.append($("<option>").val(data[index].no).text(data[index].content));
+                }
+            }
+        });
+    });
+
+    $("#play-btn").click(function() {
+
+        location.href="/member/play/" + playMemberNo;
+    });
+
+    $("#manager-btn").click(function() {
+
+        if(status == "활동") {
+            $("#exampleModal2").modal('show');
+        } else {
+            $("#exampleModal3").modal('show');
+        }
+    });
+
+    $("#closeDetail").click(function() {
 
         document.querySelector('.memberDetail_wrap').style.display = 'none';
     });
@@ -214,10 +339,51 @@
 
         let tr = $(this);
         let td = tr.children();
-
         let memberNo = td.eq(0).text();
 
-        location.href = "/member/detail/" + memberNo;
+        $.ajax({
+            url: "/member/detail",
+            data: { "memberNo" : memberNo },
+            success: function(data) {
+
+                playMemberNo = data.member.no;
+                $("#memberNo").val(memberNo);
+                $("#name").text(data.member.name);
+                $("#email").text(data.member.email);
+                $("#nickname").text(data.member.nickname);
+                $("#status").text(data.memberStatus.status);
+                if(data.memberRole == 'ROLE_TUTEE') {
+                    $("#role").text("튜티");
+                } else {
+                    $("#role").text("튜터");
+                }
+
+                console.log(data);
+                console.log(data.memberStatus);
+
+
+                if(data.memberStatus.status == "정지") {
+                    status = "정지";
+                    $("#content").text(data.memberStatus.suspensionHitory.reasons.content);
+                    $("#startDate").text(data.memberStatus.suspensionHitory.startDate);
+                    $("#endDate").text(data.memberStatus.suspensionHitory.endDate);
+                } else {
+                    status = "활동"
+                }
+
+                // const profile = $("#profile");
+                //
+                // console.log(data.attachedFile);
+                //
+                // console.log(profile);
+                // // profile.src = "@{/sg/image/" + data.attachedFile.saveAttachedFileName + "}";
+                // profile.src = "../../../static/sg/image" + data.attachedFile.saveAttachedFileName;
+                //
+                // console.log(profile.src);
+
+                $("#exampleModal").modal('show');
+            }
+        });
     });
 
 </script>
