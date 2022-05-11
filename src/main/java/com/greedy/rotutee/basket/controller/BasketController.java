@@ -88,7 +88,6 @@ public class BasketController {
             List<AttachedFileDTO> fileList = cart.getLecture().getImageList();
         }
 
-        cartList.forEach(System.out::println);
         mv.addObject("cartList", cartList);
         mv.setViewName("basket/basketlist");
 
@@ -112,7 +111,6 @@ public class BasketController {
     @ResponseBody
     @GetMapping(value = "/coupon/list", produces = "application/json; charset=UTF-8")
     public List<BasketMemberCouponBoxDTO> findCouponList(ModelAndView mv,  @AuthenticationPrincipal CustomUser customUser) {
-
 
         int memberNo = customUser.getNo();
 
