@@ -149,12 +149,12 @@ iframe {
 
   display: flex;
   align-items: center;
-  justify-content: center;
+
   flex-wrap: wrap;
 }
 
 .wrap-table100 {
-  width: 1170px;
+  width: 1300px;
 }
 
 /*//////////////////////////////////////////////////////////////////

@@ -105,14 +105,21 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
         System.out.println("lectureNo = " + lectureNo);
         System.out.println("memberNo = " + memberNo);
         List<MyPageMemberLecture> memberLectures = mypageMemberLectureRepository.findAll();
+        List<LMSLatelyViewClass> latelyViewEntities =  new ArrayList<>();
         MyPageMemberLecture memberLecture = mypageMemberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
-        int memberLectureNo = memberLecture.getMemberLectureNo();
-        List<LMSLatelyViewClass> latelyViewEntities = lmsLatelyViewRepository.findByMemberLectureNoOrderByTimeNoDesc(memberLectureNo);
+        if(memberLecture == null) {
+            latelyViewEntities = null;
+        } else {
+            int memberLectureNo = memberLecture.getMemberLectureNo();
+            latelyViewEntities = lmsLatelyViewRepository.findByMemberLectureNoOrderByTimeNoDesc(memberLectureNo);
+        }
 
         //한페이지에 볼 수 있는 개수
         int numberOfViews = 6;
         List<LMSLatelyViewDTO> watching = new ArrayList<>();
-        if(latelyViewEntities.size() > numberOfViews){
+        if(latelyViewEntities == null){
+            watching = null;
+        } else if(latelyViewEntities.size() > numberOfViews) {
             for(int i = 0; i < numberOfViews; i++){
                 LMSLatelyViewClass watchEntity = latelyViewEntities.get(i);
                 LMSLatelyViewDTO watch = modelMapper.map(watchEntity, LMSLatelyViewDTO.class);

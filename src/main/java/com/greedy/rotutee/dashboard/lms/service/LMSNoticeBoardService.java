@@ -20,4 +20,12 @@ import java.util.Map;
  */
 public interface LMSNoticeBoardService {
     Page<LMSNoticeBoardDTO> findNoticeList(Pageable pageable, Map<String, String> searchMap, int lectureNo);
+
+    LMSNoticeBoardDTO findNoticeDetail(int noticeNo);
+
+    void registNotice(LMSNoticeBoardDTO notice);
+
+    void modifyNotice(LMSNoticeBoardDTO notice);
+
+    void removeNotice(int boardNo);
 }
