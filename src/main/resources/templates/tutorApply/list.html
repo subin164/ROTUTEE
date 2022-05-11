@@ -17,8 +17,11 @@
     <link rel="stylesheet" type="text/css" th:href="@{/sg/css/util.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/sg/css/main.css}">
     <!--===============================================================================================-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
     <!-- font-family -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +31,7 @@
     <script th:inline="javascript">
         /* 비지니스 로직 성공 alert 메시지 처리 */
         const message = [[${message}]];
-        if(message != null && message != '') {
+        if (message != null && message != '') {
             alert(message);
         }
     </script>
@@ -37,34 +40,42 @@
         tr:hover {
             background-color: #F5F5F5;
         }
-        .pagebtn{
+
+        .pagebtn {
 
             background-color: #D1E4FA;
         }
-        .pagebtn:focus{
+
+        .pagebtn:focus {
             background-color: #8397D7;
         }
-        .categorybtn{
+
+        .categorybtn {
             background-color: #F0F2FF;
         }
-        .categorybtn:focus{
+
+        .categorybtn:focus {
             background-color: #8397D7;
         }
-        .container{
+
+        .container {
             padding-top: 60px;
         }
-        .box{
+
+        .box {
 
             width: 80%;
             margin-top: 100px;
             margin-left: 180px;
 
         }
-        .head{
+
+        .head {
             font-family: 'Noto Sans KR', sans-serif;
             font-size: 20px;
         }
-        #myTab{
+
+        #myTab {
             font-family: 'Noto Sans KR', sans-serif;
             margin-left: 175px;
             width: 77%;
@@ -74,6 +85,72 @@
 </head>
 <body>
 <div th:include="/common/topMenubar.html"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-head">
+                <span class="head-title">튜터 신청서</span>
+                <button type="button" class="btn-close close-btn" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table id="memberInfo" style="width: 600px">
+                    <h3>인적사항</h3>
+                    <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>이메일</th>
+                        <th>휴대폰</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <br>
+                <hr align="left" width="600px">
+                <h3>경력사항</h3>
+                <table id="career" style="width: 600px">
+                    <thead>
+                    <tr>
+                        <th colspan="2" width="30%">근무 기간</th>
+                        <th width="30%">근무처</th>
+                        <th width="15%">직급</th>
+                        <th width="25">담당업무</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <br>
+                <hr align="left" width="600px">
+                <h3>자격사항</h3>
+                <table id="qualification" style="width: 600px">
+                    <thead>
+                    <tr>
+                        <th width="30%">취득 일자</th>
+                        <th width="50%">자격 및 교육명</th>
+                        <th>등급</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <br>
+                <hr align="left" width="600px">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="approve-btn" type="button" class="btn modal-btn"
+                        style="background-color: #d3e1f3; color: rgb(107, 107, 107);">
+                    신청
+                </button>
+                <button id="reject-btn" type="button" class="btn modal-btn"
+                        style="background-color: #bd4147; color: rgb(107, 107, 107);">
+                    거절
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="box">
     <label class="head">튜터 신청 현황</label>
@@ -85,7 +162,7 @@
                     <div class="wrap-table100">
                         <div class="table100 ver1 m-b-110">
                             <div class="table100-head">
-                                <table >
+                                <table>
                                     <thead>
                                     <tr class="row100 head">
                                         <th class="cell100 column1">글번호</th>
@@ -99,12 +176,12 @@
                             <div class="table100-body">
                                 <table id="before-table">
                                     <tbody>
-                                        <tr class="row100 body" th:each="tutorApply : ${ tutorApplyList }">
-                                            <td th:text="${ tutorApply.applyHistoryNo }">
-                                            <td th:text="${ tutorApply.member.name }">
-                                            <td th:text="${ tutorApply.applyDate }">
-                                            <td th:text="${ tutorApply.applyYn }">
-                                        </tr>
+                                    <tr class="row100 body" th:each="tutorApply : ${ tutorApplyList }">
+                                        <td th:text="${ tutorApply.applyHistoryNo }">
+                                        <td th:text="${ tutorApply.member.name }">
+                                        <td th:text="${ tutorApply.applyDate }">
+                                        <td th:text="${ tutorApply.applyYn }">
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -169,15 +246,107 @@
 
 <script>
 
+    let historyNo;
+
     // 테이블의 Row 클릭시 값 가져오기
-    $("#before-table tr").click(function(){
+    $("#before-table tr").click(function () {
 
         let tr = $(this);
         let td = tr.children();
 
-        let no = td.eq(0).text();
+        let memberNo = td.eq(0).text();
 
-        location.href="/tutorApply/detail/" + no;
+        $.ajax({
+
+            url: "/tutorApply/detail",
+            data: {"memberNo": memberNo},
+            success: function (data) {
+
+                historyNo = data.applyHistoryNo;
+
+                console.log(data);
+
+                let careerList = data.careerList;
+                let qualificationList = data.qualificationList;
+                let member = data.member;
+
+                console.log(member);
+                console.log(qualificationList);
+                console.log(careerList);
+
+                const $memberTable = $("#memberInfo");
+                const $careerTable = $("#career");
+                const $qualificationTable = $("#qualification");
+
+                let $memberTbody = $("#memberInfo tbody");
+                let $careerTbody = $("#career tbody");
+                let $qualificationTbody = $("#qualification tbody");
+
+                $memberTbody.html("");
+                $careerTbody.html("");
+                $qualificationTbody.html("");
+
+                const $tr = $("<tr>");
+                const $td1 = $("<td>").text(member.name);
+                const $td2 = $("<td>").text(member.email);
+                const $td3 = $("<td>").text(member.phoneNum);
+
+                $tr.append($td1);
+                $tr.append($td2);
+                $tr.append($td3);
+
+                $memberTable.append($tr);
+
+                for (let i = 0; i < careerList.length; i++) {
+                    console.log(careerList[i]);
+
+                    const $tr = $("<tr>");
+                    const $td1 = $("<td>").text(careerList[i].startDate);
+                    const $td2 = $("<td>").text(careerList[i].endDate);
+                    const $td3 = $("<td>").text(careerList[i].position);
+                    const $td4 = $("<td>").text(careerList[i].company);
+                    const $td5 = $("<td>").text(careerList[i].responsibilities);
+
+                    $tr.append($td1);
+                    $tr.append($td2);
+                    $tr.append($td3);
+                    $tr.append($td4);
+                    $tr.append($td5);
+
+                    $careerTable.append($tr);
+                }
+                for (let i = 0; i < qualificationList.length; i++) {
+                    console.log(qualificationList[i]);
+
+                    const $tr = $("<tr>");
+                    const $td1 = $("<td>").text(qualificationList[i].acquisitionDate);
+                    const $td2 = $("<td>").text(qualificationList[i].name);
+                    const $td3 = $("<td>").text(qualificationList[i].qualificationNo);
+                    const $td4 = $("<td>").text(qualificationList[i].rating);
+
+                    $tr.append($td1);
+                    $tr.append($td2);
+                    $tr.append($td3);
+                    $tr.append($td4);
+
+                    $qualificationTable.append($tr);
+                }
+
+                $("#exampleModal").modal('show');
+            }
+        });
+
+        // location.href="/tutorApply/detail/" + no;
+    });
+
+    $("#approved-btn").click(function() {
+
+        location.href="/tutorApply/approved/" + historyNo;
+    });
+
+    $("#reject-btn").click(function() {
+
+        location.href="/tutorApply/reject/" + historyNo;
     });
 </script>
 </body>

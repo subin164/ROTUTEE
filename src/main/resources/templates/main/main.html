@@ -16,35 +16,39 @@
     }
 </script>
 <body>
-<button type="button" id="secession-btn" class="btn btn-primary">회원 탈퇴</button>
+<div th:include="/common/topMenubar.html"></div>
+
+<button type="button" id="secession-btn" class="btn btn-primary">
+    회원 탈퇴</button>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #4994EC; height: 50px;">
-                <h5 class="modal-title" id="exampleModalLabel">회원 탈퇴</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-8" style="height: 200px;">
-                        <p>탈퇴 사유</p>
-                        <select>
-                        </select>
-                        <p>상세 내용</p>
-                        <textarea></textarea>
+            <form action="/member/secession" method="post">
+                <div class="modal-header" style="background-color: #4994EC; height: 50px;">
+                    <h5 class="modal-title" id="exampleModalLabel">회원 탈퇴</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-8" style="height: 200px;">
+                            <p>탈퇴사유</p>
+                            <select id="reasonCategory" name="reasonNo">
+                            </select>
+                            <p>상세내용</p>
+                            <textarea name="content"></textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal2">탈퇴</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="submit" id="manager-btn" class="btn btn-danger">탈퇴</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<div th:include="/common/topMenubar.html"></div>
 <th:block th:if="${bannerList != null}">
     <div class="container p-0" style="max-width: none;">
         <div id="bannereIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -408,6 +412,27 @@
 <div th:include="/common/footer.html"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
+
+    $(function() {
+
+        $.ajax({
+            url: "/member/secessionCategory",
+            success: function(data) {
+                const reasonCategory = $("#reasonCategory");
+                reasonCategory.html("");
+                console.log(data);
+
+                for(let index in data) {
+
+                    reasonCategory.append($("<option>").val(data[index].no).text(data[index].name));
+                }
+            },
+            error: function(xhr) {
+                console.log(xhr);
+            }
+        });
+    });
+
     $(".lecture-item").click(function() {
         const lectureNo = $(this).children(".lectureNo").val();
         console.log(lectureNo);
@@ -416,7 +441,7 @@
 
     $("#secession-btn").click(function() {
 
-        $("#exampleModal").modal.show();
+        $("#exampleModal").modal('show');
     });
 </script>
 </body>

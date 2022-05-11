@@ -185,6 +185,8 @@ public class ServiceBoardController {
 
         BoardAnswerDTO boardAnswer = serviceBoardService.findAnswerByAnswerNo(answerNo);
 
+        System.out.println("boardAnswer = " + boardAnswer);
+
         boardAnswer.setContent(modifyContent);
         boardAnswer.setModifyDate(new Date(System.currentTimeMillis()));
 
