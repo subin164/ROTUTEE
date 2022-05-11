@@ -348,9 +348,14 @@
             <h3>관심분야</h3>
             <!--            <div class="관심분야" id="div_관심분야">-->
             <!--            </div>-->
-            <table id="관심분야">
-
-            </table>
+            <div>
+                <th:block th:each="category : ${ categoryList }">
+                    <input type="checkbox" class="btn-check" id="btn-category" th:attrappend="id=${ category.no }" th:value="${ category.no }" autoComplete="off" name="categoryNo">
+                    <label class="btn btn-outline-primary" for="btn-category" th:attrappend="for=${ category.no }" name="categoryLabel">
+                        <th:block th:text="${ category.name }"></th:block>
+                    </label>
+                </th:block>
+            </div>
             <br>
             <div>
                 <div class="signup-btn-wrap">
@@ -385,38 +390,22 @@
                 }
             }
         })
-
-        $.ajax({
-           type: "GET",
-           url: "/member/lecture/category",
-            success: function(data) {
-
-                const $table = $("#관심분야");
-
-                for(let index in data) {
-
-                    const $checkBox = $('<input type="checkbox" class="btn-check" id="btn-category" autoComplete="off" name="categoryNo">');
-                    const $label = $('<label class="btn btn-outline-primary" id="tests" for="btn-category" name="categoryLabel"/>').text(data[index].name);
-
-                    let categoryId = "btn-category" + index+1;
-
-                    $("#btn-category").attr('id',categoryId);
-                    $("#tests").attr('id', categoryId);
-                    $("#tests").attr('for', categoryId);
-
-                    console.log($('input[name="categoryNo"]:eq(' + index + ')').val());
-                    console.log($checkBox);
-                    console.log(index);
-                    console.log(data[index].no);
-
-                    $table.append($checkBox);
-                    $table.append($label);
-                }
-            }
-        });
     });
 
     function submitCheck() {
+
+        let categoryList = document.getElementsByName("categoryNo");
+        let isSeasonChk = false;
+
+        for(let i = 0; i < categoryList.length; i++) {
+            if(categoryList[i].checked == true) {
+                isSeasonChk = true;
+            }
+        }
+        if(!isSeasonChk) {
+            alert("관심분야를 1개 이상 선택해주세요.");
+            return false;
+        }
 
         // if(!emailCheck){
         //     alert("이메일 인증을 해주세요");
@@ -430,21 +419,6 @@
         // }
     }
 
-    $("#testbtn").click(function () {
-
-        let category;
-
-        category = '';
-        let obj_length = document.getElementsByName("categoryCheckBox").length;
-
-        for(let i = 0; i < obj_length; i++) {
-            if (document.getElementsByName("categoryCheckBox")[i].checked == true) {
-                category = console.log($('label[name="categoryLabel"]:eq(' + i + ')').val());
-                console.log($('label[name="categoryLabel"]:eq(' + i + ')').text());
-                console.log(category);
-            }
-        }
-    });
 
     $("#duplicate").click(function () {
 

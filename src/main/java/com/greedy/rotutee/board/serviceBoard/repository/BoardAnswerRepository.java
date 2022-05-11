@@ -24,7 +24,7 @@ public interface BoardAnswerRepository extends JpaRepository<BoardAnswer, Intege
 
     List<BoardAnswer> findByBoardNo(int boardNo);
 
-    List<BoardAnswer> findByNo(int answerNo);
+    BoardAnswer findByNo(int answerNo);
 
     List<BoardAnswer> findByBoardNoAndAnswerYn(int boardNo, char status);
 }

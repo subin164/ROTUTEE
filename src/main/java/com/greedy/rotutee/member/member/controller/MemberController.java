@@ -44,13 +44,19 @@ public class MemberController {
     public void memberLoginPage() {}
 
     @GetMapping("/regist")
-    public void memberRegistPage() {}
+    public ModelAndView memberRegistPage(ModelAndView mv) {
+
+        mv.addObject("categoryList", memberService.findLectureCategoryList());
+        mv.setViewName("/member/regist");
+
+        return mv;
+    }
 
     @GetMapping("/secession")
     public void memberSecessionPage() {}
 
     @PostMapping("/regist")
-    public String registMember(@ModelAttribute MemberDTO member,@RequestParam("categoryNo") int[] categoryNo, RedirectAttributes rttr) {
+    public String registMember(@ModelAttribute MemberDTO member, @RequestParam("categoryNo") int[] categoryNo, RedirectAttributes rttr) {
 
         memberService.registMember(member, categoryNo);
 

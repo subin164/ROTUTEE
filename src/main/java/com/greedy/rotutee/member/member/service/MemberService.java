@@ -42,12 +42,14 @@ public class MemberService {
     private final AttachedFileRepository attachedFileRepository;
     private final SecessionReasonRepository secessionReasonRepository;
     private final MemberSecessionHistoryRepository memberSecessionHistoryRepository;
-
+    private final PointAcquisitionPlaceRepository pointAcquisitionPlaceRepository;
+    private final PointHistoryRepositoryQuery pointHistoryRepositoryQuery;
+    private final PointHistoryRepository pointHistoryRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public MemberService(LectureCategoryRepository lectureCategoryRepository, MemberInterestPartRepository memberInterestPartRepository, PasswordEncoder passwordEncoder, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleRepository roleRepository, ModelMapper modelMapper, AchievementRepository achievementRepository, MemberAchievementRepository memberAchievementRepository, MemberAchievementHistoryRepository memberAchievementHistoryRepository, MemberStatusHistoryRepository memberStatusHistoryRepository, MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery, ReasonsRepository reasonsRepository, AttachedFileRepository attachedFileRepository, SecessionReasonRepository secessionReasonRepository, MemberSecessionHistoryRepository memberSecessionHistoryRepository) {
+    public MemberService(LectureCategoryRepository lectureCategoryRepository, MemberInterestPartRepository memberInterestPartRepository, PasswordEncoder passwordEncoder, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleRepository roleRepository, ModelMapper modelMapper, AchievementRepository achievementRepository, MemberAchievementRepository memberAchievementRepository, MemberAchievementHistoryRepository memberAchievementHistoryRepository, MemberStatusHistoryRepository memberStatusHistoryRepository, MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery, ReasonsRepository reasonsRepository, AttachedFileRepository attachedFileRepository, SecessionReasonRepository secessionReasonRepository, MemberSecessionHistoryRepository memberSecessionHistoryRepository, PointAcquisitionPlaceRepository pointAcquisitionPlaceRepository, PointHistoryRepositoryQuery pointHistoryRepositoryQuery, PointHistoryRepository pointHistoryRepository) {
 
         this.lectureCategoryRepository = lectureCategoryRepository;
         this.memberInterestPartRepository = memberInterestPartRepository;
@@ -65,6 +67,9 @@ public class MemberService {
         this.attachedFileRepository = attachedFileRepository;
         this.secessionReasonRepository = secessionReasonRepository;
         this.memberSecessionHistoryRepository = memberSecessionHistoryRepository;
+        this.pointAcquisitionPlaceRepository = pointAcquisitionPlaceRepository;
+        this.pointHistoryRepositoryQuery = pointHistoryRepositoryQuery;
+        this.pointHistoryRepository = pointHistoryRepository;
     }
 
     /* 사용자번호로 사용자 정보 조회용 메서드 */
@@ -95,11 +100,29 @@ public class MemberService {
 
         memberRepository.save(modelMapper.map(member, Member.class));
 
+        setMemberPointHistory(member);
         setMemberInterest(member, categoryNo);
         setMemberStatus(member);
 //        setMemberAchievement(member);
         setMemberRole(member);
     }
+
+    /* 사용자 등록시 포인트지급 메서드 */
+    private void setMemberPointHistory(MemberDTO member) {
+
+        Member foundMember = memberRepository.findMemberByEmail(member.getEmail());
+        PointAcquisitionPlace pointAcquisitionPlace = pointAcquisitionPlaceRepository.findById(99).get();
+        PointHistory pointHistory = new PointHistory();
+        pointHistory.setChangePoint(pointAcquisitionPlace.getPoint());
+        pointHistory.setChangeDate(new Date(System.currentTimeMillis()));
+        pointHistory.setDivision("획득");
+        pointHistory.setMember(foundMember);
+        pointHistory.setPointAcquisitionPlace(pointAcquisitionPlace);
+        pointHistory.setFinalPoint(pointAcquisitionPlace.getPoint());
+
+        pointHistoryRepository.save(pointHistory);
+    }
+
 
     /* 사용자 등록시 관심분야 등록용 메서드 */
     private void setMemberInterest(MemberDTO member, int[] categoryNo) {
@@ -112,11 +135,12 @@ public class MemberService {
             memberInterestPart.setMember(foundMember);
             memberInterestPart.setLectureCategory(lectureCategory);
             memberInterestPart.setInterestDegree(0);
-            for(int i = 0; i < categoryNo.length; i++) {
-                if(categoryNo[i] == memberInterestPart.getLectureCategory().getNo()) {
+            for (int i = 0; i < categoryNo.length; i++) {
+                if (categoryNo[i] == memberInterestPart.getLectureCategory().getNo()) {
                     memberInterestPart.setInterestDegree(10);
                 }
             }
+
             memberInterestPartRepository.save(memberInterestPart);
         }
     }
