@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -229,30 +230,32 @@ public class StudyService {
         study.setLinked(studyDTO.getLinked());
         study.setModifyDate(studyDTO.getModifyDate());
 
+        List<StudyByTag> studyByTagList = studyByTagRepository.findByStudyStudyNo(studyDTO.getStudyNo());
 
-        studyByTagRepository.deleteByStudyStudyNo(studyDTO.getStudyNo());
+        if (modifyTagList.isEmpty()) {
+            System.out.println("입력한 태그가 없음");
+
+            return;
+
+        } else {
+            StudyByTagDTO studyByTagDTO = new StudyByTagDTO();
+
+            TagDTO tagDTO = new TagDTO();
+
+            studyByTagDTO.setStudy(studyDTO);
 
 
-        List<StudyTag> equalAllTagName = studyTagRepository.findAll();
+            for (int i = 0; i < modifyTagList.size(); i++) {
 
-        for (int i = 0; i < modifyTagList.size(); i++) {
-
-            boolean duplicated = true;
-
-            for (int j = 0; j < equalAllTagName.size(); j++) {
-                TagDTO duplicatedTag = modelMapper.map(equalTagName.get(j), TagDTO.class);
-                if (duplicatedTag.getTagName().equals(modifyTagList.get(i))) {
-                    tagDTO.setTagName(modifyTagList.get(i));
-
-                    duplicated = true;
-                }
-            }
-            if (duplicated == false) {
                 tagDTO.setTagName(modifyTagList.get(i));
-                StudyTag studyTag = studyTagRepository.save(modelMapper.map(tagDTO, StudyTag.class));
-                studyByTagDTO.setTag(modelMapper.map(studyTag, TagDTO.class));
+
+                studyByTagDTO.setTag(tagDTO);
+
+                System.out.println("studyByTagDTO : " +  studyByTagDTO);
+
             }
-            studyByTagRepository.save(modelMapper.map(studyByTagDTO, StudyByTag.class));
         }
+
+
     }
 }
