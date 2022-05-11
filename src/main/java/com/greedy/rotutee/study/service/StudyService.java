@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -141,7 +142,7 @@ public class StudyService {
      * writer : 김형경
      * writerDate : 22/04/28 ~ 22/04/28
      * title : 모집글 상세페이지 조회
-     * content : 스터디 모집글 상세페이지에서 받은 요청을 처리하여 DB조회 결과 반환
+     * content : 스터디 상세페이지에서 받은 요청을 처리하여 DB조회 결과 반환
      * */
     public StudyDTO findStudyDetail(int studyNo) {
 
@@ -162,8 +163,8 @@ public class StudyService {
 
     public List<StudyReplyDTO> findStudyReply(int studyNo) {
 
-        List<StudyReply> studyReply = studyReplyRepository.findByStudyNoAndReplyStatus(studyNo,"N ");
-        System.out.println("글번호 :: "+ studyNo);
+        List<StudyReply> studyReply = studyReplyRepository.findByStudyNoAndReplyStatus(studyNo, "N ");
+        System.out.println("글번호 :: " + studyNo);
         System.out.println("댓글 리스트 " + studyReply);
         return studyReply.stream().map(studyReply1 -> modelMapper.map(studyReply1, StudyReplyDTO.class)).collect(Collectors.toList());
     }
@@ -181,23 +182,6 @@ public class StudyService {
         study.setPostStatus("Y");
     }
 
-    /*
-     * writer : 김형경
-     * writerDate : 22/04/29 ~ 22/05/01
-     * title : 작성한 모집글 수정
-     * content :
-     * */
-    @Transactional
-//    public void studyModify(StudyDTO studyDTO) {
-//        Study study = studyRepository.findById(studyDTO.getStudyNo()).get();
-//
-//        study.setTitle(studyDTO.getTitle());
-//        study.setContent(studyDTO.getContent());
-//        study.setEndDate(studyDTO.getEndDate());
-//        study.setLimited(studyDTO.getLimited());
-//        study.setLinked(studyDTO.getLinked());
-//        study.setRecruitStatus(studyDTO.getRecruitStatus());
-//    }
     /*
      * writer : 김형경
      * writerDate : 22/05/01 ~ 22/05/01
@@ -226,5 +210,52 @@ public class StudyService {
         modelMapper.map(studyReply, StudyReplyDTO.class);
 
         studyReplyRepository.save(modelMapper.map(studyReply, StudyReply.class));
+    }
+
+    /*
+     * writer : 김형경
+     * writerDate : 22/04/29 ~ 22/05/10
+     * title : 작성한 모집글 수정
+     * content :
+     * */
+    @Transactional
+    public void studyDetailModify(StudyDTO studyDTO, List<String> modifyTagList) {
+
+        Study study = studyRepository.getById(studyDTO.getStudyNo());
+
+        study.setTitle(studyDTO.getTitle());
+        study.setContent(studyDTO.getContent());
+        study.setEndDate(studyDTO.getEndDate());
+        study.setLimited(studyDTO.getLimited());
+        study.setLinked(studyDTO.getLinked());
+        study.setModifyDate(studyDTO.getModifyDate());
+
+        List<StudyByTag> studyByTagList = studyByTagRepository.findByStudyStudyNo(studyDTO.getStudyNo());
+
+        if (modifyTagList.isEmpty()) {
+            System.out.println("입력한 태그가 없음");
+
+            return;
+
+        } else {
+            StudyByTagDTO studyByTagDTO = new StudyByTagDTO();
+
+            TagDTO tagDTO = new TagDTO();
+
+            studyByTagDTO.setStudy(studyDTO);
+
+
+            for (int i = 0; i < modifyTagList.size(); i++) {
+
+                tagDTO.setTagName(modifyTagList.get(i));
+
+                studyByTagDTO.setTag(tagDTO);
+
+                System.out.println("studyByTagDTO : " +  studyByTagDTO);
+
+            }
+        }
+
+
     }
 }

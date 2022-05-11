@@ -111,8 +111,10 @@
             </div>
             <div class="modal-body">
                 <form action="/study/modify" method="post" id="detailModifyForm">
-                    <input type="hidden" id="detailModifyStudyNo">
-                    <div class=".detail-modify-item-row">
+                    <input type="hidden" id="detailModifyStudyNo" name="studyNo" th:value="${studyDetail.studyNo}">
+                    <input type="hidden" id="modifyTagList" name="modifyTagList" value="">
+
+                    <div class="detail-modify-item-row">
                         <div>
                             <div>모집마감일</div>
                             <input class="detail-modify-item" id="detailModifyEndDate" name="endDate" type="date"
@@ -128,9 +130,8 @@
                         <input class="detail-modify-item" id="detailModifyLinked" name="linked" type="text">
                     </div>
                     <div>#태그
-                        <ul class="d-flex" id="tagList">
-                            <li>#tag</li>
-                            <input class="detail-modify-item" id="detailModifyTag" name="tageList" type="text"
+                        <ul class="modify-item-tags" id="tagList">
+                            <input class="detail-modify-item" id="detailModifyTagInput" name="tageList" type="text"
                                    placeholder="#태그">
                         </ul>
                     </div>
@@ -156,21 +157,22 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 <script th:inline="javascript">
+    function noSpaceTag(event) {
 
-    // function noSpaceTag(event) {
-    //
-    //     if (event.keyCode == 32) {
-    //         event.preventDefault();
-    //     }
-    // }
-    //
-    // document.addEventListener('keydown', function (event) {
-    //     if (event.keyCode === 13) {
-    //         event.preventDefault();
-    //     }
-    //     ;
-    // }, true);
+        if (event.keyCode == 32) {
+            event.preventDefault();
+        }
+    }
 
+    document.addEventListener('keydown', function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+        }
+        ;
+    }, true);
+
+
+    /* 상세페이지 수정 눌렀을때 이전 값 조회 */
     function detailModifyButton() {
 
         const studyNo = document.getElementById("studyNo").value;
@@ -189,18 +191,72 @@
         document.getElementById("detailModifyLimited").value = limited;
         document.getElementById("detailModifyLinked").value = linked;
 
-        // taglist.length.each(function(){
-        //     document.getElementById("tagList").append("<div>");
-        // })
+        let div = document.createElement("div");
 
-        document.getElementById("detailModifyTag").value = taglist;
+        for (let i = 0; i < taglist.length; i++) {
+            $("#tagList").prepend("<li class='tag-item'>" + "<div name='addItem'>" + taglist[i] + "<span class='del-btn'><i class='bi bi-x'></i> </span>" + "</div>" + "</li>");
+        }
+
         document.getElementById("detaileModifyTitle").value = title;
         document.getElementById("detailModifyContent").value = content;
-
     }
 
-    /*스터디 댓글 작성*/
 
+    /* 상세페이지 모집글 수정 - 태그 */
+    $(document).ready(function () {
+
+        const tagList = {};
+        let counter = 0;
+
+        function addTag(value) {
+            tagList[counter] = value; // 태그를 Object 안에 추가
+            counter++; // counter 증가 삭제를 위한 del-btn 의 고유 id 가 된다.
+        }
+
+        $("#detailModifyTagInput")
+            .on("keyup", function (e) {
+                const self = $(this);
+                console.log("keypress");
+                console.log(self.val());
+
+
+                // input 에 focus 되있을 때 엔터 및 스페이스바 입력시 구동
+                if (e.key === "Enter") {
+                    const tagValue = self.val();
+
+                    const addTagItem = ("<li class='tag-item'>" + "<div name='addItem'>" + tagValue + "<span class='del-btn'><i class='bi bi-x'></i> </span>" + "</div>" + "</li>");
+
+                    $("#detailModifyTagInput").before(addTagItem);
+
+                    $("#detailModifyTagInput").val("");
+
+                    addTag(tagValue);
+
+                    let modifyTagArray = [];
+
+                    $("div[name=addItem]").each(function () {
+
+                        modifyTagArray.push(($(this).text()));
+
+                        console.log(modifyTagArray)
+
+                        $("#modifyTagList").val(modifyTagArray);
+                    });
+
+                    self.val("");
+
+                }
+
+            });
+        $(document)
+            .on("click", ".del-btn", function () {
+                $(this).closest("li").remove();
+            });
+    })
+    ;
+
+
+    /*스터디 댓글 작성*/
     if (document.getElementById("registReply")) {
 
         const $registReply = document.getElementById("registReply");
