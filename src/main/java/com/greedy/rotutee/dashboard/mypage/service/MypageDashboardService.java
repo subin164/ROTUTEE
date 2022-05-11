@@ -1,7 +1,12 @@
 package com.greedy.rotutee.dashboard.mypage.service;
 
+import com.greedy.rotutee.board.serviceBoard.dto.BoardDTO;
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.MypageDashboardDTO;
 import com.greedy.rotutee.dashboard.mypage.dto.tutor.MypageTutorDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.service
@@ -21,4 +26,5 @@ public interface MypageDashboardService {
 
     MypageTutorDTO findTutorDashboard(int memberNo);
 
+    Page<BoardDTO> findAllMyPost(int memberNo, Pageable pageable);
 }

@@ -3,10 +3,7 @@ package com.greedy.rotutee.member.member.controller;
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
-import com.greedy.rotutee.member.member.dto.LectureCategoryDTO;
-import com.greedy.rotutee.member.member.dto.MemberDTO;
-import com.greedy.rotutee.member.member.dto.MemberStatusHistoryDTO;
-import com.greedy.rotutee.member.member.dto.ReasonsDTO;
+import com.greedy.rotutee.member.member.dto.*;
 import com.greedy.rotutee.member.member.entity.MemberStatusHistory;
 import com.greedy.rotutee.member.member.service.MemberService;
 import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
@@ -233,10 +230,19 @@ public class MemberController {
     }
 
     @PostMapping("/secession")
-    public String secessionMember(@RequestParam("memberNo") int memberNo, @RequestParam("reasonNo") int reasonNo, @RequestParam("content") String content) {
+    public String secessionMember(@AuthenticationPrincipal CustomUser loginMember, @RequestParam("reasonNo") int reasonNo, @RequestParam("content") String content) {
 
-        memberService.secessionMember(memberNo, reasonNo, content);
+        memberService.secessionMember(loginMember.getNo(), reasonNo, content);
 
         return "redirect:/member/logout";
+    }
+
+    @GetMapping("/secessionCategory")
+    @ResponseBody
+    public List<SecessionReasonDTO> findAllSecessionCategory() {
+
+        List<SecessionReasonDTO> secessionReasonList = memberService.findAllSecessionCategory();
+
+        return secessionReasonList;
     }
 }

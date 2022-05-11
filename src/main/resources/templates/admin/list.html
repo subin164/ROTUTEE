@@ -108,22 +108,57 @@
 <body>
 <div th:include="/common/topMenubar.html"></div>
 <div class="box">
-  <label class="head">관리자 목록</label>
-  <button id="manageAdmin">관리</button>
-  <div class="manageAdmin_wrap">
-    <div class="manageAdmin_wrap2">
-      <div align="center">
-        이메일 <input type="text" id="searchValue"> <button class="myBtn" id="searchBtn">검색</button>
-        <table id="search-table" border="1px solid">
-        </table>
-      </div>
-      <div align="right" style="margin-top: 10px">
-        <button class="myBtn" id="registAdminBtn" style="display: none">관리자 등록</button>
-        <button class="myBtn" id="removeAdminBtn" style="display: none">관리자 해임</button>
-        <button class="myBtn" id="closeBtn">취소</button>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header" style="background-color: #4994EC; height: 50px;">
+            <h5 class="modal-title" id="exampleModalLabel">관리자 관리</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-8" style="height: auto;">
+                <p>
+                이메일 <input type="text" id="searchValue"> <button class="btn btn-danger" id="searchBtn">검색</button>
+                </p>
+                <hr>
+                  회원번호 <span id="no"></span>
+                <hr>
+                  이름 <span id="name"></span>
+                <hr>
+                  이메일 <span id="email"></span>
+              </div>
+              </div>
+            </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" id="registAdminBtn" style="display: none">관리자 등록</button>
+          <button class="btn btn-danger" id="removeAdminBtn" style="display: none">관리자 해임</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        </div>
+          </div>
+
       </div>
     </div>
   </div>
+
+
+  <label class="head">관리자 목록</label>
+  <button id="manageAdmin">관리</button>
+<!--  <div class="manageAdmin_wrap">-->
+<!--    <div class="manageAdmin_wrap2">-->
+<!--      <div align="center">-->
+<!--        이메일 <input type="text" id="searchValue"> <button class="myBtn" id="searchBtn">검색</button>-->
+<!--        <table id="search-table" border="1px solid">-->
+<!--        </table>-->
+<!--      </div>-->
+<!--      <div align="right" style="margin-top: 10px">-->
+<!--        <button class="myBtn" id="registAdminBtn" style="display: none">관리자 등록</button>-->
+<!--        <button class="myBtn" id="removeAdminBtn" style="display: none">관리자 해임</button>-->
+<!--        <button class="myBtn" id="closeBtn">취소</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
   <hr>
   <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -189,7 +224,7 @@
     </div>
   </div>
 </div>
-<div th:include="/common/footer.html"></div>
+<!--<div th:include="/common/footer.html"></div>-->
 <!--===============================================================================================-->
 <script src="../../static/sg/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -204,7 +239,7 @@
 
   $("#registAdminBtn").click(function() {
 
-    let searchValue = $("#searchEmail").val();
+    let searchValue = $("#email").text();
 
     $.ajax({
       url: "/admin/regist",
@@ -220,7 +255,7 @@
 
   $("#removeAdminBtn").click(function() {
 
-    let searchValue = $("#searchEmail").val();
+    let searchValue = $("#email").text();
 
     $.ajax({
       url: "/admin/remove",
@@ -245,37 +280,23 @@
       success: function(data) {
 
         if (data.name != null) {
-          const $table = $("#search-table");
 
-          $table.html(" ");
+          let role = data.memberRoleList;
+          $("#no").text(data.no);
+          $("#name").text(data.name);
+          $("#email").text(data.email);
 
-          const $firstTr = $("<tr>");
-          const $noTh = $("<th>").text("회원번호");
-          const $nameTh = $("<th>").text("회원명");
-          const $emailTh = $("<th>").text("이메일");
-
-
-          const $secondTr = $("<tr>");
-          const $noTd = $("<td>").val(data.no).text(data.no);
-          const $nameTd = $("<td>").val(data.name).text(data.name);
-          const $emailTd = $("<td id='searchEmail'>").val(data.email).text(data.email);
-
-          $firstTr.append($noTh);
-          $firstTr.append($nameTh);
-          $firstTr.append($emailTh);
-
-          $secondTr.append($noTd);
-          $secondTr.append($nameTd);
-          $secondTr.append($emailTd);
-
-          $table.append($firstTr);
-          $table.append($secondTr);
-
-          $("#registAdminBtn").css("display", "block");
-          $("#removeAdminBtn").css("display", "block");
+          if(role[0].role.name == "ROLE_ADMIN" || role[0].role.name == "ROLE_SUBADMIN") {
+            $("#removeAdminBtn").css("display", "block");
+          } else {
+            $("#registAdminBtn").css("display", "block");
+          }
         } else {
-          alert("조회 결과가 없습니다.");
 
+          alert("조회 결과가 없습니다.");
+          $("#no").text("");
+          $("#name").text("");
+          $("#email").text("");
           $("#registAdminBtn").css("display", "none");
           $("#removeAdminBtn").css("display", "none");
         }
@@ -296,7 +317,7 @@
 
   $("#manageAdmin").click(function(){
 
-    document.querySelector('.manageAdmin_wrap').style.display ='block';
+    $("#exampleModal").modal('show');
   });
 
 

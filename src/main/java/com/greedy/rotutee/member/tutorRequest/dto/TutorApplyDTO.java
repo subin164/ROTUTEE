@@ -1,5 +1,7 @@
 package com.greedy.rotutee.member.tutorRequest.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
 import lombok.*;
 
@@ -32,7 +34,9 @@ public class TutorApplyDTO {
     private String applyYn;
     private Date applyStatusDate;
     private MemberDTO admin;
+    @JsonIgnoreProperties(value = "tutorApply")
     private List<CareerDTO> careerList;
+    @JsonIgnoreProperties(value = "tutorApply")
     private List<QualificationDTO> qualificationList;
 
     @Override

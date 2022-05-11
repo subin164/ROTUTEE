@@ -1,5 +1,6 @@
 package com.greedy.rotutee.member.tutorRequest.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import java.sql.Date;
@@ -25,7 +26,7 @@ import java.sql.Date;
 public class CareerDTO {
 
     private int CareerNo;
-    private TutorApplyDTO tutorApply;
+//    private TutorApplyDTO tutorApply;
     private Date startDate;
     private Date endDate;
     private String position;

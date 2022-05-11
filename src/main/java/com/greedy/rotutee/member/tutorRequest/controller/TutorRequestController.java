@@ -95,17 +95,18 @@ public class TutorRequestController {
         return mv;
     }
 
-    @GetMapping("/detail/{no}")
-    public ModelAndView requestDetail(ModelAndView mv, @PathVariable int no) {
+    @GetMapping("/detail")
+    @ResponseBody
+    public TutorApplyDTO requestDetail(ModelAndView mv, @RequestParam("memberNo") int memberNo) {
 
-        System.out.println("no = " + no);
+        TutorApplyDTO tutorApply = tutorRequestService.findTutorRequestDetail(memberNo);
 
-        TutorApplyDTO tutorApply = tutorRequestService.findTutorRequestDetail(no);
+        return tutorApply;
 
-        mv.addObject("tutorApply", tutorApply);
-        mv.setViewName("/tutorApply/detail");
-
-        return mv;
+//        mv.addObject("tutorApply", tutorApply);
+//        mv.setViewName("/tutorApply/detail");
+//
+//        return mv;
     }
 
 

@@ -1,11 +1,17 @@
 package com.greedy.rotutee.dashboard.mypage.service;
 
+import com.greedy.rotutee.board.serviceBoard.dto.BoardDTO;
+import com.greedy.rotutee.board.serviceBoard.entity.Board;
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.*;
 import com.greedy.rotutee.dashboard.mypage.dto.tutor.MypageTutorDTO;
 import com.greedy.rotutee.dashboard.mypage.entity.*;
 import com.greedy.rotutee.dashboard.mypage.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -35,19 +41,21 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     private DashboardLectureRepository lectureRepository;
     private DashboardNoticeRepository noticeRepository;
     private DashboardLectureWatchRepository lectureWatchRepository;
+    private DashboardPostRepository dashboardPostRepository;
     private ModelMapper modelMapper;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public MypageDashboardServiceImpl(DashboardMemberRepository memberRepository, DashboardBasketRepository basketRepository, DashboardBoardRepository boardRepository, DashboardLectureRepository lectureRepository, DashboardNoticeRepository noticeRepository, DashboardLectureWatchRepository lectureWatchRepository, ModelMapper modelMapper) {
+    public MypageDashboardServiceImpl(DashboardMemberRepository memberRepository, DashboardBasketRepository basketRepository, DashboardBoardRepository boardRepository, DashboardLectureRepository lectureRepository, DashboardNoticeRepository noticeRepository, DashboardLectureWatchRepository lectureWatchRepository, DashboardPostRepository dashboardPostRepository, ModelMapper modelMapper) {
         this.memberRepository = memberRepository;
         this.basketRepository = basketRepository;
         this.boardRepository = boardRepository;
         this.lectureRepository = lectureRepository;
         this.noticeRepository = noticeRepository;
         this.lectureWatchRepository = lectureWatchRepository;
+        this.dashboardPostRepository = dashboardPostRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -386,6 +394,17 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
         return dashboard;
     }
 
+    @Override
+    public Page<BoardDTO> findAllMyPost(int memberNo, Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("no").descending());
+
+        Page<Board> boardList = dashboardPostRepository.findByMemberNo(memberNo, pageable);
+
+        return boardList.map(board -> modelMapper.map(board, BoardDTO.class));
+    }
 
 
 }

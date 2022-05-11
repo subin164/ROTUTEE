@@ -1,10 +1,7 @@
 package com.greedy.rotutee.member.member.service;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
-import com.greedy.rotutee.member.member.dto.LectureCategoryDTO;
-import com.greedy.rotutee.member.member.dto.MemberDTO;
-import com.greedy.rotutee.member.member.dto.MemberStatusHistoryDTO;
-import com.greedy.rotutee.member.member.dto.ReasonsDTO;
+import com.greedy.rotutee.member.member.dto.*;
 import com.greedy.rotutee.member.member.entity.*;
 import com.greedy.rotutee.member.member.entity.AttachedFile;
 import com.greedy.rotutee.member.member.entity.MemberRole;
@@ -337,4 +334,10 @@ public class MemberService {
         memberSecessionHistoryRepository.save(memberSecessionHistory);
     }
 
+    public List<SecessionReasonDTO> findAllSecessionCategory() {
+
+        List<SecessionReason> secessionReasonList = secessionReasonRepository.findAll();
+
+        return secessionReasonList.stream().map(secessionReason -> modelMapper.map(secessionReason, SecessionReasonDTO.class)).collect(Collectors.toList());
+    }
 }
