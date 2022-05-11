@@ -230,28 +230,41 @@ public class StudyService {
         study.setModifyDate(studyDTO.getModifyDate());
 
 
-        studyByTagRepository.deleteByStudyStudyNo(studyDTO.getStudyNo());
+        List<StudyTag> studyTagList = studyTagRepository.findAll();
 
+        TagDTO tagDTO = new TagDTO();
 
-        List<StudyTag> equalAllTagName = studyTagRepository.findAll();
+        StudyByTagDTO studyByTagDTO = new StudyByTagDTO();
+
 
         for (int i = 0; i < modifyTagList.size(); i++) {
 
-            boolean duplicated = true;
+            boolean duplicated = false;
 
-            for (int j = 0; j < equalAllTagName.size(); j++) {
-                TagDTO duplicatedTag = modelMapper.map(equalTagName.get(j), TagDTO.class);
+            for (int j = 0; j < studyTagList.size(); j++) {
+
+                TagDTO duplicatedTag = modelMapper.map(studyTagList.get(j), TagDTO.class);
+
                 if (duplicatedTag.getTagName().equals(modifyTagList.get(i))) {
                     tagDTO.setTagName(modifyTagList.get(i));
 
                     duplicated = true;
+
+                    studyByTagDTO.setTag(duplicatedTag);
+
                 }
             }
             if (duplicated == false) {
+
                 tagDTO.setTagName(modifyTagList.get(i));
                 StudyTag studyTag = studyTagRepository.save(modelMapper.map(tagDTO, StudyTag.class));
+
                 studyByTagDTO.setTag(modelMapper.map(studyTag, TagDTO.class));
+
             }
+
+            studyByTagDTO.setStudy(modelMapper.map(study, StudyDTO.class));
+
             studyByTagRepository.save(modelMapper.map(studyByTagDTO, StudyByTag.class));
         }
     }
