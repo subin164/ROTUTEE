@@ -38,4 +38,6 @@ public interface ReportService {
     boolean rejectAnswerReport(int answerNo, int memberNo);
 
     boolean registBoardReport(ReportDTO report);
+
+    boolean registAnswerReport(ReportDTO report);
 }

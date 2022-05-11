@@ -59,11 +59,6 @@ public class LMSDashboardController {
         HttpSession session = request.getSession();
         session.removeAttribute("lectureNo");
         session.setAttribute("lectureNo", lectureNo);
-        int testtest = (Integer)session.getAttribute("lectureNo");
-
-        System.out.println("넣어주는 session이다!!!!!!!!!!!!!!!!!!!!!! = " + session);
-        System.out.println("lectureNo==================================================== = " + lectureNo);
-        System.out.println("우에에에에에에에에엥에에에에에에에에에엥에ㅔ = " + testtest);
 
         ToDoDTO todo = new ToDoDTO();
         todo.setMemberNo(memberNo);

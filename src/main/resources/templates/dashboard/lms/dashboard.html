@@ -274,11 +274,14 @@
                 </div>
             </div>
             <div class="addtodo">
-                <input class="add-input" type="text">
-                <!-- <button class="button float">추가</button> -->
-                <button class="w-btn w-btn-gra1 add-btn">
-                    BUTTON
-                </button>
+                <form action="/todo/regist" method="post">
+                    <input class="add-input" type="text" name="content">
+                    <input type="hidden" th:value="${lectureNo}" name="lectureNo">
+                    <!-- <button class="button float">추가</button> -->
+                    <button type="submit" class="w-btn w-btn-gra1 add-btn">
+                        BUTTON
+                    </button>
+                </form>
             </div>
         </div>
         <div class="container2">

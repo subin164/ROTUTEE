@@ -1,7 +1,9 @@
 package com.greedy.rotutee.report.service;
 
+import com.greedy.rotutee.report.dto.ReportBoardAnswerDTO;
 import com.greedy.rotutee.report.dto.ReportDTO;
 import com.greedy.rotutee.report.entity.Report;
+import com.greedy.rotutee.report.entity.ReportBoardAnswer;
 import com.greedy.rotutee.report.repository.ReportRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -260,6 +262,15 @@ public class ReportServiceImpl implements ReportService{
 
         Report reportEntity = modelMapper.map(report, Report.class);
         reportRepository.save(reportEntity);
+
+        return true;
+    }
+
+    @Override
+    public boolean registAnswerReport(ReportDTO report) {
+
+        Report reportAnswerEntity = modelMapper.map(report, Report.class);
+        reportRepository.save(reportAnswerEntity);
 
         return true;
     }
