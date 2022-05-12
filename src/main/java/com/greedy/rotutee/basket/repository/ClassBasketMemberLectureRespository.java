@@ -19,7 +19,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ClassBasketMemberLectureRespository extends JpaRepository<MemberLecture, Integer> {
     Lecture findByLectureNo(int lectureNo);
 
-    Member findByNo(int memberNo);
+//    Member findByNo(int memberNo);
 
     MemberLecture findByMemberNoAndLectureNo(int memberNo, int lectureNo);
 }

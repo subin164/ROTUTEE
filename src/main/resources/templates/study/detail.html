@@ -23,7 +23,7 @@
         <!-- 메인 컨텐츠 -->
         <div class="main-content">
             <!-- 모집글 상세보기 -->
-            <div>
+            <div class="mb-md-3 ">
                 <ul>
                     <input type="hidden" id="studyNo" th:value="${studyDetail.studyNo}">
                     <input type="hidden" id="endDate" th:value="${studyDetail.endDate}">
@@ -61,30 +61,30 @@
                 </ul>
             </div>
 
-            <!-- 모집글 댓글목록 -->
-            <div class="card" th:each="studyReply:${studyReplyList}">
-                <div class="card-header d-flex w-100">
-                    <div>
-                        <div th:text="${studyReply.writer.nickname}" style="margin-bottom: 20px"></div>
-                        <div th:text="${studyReply.replyWriteDate}"></div>
-                    </div>
-                    <div class="detaile-replay-edit-button">
-                        <div th:if="${#authentication.principal.nickname.toString()} eq ${studyReply.writer.nickname.toString()}">
-                            <button class="btn modifyBtn" data-bs-toggle="modal" data-bs-target="#replyModifyModal"
-                                    th:value="${ studyReply.replyNo }">수정
-                            </button>
-                            <button class="btn" th:onclick="|replyRemoveBtn(${studyReply.replyNo})|">삭재</button>
+            <!--모집글 댓글목록-->
+            <div class="card  my-md-3" id="studyReplyList" th:each="studyReply:${studyReplyList}">
+                <div class="card-body">
+                    <div class="d-flex w-100">
+                        <div>
+                            <div th:text="${studyReply.writer.nickname}" style="margin-bottom: 20px"></div>
+                            <div th:text="${studyReply.replyWriteDate}"></div>
+                        </div>
+                        <div class="detaile-replay-edit-button">
+                            <div th:if="${#authentication.principal.nickname.toString()} eq ${studyReply.writer.nickname.toString()}">
+                                <button class="btn modifyBtn" data-bs-toggle="modal" data-bs-target="#replyModifyModal"
+                                        th:value="${studyReply.replyNo }">수정
+                                </button>
+                                <button class="btn" th:onclick="|replyRemoveBtn(${studyReply.replyNo})|">삭재</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
+                    <hr>
                     <div id="replyContent" th:attrappend="id=${ studyReply.replyNo }" name="replyContent"
                          th:text="${studyReply.replyContent}" value="??"/>
                 </div>
             </div>
-
             <!-- 댓글 작성 -->
-            <div class="card mt-md-5 ">
+            <div class="card my-md-5" id="replyRegistArea">
                 <div class="card-header p-md-3">
                     <div sec:authentication="principal.nickname"></div>
                 </div>
@@ -95,17 +95,22 @@
                     </form>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-outline-primary" th:onclick="|replyRegistBtn()|">답변등록</button>
+                    <div class="d-flex">
+                        <button class="btn btn-outline-secondary  ms-md-auto" th:onclick="|replyRegistBtn()|">답변등록
+                        </button>
+                    </div>
                 </div>
             </div>
-
         </div>
-        </div>
-
         <!-- 오른쪽 사이드메뉴-->
         <div class="sideMenu">
-            <button class="btn btn-outline-primary mb-md-3">모집중</button>
-            <button class="btn btn-outline-primary">신청하기</button>
+            <div th:if="${studyDetail.recruitStatus == 'Y' }">
+                <button class="btn btn-outline-success mb-md-3" th:onclick="@{/study/recruitStatus}">모집중</button>
+            </div>
+            <div th:if="${studyDetail.recruitStatus == 'N' }">
+                <button class="btn btn-outline-danger mb-md-3">모집종료</button>
+            </div>
+            <button class="btn btn-outline-success">신청하기</button>
         </div>
     </section>
 </main>
@@ -286,8 +291,7 @@
             .on("click", ".del-btn", function () {
                 $(this).closest("li").remove();
             });
-    })
-    ;
+    });
 
 
     /*스터디 댓글 작성*/
@@ -301,8 +305,8 @@
             type: "post",
             data: {replyContent: replyContent, studyNo: studyNo},
             success: function (data) {
-                alert("성공");
             },
+
             error: function (data) {
                 alert("실패");
             }
@@ -327,8 +331,6 @@
 
         });
     }
-
-
 
 
     $(".modifyBtn").click(function () {
