@@ -60,7 +60,9 @@
     <p style="font-size: x-large">
         보유 포인트 : <span th:text="${ memberPoint }"></span>P
     </p>
-    <button style="border: 0px solid; background-color: white; font-size: x-large; color: #4f93c8" onclick="location.href='/point/roulette'">P 룰렛</button>
+    <button style="border: 0px solid; background-color: white; font-size: x-large; color: #4f93c8"
+            onclick="location.href='/point/roulette'">P 룰렛
+    </button>
 </div>
 <div class="상품추가모달">
     <div>
@@ -74,8 +76,8 @@
                     <td>
                         <br>
                         <h3>상품</h3>
-<!--                        <select id="coupons" name="couponNo">-->
-<!--                        </select>-->
+                        <!--                        <select id="coupons" name="couponNo">-->
+                        <!--                        </select>-->
                         <br><br>
                         <h3>상품명</h3>
                         <input type="text" name="productName">
@@ -101,29 +103,33 @@
         </form>
     </div>
 </div>
-<div class="container">
-<div class="row">
-<!--    <th:block th:each="product : ${ productList }">-->
+<div class="container" style="min-height: 600px">
+    <div class="row">
+        <!--    <th:block th:each="product : ${ productList }">-->
         <div th:each="product : ${ productList }" class="col" style="margin-top: 30px;">
             <div class="card" style="width: 18rem; height: 400px;">
                 <img th:src="@{/sg/image/coupons.jpg}" class="card-img-top" alt="..." th:width="300px"
                      th:height="300px" id="couponImg">
                 <div class="card-body" id="productDiv" th:attrappend="id=${ product.productNo }">
                     <h5 class="card-title">
-                        <span th:text="${ product.productName }" id="spanName" th:attrappend="id=${ product.productNo }"></span>
+                        <span th:text="${ product.productName }" id="spanName"
+                              th:attrappend="id=${ product.productNo }"></span>
                     </h5>
                     <p class="card-text">
-                        <span th:text="${ product.productPrice }" id="spanPrice" th:attrappend="id=${ product.productNo }"></span>
+                        <span th:text="${ product.productPrice }" id="spanPrice"
+                              th:attrappend="id=${ product.productNo }"></span>
                     </p>
                     <p class="card-text">
-                        <span th:text="${ product.remainingNumber }" id="spanRemainingNumber" th:attrappend="id=${ product.productNo }"></span> /
-                        <span th:text="${ product.totalSalesCount }" id="spanTotalSalesCount" th:attrappend="id=${ product.productNo }"></span>
+                        <span th:text="${ product.remainingNumber }" id="spanRemainingNumber"
+                              th:attrappend="id=${ product.productNo }"></span> /
+                        <span th:text="${ product.totalSalesCount }" id="spanTotalSalesCount"
+                              th:attrappend="id=${ product.productNo }"></span>
                     </p>
                     <p>
                         <button type="button" th:value="${ product.productNo }" class="productBtn">교환하기</button>
                         <th: sec:authorize="hasAnyRole('ADMIN', 'SUBADMIN')">
-                        <button type="button" th:value="${ product.productNo }" class="modifyBtn">관리</button>
-                        <button type="button" th:value="${ product.productNo }" class="removeBtn">삭제</button>
+                            <button type="button" th:value="${ product.productNo }" class="modifyBtn">관리</button>
+                            <button type="button" th:value="${ product.productNo }" class="removeBtn">삭제</button>
                         </th:>
                     </p>
                 </div>
@@ -131,66 +137,73 @@
                     <form action="/point/modify" method="post">
                         <input type="hidden" th:value="${ product.productNo }" name="productNo">
                         <h5 class="card-title">
-                            <input type="text" th:value="${ product.productName }" name="productName" id="modifyName" th:attrappend="id=${ product.productNo }">
+                            <input type="text" th:value="${ product.productName }" name="productName" id="modifyName"
+                                   th:attrappend="id=${ product.productNo }">
                         </h5>
                         <p class="card-text">
-                            <input type="text" th:value="${ product.productPrice }" name="productPrice" id="modifyPrice" th:attrappend="id=${ product.productNo }">
+                            <input type="text" th:value="${ product.productPrice }" name="productPrice" id="modifyPrice"
+                                   th:attrappend="id=${ product.productNo }">
                         </p>
                         <p class="card-text">
-                            <input type="number" th:value="${ product.remainingNumber }" name="remainingNumber" style="width: 50px;" id="modifyRemainingNumber" th:attrappend="id=${ product.productNo }"> /
-                            <input type="number" th:value="${ product.totalSalesCount }" name="totalSalesCount" style="width: 50px;" id="modifyTotalSalesCount" th:attrappend="id=${ product.productNo }">
+                            <input type="number" th:value="${ product.remainingNumber }" name="remainingNumber"
+                                   style="width: 50px;" id="modifyRemainingNumber"
+                                   th:attrappend="id=${ product.productNo }"> /
+                            <input type="number" th:value="${ product.totalSalesCount }" name="totalSalesCount"
+                                   style="width: 50px;" id="modifyTotalSalesCount"
+                                   th:attrappend="id=${ product.productNo }">
                         </p>
                         <p>
-                            <button type="submit">수정하기</button> <button type="button" th:value="${ product.productNo }" class="resetModify">취소</button>
+                            <button type="submit">수정하기</button>
+                            <button type="button" th:value="${ product.productNo }" class="resetModify">취소</button>
                         </p>
                     </form>
                 </div>
             </div>
         </div>
-<!--    </th:block>-->
-    <th: sec:authorize="hasAnyRole('ADMIN', 'SUBADMIN')">
-    <div class="col" style="margin-top: 30px;">
-        <div class="card" style="width: 18rem; height: 400px;">
-            <img th:src="@{/sg/image/plus.png}" class="card-img-top" alt="..." th:width="300p"
-                 th:height="300px" id="registImg">
-            <div class="card-body" id="registDiv"style="display: none">
-                <form action="/point/regist" method="post">
-                <p class="card-text">
-                    상품　　
-                    <select id="coupons" name="couponNo">
-                    </select>
-                </p>
-                <p class="card-text">
-                    상품명　
-                    <input type="text" name="productName">
-                </p>
-                <p class="card-text">
-                    상품설명
-                    <input type="text" name="productContent">
-                </p>
-                <p class="card-text">
-                    상품가격
-                    <input type="number" name="productPrice">
-                </p>
-                <p class="card-text">
-                    판매개수
-                    <input type="number" name="totalSalesCount">
-                </p>
-                <input type="submit" value="상품추가"/>
-                    <button type="button" id="resetBtn">취소</button>
-                </form>
+        <!--    </th:block>-->
+        <th: sec:authorize="hasAnyRole('ADMIN', 'SUBADMIN')">
+            <div class="col" style="margin-top: 30px;">
+                <div class="card" style="width: 18rem; height: 400px;">
+                    <img th:src="@{/sg/image/plus.png}" class="card-img-top" alt="..." th:width="300p"
+                         th:height="300px" id="registImg">
+                    <div class="card-body" id="registDiv" style="display: none">
+                        <form action="/point/regist" method="post">
+                            <p class="card-text">
+                                상품　　
+                                <select id="coupons" name="couponNo">
+                                </select>
+                            </p>
+                            <p class="card-text">
+                                상품명　
+                                <input type="text" name="productName">
+                            </p>
+                            <p class="card-text">
+                                상품설명
+                                <input type="text" name="productContent">
+                            </p>
+                            <p class="card-text">
+                                상품가격
+                                <input type="number" name="productPrice">
+                            </p>
+                            <p class="card-text">
+                                판매개수
+                                <input type="number" name="totalSalesCount">
+                            </p>
+                            <input type="submit" value="상품추가"/>
+                            <button type="button" id="resetBtn">취소</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
+        </th:>
     </div>
-    </th:>
-</div>
 </div>
 <br><br>
-<!--<div th:include="/common/footer.html"></div>-->
+<div th:include="/common/footer.html"></div>
 
 <script>
 
-    $(".resetModify").click(function(){
+    $(".resetModify").click(function () {
 
         const productNo = $(this).val();
 
@@ -199,7 +212,7 @@
         // $("#couponImg").show();
     });
 
-    $(".modifyBtn").click(function(){
+    $(".modifyBtn").click(function () {
 
         const productNo = $(this).val();
 
@@ -220,13 +233,13 @@
 
     });
 
-    $("#resetBtn").click(function(){
+    $("#resetBtn").click(function () {
 
         $("#registDiv").hide();
         $("#registImg").show();
     });
 
-    $("#registImg").click(function() {
+    $("#registImg").click(function () {
 
 
         $("#registDiv").show();
@@ -241,12 +254,12 @@
         const spanRemainingNumber = $("#spanRemainingNumber" + productNo).text();
         const spanTotalSalesCount = $("#spanTotalSalesCount" + productNo).text();
 
-        if(spanRemainingNumber <= 0) {
+        if (spanRemainingNumber <= 0) {
             alert("상품이 다 떨어졌습니다.");
             return false;
         }
-        
-        if(memberPoint < productPrice) {
+
+        if (memberPoint < productPrice) {
             alert(memberPoint)
             alert(productPrice)
             alert("포인트가 부족합니다.");
@@ -268,17 +281,17 @@
 
         $.ajax({
 
-          url: "/point/coupons",
-          success: function(data) {
-              const coupons = $("#coupons");
-              coupons.html("");
-              console.log(data);
+            url: "/point/coupons",
+            success: function (data) {
+                const coupons = $("#coupons");
+                coupons.html("");
+                console.log(data);
 
-              for(let index in data) {
-                  coupons.append($("<option>").val(data[index].couponNo).text(data[index].couponName));
-              }
+                for (let index in data) {
+                    coupons.append($("<option>").val(data[index].couponNo).text(data[index].couponName));
+                }
 
-          }
+            }
         });
 
 

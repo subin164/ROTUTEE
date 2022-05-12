@@ -171,7 +171,7 @@ public class MemberController {
     }
     @ResponseBody
     @GetMapping("/detail")
-    public Map<String, Object> memberDetail(ModelAndView mv, @RequestParam("memberNo") int memberNo) {
+    public Map<String, Object> findMemberDetail(ModelAndView mv, @RequestParam("memberNo") int memberNo) {
 
         MemberDTO member = memberService.findMember(memberNo);
         AttachedFileDTO attachedFile = profileService.findMemberProfile(memberNo);
@@ -197,21 +197,13 @@ public class MemberController {
                 tutorInfo.setBankName("미입력");
             }
             memberDetailMap.put("tutorInfo", tutorInfo);
-
-//            mv.addObject("tutorInfo", tutorInfo);
         }
-
-//        mv.addObject("attachedFile", attachedFile);
-//        mv.addObject("memberStatus", memberStatus);
-//        mv.addObject("member", member);
-//        mv.setViewName("/member/detail");
-//        return mv;
 
         return memberDetailMap;
     }
 
     @PostMapping("/stop")
-    public String memberStatusStop(@RequestParam("memberNo") String memberNo,
+    public String registLimitedMember(@RequestParam("memberNo") String memberNo,
                                    @RequestParam("stopReasons") String stopReasons, @RequestParam("stopDate") String stopDate) {
 
         memberService.memberStatusStop(Integer.parseInt(memberNo), Integer.parseInt(stopReasons), Integer.parseInt(stopDate));
@@ -220,11 +212,11 @@ public class MemberController {
         System.out.println("stopReasons = " + stopReasons);
         System.out.println("stopDate = " + stopDate);
 
-        return "redirect:/member/detail/" + memberNo;
+        return "redirect:/member/list";
     }
 
     @GetMapping("/play/{memberNo}")
-    public String memberStatusPlay(@PathVariable("memberNo") int memberNo) {
+    public String modifyLimitedMember(@PathVariable("memberNo") int memberNo) {
 
         memberService.memberStatusPlay(memberNo);
 

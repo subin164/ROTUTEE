@@ -1,10 +1,7 @@
 package com.greedy.rotutee.config;
 
 import com.greedy.rotutee.Authentication.service.AuthenticationService;
-import com.greedy.rotutee.main.controller.CustomAuthenticationEntryPoint;
-import com.greedy.rotutee.main.controller.UserLogoutSuccessHandler;
-import com.greedy.rotutee.main.controller.WebAccessDeniedHandler;
-import com.greedy.rotutee.main.controller.UserLoginSuccessHandler;
+import com.greedy.rotutee.main.controller.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,14 +24,18 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserLoginSuccessHandler userLoginSuccessHandler;
     private final UserLogoutSuccessHandler userLogoutSuccessHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final UserLoginFailHandler userLoginFailHandler;
 
     @Autowired
-    public SpringSecurityConfiguration(AuthenticationService authenticationService, WebAccessDeniedHandler webAccessDeniedHandler, UserLoginSuccessHandler userLoginSuccessHandler, UserLogoutSuccessHandler userLogoutSuccessHandler, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
+    public SpringSecurityConfiguration(AuthenticationService authenticationService, WebAccessDeniedHandler webAccessDeniedHandler,
+                                       UserLoginSuccessHandler userLoginSuccessHandler, UserLogoutSuccessHandler userLogoutSuccessHandler,
+                                       CustomAuthenticationEntryPoint customAuthenticationEntryPoint, UserLoginFailHandler userLoginFailHandler) {
         this.authenticationService = authenticationService;
         this.webAccessDeniedHandler = webAccessDeniedHandler;
         this.userLoginSuccessHandler = userLoginSuccessHandler;
         this.userLogoutSuccessHandler = userLogoutSuccessHandler;
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+        this.userLoginFailHandler = userLoginFailHandler;
     }
 
 
@@ -85,14 +86,15 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 //                .successForwardUrl("/")  // 성공시 이곳으로 가겠다
                 .successHandler(userLoginSuccessHandler)
-                .failureForwardUrl("/error/login")  // 실패시 이곳으로 가겠다
+                .failureHandler(userLoginFailHandler)
+//                .failureForwardUrl("/error/login")  // 실패시 이곳으로 가겠다
                 .and()
                 .logout()
 //                .logoutUrl("/member/logout")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))  // 이 요청이 들어오면 로그아웃을 하겠다
                 .deleteCookies("JSESSIONID")  // 성공하게 되면 JSESSIONID 라는 쿠키를 삭제 시킬 것
                 .invalidateHttpSession(true)  // 세션정보를 무효화시키겠다
-                .logoutSuccessUrl("/member/logoutSuccess")  // 성공시 이곳으로 가겠다
+                .logoutSuccessUrl("/member/login")  // 성공시 이곳으로 가겠다
 //                .logoutSuccessHandler(userLogoutSuccessHandler)
                 .and()
                 .exceptionHandling().accessDeniedHandler(webAccessDeniedHandler);

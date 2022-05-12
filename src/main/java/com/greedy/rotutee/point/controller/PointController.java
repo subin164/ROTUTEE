@@ -62,7 +62,7 @@ public class PointController {
 
     @PostMapping(value = "/roulette", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public int roulette(@AuthenticationPrincipal CustomUser loginMember) {
+    public int uesRoulette(@AuthenticationPrincipal CustomUser loginMember) {
 
         int randPoint = (int) (Math.random() * 100 ) + 1;
         pointService.playRoulette(loginMember.getNo(), randPoint);
