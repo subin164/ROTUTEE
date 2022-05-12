@@ -184,7 +184,6 @@
 <script>
     $("tbody > tr").click(function() {
         const lectureNo = $(this).children("input").val();
-        console.log(lectureNo);
         location.href = "/request/lecturedetail?lectureNo=" + lectureNo;
     })
 </script>

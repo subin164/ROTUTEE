@@ -74,7 +74,7 @@
                                         <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
                                         <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
                                     </fieldset>
-                                    <p style="margin-left: 250px; margin-top: 10px; font-size: x-large;">별점을 선택해 주세요</p>
+                                    <p style="margin-left: 220px; margin-top: 10px; font-size: x-large;">별점을 선택해 주세요</p>
                                     <textarea id="reviewForm" placeholder="강의평을 작성해주세요" cols="80" rows="4" name="content"></textarea>
                                     <button type="submit" class="btn btn-primary btn-sm" id="writeReview">작성</button>
                                 </form>
@@ -214,13 +214,11 @@
         $(".remove").click(function() {
             const lectureReviewNo = $(this).parent().siblings().children(".lectureReviewNo").val();
             const lectureNo = [[${lecture.lectureNo}]]
-            console.log(lectureNo)
             location.href = "/lecture/removereview?lectureReviewNo=" + lectureReviewNo + "&lectureNo=" + lectureNo;
         })
 
         $(".addcart").click(function() {
             const lectureNo = [[${lecture.lectureNo}]]
-            console.log(lectureNo)
             location.href = "/basket/regist/" + lectureNo;
         })
     </script>

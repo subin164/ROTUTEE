@@ -314,12 +314,10 @@
 </div>
 <script th:inline="javascript">
     const lectureCategoryNo = [[${lecture.category.lectureCategoryNo}]]
-    console.log(lectureCategoryNo)
-    $("input[value=" +lectureCategoryNo +"]").prop("checked", true);
+    $("input[value=" + lectureCategoryNo +"]").prop("checked", true);
     const level = [[${lecture.lectureLevel}]]
-    $("input[value=" +level +"]").prop("checked", true);
-</script>
-<script>
+    $("input[value=" + level +"]").prop("checked", true);
+
     $(".reject").click(function () {
         const lectureNo = $("#lectureNo").val();
         const rejectionCategoryNo = $("#rejectionCategory").val();

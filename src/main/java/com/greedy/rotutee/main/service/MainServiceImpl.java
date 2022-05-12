@@ -138,8 +138,6 @@ public class MainServiceImpl implements MainService{
 
         List<AttachedFile> bannerList = mainAttachedFileRepository.findByRecentLectureBanner();
 
-        System.out.println("bannerList = " + bannerList);
-
         List<AttachedFileDTO> bannerDTOList = new ArrayList<>();
         for(AttachedFile banner : bannerList) {
 

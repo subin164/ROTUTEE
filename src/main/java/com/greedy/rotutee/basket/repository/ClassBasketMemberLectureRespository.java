@@ -4,6 +4,7 @@ import com.greedy.rotutee.basket.entity.Lecture;
 import com.greedy.rotutee.basket.entity.Member;
 import com.greedy.rotutee.basket.entity.MemberLecture;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * packageName : com.greedy.rotutee.basket.repository
@@ -15,11 +16,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * DATE              AUTHOR      NOTE * -----------------------------------------------------------
  * 2022-05-12          soobeen     최초 생성
  */
-
+@Repository
 public interface ClassBasketMemberLectureRespository extends JpaRepository<MemberLecture, Integer> {
-    Lecture findByLectureNo(int lectureNo);
+//    Lecture findByLectureNo(int lectureNo);
 
-    Member findByNo(int memberNo);
+//    Member findByNo(int memberNo);
 
     MemberLecture findByMemberNoAndLectureNo(int memberNo, int lectureNo);
 }

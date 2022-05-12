@@ -205,7 +205,12 @@ public class BasketServiceImpl implements BasketService{
 
         MemberLecture memberLectureEntity = classBasketMemberLectureRespository.findByMemberNoAndLectureNo(no, lectureNo);
 
-        return null;
+        if(memberLectureEntity == null) {
+
+            return null;
+        }
+
+        return modelMapper.map(memberLectureEntity, MemberLectureDTO.class);
     }
 
 }
