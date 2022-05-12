@@ -24,7 +24,7 @@ import lombok.*;
 @Table(name = "TBL_NOTICE")
 @SequenceGenerator(
         name = "NOTICE_SEQ_GENERATOR",
-        sequenceName = "TODO_NO",
+        sequenceName = "NOTICE_NO",
         initialValue = 1,
         allocationSize = 1
 )

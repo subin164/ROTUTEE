@@ -155,6 +155,7 @@
                     <input id="boardNo" type="hidden" th:value="${board.boardNo}">
                     <input id="category" type="hidden" th:value="${board.freeBoardCategory.boardCategoryNo}">
                     <input id="writerNo" type="hidden" th:value="${board.freeBoardMember.memberNo}">
+                    <input id="boardTitle" type="hidden" th:value="${board.boardTitle}">
                     <td class="boardTitle-td" th:text="제목"></td>
                     <td class="boardTitle-td" th:text="${board.boardTitle}"></td>
                     <td class="boardTitle-td" th:text="${board.freeBoardMember.memberName}"></td>
@@ -206,6 +207,7 @@
                             <div class="answer-content-info" id="answerBox">
                                 <input id="answerNo" type="hidden" th:value="${answer.answerNo}"/>
                                 <input type="hidden" th:value="${answer.freeBoardMember.memberNo}">
+                                <input type="hidden" th:value="${answer.answerContent}">
                                 <div class="answer-column" th:text="${answer.freeBoardMember.memberName}"></div>
                                 <div class="answer-column" th:text="${answer.answerContent}"></div>
                                 <div class="answer-column" th:text="${answer.answerCreatedDate}"></div>
@@ -469,6 +471,7 @@
         const reportContent = $("#reportContent").val();
         const boardNo = $("#boardNo").val();
         const reasonNo = $('input:radio[name="reasonNo"]').val();
+        const title = $("#boardTitle").val();
         console.log(writerNo);
         $.ajax({
             url: "/report/board",
@@ -476,6 +479,7 @@
             data: {
                 division: division,
                 writerNo: writerNo,
+                title : title,
                 content: reportContent,
                 boardNo: boardNo,
                 reasonNo: reasonNo
@@ -491,6 +495,7 @@
     })
     $("#declarationAnswer").click(function () {
         const writerNo = $(this).parent().prev('#answerBox').children('input').eq(1).val();
+        const answerContent = $(this).parent().prev('#answerBox').children('input').eq(2).val();
         console.log(writerNo);
         const answerNo = $(this).val();
         console.log(answerNo);
@@ -512,7 +517,8 @@
                     content : reportContent,
                     boardNo : boardNo,
                     reasonNo : reasonNo,
-                    answerNo : answerNo
+                    answerNo : answerNo,
+                    answerContent : answerContent
                 },
                 success: function (data) {
                     console.log(data)

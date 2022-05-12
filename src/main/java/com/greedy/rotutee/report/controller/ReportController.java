@@ -163,12 +163,15 @@ public class ReportController {
     @ResponseBody
     public String registBoardReport(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser){
 
+        //신고한사람
         int memberNo = customUser.getNo();
         String division = request.getParameter("division");
+        //글 작성자
         int writerNo = Integer.parseInt(request.getParameter("writerNo"));
         String content = request.getParameter("content");
         int boardNo = Integer.parseInt(request.getParameter("boardNo"));
         int reasonNo = Integer.parseInt(request.getParameter("reasonNo"));
+        String title = request.getParameter("title");
         String processStatus = "대기";
 
         ReportDTO report = new ReportDTO();
@@ -180,6 +183,7 @@ public class ReportController {
         member.setNo(memberNo);
         accusedMember.setNo(writerNo);
         board.setBoardNo(boardNo);
+        board.setBoardTitle(title);
         reportCategory.setReportCategoryNo(reasonNo);
         report.setMember(member);
         report.setDivision(division);
@@ -214,6 +218,7 @@ public class ReportController {
         int boardNo = Integer.parseInt(request.getParameter("boardNo"));
         int reasonNo = Integer.parseInt(request.getParameter("reasonNo"));
         int answerNo = Integer.parseInt(request.getParameter("answerNo"));
+        String answerContent = request.getParameter("answerContent");
         String processStatus = "대기";
 
         ReportDTO report = new ReportDTO();
@@ -228,6 +233,7 @@ public class ReportController {
         board.setBoardNo(boardNo);
         reportCategory.setReportCategoryNo(reasonNo);
         answer.setAnswerNo(answerNo);
+        answer.setAnswerContent(answerContent);
         report.setMember(member);
         report.setDivision(division);
         report.setAccusedMember(accusedMember);

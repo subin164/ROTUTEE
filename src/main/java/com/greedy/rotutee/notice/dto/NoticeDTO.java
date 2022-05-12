@@ -27,7 +27,7 @@ public class NoticeDTO {
 
     private int noticeNo;
     private String noticeContent;
-    private NoticeCateogry noticeCategory;
+    private NoticeCategoryDTO noticeCategory;
     private int memberNo;
     private Date noticedDate;
 }
