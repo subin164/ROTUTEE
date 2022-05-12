@@ -1,9 +1,11 @@
 package com.greedy.rotutee.report.service;
 
-import com.greedy.rotutee.report.dto.ReportBoardAnswerDTO;
+import com.greedy.rotutee.notice.dto.NoticeCategoryDTO;
+import com.greedy.rotutee.notice.dto.NoticeDTO;
+import com.greedy.rotutee.notice.entity.Notice;
+import com.greedy.rotutee.notice.repository.NoticeRepository;
 import com.greedy.rotutee.report.dto.ReportDTO;
 import com.greedy.rotutee.report.entity.Report;
-import com.greedy.rotutee.report.entity.ReportBoardAnswer;
 import com.greedy.rotutee.report.repository.ReportRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,13 +38,15 @@ public class ReportServiceImpl implements ReportService{
 
     private ReportRepository reportRepository;
     private ModelMapper modelMapper;
+    private NoticeRepository noticeRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public ReportServiceImpl(ReportRepository reportRepository, ModelMapper modelMapper) {
+    public ReportServiceImpl(ReportRepository reportRepository, ModelMapper modelMapper, NoticeRepository noticeRepository) {
         this.reportRepository = reportRepository;
         this.modelMapper = modelMapper;
+        this.noticeRepository = noticeRepository;
     }
 
     @Override
@@ -131,6 +136,42 @@ public class ReportServiceImpl implements ReportService{
             modifiedReportEntities.get(i).setProcessingDate(new Date(System.currentTimeMillis()));
         }
 
+        /* 신고한 사람에게 신고 승인 알림 전송*/
+        List<Integer> reporterMemberNums = new ArrayList<>();
+        int accusedMemberNo = 0;
+        for(int i = 0; i < modifiedReportEntities.size(); i++) {
+
+            /*게시물 신고한 사람들 멤버번호 리스트 저장*/
+            int reporterMemberNo = modifiedReportEntities.get(i).getMember().getNo();
+            reporterMemberNums.add(reporterMemberNo);
+
+            String reporterNoticeContent = modifiedReportEntities.get(i).getBoard().getBoardTitle() + "의 신고가 승인되었습니다.";
+
+            NoticeDTO notice = new NoticeDTO();
+            NoticeCategoryDTO noticeCategory = new NoticeCategoryDTO();
+            noticeCategory.setNoticeCategoryNo(4);                          //신고결과
+            notice.setNoticeContent(reporterNoticeContent);
+            notice.setNoticeCategory(noticeCategory);
+            notice.setNoticedDate(new Date(System.currentTimeMillis()));
+            notice.setMemberNo(reporterMemberNo);
+
+            Notice noticeEntity = modelMapper.map(notice, Notice.class);
+            noticeRepository.save(noticeEntity);
+
+            /*신고 당한사람 알림 전송*/
+            accusedMemberNo = modifiedReportEntities.get(i).getAccusedMember().getNo();
+            String accusedNoticeContent = modifiedReportEntities.get(i).getBoard().getBoardTitle() + "게시물 신고가 승인되었습니다.";
+            notice.setNoticeContent(accusedNoticeContent);
+            notice.setNoticedDate(new Date(System.currentTimeMillis()));
+            notice.setMemberNo(accusedMemberNo);
+
+            Notice accusedNoticeEntity = modelMapper.map(notice, Notice.class);
+            noticeRepository.save(accusedNoticeEntity);
+
+        }
+
+
+
         return true;
     }
 
@@ -157,6 +198,41 @@ public class ReportServiceImpl implements ReportService{
             modifiedReportEntities.get(i).setAdminNo(memberNo);
             /* 처리한 날짜 업데이트 */
             modifiedReportEntities.get(i).setProcessingDate(new Date(System.currentTimeMillis()));
+
+        }
+
+        /* 신고한 사람에게 신고 승인 알림 전송*/
+        List<Integer> reporterMemberNums = new ArrayList<>();
+        int accusedMemberNo = 0;
+        for(int i = 0; i < modifiedReportEntities.size(); i++) {
+
+            /*댓글 신고한 사람들 멤버번호 리스트 저장*/
+            int reporterMemberNo = modifiedReportEntities.get(i).getMember().getNo();
+            reporterMemberNums.add(reporterMemberNo);
+
+            String reporterNoticeContent = modifiedReportEntities.get(i).getBoardAnswer().getAnswerContent() + "의 신고가 승인되었습니다.";
+
+            NoticeDTO notice = new NoticeDTO();
+            NoticeCategoryDTO noticeCategory = new NoticeCategoryDTO();
+            noticeCategory.setNoticeCategoryNo(4);                          //신고결과
+            notice.setNoticeContent(reporterNoticeContent);
+            notice.setNoticeCategory(noticeCategory);
+            notice.setNoticedDate(new Date(System.currentTimeMillis()));
+            notice.setMemberNo(reporterMemberNo);
+
+            Notice noticeEntity = modelMapper.map(notice, Notice.class);
+            noticeRepository.save(noticeEntity);
+
+            /*신고 당한사람 알림 전송*/
+            accusedMemberNo = modifiedReportEntities.get(i).getBoardAnswer().getMemberNo();
+            String accusedNoticeContent = modifiedReportEntities.get(i).getBoardAnswer().getAnswerContent() + "답변 신고가 승인되었습니다.";
+            notice.setNoticeContent(accusedNoticeContent);
+            notice.setNoticedDate(new Date(System.currentTimeMillis()));
+            notice.setMemberNo(accusedMemberNo);
+
+            Notice accusedNoticeEntity = modelMapper.map(notice, Notice.class);
+            noticeRepository.save(accusedNoticeEntity);
+
         }
 
         return true;
@@ -231,6 +307,30 @@ public class ReportServiceImpl implements ReportService{
             /* 처리한 날짜 업데이트 */
             modifiedReportEntities.get(i).setProcessingDate(new Date(System.currentTimeMillis()));
         }
+
+        /* 신고한 사람에게 신고 거절 알림 전송*/
+        List<Integer> reporterMemberNums = new ArrayList<>();
+        int accusedMemberNo = 0;
+        for(int i = 0; i < modifiedReportEntities.size(); i++) {
+
+            /*게시물 신고한 사람들 멤버번호 리스트 저장*/
+            int reporterMemberNo = modifiedReportEntities.get(i).getMember().getNo();
+            reporterMemberNums.add(reporterMemberNo);
+
+            String reporterNoticeContent = modifiedReportEntities.get(i).getBoard().getBoardTitle() + "의 신고가 거절되었습니다.";
+
+            NoticeDTO notice = new NoticeDTO();
+            NoticeCategoryDTO noticeCategory = new NoticeCategoryDTO();
+            noticeCategory.setNoticeCategoryNo(4);                          //신고결과
+            notice.setNoticeContent(reporterNoticeContent);
+            notice.setNoticeCategory(noticeCategory);
+            notice.setNoticedDate(new Date(System.currentTimeMillis()));
+            notice.setMemberNo(reporterMemberNo);
+
+            Notice noticeEntity = modelMapper.map(notice, Notice.class);
+            noticeRepository.save(noticeEntity);
+
+        }
         return true;
     }
 
@@ -253,6 +353,29 @@ public class ReportServiceImpl implements ReportService{
             /* 처리한 날짜 업데이트 */
             modifiedReportEntities.get(i).setProcessingDate(new Date(System.currentTimeMillis()));
         }
+
+        /* 신고한 사람에게 신고 거절 알림 전송*/
+        List<Integer> reporterMemberNums = new ArrayList<>();
+        int accusedMemberNo = 0;
+        for(int i = 0; i < modifiedReportEntities.size(); i++) {
+
+            /*댓글 신고한 사람들 멤버번호 리스트 저장*/
+            int reporterMemberNo = modifiedReportEntities.get(i).getMember().getNo();
+            reporterMemberNums.add(reporterMemberNo);
+
+            String reporterNoticeContent = modifiedReportEntities.get(i).getBoardAnswer().getAnswerContent() + "의 신고가 거절되었습니다.";
+
+            NoticeDTO notice = new NoticeDTO();
+            NoticeCategoryDTO noticeCategory = new NoticeCategoryDTO();
+            noticeCategory.setNoticeCategoryNo(4);                          //신고결과
+            notice.setNoticeContent(reporterNoticeContent);
+            notice.setNoticeCategory(noticeCategory);
+            notice.setNoticedDate(new Date(System.currentTimeMillis()));
+            notice.setMemberNo(reporterMemberNo);
+
+            Notice noticeEntity = modelMapper.map(notice, Notice.class);
+            noticeRepository.save(noticeEntity);
+        }
         return true;
     }
 
@@ -263,6 +386,20 @@ public class ReportServiceImpl implements ReportService{
         Report reportEntity = modelMapper.map(report, Report.class);
         reportRepository.save(reportEntity);
 
+        /*게시물 신고 알림 전송*/
+        int writerNo = report.getAccusedMember().getNo();
+        String noticeContent = report.getBoard().getBoardTitle() + "게시물이 신고되었습니다.";
+        NoticeDTO notice = new NoticeDTO();
+        NoticeCategoryDTO category = new NoticeCategoryDTO();
+        category.setNoticeCategoryNo(5);
+        notice.setNoticeContent(noticeContent);
+        notice.setNoticeCategory(category);
+        notice.setMemberNo(writerNo);
+        notice.setNoticedDate(new Date(System.currentTimeMillis()));
+
+        Notice noticeEntity = modelMapper.map(notice, Notice.class);
+        noticeRepository.save(noticeEntity);
+
         return true;
     }
 
@@ -271,6 +408,20 @@ public class ReportServiceImpl implements ReportService{
 
         Report reportAnswerEntity = modelMapper.map(report, Report.class);
         reportRepository.save(reportAnswerEntity);
+
+        /*댓글 신고 알림 전송*/
+        int writerNo = report.getAccusedMember().getNo();
+        String noticeContent = report.getBoardAnswer().getAnswerContent() + "댓글이 신고되었습니다.";
+        NoticeDTO notice = new NoticeDTO();
+        NoticeCategoryDTO category = new NoticeCategoryDTO();
+        category.setNoticeCategoryNo(5);
+        notice.setNoticeContent(noticeContent);
+        notice.setNoticeCategory(category);
+        notice.setMemberNo(writerNo);
+        notice.setNoticedDate(new Date(System.currentTimeMillis()));
+
+        Notice noticeEntity = modelMapper.map(notice, Notice.class);
+        noticeRepository.save(noticeEntity);
 
         return true;
     }

@@ -18,4 +18,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface NoticeRepository extends JpaRepository<Notice, Integer> {
     Page<Notice> findByMemberNo(Pageable pageable, int memberNo);
+
+    Notice findByMemberNo(int memberNo);
 }
