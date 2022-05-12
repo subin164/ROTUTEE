@@ -409,7 +409,13 @@ public class LectureMainServiceImpl implements  LectureMainService{
 
         List<Lecture> lectureList = lectureMainRepository.findByLectureCategory(category);
 
-        return lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+        List<LectureDTO> lectureDTOList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
+
+        for(LectureDTO lecture : lectureDTOList) {
+            lecture.setSaveFileName(lectureAttachedFileRepository.findSaveFileNameBylectureNo(lecture.getLectureNo()));
+        }
+
+        return lectureDTOList;
     }
 
 }
