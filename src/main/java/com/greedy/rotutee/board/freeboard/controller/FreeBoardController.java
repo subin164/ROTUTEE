@@ -36,6 +36,7 @@ import java.util.List;
  * 2022-04-20          soobeen     최초 생성
  */
 
+
 @Controller
 @RequestMapping("/freeboard")
 public class FreeBoardController {
