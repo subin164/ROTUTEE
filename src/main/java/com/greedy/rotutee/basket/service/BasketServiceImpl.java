@@ -120,6 +120,11 @@ public class BasketServiceImpl implements BasketService{
     }
 
     @Override
+    public MemberLectureDTO findByLectureNoAndMemberNoInMemberLecture(int no, int lectureNo) {
+        return null;
+    }
+
+    @Override
     @Transactional
     public void registLectureToCart(int lectureNo, int memberNo) {
 
@@ -139,7 +144,6 @@ public class BasketServiceImpl implements BasketService{
 
         MemberInterest memberInterest = classBasketMemberInterestRepository.findByMemberAndCategory(memberEntity, categoryEntity);
         if(memberInterest == null) {
-
             int degree = 1;
 
             MemberInterestDTO interest = new MemberInterestDTO();
@@ -148,10 +152,11 @@ public class BasketServiceImpl implements BasketService{
             interest.setInterestDegree(degree);
 
             classBasketMemberInterestRepository.save(modelMapper.map(interest, MemberInterest.class));
-        } else {
 
+        } else {
             int increasedDegree = memberInterest.getInterestDegree() + 2;
             memberInterest.setInterestDegree(increasedDegree);
+
         }
     }
 
@@ -164,7 +169,6 @@ public class BasketServiceImpl implements BasketService{
         List<ClassBasketDTO> basketDTOList = new ArrayList<>();
 
         for(ClassBasket basket : basketList) {
-
             MemberDTO memberDTO = modelMapper.map(basket.getMember(), MemberDTO.class);
             LectureDTO lectureDTO = modelMapper.map(basket.getLecture(), LectureDTO.class);
 
@@ -174,6 +178,7 @@ public class BasketServiceImpl implements BasketService{
             basketDTO.setLecture(lectureDTO);
 
             basketDTOList.add(basketDTO);
+
         }
 
         return basketDTOList;
@@ -187,7 +192,6 @@ public class BasketServiceImpl implements BasketService{
         Member memberEntity = classBasketMemberRepository.findByNo(memberNo);
 
         classBasketRepository.deleteByLectureAndMember(lectureEntity, memberEntity);
-
     }
 
 }

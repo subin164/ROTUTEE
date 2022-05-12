@@ -22,6 +22,17 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * packageName      : com.greedy.rotutee.lecture.request.service
+ * fileName         : LectureRequestServiceImpl
+ * author           : SEOK
+ * date             : 2022-04-25
+ * description      :
+ * ==========================================================
+ * DATE            AUTHOR              NOTE
+ * ----------------------------------------------------------
+ * 2022-04-25      SEOK         최초 생성
+ */
 @Service
 public class LectureRequestServiceImpl implements LectureRequestService{
 
@@ -50,6 +61,14 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         this.requestMemberLectureRepository = requestMemberLectureRepository;
     }
 
+    /**
+     * methodName : findLectureListBytutorNo
+     * author : SEOK
+     * description : 튜터의 강의 목록 조회 기능
+     *
+     * @Param int memberNo 회원 번호
+     * @Return List<LectureDTO> lectureDTOList
+     * */
     @Override
     public List<LectureDTO> findLectureListBytutorNo(int memberNo) {
 
@@ -62,6 +81,15 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         return lectureDTOList;
     }
 
+    /**
+     * methodName : registLectureOpeningApplication
+     * author : SEOK
+     * description : 강의 개설 요청 기능 및 동영상, 사진 파일 저장 기능
+     *
+     * @Param LectureDTO newLecture 강의 정보가 담긴 객체
+     * @Param int categoryNo 강의 카테고리 번호
+     * @Param int memberNo 회원 번호
+     * */
     @Override
     @Transactional
     public void registLectureOpeningApplication(LectureDTO newLecture, int categoryNo, int memberNo) throws IOException {
@@ -221,6 +249,14 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         requestLectureRepository.save(modelMapper.map(newLecture, Lecture.class));
     }
 
+    /**
+     * methodName : findLectureByLectureNo
+     * author : SEOK
+     * description : 강의 번호로 강의 개설 요청 세부내용 조회 기능
+     *
+     * @Param int lectureNo 강의 번호
+     * @Return LectureDTO
+     * */
     @Override
     public LectureDTO findLectureByLectureNo(int lectureNo) {
 
@@ -229,6 +265,13 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         return modelMapper.map(lecture, LectureDTO.class);
     }
 
+    /**
+     * methodName : modifyLectureApprovalStatus
+     * author : SEOK
+     * description : 강의 승인 상태 '승인' 변경 및 알림 추가 및 강의별 회원 정보 추가 기능
+     *
+     * @Param int lectureNo
+     * */
     @Override
     @Transactional
     public void modifyLectureApprovalStatus(int lectureNo) {
@@ -263,6 +306,14 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         requestNoticeRepository.save(modelMapper.map(notice, Notice.class));
     }
 
+    /**
+     * methodName : rejectLecture
+     * author : SEOK
+     * description : 강의 승인 상태 '거절' 변경 및 거절 이력 추가 및 알림 추가 기능
+     *
+     * @Param int lectureNo 강의 번호
+     * @Param int rejectionCategoryNo 거절 카테고리 번호
+     * */
     @Override
     @Transactional
     public void rejectLecture(int lectureNo, int rejectionCategoryNo) {
@@ -301,6 +352,15 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         requestNoticeRepository.save(modelMapper.map(notice, Notice.class));
     }
 
+    /**
+     * methodName : findAllLecture
+     * author : SEOK
+     * description : 모든 강의 조회 기능
+     *
+     * @Param Pageable pageable 페이징 정보가 담긴 객체
+     * @Param Map<String, String> searchMap 검색조건과 검색어가 담긴 객체
+     * @Return Page<LectureDTO>
+     * */
     @Override
     public Page<LectureDTO> findAllLecture(Pageable pageable, Map<String, String> searchMap) {
 
@@ -311,18 +371,21 @@ public class LectureRequestServiceImpl implements LectureRequestService{
         String searchValue = searchMap.get("searchValue");
 
         Page<Lecture> lectureEntityList = null;
+
         if(searchCondition == null || searchCondition.equals("")) {
             lectureEntityList = requestLectureRepository.findAll(pageable);
+
         } else if(searchCondition.equals("title")){
             lectureEntityList = requestLectureRepository.findByLectureNameContaining(searchValue, pageable);
-        } else if(searchCondition.equals("category")) {
 
+        } else if(searchCondition.equals("category")) {
             LectureCategory category = requestLectureCategoryRepository.findByLectureCategoryName(searchValue);
 
             lectureEntityList = requestLectureRepository.findByLectureCategory(category, pageable);
-        } else if(searchCondition.equals("status")) {
 
+        } else if(searchCondition.equals("status")) {
             lectureEntityList = requestLectureRepository.findByLectureApprovalStatus(searchValue, pageable);
+
         }
 
         return lectureEntityList.map(lectureEntity -> modelMapper.map(lectureEntity, LectureDTO.class));
