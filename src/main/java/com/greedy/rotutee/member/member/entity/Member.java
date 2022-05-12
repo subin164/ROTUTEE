@@ -53,14 +53,15 @@ public class Member {
     private String leaveStatusYn;
 
     @Column(name = "ROULETTE_CHANCE")
-    private String rouletteChance;
+    private Integer rouletteChance;
+
     @JsonIgnoreProperties(value = "member")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "member")
     List<MemberRole> memberRoleList;
 
     public Member() {}
 
-    public Member(int no, String name, String email, String pwd, String nickname, String phoneNum, String introduction, Date registrationDate, Date withdrawalDate, String leaveStatusYn, String rouletteChance, List<MemberRole> memberRoleList) {
+    public Member(int no, String name, String email, String pwd, String nickname, String phoneNum, String introduction, Date registrationDate, Date withdrawalDate, String leaveStatusYn, Integer rouletteChance, List<MemberRole> memberRoleList) {
         this.no = no;
         this.name = name;
         this.email = email;
@@ -155,11 +156,11 @@ public class Member {
         this.leaveStatusYn = leaveStatusYn;
     }
 
-    public String getRouletteChance() {
+    public Integer getRouletteChance() {
         return rouletteChance;
     }
 
-    public void setRouletteChance(String rouletteChance) {
+    public void setRouletteChance(Integer rouletteChance) {
         this.rouletteChance = rouletteChance;
     }
 

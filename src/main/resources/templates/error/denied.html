@@ -8,18 +8,23 @@
 </head>
 <body>
 <script th:inline="javascript">
-    window.onload = function(){
-        /*<![CDATA[*/
-        var nextPage = [[@{__${nextPage}__}]], message = [[${message}]];
-        if(nextPage) {
-            alert(message);
-            location.href = nextPage;
-        } else {
-            alert(message);
-            location.href = [[@{/member/login}]];
-        }
-            /*]]>*/
-        };
+    // window.onload = function(){
+    //     /*<![CDATA[*/
+    //     var nextPage = [[@{__${nextPage}__}]], message = [[${message}]];
+    //     if(nextPage) {
+    //         alert(message);
+    //         location.href = nextPage;
+    //     } else {
+    //         alert(message);
+    //         location.href = [[@{/member/login}]];
+    //     }
+    //         /*]]>*/
+    //     };
+
+    window.onload = function() {
+        alert("접근 권한이 없습니다.");
+        location.href="/";
+    }
 </script>
 </body>
 </html>

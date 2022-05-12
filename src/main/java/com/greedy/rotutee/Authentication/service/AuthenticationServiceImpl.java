@@ -4,7 +4,7 @@ import com.greedy.rotutee.Authentication.dto.CustomUser;
 
 import com.greedy.rotutee.member.member.dto.MemberDTO;
 import com.greedy.rotutee.member.member.dto.MemberRoleDTO;
-import com.greedy.rotutee.member.member.entity.AttendanceHistory;
+import com.greedy.rotutee.member.member.entity.LoginHistory;
 import com.greedy.rotutee.member.member.entity.Member;
 import com.greedy.rotutee.member.member.entity.MemberStatusHistory;
 import com.greedy.rotutee.member.member.entity.RoleMenuUrl;
@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,42 +32,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final MemberRepository memberRepository;
     private final MemberRoleRepository memberRoleRepository;
-
     private final RoleMenuUrlRepository roleMenuUrlRepository;
     private final ModelMapper modelMapper;
     private final MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery;
-
-    private final AttendanceHistoryRepository attendanceHistoryRepository;
-
+    private final LoginHistoryRepositoryQuery loginHistoryRepositoryQuery;
+    private final LoginHistoryRepository loginHistoryRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public AuthenticationServiceImpl(MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleMenuUrlRepository roleMenuUrlRepository, ModelMapper modelMapper, MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery, AttendanceHistoryRepository attendanceHistoryRepository) {
+    public AuthenticationServiceImpl(MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, RoleMenuUrlRepository roleMenuUrlRepository, ModelMapper modelMapper, MemberStatusHistoryRepositoryQuery memberStatusHistoryRepositoryQuery, LoginHistoryRepositoryQuery loginHistoryRepositoryQuery, LoginHistoryRepository loginHistoryRepository) {
         this.memberRepository = memberRepository;
         this.memberRoleRepository = memberRoleRepository;
         this.roleMenuUrlRepository = roleMenuUrlRepository;
         this.modelMapper = modelMapper;
         this.memberStatusHistoryRepositoryQuery = memberStatusHistoryRepositoryQuery;
-        this.attendanceHistoryRepository = attendanceHistoryRepository;
+        this.loginHistoryRepositoryQuery = loginHistoryRepositoryQuery;
+        this.loginHistoryRepository = loginHistoryRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        System.out.println("username = " + username);
-        
         Member member = memberRepository.findMemberByEmail(username);
 
-        System.out.println("member = " + member);
-        
         if(member == null) {
             throw new UsernameNotFoundException("회원정보가 존재하지 않습니다.");
         }
 
-//        AttendanceHistory attendanceHistory = attendanceHistoryRepository.findByMemberAttendanceDate(member, new Date(System.currentTimeMillis()));
+//        String referer = (String)request.getHeader("REFERER");
 
+        setLogin(member);
+        
         MemberStatusHistory memberStatusHistory = memberStatusHistoryRepositoryQuery.findMemberStatus(entityManager, member.getNo());
 
         System.out.println("memberStatusHistory.getStatus() = " + memberStatusHistory.getStatus());
@@ -81,6 +79,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         System.out.println("authorities = " + authorities);
 
         return new CustomUser(loginMember, authorities);
+    }
+
+    @Transactional
+    public void setLogin(Member member) {
+
+        LoginHistory newLogin = new LoginHistory();
+        Date today = new Date(System.currentTimeMillis());
+        newLogin.setLoginDate(today);
+        newLogin.setMember(member);
+        newLogin.setLoginIp("123");
+
+        loginHistoryRepository.save(newLogin);
+
+        LoginHistory loginHistory = loginHistoryRepositoryQuery.findMemberLoginHistory(entityManager, member.getNo());
+
+        boolean isLoginCheck = true;
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+        String todayDate = simpleDateFormat.format(today);
+        String loginDate = simpleDateFormat.format(loginHistory.getLoginDate());
+
+        if(todayDate.equals(loginDate) || todayDate == loginDate) {
+            System.out.println("같냐잉?");
+            isLoginCheck = false;
+        }
+        if(isLoginCheck) {
+            System.out.println("추가혔냐?");
+            System.out.println("룰렛" + member.getRouletteChance());
+            member.setRouletteChance(member.getRouletteChance() + 1);
+            System.out.println(member.getRouletteChance());
+
+            memberRepository.save(member);
+        }
     }
 
     @Override
