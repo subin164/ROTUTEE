@@ -52,25 +52,28 @@ public class BasketController {
             , RedirectAttributes rttr) {
 
         if(customUser == null) {
-
             rttr.addFlashAttribute("message", "로그인이 필요한 서비스입니다.");
             mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
-        } else {
 
+        } else if(customUser != null && basketService.findByLectureNoAndMemberNoInMemberLecture(customUser.getNo(), lectureNo) != null) {
+            rttr.addFlashAttribute("message", "이미 수강중인 강의입니다.");
+            mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
+
+        } else {
             int memberNo = customUser.getNo();
 
             ClassBasketDTO basket = basketService.findByLectureNoAndMemberNo(lectureNo, memberNo);
 
             if (basket == null) {
-
                 basketService.registLectureToCart(lectureNo, memberNo);
 
                 rttr.addFlashAttribute("message", "수강바구니에 추가되었습니다.");
                 mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
-            } else {
 
+            } else {
                 rttr.addFlashAttribute("message", "이미 추가되어있습니다.");
                 mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
+
             }
         }
 

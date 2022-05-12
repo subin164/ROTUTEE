@@ -44,6 +44,13 @@ public class MainServiceImpl implements MainService{
         this.mainAttachedFileRepository = mainAttachedFileRepository;
     }
 
+    /**
+     * methodName : findRecentLectureList
+     * author : SEOK
+     * description : 개설 날짜를 최신순으로 강의 목록 조회 기능
+     *
+     * @Return List<LectureDTO>
+     * */
     @Override
     public List<LectureDTO> findRecentLectureList() {
 
@@ -52,6 +59,13 @@ public class MainServiceImpl implements MainService{
         return recentLectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * methodName : findPopularLectureList
+     * author : SEOK
+     * description : 강의 평점이 높은 순으로 강의 목록 조회
+     *
+     * @Return List<LectureDTO>
+     * */
     @Override
     public List<LectureDTO> findPopularLectureList() {
 
@@ -60,6 +74,14 @@ public class MainServiceImpl implements MainService{
         return popularLectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * methodName : findBannerListByMemberNo
+     * author : SEOK
+     * description : 관심도가 높은 강의의 배너 목록 조회
+     *
+     * @Param int no 회원 번호
+     * @Return List<AttachedFileDTO> fileDTOList
+     * */
     @Override
     public List<AttachedFileDTO> findBannerListByMemberNo(int no) {
 
@@ -94,6 +116,7 @@ public class MainServiceImpl implements MainService{
 
                 return fileDTOList;
             }
+
         } else {
 
             return null;
@@ -102,6 +125,14 @@ public class MainServiceImpl implements MainService{
         return null;
     }
 
+    /**
+     * methodName : findRecentBannerList
+     * author : SEOK
+     * description : 로그인되어 있지 않거나 관심도가 높은 카테고리의 강의 배너가 없는 경우 배너를 가진 강의를
+     *               개설일 최신순으로 조회하는 기능
+     *
+     * @Return List<AttachedFileDTO> bannerDTOList
+     * */
     @Override
     public List<AttachedFileDTO> findRecentBannerList() {
 

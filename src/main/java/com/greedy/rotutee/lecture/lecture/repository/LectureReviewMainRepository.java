@@ -15,7 +15,7 @@ public interface LectureReviewMainRepository extends JpaRepository<LectureReview
     @Query(value = "select a from Lecture_LectureReview a where a.lectureNo = :lectureNo and a.lectureReviewRemoveYN = 'N'", nativeQuery = false)
     List<LectureReview> findLectureReviewByLectureNoAndLectureReviewRemoveYN(@Param("lectureNo") int lectureNo);
 
-    @Query(value = "select avg(a.lectureGrade) from Lecture_LectureReview a where a.lectureNo = :lectureNo", nativeQuery = false)
+    @Query(value = "select avg(a.lectureGrade) from Lecture_LectureReview a where a.lectureNo = :lectureNo and a.lectureReviewRemoveYN = 'N'", nativeQuery = false)
     Integer findfindGradeAverageByLectureNo(@Param("lectureNo") int lectureNo);
 
     List<LectureReview> findByWriterAndLectureNo(Member memberEntity, int lectureNo);

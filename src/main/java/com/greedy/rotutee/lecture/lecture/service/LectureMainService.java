@@ -2,6 +2,7 @@ package com.greedy.rotutee.lecture.lecture.service;
 
 import com.greedy.rotutee.lecture.lecture.dto.*;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface LectureMainService {
@@ -30,4 +31,5 @@ public interface LectureMainService {
     void registInterestDegree(int no, LectureCategoryDTO category);
 
     List<LectureDTO> findLectureByCategoryName(String categoryName);
+
 }

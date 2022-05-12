@@ -22,6 +22,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * packageName      : com.greedy.rotutee.lecture.request.controller
+ * fileName         : LectureRequestController
+ * author           : SEOK
+ * date             : 2022-04-25
+ * description      :
+ * ==========================================================
+ * DATE            AUTHOR              NOTE
+ * ----------------------------------------------------------
+ * 2022-04-25      SEOK         최초 생성
+ */
 @Controller
 @RequestMapping("/request")
 public class LectureRequestController {
@@ -33,7 +44,15 @@ public class LectureRequestController {
         this.lectureRequestService = lectureRequestService;
     }
 
-
+    /**
+     * methodName : findMyLectureList
+     * author : SEOK
+     * description : 튜터가 개설 신청한 강의 목록 조회
+     *
+     * @Param ModelAndView mv
+     * @Param CustomUser customUser
+     * @Return ModelAndView
+     * */
     @GetMapping("list")
     public ModelAndView findMyLectureList(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
 
@@ -46,12 +65,32 @@ public class LectureRequestController {
         return mv;
     }
 
+    /**
+     * methodName : lectureRegistForm
+     * author : SEOK
+     * description : 강의 개설 신청 페이지 이동 기능
+     *
+     * @Return String "request/lecturerequestform"
+     * */
     @GetMapping("lecture")
     public String lectureRegistForm() {
 
         return "request/lecturerequestform";
     }
 
+    /**
+     * methodName : registLectureOpeningApplication
+     * author : SEOK
+     * description : 강의 개설 신청 기능
+     *
+     * @Param ModelAndView mv
+     * @Param LectureDTO newLecture 개설 신청할 강의 객체
+     * @Param int categoryNo 강의 카테고리 번호
+     * @Param MultipartFile thumbnailImg 썸네일 사진 파일
+     * @Param MultipartFIle bannerImg 배너 사진 파일
+     * @Param CustomUser customUser 로그인된 회원 객체
+     * @Return ModelAndView mv
+     * */
     @PostMapping("lecture")
     public ModelAndView registLectureOpeningApplication(ModelAndView mv, @ModelAttribute LectureDTO newLecture
                                                                        , @RequestParam int categoryNo
@@ -78,6 +117,17 @@ public class LectureRequestController {
         return mv;
     }
 
+    /**
+     * methodName : findLectureRequestList
+     * author : SEOK
+     * description : 튜터가 개설 요청한 강의 목록 조회 기능 및 검색 기능
+     *
+     * @Param ModelAndView mv
+     * @Param Pageable pageable
+     * @Param String searchCondition
+     * @Param String searchValue
+     * @Return ModelAndView mv
+     * */
     @GetMapping("lecturelist")
     public ModelAndView findLectureRequestList(ModelAndView mv , @PageableDefault Pageable pageable, @RequestParam(required = false, defaultValue = "") String searchCondition, @RequestParam(required = false, defaultValue = "") String searchValue) {
 
@@ -95,6 +145,15 @@ public class LectureRequestController {
         return mv;
     }
 
+    /**
+     * methodName : findRequestLetureDetail
+     * author : SEOK
+     * description : 개설 요청 강의의 세부 내용 조회 기능
+     *
+     * @Param ModelAndView mv
+     * @Param int lectureNo 강의 번호
+     * @Return ModelAndView mv
+     * */
     @GetMapping("lecturedetail")
     public ModelAndView findRequestLetureDetail(ModelAndView mv, @RequestParam int lectureNo) {
 
@@ -108,6 +167,15 @@ public class LectureRequestController {
         return mv;
     }
 
+    /**
+     * methodName : approveRequestLecture
+     * author : SEOK
+     * description : 강의 개설 요청 승인 기능
+     *
+     * @Param ModelAndView mv
+     * @Param int lectureNo 강의 번호
+     * @Return ModelAndView mv
+     * */
     @PostMapping("approve")
     public ModelAndView approveRequestLecture(ModelAndView mv, @RequestParam int lectureNo, RedirectAttributes rttr) {
 
@@ -119,6 +187,15 @@ public class LectureRequestController {
         return mv;
     }
 
+    /**
+     * methodName : rejectRequestLecture
+     * author : SEOK
+     * description : 강의 개설 요청 거절 기능
+     *
+     * @Param int lectureNo 강의 번호
+     * @Param int rejectionCategoryNo 요청 거절 카테고리 번호
+     * @Return ModelAndView mv
+     * */
     @GetMapping("reject")
     public ModelAndView rejectRequestLecture(ModelAndView mv, @RequestParam int lectureNo
                                                             , @RequestParam int rejectionCategoryNo
