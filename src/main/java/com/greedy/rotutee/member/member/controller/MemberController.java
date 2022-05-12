@@ -4,7 +4,6 @@ import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.common.paging.Pagenation;
 import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import com.greedy.rotutee.member.member.dto.*;
-import com.greedy.rotutee.member.member.entity.MemberStatusHistory;
 import com.greedy.rotutee.member.member.service.MemberService;
 import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
 import com.greedy.rotutee.member.profile.entity.TutorInfoDTO;
@@ -24,7 +23,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,10 +48,25 @@ public class MemberController {
 
         String referer = (String)request.getHeader("REFERER");
         System.out.println("referer = " + referer);
+        Cookie[] afterUrl = request.getCookies();
+        if(afterUrl != null) {
+            afterUrl[0].setMaxAge(0);
+        }
         Cookie url = new Cookie("url", referer);
         response.addCookie(url);
 
         return "/member/login";
+    }
+
+    @GetMapping("/logoutSuccess")
+    public void memberLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        String referer = (String)request.getHeader("REFERER");
+        System.out.println("referer 라구아웃 = " + referer);
+        System.out.println("request = " + request.getRequestURI());
+        System.out.println("request = " + request.getRequestURL());
+
+        response.sendRedirect("/error/logout");
     }
 
     @GetMapping("/regist")

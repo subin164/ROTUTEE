@@ -12,6 +12,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -37,10 +38,9 @@ public class WebAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException ade)
             throws IOException, ServletException {
 
-        String referer = (String)request.getHeader("REFERER");
-        System.out.println("referer = " + referer);
-        System.out.println(request.getRequestURL());
-        response.sendRedirect(referer);
+//        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+//        String referer = (String)request.getHeader("REFERER");
+        response.sendRedirect("/error/denied");
     }
 
 //        System.out.println("오긴오냐잉");

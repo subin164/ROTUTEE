@@ -22,4 +22,9 @@ public class ErrorController {
         return "/error/denied";
     }
 
+    @GetMapping("/logout")
+    public String logout(){
+        return "/error/logout";
+    }
+
 }

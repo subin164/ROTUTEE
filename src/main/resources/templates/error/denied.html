@@ -23,7 +23,8 @@
 
     window.onload = function() {
         alert("접근 권한이 없습니다.");
-        location.href="/";
+        let url = document.referrer;
+        location.href="javascript:history.back()";
     }
 </script>
 </body>
