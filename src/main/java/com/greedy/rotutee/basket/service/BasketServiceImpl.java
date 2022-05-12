@@ -3,18 +3,13 @@ package com.greedy.rotutee.basket.service;
 import com.greedy.rotutee.basket.dto.*;
 import com.greedy.rotutee.basket.entity.*;
 import com.greedy.rotutee.basket.repository.*;
-import com.greedy.rotutee.dashboard.lms.dto.LMSSubmissionQuizDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * packageName      : com.greedy.rotutee.basket.service
@@ -36,15 +31,20 @@ public class BasketServiceImpl implements BasketService{
     private final ClassBasketMemberRepository classBasketMemberRepository;
     private final ClassBasketMemberInterestRepository classBasketMemberInterestRepository;
     private final ClassBasketMemberCouponBoxRepository classBasketMemberCouponBoxRepository;
+    private final ClassBasketMemberLectureRespository classBasketMemberLectureRespository;
+    private final ClassBasketCouponRepository ClassBasketCouponRepository;
+
 
     @Autowired
-    public BasketServiceImpl(ModelMapper modelMapper, ClassBasketRepository classBasketRepository, ClassBasketLectureRepository classBasketLectureRepository, ClassBasketMemberRepository classBasketMemberRepository, ClassBasketMemberInterestRepository classBasketMemberInterestRepository, ClassBasketMemberCouponBoxRepository classBasketMemberCouponBoxRepository) {
+    public BasketServiceImpl(ModelMapper modelMapper, ClassBasketRepository classBasketRepository, ClassBasketLectureRepository classBasketLectureRepository, ClassBasketMemberRepository classBasketMemberRepository, ClassBasketMemberInterestRepository classBasketMemberInterestRepository, ClassBasketMemberCouponBoxRepository classBasketMemberCouponBoxRepository, ClassBasketMemberLectureRespository classBasketMemberLectureRespository, com.greedy.rotutee.basket.repository.ClassBasketCouponRepository classBasketCouponRepository) {
         this.modelMapper = modelMapper;
         this.classBasketRepository = classBasketRepository;
         this.classBasketLectureRepository = classBasketLectureRepository;
         this.classBasketMemberRepository = classBasketMemberRepository;
         this.classBasketMemberInterestRepository = classBasketMemberInterestRepository;
         this.classBasketMemberCouponBoxRepository = classBasketMemberCouponBoxRepository;
+        this.classBasketMemberLectureRespository = classBasketMemberLectureRespository;
+        ClassBasketCouponRepository = classBasketCouponRepository;
     }
 
     @Override
@@ -92,30 +92,41 @@ public class BasketServiceImpl implements BasketService{
         return basketMemberCouponBoxDTO;
     }
 
- /*   @Override
-    @Transactional
-    public ClassBasketDTO modifyCouponList(int lectureNo, int couponNo) {
-
-        ClassBasket classBasket = ClassBasketRepository.
-        Member memberEntity = classBasketMemberRepository.findByNo(memberNo);
-
-        ClassBasket basket = classBasketRepository.findByLectureAndMember(lectureEntity, memberEntity);
-
-        if(basket != null) {
-
-            ClassBasketDTO basketDTO = new ClassBasketDTO();
-            basketDTO.setClassBasketNo(basket.getClassBasketNo());
-            basketDTO.setMember(modelMapper.map(basket.getMember(), MemberDTO.class));
-            basketDTO.setLecture(modelMapper.map(basketDTO.getLecture(), LectureDTO.class));
-
-            return basketDTO;
-        }
-
-        return null;
-    }*/
 
     @Override
     public void removeOneCoupon(int basketNo, int couponNo) {
+
+    }
+
+    @Override
+    @Transactional
+    public void lectureSuccessBasket(int lectureNo, int memberNo, int couponNo) {
+
+        //강의 없애기
+        Lecture lectureEntity = classBasketLectureRepository.findByLectureNo(lectureNo);
+        Member memberEntity = classBasketMemberRepository.findByNo(memberNo);
+
+        classBasketRepository.deleteByLectureAndMember(lectureEntity, memberEntity);
+
+        //멤버 강의 인원 추가
+        MemberLectureDTO memberLecture = new MemberLectureDTO();
+        memberLecture.setMemberNo(memberNo);
+        memberLecture.setLectureNo(lectureNo);
+
+        classBasketMemberLectureRespository.save(modelMapper.map(memberLecture, MemberLecture.class));
+
+        //결제한 후 쿠폰 변경
+        BasketCoupon basketCoupon= ClassBasketCouponRepository.findById(couponNo).get();
+
+        BasketMemberCouponBoxDTO couponBoxDTO = new BasketMemberCouponBoxDTO();
+
+        BasketCouponDTO couponDTO = modelMapper.map(basketCoupon, BasketCouponDTO.class);
+        MemberDTO memberDTO = modelMapper.map(memberEntity,MemberDTO.class);
+        couponBoxDTO.setCouponStatus("사용");
+        classBasketMemberCouponBoxRepository.save(modelMapper.map(couponBoxDTO, BasketMemberCouponBox.class));
+
+        // 강의 시간 insert
+
 
     }
 
@@ -149,7 +160,6 @@ public class BasketServiceImpl implements BasketService{
 
             classBasketMemberInterestRepository.save(modelMapper.map(interest, MemberInterest.class));
         } else {
-
             int increasedDegree = memberInterest.getInterestDegree() + 2;
             memberInterest.setInterestDegree(increasedDegree);
         }
@@ -189,5 +199,7 @@ public class BasketServiceImpl implements BasketService{
         classBasketRepository.deleteByLectureAndMember(lectureEntity, memberEntity);
 
     }
+
+
 
 }

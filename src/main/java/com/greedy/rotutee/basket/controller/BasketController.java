@@ -80,7 +80,6 @@ public class BasketController {
     @GetMapping("/list")
     public ModelAndView findBasketList(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
 
-
         int memberNo = customUser.getNo();
         List<ClassBasketDTO> cartList = basketService.findByMemberNo(memberNo);
 
@@ -88,6 +87,9 @@ public class BasketController {
             List<AttachedFileDTO> fileList = cart.getLecture().getImageList();
         }
 
+        List<BasketMemberCouponBoxDTO> coupons = basketService.selectCouponList(memberNo);
+
+        mv.addObject("coupons", coupons);
         mv.addObject("cartList", cartList);
         mv.setViewName("basket/basketlist");
 
@@ -108,38 +110,24 @@ public class BasketController {
 
         return mv;
     }
-    @ResponseBody
-    @GetMapping(value = "/coupon/list", produces = "application/json; charset=UTF-8")
-    public List<BasketMemberCouponBoxDTO> findCouponList(ModelAndView mv,  @AuthenticationPrincipal CustomUser customUser) {
+
+    @GetMapping("/lectureSuccess")
+    public ModelAndView successBasketPay(ModelAndView mv,HttpServletRequest request,@AuthenticationPrincipal CustomUser customUser, RedirectAttributes rttr){
 
         int memberNo = customUser.getNo();
-
-        List<BasketMemberCouponBoxDTO> couponBoxs = basketService.selectCouponList(memberNo);
-
-        System.out.println( " @@@@ " + couponBoxs);
-
-
-        return couponBoxs;
-
-    }
-
-  /*  @PostMapping(value = "/coupon/modify", produces = "application/json; charset=UTF-8")
-    public ClassBasketDTO modifyCoupon(HttpServletRequest request, ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
-
-        int lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
+        int lectureNo = Integer.parseInt(request.getParameter("LectureNo"));
         int couponNo = Integer.parseInt(request.getParameter("couponNo"));
 
-        *//*ClassBasketDTO basketDTOList = basketService.modifyCouponList(lectureNo, couponNo);*//*
-        return basketDTOList;
-    }*/
 
-    @GetMapping(value = "/coupon/remove", produces = "application/json; charset=UTF-8")
-    public void removeCoupon(HttpServletRequest request){
+        basketService.lectureSuccessBasket(lectureNo,memberNo,couponNo);
 
-        int lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
-        int couponNo = Integer.parseInt(request.getParameter("couponNo"));
+        rttr.addFlashAttribute("message", "해당 강의이 결제 되었습니다..");
 
-        basketService.removeOneCoupon(lectureNo, couponNo);
+        mv.setViewName("redirect:/basket/list");
+
+        return mv;
     }
+
+
 
 }

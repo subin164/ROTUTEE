@@ -1,16 +1,23 @@
 package com.greedy.rotutee.basket.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity(name = "Basket_MemberLecture")
 @Table(name = "TBL_MEMBER_LECTURE")
+@SequenceGenerator(
+        name = "BASKET_MEMBER_LECTURE_NO_SEQ_GENERATOR",
+        sequenceName = "MEMBER_LECTURE_NO",
+        allocationSize = 1,
+        initialValue = 1
+)
 public class MemberLecture {
 
     @Id
     @Column(name = "MEMBER_LECTURE_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "BASKET_MEMBER_LECTURE_NO_SEQ_GENERATOR"
+    )
     private int memberLectureNo;
 
     @Column(name = "MEMBER_NO")

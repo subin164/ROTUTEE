@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://cdn.bootpay.co.kr/js/bootpay-3.3.3.min.js" type="application/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
@@ -33,7 +34,8 @@
             border: 2px solid;
             border-radius: 10px;
             display:inline-block;
-            background-repeat:repeat-x;
+            text-align: center;
+
         }
         .modal-body-coupon-click{
             background: grey;
@@ -47,7 +49,7 @@
             display:inline-block;
         }
         .modal-body-coupon:hover{
-            color: #6c757d;
+            background: #6c757d;
         }
 
         .modal-coupon-hr{
@@ -58,23 +60,28 @@
 
         .modal-img{
             width: 90%;
-            height: 45%;
+            height: 40%;
             margin-top: 10px;
             display: block;
             margin-left: auto;
             margin-right: auto;
         }
-
         .close {
+            cursor: pointer;
             display:inline-block;
             *display:inline;
+            width:20px;
+            height:20px;
+            text-align:center;
+            margin-right:20px;
         }
 
-        .close:after {
-            display: inline-block;
+        .close1:after {
             content: "\00d7";
             font-size:15pt;
+            line-height:20px;
         }
+
 
     </style>
 </head>
@@ -95,12 +102,14 @@
                 <br>
                 <div class="card mb-3" style="max-width: 540px;" th:each="cart : ${cartList}">
                     <div>
-                        <p style="margin-left: 20px; margin-top: 5px; margin-bottom: 5px;"># 쿠폰 : </p>
-                        <p id="couponName" th:attrappend="id=${ cart.lecture.lectureNo }"></p>
+                        <p style="margin-left: 20px; margin-top: 5px; margin-bottom: 5px;width: 80%"># 쿠폰 : </p>
+                        <p id="couponName" th:attrappend="id=${ cart.lecture.lectureNo }" style="width: 100px"></p>
+                        <div style="width: 10%; float: right"></div>
                     </div>
                     <div class="row g-0">
                         <div class="col-md-1">
-                            <input class="form-check-input" type="checkbox" onclick="NoMultiChk(this)"style="margin-left: 15px; margin-top: 55px;">
+                            <input class="form-check-input" name="checkbox" type="checkbox" onclick="oneCheckbox(this)"style="margin-left: 15px; margin-top: 55px;">
+                            <input type="hidden" class="lectureNo" th:value="${cart.lecture.lectureNo}">
                         </div>
                         <div class="col-md-4">
                             <th:block th:if="${cart.lecture.imageList.size() > 0}">
@@ -109,16 +118,15 @@
                         </div>
                         <div class="col-md-7">
                             <div class="card-body">
-                                <input id  type="hidden" class="basketNo" th:value="${cart.classBasketNo}">
-                                <input type="hidden" class="lectureNo" th:value="${cart.lecture.lectureNo}">
-                                <input type="hidden" id="lecturePriceValue" th:attrappend="id=${ cart.lecture.lectureNo }" th:value="${cart.lecture.lectureNo}">
+                                <input id  type="text" class="basketNo" th:value="${cart.classBasketNo}">
+                                <input type="text" class="lectureNo" th:value="${cart.lecture.lectureNo}">
+                                <input type="text" id="lecturePriceValue" th:attrappend="id=${ cart.lecture.lectureNo }" th:value="${cart.lecture.lecturePrice}">
 
                                 <h5 class="card-title" th:text="${cart.lecture.lectureName}"></h5>
                                 <p class="card-text" ><small class="text-muted" th:text="${cart.lecture.tutor.name}"></small></p>
                                 <p id="lecturePrice" th:attrappend="id=${ cart.lecture.lectureNo }"  class="lecturePrice" th:text="'￦ ' + ${cart.lecture.lecturePrice}"></p>
-                                <button class="btn btn-outline-secondary btn-sm couponBtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float: right; margin-bottom: 10px">쿠폰함</button>
+                                <button class="btn btn-outline-secondary btn-sm couponBtn"  th:value="${cart.lecture.lectureNo}" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float: right; margin-bottom: 10px">쿠폰함</button>
                                 <button class="btn btn-outline-secondary btn-sm remove" style="float: right; margin-bottom: 10px">삭제</button>
-
                             </div>
                         </div>
                     </div>
@@ -126,15 +134,20 @@
             </div>
             <div class="col-4">
                 <div style="width: 300px; height: 500px; border: 1px solid black;">
-                    <div>
-                        <span>결제금액 : </span> <span id="paymentAmount" th:value="'￦'"> </span>
+                    <div style="margin: 20px">
+
+                        <input type="text" id="paymentAmountValue">
+                        <span style="margin-top:10px;">결제금액 : </span> <p id="paymentAmount" th:text="${0}" > </p>
                         <br>
-                        <span>할인금액 : </span> <span id="paymentDiscount" th:value="'￦'"> </span>
+                        <input type="text" id="paymentDiscountValue">
+
+                        <span style="margin-left:10px;">할인금액 : </span> <p id="paymentDiscount" th:text="${0}"> </p>
                     </div>
                     <br>
                     <div>
+                        <input type="text" id ="totalAmountValue">
                         <p>최종 결제 금액</p>
-                        <span id="totalAmount" th:value="'￦'"></span>
+                        <p id="totalAmount" th:text="${0}"></p>
                     </div>
                     <br>
                     <div>
@@ -154,8 +167,20 @@
                     <h5 class="modal-title" id="staticBackdropLabel">쿠폰함</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div id="modalBody" class="modal-body">
+                <div id="modalBody" class="modal-body" >
+                    <div class="modal-body-coupon" th:each="coupons : ${coupons}" th:value="${ coupons.coupon.couponNo }">
+                        <img class='modal-img' src="../static/common/image/rotutee.png">
+                        <hr class='modal-coupon-hr'>
+                        <input id="couponNo" th:attrappend="id=${ coupons.coupon.couponNo }" type="hidden" th:text="'['+ ${coupons.coupon.couponNo} + ']'"/>
+                        <p id="couponNamValue" th:attrappend="id=${ coupons.coupon.couponNo }" th:text="'['+${coupons.coupon.couponName}+ ']'"></p>
+                        <p id="couponExpirationDate" th:attrappend="id=${ coupons.coupon.couponNo }" th:text="'D - ' + ${coupons.coupon.couponExpirationDate}"></p>
+                        <p id="couponDiscountRate" th:attrappend="id=${ coupons.coupon.couponNo }" th:text="${coupons.coupon.couponDiscountRate}+'% 할인'"></p>
 
+                        <input id="couponNoinput"  th:attrappend="id=${ coupons.coupon.couponNo }" type="text" class="basketNo" th:value="${coupons.coupon.couponNo}">
+                        <input id="couponNameinput" th:attrappend="id=${ coupons.coupon.couponNo }" type="text" class="basketNo" th:value="${coupons.coupon.couponName}">
+                        <input id="couponExpirationDateinput" th:attrappend="id=${ coupons.coupon.couponNo }" type="text" class="basketNo" th:value="${coupons.coupon.couponExpirationDate}">
+                        <input id="couponDiscountRateinput" th:attrappend="id=${ coupons.coupon.couponNo }" type="text" class="basketNo" th:value="${coupons.coupon.couponDiscountRate}">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary modal-cancel-btn" data-bs-dismiss="modal">취소</button>
@@ -168,27 +193,88 @@
 
 <script>
 
-    $(".couponBtn").click(function () {
-        const lectureNo = $(".lectureNo").val();
-        console.log("couponClcik :" + lectureNo);
-    })
+
 
     $(".remove").click(function() {
-        const lectureNo = $(".lectureNo").val();
+        let lectureNo = $(".lectureNo").val();
         console.log(lectureNo);
         location.href = "/basket/remove/" + lectureNo;
     })
 
-    function NoMultiChk(chk){
-        var obj = document.getElementsByName("box");
+    function oneCheckbox(checked){
+        let obj = document.getElementsByName("checkbox");
+        let lectureNo =$(checked).siblings(".lectureNo").val();
+        console.log(" lectureNo + " + lectureNo);
         for(var i=0; i<obj.length; i++){
-            if(obj[i] != chk){ obj[i].checked = false; }
+            if(obj[i] != checked){
+                obj[i].checked = false;
+            }
         }
+        $("#paymentDiscount").text = "0"
+
+        $("#paymentAmountValue").val($("#lecturePriceValue"+lectureNo).val());
+
+        $("#paymentAmount").text($("#lecturePriceValue"+lectureNo).val());
+        $("#totalAmountValue").val($("#lecturePriceValue"+lectureNo).val());
+
+        $("#totalAmount").text($("#lecturePriceValue"+lectureNo).val());
+
     }
+    let lectureNo;
+    let $selectCoupon ;
+    let $selectCouponName;
+    var $dicountRate;
+    let $selectDiscountRate;
+    //쿠폰 클릭
+    $(".modal-body-coupon").click(function () {
+        $selectCoupon =$(this);
+        console.log("$selectCoupon :" + $selectCoupon);
+        console.log("$selectCoupon :" + $selectCoupon.attr("value"));
+        $selectCouponName = $("#couponNameinput"+ $selectCoupon.attr("value")).val();
+        console.log($selectCouponName + "$selectCouponName");
+    })
+
+    //쿠폰함
+    $(".couponBtn").click(function () {
+        lectureNo = $(this).attr('value')
+        console.log(lectureNo);
+    });
 
 
-    $(document).ready(function () {
+    $(".modal-ok-btn").click(function () {
+        if ($selectCoupon != null) {
+            console.log("lectureno"+lectureNo);
+            let couponNo = $selectCoupon.attr("value");
+            console.log("couponNo"+couponNo);
 
+            $selectCoupon.hide();
+            $("#couponName" + lectureNo).text($selectCouponName);
+            console.log("lecturePriceValue"+$("#lecturePriceValue" + lectureNo).val());
+            console.log("couponDiscount"+$("#couponDiscountRateinput" + couponNo).val());
+            console.log("couponDiscountRateinput%"+($("#couponDiscountRateinput" + couponNo).val() / 100));
+            $dicountRate = ($("#lecturePriceValue" + lectureNo).val() * ($("#couponDiscountRateinput" + couponNo).val() / 100));
+            console.log("dicountRate : " +$dicountRate);
+            $("#lecturePrice" + lectureNo).text($("#lecturePriceValue" + lectureNo).val() - $dicountRate);
+
+            $("#paymentDiscount").text($dicountRate);
+            $("#paymentDiscountValue").val($dicountRate);
+            $("#totalAmountValue").val($("#lecturePriceValue" + lectureNo).val() - $("#paymentDiscountValue").val());
+            $("#totalAmount").text($("#totalAmountValue").val());
+        }
+        else{
+            console.log("leturno"+lectureNo);
+            $("#paymentDiscount").text= 0;
+            $("#paymentAmount").text= $("#lecturePriceValue"+lectureNo).val();
+            $("#totalAmount").text = $("#lecturePriceValue"+lectureNo).val();
+        }
+
+        $('#staticBackdrop').modal('hide');
+
+    });
+
+
+
+   /* $(document).ready(function () {
         $.ajax({
             url: "/basket/coupon/list",
             type: "GET",
@@ -201,16 +287,15 @@
 
                 for (var index in data) {
                     console.log(data[index]);
-                    $div = $("<div class='modal-body-coupon'>")
-                    $image = $("<img class='modal-img' src='../../static/common/image/rotutee.png'>");
+                    $div = $("<div class='modal-body-coupon' value=data[index].coupon.couponNo>")
+                    $image = $("<img class='modal-img' src='../static/common/image/rotutee.png'>");
                     $hr = $("<hr class='modal-coupon-hr'>");
                     $pTitle = $("<p>").text("[ " + data[index].coupon.couponName + " ]");
                     $pDay = $("<p>").text("D - " + data[index].coupon.couponExpirationDate);
                     $pDiscount = $("<p id='couponRate' th:attrappend='id=${ data[index].coupon.couponNo }'>").text(data[index].coupon.couponDiscountRate + "% 할인");
-
-                    $couponNo = $("<input id='couponNoValue' couponRateValueth:attrappend='id=${ data[index].coupon.couponNo }'>").val(data[index].coupon.couponNo);
-                    $couponName = $("<input id='couponDiscountRateValue' th:attrappend='id=${ data[index].coupon.couponNo } type='hidden'>").val(data[index].coupon.couponDiscountRate);
-                    $couponName = $("<input id='couponNameValue' th:attrappend='id=${ data[index].coupon.couponNo }' type='hidden'>").val(data[index].coupon.couponName);
+                    $couponNo = $("<input id='couponNoValue'>").val(data[index].coupon.couponNo);
+                    $couponDiscountRate = $("<input id='couponDiscountRateValue' th:attrappend='id=${ data[index].coupon.couponNo } type='text'>").val(data[index].coupon.couponDiscountRate);
+                    $couponName = $("<input id='couponNameValue' th:attrappend='id=${ data[index].coupon.couponNo }' type='text'>").val(data[index].coupon.couponName);
 
                     $div.append($image);
                     $div.append($hr);
@@ -219,94 +304,38 @@
                     $div.append($pDiscount);
                     $div.append($couponNo);
                     $div.append($couponName);
+                    $div.append($couponDiscountRate);
                     $modalBody.append($div);
                 }
-
-                $(".modal-body-coupon").click(function () {
-
-                    let $selectCouponNo = "";
-                    let $selectCouponName = "";
-                    let $modalBodyCoupon = "";
-
-                    $selectCouponName = $(this).children(".couponName").val();
-                    $selectCouponNo = $(this).children(".couponNo").val();
-                    $modalBodyCoupon = $(this);
-
-                    console.log($selectCouponNo);
-                    console.log($selectCouponName);
-
-                });
-
-                $(".modal-ok-btn").click(function () {
-                    if($modalBodyCoupon != null){
-                        $modalBodyCoupon.hide();
-                        $("#couponName" + lectureNo).text($selectCouponName);
-                        $dicountRate =( $("#lecturePriceValue"+lectureNo).val() * ($("#couponDiscountRateValue"+ couponNo).val()/100));
-                        $("#lecturePrice"+ lectureNo ).text($("#lecturePriceValue"+lectureNo).val() - $dicountRate );
-
-                        $("#paymentDiscount").value= $dicountRate;
-
-
-                        $("#totalAmount").value =$("#lecturePriceValue"+lectureNo).val() - $("#paymentDiscount").value;
-                    }
-
-                    $("#paymentDiscount").value= 0 ;
-
-                    $("#paymentAmount").value= $("#lecturePriceValue"+lectureNo).val();
-
-                    $("#totalAmount").value = $("#paymentDiscount").value;
-
-                    $('#staticBackdrop').modal('hide');
-                });
             }
         });
-    });
-
-
+    });*/
 
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-<script>
+<script th:inline="javascript">
     $("#paymentBtn").click(function () {
         BootPay.request({
-            price: '1000', //실제 결제되는 가격
-            application_id: "62552c9e2701800023f6991e",
-            name: '블링블링 마스카라', //결제창에서 보여질 이름
-            pg: '',
-            method: '', //결제수단, 입력하지 않으면 결제수단 선택부터 화면이 시작합니다.
+            price: /*$("#totalAmountValue").val()*/3000,
+            application_id: "627c50842701800020f69e42",
+            name: $selectCouponName, //결제창에서 보여질 이름
+            pg: 'kcp',
+            method: 'card', //결제수단, 입력하지 않으면 결제수단 선택부터 화면이 시작합니다.
             show_agree_window: 0, // 부트페이 정보 동의 창 보이기 여부
             items: [
                 {
                     item_name: '나는 아이템', //상품명
                     qty: 1, //수량
-                    unique: '123', //해당 상품을 구분짓는 primary key
-                    price: 1000, //상품 단가
-                    cat1: 'TOP', // 대표 상품의 카테고리 상, 50글자 이내
-                    cat2: '티셔츠', // 대표 상품의 카테고리 중, 50글자 이내
-                    cat3: '라운드 티', // 대표상품의 카테고리 하, 50글자 이내
+                    unique: '1', //해당 상품을 구분짓는 primary key
+                    price: $("#totalAmountValue").val(), //상품 단가
+
                 }
             ],
-            user_info: {
-                username: '박수빈',
-                email: 'subin164@naver.com',
-                addr: '사용자 주소',
-                phone: '010-1234-4567'
-            },
             order_id: '고유order_id_1234', //고유 주문번호로, 생성하신 값을 보내주셔야 합니다.
             params: {callback1: '그대로 콜백받을 변수 1', callback2: '그대로 콜백받을 변수 2', customvar1234: '변수명도 마음대로'},
-            account_expire_at: '2020-10-25', // 가상계좌 입금기간 제한 ( yyyy-mm-dd 포멧으로 입력해주세요. 가상계좌만 적용됩니다. )
-            extra: {
-                start_at: '2019-05-10', // 정기 결제 시작일 - 시작일을 지정하지 않으면 그 날 당일로부터 결제가 가능한 Billing key 지급
-                end_at: '2022-05-10', // 정기결제 만료일 -  기간 없음 - 무제한
-                vbank_result: 1, // 가상계좌 사용시 사용, 가상계좌 결과창을 볼지(1), 말지(0), 미설정시 봄(1)
-                quota: '0,2,3', // 결제금액이 5만원 이상시 할부개월 허용범위를 설정할 수 있음, [0(일시불), 2개월, 3개월] 허용, 미설정시 12개월까지 허용,
-                theme: 'purple', // [ red, purple(기본), custom ]
-                custom_background: '#00a086', // [ theme가 custom 일 때 background 색상 지정 가능 ]
-                custom_font_color: '#ffffff' // [ theme가 custom 일 때 font color 색상 지정 가능 ]
-            }
         }).error(function (data) {
             //결제 진행시 에러가 발생하면 수행됩니다.
             console.log(data);
@@ -323,19 +352,46 @@
             var enable = true; // 재고 수량 관리 로직 혹은 다른 처리
             if (enable) {
                 BootPay.transactionConfirm(data); // 조건이 맞으면 승인 처리를 한다.
+                alert("결제가 완료 되었습니다."+data);
             } else {
-                BootPay.removePaymentWindow(); // 조건이 맞지 않으면 결제 창을 닫고 결제를 승인하지 않는다.
+                BootPay.removePaymentWindow();
+                // 조건이 맞지 않으면 결제 창을 닫고 결제를 승인하지 않는다.
+                alert(" 결제 오류"+data);
+
             }
         }).close(function (data) {
             // 결제창이 닫힐때 수행됩니다. (성공,실패,취소에 상관없이 모두 수행됨)
             console.log(data);
         }).done(function (data) {
-            //결제가 정상적으로 완료되면 수행됩니다
-            //비즈니스 로직을 수행하기 전에 결제 유효성 검증을 하시길 추천합니다.
-            console.log(data);
+
+            let lectureNo = $(".lectureNo").val();
+            location.href = "/lectureSuccess/" + lectureNo;
+
         });
     });
 
+</script>
+
+<script type="text/javascript">
+    function from_url(path, params, method) {
+
+        const form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+        for (let key in params) {
+            let hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            console.log("key" + key);
+            console.log("param" + params[key]);
+
+            form.appendChild(hiddenField);
+        }
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 
 </body>

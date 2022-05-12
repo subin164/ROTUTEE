@@ -32,4 +32,6 @@ public interface BasketService {
 */
 
     void removeOneCoupon(int lecture, int couponNo);
+
+    void lectureSuccessBasket(int lectureNo, int memberNo, int couponNo);
 }
