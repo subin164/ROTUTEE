@@ -210,15 +210,20 @@ public class StudyController {
     @ResponseBody
     public void studyReplyRemove(StudyReplyDTO replyDTO) {
 
-        System.out.println("컨트롤 리플넘버" + replyDTO);
         studyService.studyReplyRemove(replyDTO);
     }
 
     @PostMapping("/replyModify")
-    @ResponseBody
-    public void studyReplyModify(StudyReplyDTO replyDTO){
+    public String studyReplyModify(StudyReplyDTO replyDTO, HttpServletRequest request){
+        replyDTO.setReplyNo(Integer.parseInt(request.getParameter("replyNo")));
+        replyDTO.setReplyContent(request.getParameter("replyContent"));
+        replyDTO.setReplyModifyDate(new Date(System.currentTimeMillis()));
 
-        System.out.println("요청은 왔어요?");
+        System.out.println("replyDTO===== " + replyDTO);
+
+        studyService.studyReplyModify(replyDTO);
+
+        return "redirect:/study/detail";
 
     }
 

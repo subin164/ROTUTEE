@@ -70,15 +70,16 @@
                     </div>
                     <div class="detaile-replay-edit-button">
                         <div th:if="${#authentication.principal.nickname.toString()} eq ${studyReply.writer.nickname.toString()}">
-                            <button class="btn" data-bs-toggle="modal" data-bs-target="#replyModifyModal"
-                                    th:onclick="|replyModifyBtn()|">수정
+                            <button class="btn modifyBtn" data-bs-toggle="modal" data-bs-target="#replyModifyModal"
+                                    th:value="${ studyReply.replyNo }">수정
                             </button>
                             <button class="btn" th:onclick="|replyRemoveBtn(${studyReply.replyNo})|">삭재</button>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div th:text="${studyReply.replyContent}"/>
+                    <div id="replyContent" th:attrappend="id=${ studyReply.replyNo }" name="replyContent"
+                         th:text="${studyReply.replyContent}" value="??"/>
                 </div>
             </div>
 
@@ -89,7 +90,8 @@
                 </div>
                 <div class="card-body p-0">
                     <form>
-                        <textarea class="reply-content" id="replyContent" placeholder="댓글 입력.. ㅎ ㅐ  주 ㅓ."></textarea>
+                        <textarea class="reply-content" id="replyRegistContent"
+                                  placeholder="댓글 입력.. ㅎ ㅐ  주 ㅓ."></textarea>
                     </form>
                 </div>
                 <div class="card-footer">
@@ -167,14 +169,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/study/replyModify" method="post" id="replyModifyform">
-                    <input type="hidden">
+                <form id="replyModifyForm" action="/study/replyModify" method="post">
+                    <input type="hidden" name="replyNo" th:each="studyReply:${studyReplyList}"
+                           th:value="${studyReply.replyNo} ">
                     <textarea class="detail-modify-item-content" id="replyModifyContent" name="replyContent"></textarea>
+
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-primary" form="replyModifyform">수정</button>
+                <button type="submit" class="btn btn-primary" form="replyModifyForm">수정</button>
             </div>
         </div>
     </div>
@@ -290,7 +294,7 @@
     function replyRegistBtn() {
 
         let studyNo = $("#studyNo").val();
-        let replyContent = $("#replyContent").val();
+        let replyContent = $("#replyRegistContent").val();
 
         $.ajax({
             url: "/study/replyRegist",
@@ -324,23 +328,22 @@
         });
     }
 
-    function replyModifyBtn(){
 
-        const replyContent = $("#replyContent");
-        alert("ㄴ왜또..");
-        // $.ajax({
-        //     url: "/study/replyModify",
-        //     type: "post",
-        //     data: {replyContent: replyContent},
-        //     success: function (data) {
-        //         alert("성공인가요?");
-        //     },
-        //     error: function (data) {
-        //         alert("실패야..");
-        //     }
-        //
-        // });
-    }
+
+
+    $(".modifyBtn").click(function () {
+
+        let no = $(this).val();
+
+        console.log(no);
+
+        let replyCotnent = $("#replyContent" + no).text();
+
+        console.log(replyCotnent);
+
+        $("#replyModifyContent").val(replyCotnent);
+
+    });
 
 </script>
 

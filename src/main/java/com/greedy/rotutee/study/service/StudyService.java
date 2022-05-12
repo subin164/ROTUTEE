@@ -274,4 +274,15 @@ public class StudyService {
 
 
     }
+
+    @Transactional
+    public void studyReplyModify(StudyReplyDTO replyDTO) {
+
+        StudyReply studyReply = studyReplyRepository.getById(replyDTO.getReplyNo());
+
+        studyReply.setReplyContent(replyDTO.getReplyContent());
+        studyReply.setReplyModifyDate(new Date(System.currentTimeMillis()));
+
+
+    }
 }
