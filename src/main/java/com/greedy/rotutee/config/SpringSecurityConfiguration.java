@@ -1,7 +1,9 @@
 package com.greedy.rotutee.config;
 
 import com.greedy.rotutee.Authentication.service.AuthenticationService;
+import com.greedy.rotutee.main.controller.UserLogoutSuccessHandler;
 import com.greedy.rotutee.main.controller.WebAccessDeniedHandler;
+import com.greedy.rotutee.main.controller.UserLoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,11 +23,15 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationService authenticationService;
     private final WebAccessDeniedHandler webAccessDeniedHandler;
+    private final UserLoginSuccessHandler userLoginSuccessHandler;
+    private final UserLogoutSuccessHandler userLogoutSuccessHandler;
 
     @Autowired
-    public SpringSecurityConfiguration(AuthenticationService authenticationService, WebAccessDeniedHandler webAccessDeniedHandler) {
+    public SpringSecurityConfiguration(AuthenticationService authenticationService, WebAccessDeniedHandler webAccessDeniedHandler, UserLoginSuccessHandler userLoginSuccessHandler, UserLogoutSuccessHandler userLogoutSuccessHandler) {
         this.authenticationService = authenticationService;
         this.webAccessDeniedHandler = webAccessDeniedHandler;
+        this.userLoginSuccessHandler = userLoginSuccessHandler;
+        this.userLogoutSuccessHandler = userLogoutSuccessHandler;
     }
 
 
@@ -71,17 +77,20 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()  // form 이용한 로그인을 하겠다 활성화
                 .loginPage("/member/login")  // 이 url 로그인 form을 쓰겠다
-                .successForwardUrl("/")  // 성공시 이곳으로 가겠다
+//                .successForwardUrl("/")  // 성공시 이곳으로 가겠다
+                .successHandler(userLoginSuccessHandler)
                 .failureForwardUrl("/error/login")  // 실패시 이곳으로 가겠다
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))  // 이 요청이 들어오면 로그아웃을 하겠다
                 .deleteCookies("JSESSIONID")  // 성공하게 되면 JSESSIONID 라는 쿠키를 삭제 시킬 것
                 .invalidateHttpSession(true)  // 세션정보를 무효화시키겠다
-                .logoutSuccessUrl("/")  // 성공시 이곳으로 가겠다
+//                .logoutSuccessUrl("/")  // 성공시 이곳으로 가겠다
+                .logoutSuccessHandler(userLogoutSuccessHandler)
                 .and()
-                .exceptionHandling().accessDeniedHandler(webAccessDeniedHandler).and().exceptionHandling();
-//                .accessDeniedPage("/error/denied");
+//                .exceptionHandling().accessDeniedHandler(webAccessDeniedHandler);
+//                and().
+                .exceptionHandling().accessDeniedPage("/error/denied");
     }
 
     @Override

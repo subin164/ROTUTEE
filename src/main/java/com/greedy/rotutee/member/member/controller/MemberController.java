@@ -20,6 +20,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,16 +46,30 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public void memberLoginPage() {}
+    public String memberLoginPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        String referer = (String)request.getHeader("REFERER");
+        System.out.println("referer = " + referer);
+        Cookie url = new Cookie("url", referer);
+        response.addCookie(url);
+
+        return "/member/login";
+    }
 
     @GetMapping("/regist")
-    public void memberRegistPage() {}
+    public ModelAndView memberRegistPage(ModelAndView mv) {
+
+        mv.addObject("categoryList", memberService.findLectureCategoryList());
+        mv.setViewName("/member/regist");
+
+        return mv;
+    }
 
     @GetMapping("/secession")
     public void memberSecessionPage() {}
 
     @PostMapping("/regist")
-    public String registMember(@ModelAttribute MemberDTO member,@RequestParam("categoryNo") int[] categoryNo, RedirectAttributes rttr) {
+    public String registMember(@ModelAttribute MemberDTO member, @RequestParam("categoryNo") int[] categoryNo, RedirectAttributes rttr) {
 
         memberService.registMember(member, categoryNo);
 
