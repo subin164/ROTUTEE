@@ -2,6 +2,7 @@ package com.greedy.rotutee.basket.service;
 
 import com.greedy.rotutee.basket.dto.BasketMemberCouponBoxDTO;
 import com.greedy.rotutee.basket.dto.ClassBasketDTO;
+import com.greedy.rotutee.basket.dto.MemberLectureDTO;
 
 import java.util.List;
 
@@ -34,4 +35,6 @@ public interface BasketService {
     void removeOneCoupon(int lecture, int couponNo);
 
     void lectureSuccessBasket(int lectureNo, int memberNo, int couponNo);
+
+    MemberLectureDTO findByLectureNoAndMemberNoInMemberLecture(int no, int lectureNo);
 }

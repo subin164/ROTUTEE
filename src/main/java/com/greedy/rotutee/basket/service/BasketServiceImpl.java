@@ -200,6 +200,12 @@ public class BasketServiceImpl implements BasketService{
 
     }
 
+    @Override
+    public MemberLectureDTO findByLectureNoAndMemberNoInMemberLecture(int no, int lectureNo) {
 
+        MemberLecture memberLectureEntity = classBasketMemberLectureRespository.findByMemberNoAndLectureNo(no, lectureNo);
+
+        return null;
+    }
 
 }
