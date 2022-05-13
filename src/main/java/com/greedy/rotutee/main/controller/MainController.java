@@ -18,13 +18,13 @@ import java.util.List;
 /**
  * packageName      : com.greedy.rotutee.main.controller
  * fileName         : MainController
- * author           : SEOK
+ * author           : 7sang
  * date             : 2022-04-18
  * description      :
  * ==========================================================
  * DATE            AUTHOR              NOTE
  * ----------------------------------------------------------
- * 2022-04-18
+ * 2022-04-18      7sang            최초 생성
  * 2022-05-04      SEOK             메인페이지 배너, 인기강의, 최신강의 추가
  */
 @Controller
