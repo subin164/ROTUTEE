@@ -9,7 +9,11 @@ import com.greedy.rotutee.member.profile.entity.TutorInfoDTO;
 import com.greedy.rotutee.member.profile.service.ProfileFileHandler;
 import com.greedy.rotutee.member.profile.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,11 +40,13 @@ public class ProfileController {
 
     private final ProfileService profileService;
     private final ProfileFileHandler profileFileHandler;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public ProfileController(ProfileService profileService, ProfileFileHandler profileFileHandler) {
+    public ProfileController(ProfileService profileService, ProfileFileHandler profileFileHandler, AuthenticationManager authenticationManager) {
         this.profileService = profileService;
         this.profileFileHandler = profileFileHandler;
+        this.authenticationManager = authenticationManager;
     }
 
     @GetMapping("/profile")
@@ -131,6 +137,9 @@ public class ProfileController {
                                    @AuthenticationPrincipal CustomUser loginMember) throws Exception {
 
         profileService.profileUpload(profileFileHandler.profileFileUpload(uploadFile, loginMember.getNo()));
+
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginMember.getName(), loginMember.getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         rttr.addFlashAttribute("message", "사진 변경에 성공하셨습니다.");
 

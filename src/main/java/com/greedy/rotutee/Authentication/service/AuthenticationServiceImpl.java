@@ -149,38 +149,35 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<String> tuteePermitList = new ArrayList<>();
         List<String> tutorPermitList = new ArrayList<>();
         List<String> memberPermitList = new ArrayList<>();
+//
+        List<RoleMenuUrl> adminRoleList = roleMenuUrlRepository.findByRoleNo(1);
+        List<RoleMenuUrl> subAdminRoleList = roleMenuUrlRepository.findByRoleNo(2);
+        List<RoleMenuUrl> tuteeRoleList = roleMenuUrlRepository.findByRoleNo(3);
+        List<RoleMenuUrl> tutorRoleList = roleMenuUrlRepository.findByRoleNo(4);
+        List<RoleMenuUrl> memberRoleList = roleMenuUrlRepository.findByRoleNo(5);
 
-        List<RoleMenuUrl> adminRoleList = roleMenuUrlRepository.findRoleMenuUrlByRoleNo(1);
-        List<RoleMenuUrl> subAdminRoleList = roleMenuUrlRepository.findRoleMenuUrlByRoleNo(2);
-        List<RoleMenuUrl> tuteeRoleList = roleMenuUrlRepository.findRoleMenuUrlByRoleNo(3);
-        List<RoleMenuUrl> tutorRoleList = roleMenuUrlRepository.findRoleMenuUrlByRoleNo(4);
-        List<RoleMenuUrl> memberRoleList = roleMenuUrlRepository.findRoleMenuUrlByRoleNo(5);
-
+        System.out.println(" 어드민1 ");
         for(int i = 0; i < adminRoleList.size(); i++) {
-            adminPermitList.add("/" + adminRoleList.get(i).getMenuUrl().getName() + "/" + adminRoleList.get(i).getMenuDetail().getName());
-        }
 
+            adminPermitList.add(adminRoleList.get(i).getMenu().getUrl());
+        }
+        System.out.println(" 어드민2 ");
         for(int i = 0; i < subAdminRoleList.size(); i++) {
-            subAdminPermitList.add("/" + subAdminRoleList.get(i).getMenuUrl().getName() + "/" + subAdminRoleList.get(i).getMenuDetail().getName());
-        }
 
+            subAdminPermitList.add(subAdminRoleList.get(i).getMenu().getUrl());
+        }
+        System.out.println("튜티");
         for(int i = 0; i < tuteeRoleList.size(); i++) {
-            tuteePermitList.add("/" + tuteeRoleList.get(i).getMenuUrl().getName() + "/" + tuteeRoleList.get(i).getMenuDetail().getName());
+            tuteePermitList.add(tuteeRoleList.get(i).getMenu().getUrl());
         }
-
+        System.out.println("튜터");
         for(int i = 0; i < tutorRoleList.size(); i++) {
-            tutorPermitList.add("/" + tutorRoleList.get(i).getMenuUrl().getName() + "/" + tutorRoleList.get(i).getMenuDetail().getName());
+            tutorPermitList.add(tutorRoleList.get(i).getMenu().getUrl());
         }
-
+        System.out.println("회원");
         for(int i = 0; i < memberRoleList.size(); i++) {
-            memberPermitList.add("/" + memberRoleList.get(i).getMenuUrl().getName() + "/" + memberRoleList.get(i).getMenuDetail().getName());
+            memberPermitList.add(memberRoleList.get(i).getMenu().getUrl());
         }
-
-/*        System.out.println("adminRoleList = " + adminRoleList);
-        System.out.println("subAdminRoleList = " + subAdminRoleList);
-        System.out.println("tuteeRoleList = " + tuteeRoleList);
-        System.out.println("tutorRoleList = " + tutorRoleList);
-        System.out.println("memberRoleList = " + memberRoleList);*/
 
         permitListMap.put("adminPermitList", adminPermitList);
         permitListMap.put("subAdminPermitList", subAdminPermitList);

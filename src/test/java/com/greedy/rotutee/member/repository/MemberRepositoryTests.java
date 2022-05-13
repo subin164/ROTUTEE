@@ -75,6 +75,9 @@ public class MemberRepositoryTests {
     @Autowired
     private MemberSecessionHistoryRepository memberSecessionHistoryRepository;
 
+    @Autowired
+    private RoleMenuUrlRepository roleMenuUrlRepository;
+
     @PersistenceContext
     private EntityManager entityManager;
     
@@ -314,5 +317,18 @@ public class MemberRepositoryTests {
 
         memberSecessionHistoryRepository.save(memberSecessionHistory);
     }
+
+    @Test
+    public void 권한별_메뉴_테스트() {
+
+        List<RoleMenuUrl> adminRoleList = roleMenuUrlRepository.findByRoleNo(2);
+
+//        adminRoleList.forEach(System.out::println);
+        
+        for(int i = 0; i < adminRoleList.size(); i++) {
+            System.out.println("adminRoleList.get(i).getMenu().getUrl() = " + adminRoleList.get(i).getMenu().getUrl());
+        }
+    }
+    
 
 }

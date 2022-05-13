@@ -11,13 +11,9 @@ public class RoleMenuUrl {
     @Column(name = "ROLE_URL_NO")
     private int roleMenuUrlNo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "MENU_URL_NO")
-    private MenuUrl menuUrl;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "MENU_DETAIL_NO")
-    private MenuDetail menuDetail;
+    @ManyToOne
+    @JoinColumn(name = "MENU_NO")
+    private Menu menu;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ROLE_NO")
@@ -25,10 +21,9 @@ public class RoleMenuUrl {
 
     public RoleMenuUrl() {}
 
-    public RoleMenuUrl(int roleMenuUrlNo, MenuUrl menuUrl, MenuDetail menuDetail, Role role) {
+    public RoleMenuUrl(int roleMenuUrlNo, Menu menu, Role role) {
         this.roleMenuUrlNo = roleMenuUrlNo;
-        this.menuUrl = menuUrl;
-        this.menuDetail = menuDetail;
+        this.menu = menu;
         this.role = role;
     }
 
@@ -40,20 +35,12 @@ public class RoleMenuUrl {
         this.roleMenuUrlNo = roleMenuUrlNo;
     }
 
-    public MenuUrl getMenuUrl() {
-        return menuUrl;
+    public Menu getMenu() {
+        return menu;
     }
 
-    public void setMenuUrl(MenuUrl menuUrl) {
-        this.menuUrl = menuUrl;
-    }
-
-    public MenuDetail getMenuDetail() {
-        return menuDetail;
-    }
-
-    public void setMenuDetail(MenuDetail menuDetail) {
-        this.menuDetail = menuDetail;
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 
     public Role getRole() {
@@ -66,10 +53,9 @@ public class RoleMenuUrl {
 
     @Override
     public String toString() {
-        return "AuthorityMenuUrl{" +
+        return "RoleMenuUrl{" +
                 "roleMenuUrlNo=" + roleMenuUrlNo +
-                ", menuUrl=" + menuUrl +
-                ", menuDetail=" + menuDetail +
+                ", menu=" + menu +
                 ", role=" + role +
                 '}';
     }
