@@ -33,6 +33,11 @@ public class ErrorController {
         return "/error/denied";
     }
 
+    @GetMapping("/denied2")
+    public String accessDenied2(){
+        return "/error/denied2";
+    }
+
     @GetMapping("/logout")
     public String logout(){
         return "/error/logout";

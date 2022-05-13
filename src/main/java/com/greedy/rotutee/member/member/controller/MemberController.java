@@ -52,6 +52,9 @@ public class MemberController {
         if(afterUrl != null) {
             afterUrl[0].setMaxAge(0);
         }
+        if("http://127.0.0.1:8001/member/login".equals(referer)) {
+            referer = "http://127.0.0.1:8001/";
+        }
         Cookie url = new Cookie("url", referer);
         response.addCookie(url);
 

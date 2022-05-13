@@ -32,6 +32,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authEx)
             throws IOException, ServletException {
 
-        response.sendRedirect("/error/denied");
+//        new WebAccessDeniedHandler().handle(request, response, new AccessDeniedException(""));
+        response.sendRedirect("/error/denied2");
     }
 }
