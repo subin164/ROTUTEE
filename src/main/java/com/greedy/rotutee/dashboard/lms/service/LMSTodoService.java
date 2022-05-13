@@ -19,4 +19,6 @@ public interface LMSTodoService {
     boolean modifyTodo(String content, int todoNo);
 
     boolean removeTodo(int todoNo);
+
+    void modifyStatus(String status, int todoNo);
 }

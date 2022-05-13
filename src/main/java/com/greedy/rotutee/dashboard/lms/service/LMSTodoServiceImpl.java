@@ -72,5 +72,15 @@ public class LMSTodoServiceImpl implements LMSTodoService{
         return true;
     }
 
+    @Override
+    @Transactional
+    public void modifyStatus(String status, int todoNo) {
+
+        ToDo todo = todoRepository.findById(todoNo).get();
+        todo.setAchievementStatus(status);
+        todoRepository.save(todo);
+
+    }
+
 
 }

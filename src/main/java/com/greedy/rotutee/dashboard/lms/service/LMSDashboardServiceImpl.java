@@ -56,10 +56,10 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
     /**
      * methodName : findLMSDashboard
      * author : SeoYoung Kim
-     * description :
+     * description : Dashboard 관련 정보 조회 메소드
      *
      * @param todo
-     * @return lms dashboard dto
+     * @return LMSDashboardDTO : Todo, 공지사항, 최근 시청강의, 프로필, 수강번호 조회
      */
     @Override
     public LMSDashboardDTO findLMSDashboard(ToDoDTO todo) {
@@ -95,6 +95,15 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
 
     }
 
+    /**
+     * Gets member lecture no.
+     * author : SeoYoung Kim
+     * description : 수강번호를 return해주는 메소드
+     *
+     * @param lectureNo lms 대시보드 조회를 원하는 강의번호
+     * @param memberNo  로그인한 회원 번호
+     * @return memberLectureNo : 회원번호 별 강의번호를 담은 수강번호
+     */
     private int getMemberLectureNo(int lectureNo, int memberNo) {
 
         MyPageMemberLecture memberLecture =  mypageMemberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
@@ -103,6 +112,14 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
         return memberLectureNo;
     }
 
+    /**
+     * Gets progress.
+     * author : SeoYoung Kim
+     * description : Todo 진행률을 계산하여 return 하는 메소드
+     *
+     * @param todoEntities the todo entities
+     * @return the progress
+     */
     private List<Integer> getProgress(List<ToDo> todoEntities) {
 
         List<Integer> progress = new ArrayList<>();
@@ -111,6 +128,15 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
         return progress;
     }
 
+    /**
+     * Gets watching.
+     * author : SeoYoung Kim
+     * description : 최근 시청강의 4개의 정보를 return 해주는 메소드
+     *
+     * @param lectureNo lms 대시보드 조회를 원하는 강의번호
+     * @param memberNo  로그인하고 있는 회원번호
+     * @return watching 최근 시청강의 정보
+     */
     private List<LMSLatelyViewDTO> getWatching(int lectureNo, int memberNo) {
 
         System.out.println("lectureNo = " + lectureNo);
@@ -142,6 +168,14 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
         return watching;
     }
 
+    /**
+     * Gets notices.
+     * author : SeoYoung Kim
+     * description : 최근 게시된 공지사항 4개를 보여주는 메소드
+     *
+     * @param lectureNo 강의번호
+     * @return notices : 최근 4개의 공지사항 정보
+     */
     private List<LMSNoticeBoardDTO> getNotices(int lectureNo) {
 
         int categoryNo = 10;
@@ -165,6 +199,14 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
         return notices;
     }
 
+    /**
+     * Gets normals.
+     * author : SeoYoung Kim
+     * description : 최근 게시된 일반게시판 정보를 return 해주는 메소드
+     *
+     * @param lectureNo 강의번호
+     * @return normals 최근 4개의 일반게시판 정보들
+     */
     private List<LMSNormalBoardDTO> getNormals(int lectureNo) {
 
         int categoryNo = 9;

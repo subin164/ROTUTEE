@@ -21,7 +21,7 @@ import java.util.List;
  * fileName : LMSDashboardController
  * author : SeoYoung
  * date : 2022-04-19
- * description :
+ * description : LMS 대시보드로 조회값을 넘겨주는 Controller
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
@@ -42,12 +42,12 @@ public class LMSDashboardController {
     /**
      * methodName : findLMSDashboard
      * author : SeoYoung Kim
-     * description :
+     * description : LMS 대시보드에서 보여주는 정보를 넘겨주는 메소드
      *
-     * @param mv
-     * @param customUser
-     * @param request
-     * @return model and view
+     * @param mv : dashboard에서 보여지는 정보를 담는 객체
+     * @param customUser 현재 로그인하고 있는 User 정보
+     * @param request lectureNo 정보를 담고있음
+     * @return modelandview
      */
 
     @GetMapping("/dashboardlist")

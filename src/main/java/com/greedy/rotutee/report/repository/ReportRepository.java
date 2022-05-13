@@ -40,4 +40,5 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
     List<Report> findAllByProcessStatusContaining(String searchValue);
 
 
+    List<Report> findByBoardAnswerAnswerNo(int answerNo);
 }
