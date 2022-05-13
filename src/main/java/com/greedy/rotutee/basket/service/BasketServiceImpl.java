@@ -3,11 +3,16 @@ package com.greedy.rotutee.basket.service;
 import com.greedy.rotutee.basket.dto.*;
 import com.greedy.rotutee.basket.entity.*;
 import com.greedy.rotutee.basket.repository.*;
+import com.greedy.rotutee.payment.entity.PaymentChapter;
+import com.greedy.rotutee.payment.entity.PaymentClass;
+import com.greedy.rotutee.payment.repository.PaymentChapterRepository;
+import com.greedy.rotutee.payment.repository.PaymentClassRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,10 +38,16 @@ public class BasketServiceImpl implements BasketService{
     private final ClassBasketMemberCouponBoxRepository classBasketMemberCouponBoxRepository;
     private final ClassBasketMemberLectureRespository classBasketMemberLectureRespository;
     private final ClassBasketCouponRepository ClassBasketCouponRepository;
+    private final ClassBasketChapterRepository classBasketChapterRepository;
+    private final ClassBasketClassRepository classBasketClassRepository;
+    private final ClassBasketCumulateTimeRepository classBasketCumulateTimeRepository;
+    private final PaymentClassRepository paymentClassRepository;
+    private final PaymentChapterRepository paymentChapterRepository;
+
 
 
     @Autowired
-    public BasketServiceImpl(ModelMapper modelMapper, ClassBasketRepository classBasketRepository, ClassBasketLectureRepository classBasketLectureRepository, ClassBasketMemberRepository classBasketMemberRepository, ClassBasketMemberInterestRepository classBasketMemberInterestRepository, ClassBasketMemberCouponBoxRepository classBasketMemberCouponBoxRepository, ClassBasketMemberLectureRespository classBasketMemberLectureRespository, com.greedy.rotutee.basket.repository.ClassBasketCouponRepository classBasketCouponRepository) {
+    public BasketServiceImpl(ModelMapper modelMapper, ClassBasketRepository classBasketRepository, ClassBasketLectureRepository classBasketLectureRepository, ClassBasketMemberRepository classBasketMemberRepository, ClassBasketMemberInterestRepository classBasketMemberInterestRepository, ClassBasketMemberCouponBoxRepository classBasketMemberCouponBoxRepository, ClassBasketMemberLectureRespository classBasketMemberLectureRespository, com.greedy.rotutee.basket.repository.ClassBasketCouponRepository classBasketCouponRepository, ClassBasketChapterRepository classBasketChapterRepository, ClassBasketClassRepository classBasketClassRepository, ClassBasketCumulateTimeRepository classBasketCumulateTimeRepository, PaymentClassRepository paymentClassRepository, PaymentChapterRepository paymentChapterRepository) {
         this.modelMapper = modelMapper;
         this.classBasketRepository = classBasketRepository;
         this.classBasketLectureRepository = classBasketLectureRepository;
@@ -45,6 +56,12 @@ public class BasketServiceImpl implements BasketService{
         this.classBasketMemberCouponBoxRepository = classBasketMemberCouponBoxRepository;
         this.classBasketMemberLectureRespository = classBasketMemberLectureRespository;
         ClassBasketCouponRepository = classBasketCouponRepository;
+        this.classBasketChapterRepository = classBasketChapterRepository;
+        this.classBasketClassRepository = classBasketClassRepository;
+        this.classBasketCumulateTimeRepository = classBasketCumulateTimeRepository;
+        this.paymentClassRepository = paymentClassRepository;
+
+        this.paymentChapterRepository = paymentChapterRepository;
     }
 
     @Override
@@ -73,6 +90,7 @@ public class BasketServiceImpl implements BasketService{
 
         List<BasketMemberCouponBox> basketMemberCouponBox = classBasketMemberCouponBoxRepository.findByMemberNoAndCouponStatus(memberNo, "미사용");
 
+        basketMemberCouponBox.forEach(System.out::println);
         List<BasketMemberCouponBoxDTO> basketMemberCouponBoxDTO = new ArrayList<>();
         for(BasketMemberCouponBox basketMemberCouponBox1 :basketMemberCouponBox) {
             MemberDTO member = modelMapper.map(basketMemberCouponBox1.getMember(), MemberDTO.class);
@@ -89,18 +107,16 @@ public class BasketServiceImpl implements BasketService{
             basketMemberCouponBoxDTO.add(basketMemberCouponBoxDTO1);
         }
 
+        System.out.println("basketMemberCouponBoxDTO");
+        basketMemberCouponBoxDTO.forEach(System.out::println);
         return basketMemberCouponBoxDTO;
     }
 
 
-    @Override
-    public void removeOneCoupon(int basketNo, int couponNo) {
-
-    }
 
     @Override
     @Transactional
-    public void lectureSuccessBasket(int lectureNo, int memberNo, int couponNo) {
+    public void lectureSuccessBasket(int lectureNo, int memberNo, String couponNo) {
 
         //강의 없애기
         Lecture lectureEntity = classBasketLectureRepository.findByLectureNo(lectureNo);
@@ -115,20 +131,83 @@ public class BasketServiceImpl implements BasketService{
 
         classBasketMemberLectureRespository.save(modelMapper.map(memberLecture, MemberLecture.class));
 
-        //결제한 후 쿠폰 변경
-        BasketCoupon basketCoupon= ClassBasketCouponRepository.findById(couponNo).get();
+        MemberLecture MemberLecture = classBasketMemberLectureRespository.findByMemberNoAndLectureNo(memberNo, lectureNo);
 
-        BasketMemberCouponBoxDTO couponBoxDTO = new BasketMemberCouponBoxDTO();
+        int memberLectureNo = MemberLecture.getMemberLectureNo();
 
-        BasketCouponDTO couponDTO = modelMapper.map(basketCoupon, BasketCouponDTO.class);
-        MemberDTO memberDTO = modelMapper.map(memberEntity,MemberDTO.class);
-        couponBoxDTO.setCouponStatus("사용");
-        classBasketMemberCouponBoxRepository.save(modelMapper.map(couponBoxDTO, BasketMemberCouponBox.class));
+        if(!couponNo.equals("undefined")) {
+            //결제한 후 쿠폰 변경
+            int couponNum = Integer.parseInt(couponNo);
+            Date date = new Date(System.currentTimeMillis());
+            BasketCoupon basketCoupon = ClassBasketCouponRepository.findById(couponNum).get();
+            BasketMemberCouponBox basketMemberCouponBox = classBasketMemberCouponBoxRepository.findByBasketCouponAndMember(basketCoupon, memberEntity);
 
-        // 강의 시간 insert
+            BasketCouponDTO couponDTO = modelMapper.map(basketCoupon, BasketCouponDTO.class);
+            MemberDTO memberDTO = modelMapper.map(memberEntity, MemberDTO.class);
+
+            basketMemberCouponBox.setCouponStatus("사용");//완료
+        }
 
 
+
+        //강의 시간 insert
+        List<PaymentChapter> chapterList = paymentChapterRepository.findByLectureNo(lectureNo);
+        List<Integer> chapterNums = new ArrayList<>();
+        System.out.println("chapterNums : " + chapterNums);
+        for(int i = 0; i < chapterList.size(); i++) {
+            int chapterNo = chapterList.get(i).getChapterNo();
+            chapterNums.add(chapterNo);
+        }
+        System.out.println("chapterNums = " + chapterNums);
+
+        /* 강의에 해당하는 챕터 번호 리스트 형태 저장 */
+        /*위에서 조회한 챕터1개에 해당하는 클래스 리스트 담아주기*/
+        List<Integer> classNums = new ArrayList<>();
+        for(int i= 0; i < chapterNums.size(); i++) {
+            int chapterNo  = chapterNums.get(i);
+            System.out.println("chapterNo" +chapterNo);
+
+
+            List<PaymentClass> classList = paymentClassRepository.findByChapterChapterNo(chapterNo);
+            System.out.println("classList :" + classList);
+
+            for(int j = 0; j < classList.size(); j++) {
+                int classNo = classList.get(j).getClassNo();
+                System.out.println("classNo :" + classNo);
+
+                classNums.add(classNo);
+            }
+        }
+        System.out.println(classNums);
+        System.out.println("gg2");
+
+        for(int i = 0; i < classNums.size(); i++){
+            System.out.println("확인" + i);
+            int classNo = classNums.get(i);
+            System.out.println("classNO : "+classNo);
+
+            CumulateTimeDTO cumulateTimeDTO = new CumulateTimeDTO();
+            MemberLectureDTO memberLectureDTO = new MemberLectureDTO();
+            System.out.println("memberLectureNo" +memberLectureNo);
+
+
+            memberLectureDTO.setMemberLectureNo(memberLectureNo);
+            ClassDTO classDTO = new ClassDTO();
+
+            classDTO.setClassNo(classNo);
+
+            System.out.println(classNo);
+
+            cumulateTimeDTO.setFinishedWatchingYN("N");
+            cumulateTimeDTO.setMemberLecture(memberLectureDTO);
+            cumulateTimeDTO.setCumClass(classDTO);
+            System.out.println("cumulateTimeDTO "+cumulateTimeDTO);
+
+            classBasketCumulateTimeRepository.save(modelMapper.map(cumulateTimeDTO, CumulateTime.class));
+        }
+        System.out.println("gg3");
     }
+
 
     @Override
     @Transactional
