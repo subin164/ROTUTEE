@@ -105,7 +105,14 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
         String division = "프로필";
         String deletionStatus = "N ";
         LMSAttachment lmsAttachment = lmsAttachmentRepository.findByMemberNoAndDivisionAndFileDeletionYN(memberNo, division, deletionStatus);
-        LMSAttachmentDTO attachment = modelMapper.map(lmsAttachment, LMSAttachmentDTO.class);
+        LMSAttachmentDTO attachment = null;
+        if(lmsAttachment != null) {
+            attachment  = modelMapper.map(lmsAttachment, LMSAttachmentDTO.class);
+
+        } else {
+            attachment = new LMSAttachmentDTO();
+        }
+
         return attachment;
     }
 
