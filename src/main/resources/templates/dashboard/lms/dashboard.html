@@ -262,10 +262,12 @@
             padding: 4px;
             color: #d3d7d8;
         }
+
         .todo-delete-btn:hover {
             background-color: #65b9da;
             border-radius: 2px;
         }
+
         .todo-modify-btn:hover {
             background-color: #bfdfec;
             border-radius: 2px;
@@ -288,12 +290,19 @@
             </div>
             <div class="todo-content">
                 <div th:each="todo : ${ dashboard.todos }">
-                    <input style="margin: 10px;" type="checkbox" value="Y">
+                    <th:block th:if="${todo.achievementStatus == 'Y '}">
+                        <input class="checkTodo" style="margin: 10px;" type="checkbox"
+                               th:value="${todo.achievementStatus}" checked>
+                    </th:block>
+                    <th:block th:if="${todo.achievementStatus == 'N '}">
+                        <input class="checkTodo" style="margin: 10px;" type="checkbox"
+                               th:value="${todo.achievementStatus}">
+                    </th:block>
                     <input class="todoContent" name="todo" th:value="${todo.content}" readonly>
                     <input class="todoNo" type="hidden" th:value="${todo.todoNo}">
                     <input class="memberLectureNo" type="hidden" th:value="${dashboard.memberLectureNo}">
-                    <label  class="todo-modify-btn"><i style="font-size:14px" class="fa">&#xf040;</i></label>
-                    <label  class="todo-delete-btn"><i style="font-size:14px" class="fa">&#xf014;</i></label>
+                    <label class="todo-modify-btn"><i style="font-size:14px" class="fa">&#xf040;</i></label>
+                    <label class="todo-delete-btn"><i style="font-size:14px" class="fa">&#xf014;</i></label>
                 </div>
             </div>
             <div class="addtodo">
@@ -395,7 +404,7 @@
         <div class="current-lecture">
             <div class="header">
                 <div class="head">
-                    <span  style="color: #3583D3;">최근 강의</span>
+                    <span style="color: #3583D3;">최근 강의</span>
                     <button class="w-btn w-btn-gra1 w-btn-gra-anim all-board">
                         전체보기
                     </button>
@@ -507,33 +516,28 @@
     document.getElementById('calendar').innerHTML = Calendar();
 
 
-    let todos = /*[[ ${dashboard.todos} ]]*/ "";
+    const todos = /*[[ ${dashboard.todos} ]]*/ "";
 
     console.log(todos);
 
-    for (let i = 0; i < todos.length; i++) {
-        const checkStatus = todos[i].achievementStatus;
 
-        console.log(checkStatus);
-    }
-
-    $(".todo-modify-btn").click(function() {
+    $(".todo-modify-btn").click(function () {
 
         const todoNo = $(this).siblings(".todoNo").val();
 
         const lectureNo = [[${lectureNo}]];
         const memberLectureNo = $(this).siblings(".memberLectureNo").val();
         console.log(todoNo);
-        $(this).siblings('.todoContent').attr("readonly",false);
+        $(this).siblings('.todoContent').attr("readonly", false);
 
-        $(".todo-modify-btn").click(function (){
+        $(".todo-modify-btn").click(function () {
             const content = $(this).siblings(".todoContent").val();
             $.ajax({
                 url: "/todo/modify",
                 type: "post",
                 data: {
-                    todoNo : todoNo,
-                    content : content,
+                    todoNo: todoNo,
+                    content: content,
 
                 },
                 success: function (data) {
@@ -544,7 +548,7 @@
 
     })
 
-    $(".todo-delete-btn").click(function() {
+    $(".todo-delete-btn").click(function () {
         const todoNo = $(this).siblings(".todoNo").val();
         const lectureNo = [[${lectureNo}]];
         console.log(todoNo);
@@ -552,7 +556,7 @@
             url: "/todo/remove",
             type: "get",
             data: {
-                todoNo : todoNo
+                todoNo: todoNo
             },
             success: function (data) {
                 location.href = "/lms/dashboardlist?no=" + lectureNo;
@@ -560,6 +564,39 @@
         })
     })
 
+    $(".checkTodo").click(function () {
+        const todoNo = $(this).siblings(".todoNo").val();
+        console.log(todoNo);
+        console.log($(this).val())
+        if ($(this).val() == "Y ") {
+            $.ajax({
+                url: "/todo/status",
+                type: "get",
+                data: {
+                    status: "N",
+                    todoNo: todoNo,
+                },
+                success: function (data) {
+                    console.log(data)
+                    $(this).prop("checked", false);
+                }
+            });
+        } else if($(this).val() == "N ") {
+            $.ajax({
+                url: "/todo/status",
+                type: "get",
+                data: {
+                    status: "Y",
+                    todoNo: todoNo,
+                },
+                success: function (data) {
+                    console.log(data)
+                    $(this).prop("checked", true);
+                }
+            });
+        }
+
+    });
 
 
 </script>

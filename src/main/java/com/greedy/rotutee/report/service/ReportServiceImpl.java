@@ -6,6 +6,10 @@ import com.greedy.rotutee.notice.entity.Notice;
 import com.greedy.rotutee.notice.repository.NoticeRepository;
 import com.greedy.rotutee.report.dto.ReportDTO;
 import com.greedy.rotutee.report.entity.Report;
+import com.greedy.rotutee.report.entity.ReportBoard;
+import com.greedy.rotutee.report.entity.ReportBoardAnswer;
+import com.greedy.rotutee.report.repository.ReportAnswerRepository;
+import com.greedy.rotutee.report.repository.ReportBoardRepository;
 import com.greedy.rotutee.report.repository.ReportRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +43,18 @@ public class ReportServiceImpl implements ReportService{
     private ReportRepository reportRepository;
     private ModelMapper modelMapper;
     private NoticeRepository noticeRepository;
+    private ReportBoardRepository reportBoardRepository;
+    private ReportAnswerRepository reportAnswerRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public ReportServiceImpl(ReportRepository reportRepository, ModelMapper modelMapper, NoticeRepository noticeRepository) {
+    public ReportServiceImpl(ReportRepository reportRepository, ModelMapper modelMapper, NoticeRepository noticeRepository, ReportBoardRepository reportBoardRepository, ReportAnswerRepository reportAnswerRepository) {
         this.reportRepository = reportRepository;
         this.modelMapper = modelMapper;
         this.noticeRepository = noticeRepository;
+        this.reportBoardRepository = reportBoardRepository;
+        this.reportAnswerRepository = reportAnswerRepository;
     }
 
     @Override
@@ -145,7 +153,7 @@ public class ReportServiceImpl implements ReportService{
             int reporterMemberNo = modifiedReportEntities.get(i).getMember().getNo();
             reporterMemberNums.add(reporterMemberNo);
 
-            String reporterNoticeContent = modifiedReportEntities.get(i).getBoard().getBoardTitle() + "의 신고가 승인되었습니다.";
+            String reporterNoticeContent = "[" + modifiedReportEntities.get(i).getBoard().getBoardTitle() +  "] 의 신고가 승인되었습니다.";
 
             NoticeDTO notice = new NoticeDTO();
             NoticeCategoryDTO noticeCategory = new NoticeCategoryDTO();
@@ -160,7 +168,7 @@ public class ReportServiceImpl implements ReportService{
 
             /*신고 당한사람 알림 전송*/
             accusedMemberNo = modifiedReportEntities.get(i).getAccusedMember().getNo();
-            String accusedNoticeContent = modifiedReportEntities.get(i).getBoard().getBoardTitle() + "게시물 신고가 승인되었습니다.";
+            String accusedNoticeContent = "[" + modifiedReportEntities.get(i).getBoard().getBoardTitle() + "] 게시물 신고가 승인되었습니다.";
             notice.setNoticeContent(accusedNoticeContent);
             notice.setNoticedDate(new Date(System.currentTimeMillis()));
             notice.setMemberNo(accusedMemberNo);
@@ -210,7 +218,7 @@ public class ReportServiceImpl implements ReportService{
             int reporterMemberNo = modifiedReportEntities.get(i).getMember().getNo();
             reporterMemberNums.add(reporterMemberNo);
 
-            String reporterNoticeContent = modifiedReportEntities.get(i).getBoardAnswer().getAnswerContent() + "의 신고가 승인되었습니다.";
+            String reporterNoticeContent = "[" + modifiedReportEntities.get(i).getBoardAnswer().getAnswerContent() + "] 의 신고가 승인되었습니다.";
 
             NoticeDTO notice = new NoticeDTO();
             NoticeCategoryDTO noticeCategory = new NoticeCategoryDTO();
@@ -225,7 +233,7 @@ public class ReportServiceImpl implements ReportService{
 
             /*신고 당한사람 알림 전송*/
             accusedMemberNo = modifiedReportEntities.get(i).getBoardAnswer().getMemberNo();
-            String accusedNoticeContent = modifiedReportEntities.get(i).getBoardAnswer().getAnswerContent() + "답변 신고가 승인되었습니다.";
+            String accusedNoticeContent = "[" + modifiedReportEntities.get(i).getBoardAnswer().getAnswerContent() + "] 답변 신고가 승인되었습니다.";
             notice.setNoticeContent(accusedNoticeContent);
             notice.setNoticedDate(new Date(System.currentTimeMillis()));
             notice.setMemberNo(accusedMemberNo);
@@ -317,7 +325,7 @@ public class ReportServiceImpl implements ReportService{
             int reporterMemberNo = modifiedReportEntities.get(i).getMember().getNo();
             reporterMemberNums.add(reporterMemberNo);
 
-            String reporterNoticeContent = modifiedReportEntities.get(i).getBoard().getBoardTitle() + "의 신고가 거절되었습니다.";
+            String reporterNoticeContent = "[" + modifiedReportEntities.get(i).getBoard().getBoardTitle() + "] 의 신고가 거절되었습니다.";
 
             NoticeDTO notice = new NoticeDTO();
             NoticeCategoryDTO noticeCategory = new NoticeCategoryDTO();
@@ -363,7 +371,7 @@ public class ReportServiceImpl implements ReportService{
             int reporterMemberNo = modifiedReportEntities.get(i).getMember().getNo();
             reporterMemberNums.add(reporterMemberNo);
 
-            String reporterNoticeContent = modifiedReportEntities.get(i).getBoardAnswer().getAnswerContent() + "의 신고가 거절되었습니다.";
+            String reporterNoticeContent = "[" + modifiedReportEntities.get(i).getBoardAnswer().getAnswerContent() + "] 의 신고가 거절되었습니다.";
 
             NoticeDTO notice = new NoticeDTO();
             NoticeCategoryDTO noticeCategory = new NoticeCategoryDTO();
@@ -383,12 +391,23 @@ public class ReportServiceImpl implements ReportService{
     @Transactional
     public boolean registBoardReport(ReportDTO report) {
 
+        /*게시물 총 신고 횟수컬럼 +1 증가*/
+        int boardNo = report.getBoard().getBoardNo();
+        List<Report> reportCountEntity = reportRepository.findByBoardBoardNo(boardNo);
+        int BeforeReportCount = reportCountEntity.size();
+        int afterReportCount = BeforeReportCount + 1;
+
+        ReportBoard reportBoard = reportBoardRepository.findById(boardNo).get();
+        reportBoard.setBoardReportCount(afterReportCount);
+        reportBoardRepository.save(reportBoard);
+
+        /*게시물 신고 insert*/
         Report reportEntity = modelMapper.map(report, Report.class);
         reportRepository.save(reportEntity);
 
         /*게시물 신고 알림 전송*/
         int writerNo = report.getAccusedMember().getNo();
-        String noticeContent = report.getBoard().getBoardTitle() + "게시물이 신고되었습니다.";
+        String noticeContent = "[" + report.getBoard().getBoardTitle() + "] 게시물이 신고되었습니다.";
         NoticeDTO notice = new NoticeDTO();
         NoticeCategoryDTO category = new NoticeCategoryDTO();
         category.setNoticeCategoryNo(5);
@@ -406,12 +425,26 @@ public class ReportServiceImpl implements ReportService{
     @Override
     public boolean registAnswerReport(ReportDTO report) {
 
+        /*댓글 총 신고 횟수컬럼 +1 증가*/
+        int answerNo = report.getBoardAnswer().getAnswerNo();
+        List<Report> reportCountEntity = reportRepository.findByBoardAnswerAnswerNo(answerNo);
+        int BeforeReportCount = reportCountEntity.size();
+        int afterReportCount = BeforeReportCount + 1;
+
+        ReportBoardAnswer reportBoardAnswerEntity = reportAnswerRepository.findById(answerNo).get();
+        reportBoardAnswerEntity.setAnswerReportCount(afterReportCount);
+        reportAnswerRepository.save(reportBoardAnswerEntity);
+
+        /*댓글신고 insert*/
+        Report reportEntity = modelMapper.map(report, Report.class);
+        reportRepository.save(reportEntity);
+
         Report reportAnswerEntity = modelMapper.map(report, Report.class);
         reportRepository.save(reportAnswerEntity);
 
         /*댓글 신고 알림 전송*/
         int writerNo = report.getAccusedMember().getNo();
-        String noticeContent = report.getBoardAnswer().getAnswerContent() + "댓글이 신고되었습니다.";
+        String noticeContent = "[" + report.getBoardAnswer().getAnswerContent() + "] 댓글이 신고되었습니다.";
         NoticeDTO notice = new NoticeDTO();
         NoticeCategoryDTO category = new NoticeCategoryDTO();
         category.setNoticeCategoryNo(5);

@@ -89,5 +89,25 @@ public class LMSTodoController {
         return gson.toJson(result);
     }
 
+    @GetMapping("/status")
+    @ResponseBody
+    public String modifyStatus(HttpServletRequest request) {
+
+        String status = request.getParameter("status");
+        int todoNo = Integer.parseInt(request.getParameter("todoNo"));
+
+        lmsTodoService.modifyStatus(status, todoNo);
+
+        boolean result = true;
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls().disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(result);
+    }
+
 
 }

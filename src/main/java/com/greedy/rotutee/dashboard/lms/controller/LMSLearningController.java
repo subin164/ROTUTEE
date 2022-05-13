@@ -20,7 +20,7 @@ import java.util.List;
  * fileName : LMSLearningController
  * author : SeoYoung
  * date : 2022-04-27
- * description :
+ * description : 강의시청 페이지로 정보를 넘겨주는 Controller
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
@@ -37,21 +37,23 @@ public class LMSLearningController {
         this.lmsLearningService = lmsLearningService;
     }
 
-
-
+    /**
+     * methodName : findlecturePlay
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param mv : lecture정보를 담을 객체
+     * @param customUser 현재 로그인하고 있는 회원 정보
+     * @param request 시청할 강의의 번호를 담은 요청
+     * @return ModelAndView
+     */
     @GetMapping("/play")
     public ModelAndView findlecturePlay(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser, HttpServletRequest request){
-        System.out.println("야야야야야야야야야야야야야야야야야야야야야야야야야야야야");
         int memberNo = customUser.getNo();
         HttpSession session = request.getSession();
         int lectureNo = (Integer)session.getAttribute("lectureNo");
 //        int lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
         LecturePlayDTO lecturePlay = lmsLearningService.findLecturePlay(lectureNo, memberNo);
-
-        System.out.println("memberNo = " + memberNo);
-        System.out.println("lectureNo|||||||||||||||||||| = " + lectureNo);
-        System.out.println("메뉴바 session 이다이다 = " + session);
-
 
         mv.addObject("lecturePlay", lecturePlay);
         mv.setViewName("lecture/lectureplay");

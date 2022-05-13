@@ -151,7 +151,7 @@ public class BasketServiceImpl implements BasketService{
         MemberInterest memberInterest = classBasketMemberInterestRepository.findByMemberAndCategory(memberEntity, categoryEntity);
         if(memberInterest == null) {
 
-            int degree = 1;
+            int degree = 2;
 
             MemberInterestDTO interest = new MemberInterestDTO();
             interest.setMember(member);
