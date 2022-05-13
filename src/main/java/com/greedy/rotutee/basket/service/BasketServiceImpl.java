@@ -279,17 +279,4 @@ public class BasketServiceImpl implements BasketService{
 
     }
 
-    @Override
-    public MemberLectureDTO findByLectureNoAndMemberNoInMemberLecture(int no, int lectureNo) {
-
-        MemberLecture memberLectureEntity = classBasketMemberLectureRespository.findByMemberNoAndLectureNo(no, lectureNo);
-
-        if(memberLectureEntity == null) {
-
-            return null;
-        }
-
-        return modelMapper.map(memberLectureEntity, MemberLectureDTO.class);
-    }
-
 }

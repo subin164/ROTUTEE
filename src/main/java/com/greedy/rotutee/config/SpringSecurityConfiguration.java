@@ -53,12 +53,12 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        Map<String, List<String>> permitListMap = authenticationService.getPermitListMap();
-        List<String> adminPermitList = permitListMap.get("adminPermitList");
-        List<String> subAdminPermitList = permitListMap.get("subAdminPermitList");
-        List<String> tuteePermitList = permitListMap.get("tuteePermitList");
-        List<String> tutorPermitList = permitListMap.get("tutorPermitList");
-        List<String> memberPermitList = permitListMap.get("memberPermitList");
+//        Map<String, List<String>> permitListMap = authenticationService.getPermitListMap();
+//        List<String> adminPermitList = permitListMap.get("adminPermitList");
+//        List<String> subAdminPermitList = permitListMap.get("subAdminPermitList");
+//        List<String> tuteePermitList = permitListMap.get("tuteePermitList");
+//        List<String> tutorPermitList = permitListMap.get("tutorPermitList");
+//        List<String> memberPermitList = permitListMap.get("memberPermitList");
 
         /*adminPermitList.forEach(url -> System.out.println("admin permit url = " + url));
         memberPermitList.forEach(url -> System.out.println("member permit url = " + url));
@@ -68,11 +68,11 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()// 머시깽이 토큰 공격을 하는걸 막는게 csrf() 이녀석이고 그걸 비활성화 하겠다 왜냐면 활성화하면 로그인할 때 마다 무언가 토큰을 적어줘야한다
                 .authorizeHttpRequests()
-                .antMatchers(subAdminPermitList.toArray(new String[subAdminPermitList.size()])).hasAnyRole("SUBADMIN", "ADMIN")
-                .antMatchers(tuteePermitList.toArray(new String[tuteePermitList.size()])).hasAnyRole("TUTEE", "SUBADMIN", "ADMIN")
-                .antMatchers(tutorPermitList.toArray(new String[tutorPermitList.size()])).hasAnyRole("TUTOR", "SUBADMIN", "ADMIN")
-                .antMatchers(memberPermitList.toArray(new String[memberPermitList.size()])).hasAnyRole("MEMBER", "TUTEE", "TUTOR", "SUBADMIN", "ADMIN")
-                .antMatchers(adminPermitList.toArray(new String[adminPermitList.size()])).hasRole("ADMIN")
+//                .antMatchers(subAdminPermitList.toArray(new String[subAdminPermitList.size()])).hasAnyRole("SUBADMIN", "ADMIN")
+//                .antMatchers(tuteePermitList.toArray(new String[tuteePermitList.size()])).hasAnyRole("TUTEE", "SUBADMIN", "ADMIN")
+//                .antMatchers(tutorPermitList.toArray(new String[tutorPermitList.size()])).hasAnyRole("TUTOR", "SUBADMIN", "ADMIN")
+//                .antMatchers(memberPermitList.toArray(new String[memberPermitList.size()])).hasAnyRole("MEMBER", "TUTEE", "TUTOR", "SUBADMIN", "ADMIN")
+//                .antMatchers(adminPermitList.toArray(new String[adminPermitList.size()])).hasRole("ADMIN")
                 .anyRequest().permitAll()  // 모든 요청에 접근 허용을 하겠다
                 .and()
                 .exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint)
