@@ -38,9 +38,8 @@ public class WebAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException ade)
             throws IOException, ServletException {
 
-        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("authentication = " + authentication);
-
+//        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+//        System.out.println("authentication = " + authentication);
 //        String referer = (String)request.getHeader("REFERER");
         response.sendRedirect("/error/denied");
     }

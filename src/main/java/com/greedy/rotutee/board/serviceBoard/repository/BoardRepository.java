@@ -41,6 +41,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
     @Query("select DISTINCT a from ServiceBoard_SerivceBoard a left join fetch a.boardCategory where a.no = :boardNo")
     Board findByNo(int boardNo);
 
+//    @Query("select DISTINCT a from ServiceBoard_SerivceBoard a left join fetch a.boardCategory where a.boardCategory.boardCategory.no = :upperCategoryNo")
     Page<Board> findByBoardCategoryBoardCategoryNoAndDeleteYN(int upperCategoryNo, char status, Pageable pageable);
 
     Page<Board> findByBoardCategoryUpperCategoryListNoAndDeleteYN(int upperCategoryNo, char status, Pageable pageable);
