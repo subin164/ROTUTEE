@@ -30,6 +30,7 @@ public class UserLogoutSuccessHandler implements LogoutSuccessHandler {
                                 Authentication authentication) throws IOException, ServletException {
 
         String referer = (String)request.getHeader("REFERER");
+
         response.sendRedirect(referer);
     }
 

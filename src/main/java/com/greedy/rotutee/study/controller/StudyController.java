@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -74,13 +75,13 @@ public class StudyController {
      * content : 스터디 모집글 작성 컨트롤러 요청으로 들어온 입력값을 서비스로 보냄
      * */
     @PostMapping("/regist")
-    public ModelAndView studyRegist(ModelAndView mv, StudyDTO studyDTO, String inputTag) {
+    public ModelAndView studyRegist(ModelAndView mv, StudyDTO studyDTO, String inputTag, @AuthenticationPrincipal CustomUser customUser) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         User user = (User) principal;
 
-        CustomUser customUser = (CustomUser) authenticationService.loadUserByUsername(user.getUsername());
+//        CustomUser customUser = (CustomUser) authenticationService.loadUserByUsername(user.getUsername());
 
         MemberDTO memberDTO = new MemberDTO();
 
@@ -184,13 +185,13 @@ public class StudyController {
 
     @PostMapping("/replyRegist")
     @ResponseBody
-    public StudyReplyDTO studyReplyRegist(StudyReplyDTO replyDTO) {
+    public StudyReplyDTO studyReplyRegist(StudyReplyDTO replyDTO, @AuthenticationPrincipal CustomUser customUser) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         User user = (User) principal;
 
-        CustomUser customUser = (CustomUser) authenticationService.loadUserByUsername(user.getUsername());
+//        CustomUser customUser = (CustomUser) authenticationService.loadUserByUsername(user.getUsername());
 
         MemberDTO memberDTO = new MemberDTO();
 
