@@ -1,4 +1,4 @@
-package com.greedy.rotutee.board.freeboard.service.repository;
+package com.greedy.rotutee.board.freeboard.repository;
 
 
 import com.greedy.rotutee.board.freeboard.entity.FreeBoardMember;
