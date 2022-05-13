@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 
-    Page<Coupon> findByCouponStatus(String n_, Pageable pageable);
+    Page<Coupon> findByPublishCouponStatus(String n_, Pageable pageable);
 }

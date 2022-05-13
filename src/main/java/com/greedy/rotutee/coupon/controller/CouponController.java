@@ -41,9 +41,9 @@ public class CouponController {
     @PostMapping("/regist")
     public String couponRegist(CouponDTO couponDTO) {
 
-        couponDTO.setCouponStatus("N");
+        couponDTO.setPublishCouponStatus("N");
 
-        couponDTO.setCouponRegistDate(new Date(System.currentTimeMillis()));
+        couponDTO.setPublishCouponRegistDate(new Date(System.currentTimeMillis()));
 
         couponService.couponRegist(couponDTO);
 
@@ -70,7 +70,7 @@ public class CouponController {
     }
 
     @PostMapping("/publish")
-    public String publishCoupon(@RequestParam(value = "couponNo") List<String> couponNoList) {
+    public String publishCoupon(@RequestParam(value = "publishCouponNo") List<String> couponNoList) {
 
         System.out.println("퍼블리싱ㅋ ㅜ폰 욫어옴 : " + couponNoList);
 

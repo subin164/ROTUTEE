@@ -19,16 +19,16 @@ public class Coupon {
             strategy = GenerationType.SEQUENCE,
             generator = "COUPON_NO_GENERATOR"
     )
-    private int couponNo;
+    private int publishCouponNo;
 
     @Column(name = "COUPON_NAME")
-    private String couponName;
+    private String publishCouponName;
 
     @Column(name = "COUPON_CONTENT")
-    private String couponContent;
+    private String publishCouponContent;
 
     @Column(name = "COUPON_REGISTRATION_DATE")
-    private java.sql.Date couponRegistDate;
+    private java.sql.Date publishCouponRegistDate;
 
     @Column(name = "COUPON_DISCOUNT_RATE")
     private int discountRate;
@@ -37,51 +37,51 @@ public class Coupon {
     private int expirationDate;
 
     @Column(name = "COUPON_ACTIVATION_YN")
-    private String couponStatus;
+    private String publishCouponStatus;
 
     public Coupon() {
     }
 
-    public Coupon(int couponNo, String couponName, String couponContent, Date couponRegistDate, int discountRate, int expirationDate, String couponStatus) {
-        this.couponNo = couponNo;
-        this.couponName = couponName;
-        this.couponContent = couponContent;
-        this.couponRegistDate = couponRegistDate;
+    public Coupon(int publishCouponNo, String publishCouponName, String publishCouponContent, Date publishCouponRegistDate, int discountRate, int expirationDate, String publishCouponStatus) {
+        this.publishCouponNo = publishCouponNo;
+        this.publishCouponName = publishCouponName;
+        this.publishCouponContent = publishCouponContent;
+        this.publishCouponRegistDate = publishCouponRegistDate;
         this.discountRate = discountRate;
         this.expirationDate = expirationDate;
-        this.couponStatus = couponStatus;
+        this.publishCouponStatus = publishCouponStatus;
     }
 
-    public int getCouponNo() {
-        return couponNo;
+    public int getPublishCouponNo() {
+        return publishCouponNo;
     }
 
-    public void setCouponNo(int couponNo) {
-        this.couponNo = couponNo;
+    public void setPublishCouponNo(int publishCouponNo) {
+        this.publishCouponNo = publishCouponNo;
     }
 
-    public String getCouponName() {
-        return couponName;
+    public String getPublishCouponName() {
+        return publishCouponName;
     }
 
-    public void setCouponName(String couponName) {
-        this.couponName = couponName;
+    public void setPublishCouponName(String publishCouponName) {
+        this.publishCouponName = publishCouponName;
     }
 
-    public String getCouponContent() {
-        return couponContent;
+    public String getPublishCouponContent() {
+        return publishCouponContent;
     }
 
-    public void setCouponContent(String couponContent) {
-        this.couponContent = couponContent;
+    public void setPublishCouponContent(String publishCouponContent) {
+        this.publishCouponContent = publishCouponContent;
     }
 
-    public Date getCouponRegistDate() {
-        return couponRegistDate;
+    public Date getPublishCouponRegistDate() {
+        return publishCouponRegistDate;
     }
 
-    public void setCouponRegistDate(Date couponRegistDate) {
-        this.couponRegistDate = couponRegistDate;
+    public void setPublishCouponRegistDate(Date publishCouponRegistDate) {
+        this.publishCouponRegistDate = publishCouponRegistDate;
     }
 
     public int getDiscountRate() {
@@ -100,24 +100,24 @@ public class Coupon {
         this.expirationDate = expirationDate;
     }
 
-    public String getCouponStatus() {
-        return couponStatus;
+    public String getPublishCouponStatus() {
+        return publishCouponStatus;
     }
 
-    public void setCouponStatus(String couponStatus) {
-        this.couponStatus = couponStatus;
+    public void setPublishCouponStatus(String publishCouponStatus) {
+        this.publishCouponStatus = publishCouponStatus;
     }
 
     @Override
     public String toString() {
         return "Coupon{" +
-                "couponNo=" + couponNo +
-                ", couponName='" + couponName + '\'' +
-                ", couponContent='" + couponContent + '\'' +
-                ", couponRegistDate=" + couponRegistDate +
+                "publishCouponNo=" + publishCouponNo +
+                ", publishCouponName='" + publishCouponName + '\'' +
+                ", publishCouponContent='" + publishCouponContent + '\'' +
+                ", publishCouponRegistDate=" + publishCouponRegistDate +
                 ", discountRate=" + discountRate +
                 ", expirationDate=" + expirationDate +
-                ", couponStatus='" + couponStatus + '\'' +
+                ", publishCouponStatus='" + publishCouponStatus + '\'' +
                 '}';
     }
 }

@@ -50,18 +50,18 @@ public class MemberCouponBox {
     private Member member;
 
     @Column(name = "COUPON_STATUS")
-    private String status;
+    private String couponStatus;
 
     public MemberCouponBox() {
     }
 
-    public MemberCouponBox(int couponBoxNo, Date expirationDate, Date receivingDate, Coupon coupon, Member member, String status) {
+    public MemberCouponBox(int couponBoxNo, Date expirationDate, Date receivingDate, Coupon coupon, Member member, String couponStatus) {
         this.couponBoxNo = couponBoxNo;
         this.expirationDate = expirationDate;
         this.receivingDate = receivingDate;
         this.coupon = coupon;
         this.member = member;
-        this.status = status;
+        this.couponStatus = couponStatus;
     }
 
     public int getCouponBoxNo() {
@@ -104,12 +104,12 @@ public class MemberCouponBox {
         this.member = member;
     }
 
-    public String getStatus() {
-        return status;
+    public String getCouponStatus() {
+        return couponStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCouponStatus(String couponStatus) {
+        this.couponStatus = couponStatus;
     }
 
     @Override
@@ -120,7 +120,7 @@ public class MemberCouponBox {
                 ", receivingDate=" + receivingDate +
                 ", coupon=" + coupon +
                 ", member=" + member +
-                ", status='" + status + '\'' +
+                ", couponStatus='" + couponStatus + '\'' +
                 '}';
     }
 }

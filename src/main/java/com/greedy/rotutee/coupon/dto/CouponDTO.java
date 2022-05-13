@@ -10,12 +10,12 @@ import lombok.*;
 @Builder
 public class CouponDTO {
 
-    private int couponNo;
-    private String couponName;
-    private String couponContent;
-    private java.sql.Date couponRegistDate;
+    private int publishCouponNo;
+    private String publishCouponName;
+    private String publishCouponContent;
+    private java.sql.Date publishCouponRegistDate;
     private int discountRate;
     private int expirationDate;
-    private String couponStatus;
+    private String publishCouponStatus;
 
 }
