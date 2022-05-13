@@ -18,4 +18,6 @@ import java.util.List;
  */
 public interface LMSChapterRepository extends JpaRepository<LMSChapter, Integer> {
     List<LMSChapter> findByLectureNo(int lectureNo);
+
+    List<LMSChapter> findByLectureNoOrderByChapterNoAsc(int lectureNo);
 }

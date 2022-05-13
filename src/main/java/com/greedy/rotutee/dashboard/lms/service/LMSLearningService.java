@@ -20,4 +20,6 @@ public interface LMSLearningService {
 
 
     LecturePlayDTO findLecturePlay(int lectureNo, int memberNo);
+
+    void modifyVideoWatchingStatus(int timeNo, String status);
 }

@@ -22,4 +22,6 @@ public interface LMSClassRepository extends JpaRepository<LMSClass, Integer> {
 
 
     List<LMSClass> findByChapterChapterNoOrderByChapterChapterNoAsc(int chapterNo);
+
+    List<LMSClass> findByChapterChapterNoOrderByClassNoAsc(int chapterNo);
 }

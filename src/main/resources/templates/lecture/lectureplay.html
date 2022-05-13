@@ -137,7 +137,7 @@
             <div>신나는 자바</div>
         </div>
         <div class="lecturevideo">
-            <video id="lecture-video" controls controlsList="nodownload" style="width: 35vw; height: 35vh;">
+            <video id="lecture-video" class="videoPlay" controls controlsList="nodownload" style="width: 35vw; height: 35vh;">
                 <source th:src="@{/video/} + ${lecturePlay.chapters[0].classesList[0].videoPath}">
             </video>
         </div>
@@ -160,6 +160,8 @@
                              th:each="lectureClass, status : ${lecturePlay.chapters[stat.index].classesList}">
                             <th:block th:text="${lectureClass.className}"></th:block>
                             <input id="videoPath" type="hidden" th:value="${lectureClass.videoPath}">
+                            <input class="videoStatus" type="hidden" th:value="${lectureClass.whatcingStatus}">
+                            <input class="videoTimeNo" type="hidden" th:value="${lectureClass.timeNo}">
                             <th:block th:if="${lectureClass.quiz.submissionStatus.toString().equals('Y')}">
                                 <span class="badge text-light" style="background-color: #f3c3c3">완료</span>
                             </th:block>
@@ -249,11 +251,21 @@
 
     $('.openmenu').click(function() {
         $('source').remove();
+        $('.videoValue').remove();
         const videoPath = $(this).children('input').eq(0).val();
+        const videoStatus = $(this).children('input').eq(1).val();
+        const videoTimeNo = $(this).children('input').eq(2).val();
         console.log(videoPath);
+        console.log(videoStatus);
+        console.log(videoTimeNo);
         const totalPath = `<source src= /video/`+ videoPath + `>`;
         console.log(totalPath);
+        const videoStatusInputTag = '<input type="hidden" class="videoValue" value="' + videoStatus + '">'
+        const videoTimeNoTag = '<input type="hidden" class="videoValue" value="' + videoTimeNo + '">'
+        console.log(videoStatusInputTag);
         $("#lecture-video").append(totalPath);
+        $("#lecture-video").append(videoStatusInputTag);
+        $("#lecture-video").append(videoTimeNoTag);
     })
 
     $(".quiz").click(function () {
@@ -334,6 +346,27 @@
         })
 
     })
+    $('video.videoPlay').on('click', function (e) {
+        console.log($(this).children('input').eq(0).val());
+        console.log($(this).children('input').eq(1).val())
+        let timeNo = $(this).children('input').eq(1).val();
+        if ($(this).children('input').eq(0).val() == "N "){
+            $.ajax({
+                url: "/learning/videostatus",
+                type: "get",
+                data: {
+                    status: "Y",
+                    timeNo : timeNo
+                },
+                success: function (data) {
+                    console.log(data)
+
+                }
+            });
+        } else{
+            console.log('오류났음ㅋ');
+        }
+    });
 
 
 

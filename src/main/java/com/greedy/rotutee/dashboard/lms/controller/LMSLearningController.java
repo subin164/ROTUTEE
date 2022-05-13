@@ -1,5 +1,8 @@
 package com.greedy.rotutee.dashboard.lms.controller;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.dashboard.lms.dto.LecturePlayDTO;
 import com.greedy.rotutee.dashboard.lms.entity.LMSChapter;
@@ -9,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,11 +57,35 @@ public class LMSLearningController {
         HttpSession session = request.getSession();
         int lectureNo = (Integer)session.getAttribute("lectureNo");
 //        int lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
+        System.out.println("memberNo = " + memberNo);
+        System.out.println("lectureNo = " + lectureNo);
         LecturePlayDTO lecturePlay = lmsLearningService.findLecturePlay(lectureNo, memberNo);
+
 
         mv.addObject("lecturePlay", lecturePlay);
         mv.setViewName("lecture/lectureplay");
         return mv;
 
     }
+
+    @GetMapping("/videostatus")
+    @ResponseBody
+    public String modifyVideoWatchingStatus(HttpServletRequest request) {
+        int timeNo = Integer.parseInt(request.getParameter("timeNo"));
+        String status = request.getParameter("status");
+
+        lmsLearningService.modifyVideoWatchingStatus(timeNo, status);
+
+        boolean result = true;
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls().disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(result);
+    }
+
+
 }

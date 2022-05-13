@@ -28,5 +28,7 @@ public class LMSClassDTO {
     private String videoPath;
     private LMSChapterDTO chapter;
     private LMSQuizDTO quiz;
+    private String whatcingStatus;
+    private int timeNo;
 
 }
