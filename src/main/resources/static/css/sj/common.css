@@ -130,10 +130,7 @@ table {
 }
 
 
-
-
-
-.profile{
+.profile {
     position: relative;
     overflow: hidden;
     border-radius: 50%;
@@ -142,105 +139,133 @@ table {
     height: 3rem;
 }
 
-.profileimg{
+.profileimg {
     position: absolute;
     width: 3rem;
     height: 3rem;
     border-radius: 100%;
 }
 
-.searchbar-icon{
+.searchbar-icon {
     position: absolute;
-    top:50%;
+    top: 50%;
     right: 0.5rem;
     transform: translate(-50%, -50%);
 }
 
-.lecture-serach{
+.lecture-serach {
     width: 25rem;
-    border-radius: 20px;
-}
-
-
-.round{
     border-radius: 20px;
 }
 
 input[type="search"]:focus {
     border-style: none;
-  }
+}
 
 
 /* 강의 검색 */
 
-.search *{
+
+/* Top Banner */
+.banner-idxBtn{
     border-radius: 20px;
 }
-.search select{
-    width: 150px;
+
+
+.main-searchForm{
+    display: flex;
+    margin: auto;
+    width: 40%;
+    height: 30px;
+}
+
+.searchForm-select{
+    width: 100%;
+    min-width: 100px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 2px 3px rgb(0 10 18 / 10%), 0 0 0 1px rgb(0 10 18 / 10%);
+    font-size: 14px;
+    padding: 5px;
+    margin-right: 10px;
 }
 
 .searchbar{
-    max-width: 400px;
-    width: 100%;
-}
-.searchbar input{
     position: relative;
 }
 
-.searchbar button{
-    position: absolute;
-    top:0;
-    right:0;
-    transform: translate(-50%, 50%);
-    background-color: transparent;
+.searchForm-input{
+    width: 100%;
+    min-width: 300px;
     border: none;
-
+    border-radius: 10px;
+    box-shadow: 0 2px 3px rgb(0 10 18 / 10%), 0 0 0 1px rgb(0 10 18 / 10%);
+    font-size: 14px;
+    padding: 5px 30px 5px 10px;
 }
 
-.lecture-item{
+.searchBtn-icon{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(-5px, -50%);
+    background-color: transparent;
+    border: none;
+}
+
+
+
+.lecture-item {
     width: 20rem;
-    height: 20rem;
     /* background-color:blanchedalmond */
 }
 
 
-.lecture-thumbnail img{
+.lecture-thumbnail img {
     width: 60%;
     height: 60%;
     border-radius: 80px;
     margin-left: 60px;
 }
-.shoadow{
-    box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.1);
-}
 
-.opacity-50{
+.opacity-50 {
     opacity: 50%;
     /*background-image: url("/image/logo/logo.png");*/
 }
-a{
+
+a {
     text-decoration: none;
     color: white;
 }
-.carousel-control-prev-icon{
+
+.carousel-control-prev-icon {
     width: 50px;
     height: 50px;
     background-color: gray;
     border-radius: 10px;
 }
-.carousel-control-next-icon{
+
+.carousel-control-next-icon {
     width: 50px;
     height: 50px;
     background-color: gray;
     border-radius: 10px;
 }
-.lecture-info{
+
+.lecture-info {
     text-align: center;
     line-height: 1.5em;
 }
-.carousel-header{
+
+.carousel-header {
     margin-left: 150px;
-    
+
 }
-  
+
+/* new CSS */
+.slide-image{
+    width: 100%;
+    height: 100%;
+    max-height: 480px;
+}
+
