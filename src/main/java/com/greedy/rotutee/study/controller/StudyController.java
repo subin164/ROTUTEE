@@ -224,7 +224,7 @@ public class StudyController {
 
         studyService.studyReplyModify(replyDTO);
 
-        return "redirect:/study/detail";
+        return "redirect:/study/detail?no=" + replyDTO.getStudyNo();
 
     }
 
@@ -235,4 +235,10 @@ public class StudyController {
         return "redirect:/study/list";
     }
 
+    @GetMapping("/recruitStatus")
+    public  String recruitStatus(){
+        System.out.println("해치웠나?");
+
+        return "redirect:/study/list";
+    }
 }

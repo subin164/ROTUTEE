@@ -155,43 +155,45 @@
         </div>
     </div>
     <!--paging button-->
-    <!--        <div class="d-flex justify-content-center">-->
-    <!--            <div class="justify-content-evenly mt-lg-5">-->
-    <!--                <button class="btn pagebtn" type="button"-->
-    <!--                        th:onclick="'location.href=\'/lecturenotice/list?page=' + @{${paging.startPage}}  + '\''"-->
-    <!--                        th:disabled="${ notices.first }"><<-->
-    <!--                </button>-->
-    <!--                <button class="btn pagebtn" type="button"-->
-    <!--                        th:onclick="'location.href=\'/lecturenotice/list?page=' + @{${paging.currentPage - 1}}  + '\''"-->
-    <!--                        th:disabled="${ notices.first }"><-->
-    <!--                </button>-->
-    <!--                <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">-->
-    <!--                    <button class="btn pagebtn" type="button"-->
-    <!--                            th:onclick="'location.href=\'/lecturenotice/list?page=' + @{${page}}  + '\''"-->
-    <!--                            th:text="${ page }"-->
-    <!--                            th:disabled="${ paging.currentPage eq page }">-->
-    <!--                    </button>-->
-    <!--                </th:block>-->
-    <!--                <button class="btn pagebtn" type="button"-->
-    <!--                        th:onclick="'location.href=\'/lecturenotice/list?page=' + @{${paging.currentPage + 1}}  + '\''"-->
-    <!--                        th:disabled="${ notices.last }">>-->
-    <!--                </button>-->
-    <!--                <button class="btn pagebtn" type="button"-->
-    <!--                        th:onclick="'location.href=\'/lecturenotice/list?page=' + @{${paging.endPage}}  + '\''"-->
-    <!--                        th:disabled="${ notices.last }">>>-->
-    <!--                </button>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--        &lt;!&ndash; Search bar &ndash;&gt;-->
-    <!--        <form th:action="@{/lecturenotice/list}" method="get">-->
-    <!--            <div class="selectBox d-flex justify-content-center">-->
-    <!--                <select name="searchCondition">-->
-    <!--                    <option value="title">제목</option>-->
-    <!--                </select>-->
-    <!--                <input id="search-box" type="text" placeholder="검색어입력" name="searchValue">-->
-    <!--                <button class="btn search-btn">검색하기</button>-->
-    <!--            </div>-->
-    <!--        </form>-->
+    <div class="d-flex justify-content-center">
+        <div class="justify-content-evenly mt-lg-5">
+            <button class="btn pagebtn" type="button"
+                    th:onclick="'location.href=\'/member/list?page=' + @{${paging.startPage}}  + '\''"
+                    th:disabled="${ memberList.first }"><<
+            </button>
+            <button class="btn pagebtn" type="button"
+                    th:onclick="'location.href=\'/member/list?page=' + @{${paging.currentPage - 1}}  + '\''"
+                    th:disabled="${ memberList.first }"><
+            </button>
+            <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+                <button class="btn pagebtn" type="button"
+                        th:onclick="'location.href=\'/member/list?page=' + @{${page}}  + '\''"
+                        th:text="${ page }"
+                        th:disabled="${ paging.currentPage eq page }">
+                </button>
+            </th:block>
+            <button class="btn pagebtn" type="button"
+                    th:onclick="'location.href=\'/member/list?page=' + @{${paging.currentPage + 1}}  + '\''"
+                    th:disabled="${ memberList.last }">>
+            </button>
+            <button class="btn pagebtn" type="button"
+                    th:onclick="'location.href=\'/member/list?page=' + @{${paging.endPage}}  + '\''"
+                    th:disabled="${ memberList.last }">>>
+            </button>
+        </div>
+    </div>
+    <!-- Search bar -->
+    <form th:action="@{/member/search}" method="get">
+        <div class="selectBox d-flex justify-content-center">
+            <select name="searchCondition">
+                <option value="name">회원명</option>
+                <option value="email">이메일</option>
+                <option value="category">튜티/튜터</option>
+            </select>
+            <input id="search-box" type="text" placeholder="검색어입력" name="searchValue">
+            <button class="btn search-btn">검색하기</button>
+        </div>
+    </form>
 </main>
 
 

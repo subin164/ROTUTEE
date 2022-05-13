@@ -70,13 +70,13 @@ public class CouponController {
     }
 
     @PostMapping("/publish")
-    public String publishCoupon(@RequestParam(value = "couponNo") List<String> couponNoList){
+    public String publishCoupon(@RequestParam(value = "couponNo") List<String> couponNoList) {
 
-            System.out.println("퍼블리싱ㅋ ㅜ폰 욫어옴 : " + couponNoList);
+        System.out.println("퍼블리싱ㅋ ㅜ폰 욫어옴 : " + couponNoList);
 
-            couponService.couponPublish(couponNoList);
+        couponService.couponPublish(couponNoList);
 
-            return "redirect:/coupon/list";
-        }
-
+        return "redirect:/coupon/list";
     }
+
+}
