@@ -45,7 +45,8 @@
         <div class="row" style=" height: 200px; width: 1200px;">
             <div class="col-sm-10" style="border: 1px solid;">
                 <div style=" margin-left: 50px; margin-top: 30px;">
-                    <p>프로필 사진 <button id="imgModify" type="button" onclick="location.href='/profile/imgmodify'">변경하기</button></p>
+<!--                    <p>프로필 사진 <button id="imgModify" type="button" onclick="location.href='/profile/imgmodify'">변경하기</button></p>-->
+                    <p>프로필 사진 <button id="imgModify" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">변경하기</button></p>
                     <th:block th:if="${ attachedFile.saveAttachedFileName == null }">
                         프로필을 등록해주세요
                     </th:block><th:block th:if="${ attachedFile.saveAttachedFileName != null }">
@@ -133,7 +134,27 @@
     </form>
     <br>
 </div>
-<div th:include="/common/footer.html"></div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">프로필 사진 변경</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <form action="/profile/imgmodify" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="file" name="uploadFile" accept="image/*">
+                        <br><br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">변경하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:include="/common/footer.html"></div>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script th:inline="javascript">
 

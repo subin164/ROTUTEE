@@ -64,7 +64,7 @@ public class MainController {
         } else {
             bannerList = mainService.findBannerListByMemberNo(customUser.getNo());
 
-            if(bannerList == null) {
+            if(bannerList.size() <= 0) {
                 bannerList = mainService.findRecentBannerList();
 
                 mv.addObject("bannerList", bannerList);
