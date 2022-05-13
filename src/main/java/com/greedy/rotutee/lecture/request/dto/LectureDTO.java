@@ -28,6 +28,8 @@ public class LectureDTO {
     private List<AttachedFileDTO> imageList;
     private List<ChapterDTO> chapterList;
 
+    private String saveFileName;
+
     public List<ChapterDTO> getChapterList() {
         return chapterList;
     }
@@ -39,7 +41,7 @@ public class LectureDTO {
     public LectureDTO() {
     }
 
-    public LectureDTO(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lectureDetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, int memberNo, MemberDTO tutor, Date applicationDate, String applicationDivision, int lectureCategoryNo, LectureCategoryDTO category, String originalPath, String thumbnailPath, String bannerPath, List<MultipartFile> fileList, List<AttachedFileDTO> imageList) {
+    public LectureDTO(int lectureNo, String lectureName, int lecturePrice, String lectureLevel, String lectureSummary, String lectureDetails, String revisionHistory, String lectureApprovalStatus, Date lectureOpeningDate, int memberNo, MemberDTO tutor, Date applicationDate, String applicationDivision, int lectureCategoryNo, LectureCategoryDTO category, String originalPath, String thumbnailPath, String bannerPath, List<MultipartFile> fileList, List<AttachedFileDTO> imageList, String saveFileName) {
         this.lectureNo = lectureNo;
         this.lectureName = lectureName;
         this.lecturePrice = lecturePrice;
@@ -57,6 +59,7 @@ public class LectureDTO {
         this.category = category;
         this.fileList = fileList;
         this.imageList = imageList;
+        this.saveFileName = saveFileName;
     }
 
     public int getLectureNo() {
@@ -193,6 +196,14 @@ public class LectureDTO {
 
     public void setFileList(List<MultipartFile> fileList) {
         this.fileList = fileList;
+    }
+
+    public String getSaveFileName() {
+        return saveFileName;
+    }
+
+    public void setSaveFileName(String saveFileName) {
+        this.saveFileName = saveFileName;
     }
 
     @Override

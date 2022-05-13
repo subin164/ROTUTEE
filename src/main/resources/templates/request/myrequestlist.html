@@ -27,7 +27,7 @@
                     <div class="card" style="width: 20rem;" th:each="lecture : ${lectureList}">
                         <input type="hidden" id="lectureNo" name="lectureNo" th:value="${lecture.lectureNo}">
                         <th:block th:if="${lecture.imageList.size() > 0}">
-                        <img th:src="${lecture.imageList[0].storageFile}" class="card-img-top" alt="...">
+                        <img th:src="@{/images/thumbnail/} + ${lecture.saveFileName}" class="card-img-top" alt="...">
                         </th:block>
                         <p style="font-size: large; margin-top: 10px; margin-left: 10px;" th:text="${lecture.lectureName}"></p>
                         <div class="card-body">

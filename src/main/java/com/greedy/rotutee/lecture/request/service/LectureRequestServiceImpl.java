@@ -78,6 +78,19 @@ public class LectureRequestServiceImpl implements LectureRequestService{
 
         List<LectureDTO> lectureDTOList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureDTO.class)).collect(Collectors.toList());
 
+        for(LectureDTO lectureDTO : lectureDTOList) {
+            String division = "강의";
+            String deletion = "N ";
+
+            Lecture lecture = modelMapper.map(lectureDTO, Lecture.class);
+
+            AttachedFile file = requestAttachedFileRepository.findByLectureAndDivisionAndFileDeletionYN(lecture, division, deletion);
+            if(file != null) {
+                lectureDTO.setSaveFileName(file.getSaveAttachedFileName());
+
+            }
+        }
+
         return lectureDTOList;
     }
 

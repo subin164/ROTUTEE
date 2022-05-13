@@ -75,13 +75,13 @@
                         </div>
                         <p style="font-size: x-large; margin-left: 30px; margin-top: 30px;">강의 수준</p>
                         <div class="lecture-level">
-                            <input type="checkbox" class="btn-check" id="btn-level1" autocomplete="off" name="lectureLevel" value="입문">
+                            <input type="checkbox" class="btn-check" id="btn-level1" autocomplete="off" name="lectureLevel" value="입문" onclick="NotMultiChk(this)">
                             <label class="btn btn-outline-primary" for="btn-level1">입문</label>
-                            <input type="checkbox" class="btn-check" id="btn-level2" autocomplete="off" name="lectureLevel" value="초급">
+                            <input type="checkbox" class="btn-check" id="btn-level2" autocomplete="off" name="lectureLevel" value="초급" onclick="NotMultiChk(this)">
                             <label class="btn btn-outline-primary" for="btn-level2">초급</label>
-                            <input type="checkbox" class="btn-check" id="btn-level3" autocomplete="off" name="lectureLevel" value="중급">
+                            <input type="checkbox" class="btn-check" id="btn-level3" autocomplete="off" name="lectureLevel" value="중급" onclick="NotMultiChk(this)">
                             <label class="btn btn-outline-primary" for="btn-level3">중급</label>
-                            <input type="checkbox" class="btn-check" id="btn-level4" autocomplete="off" name="lectureLevel" value="마스터">
+                            <input type="checkbox" class="btn-check" id="btn-level4" autocomplete="off" name="lectureLevel" value="마스터" onclick="NotMultiChk(this)">
                             <label class="btn btn-outline-primary" for="btn-level4">마스터</label>
                         </div>
                         <p style="font-size: x-large; margin-left: 30px; margin-top: 30px;">가격 설정</p>
@@ -263,6 +263,13 @@
     })
 
     function NoMultiChk(chk){ var obj = document.getElementsByName("categoryNo");
+        for(var i=0; i<obj.length; i++) {
+            if(obj[i] != chk){
+                obj[i].checked = false;
+            }
+        }
+    }
+    function NotMultiChk(chk){ var obj = document.getElementsByName("lectureLevel");
         for(var i=0; i<obj.length; i++) {
             if(obj[i] != chk){
                 obj[i].checked = false;
