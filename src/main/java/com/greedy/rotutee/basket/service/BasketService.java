@@ -3,6 +3,7 @@ package com.greedy.rotutee.basket.service;
 import com.greedy.rotutee.basket.dto.BasketMemberCouponBoxDTO;
 import com.greedy.rotutee.basket.dto.ClassBasketDTO;
 import com.greedy.rotutee.basket.dto.MemberLectureDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,9 @@ import java.util.List;
  * 2022-05-03      SEOK         최초 생성
  */
 public interface BasketService {
+
+    void lectureSuccessBasket(int lectureNo, int memberNo, String couponNo);
+
     void registLectureToCart(int lectureNo, int memberNo);
 
     List<ClassBasketDTO> findByMemberNo(int memberNo);
@@ -28,13 +32,7 @@ public interface BasketService {
 
     List<BasketMemberCouponBoxDTO> selectCouponList(int memberNo);
 
-/*
-    ClassBasketDTO modifyCouponList(int lecture, int couponNo);
-*/
 
-    void removeOneCoupon(int lecture, int couponNo);
 
-    void lectureSuccessBasket(int lectureNo, int memberNo, int couponNo);
 
-    MemberLectureDTO findByLectureNoAndMemberNoInMemberLecture(int no, int lectureNo);
 }

@@ -52,28 +52,25 @@ public class BasketController {
             , RedirectAttributes rttr) {
 
         if(customUser == null) {
+
             rttr.addFlashAttribute("message", "로그인이 필요한 서비스입니다.");
             mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
-
-        } else if(customUser != null && basketService.findByLectureNoAndMemberNoInMemberLecture(customUser.getNo(), lectureNo) != null) {
-            rttr.addFlashAttribute("message", "이미 수강중인 강의입니다.");
-            mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
-
         } else {
+
             int memberNo = customUser.getNo();
 
             ClassBasketDTO basket = basketService.findByLectureNoAndMemberNo(lectureNo, memberNo);
 
             if (basket == null) {
+
                 basketService.registLectureToCart(lectureNo, memberNo);
 
                 rttr.addFlashAttribute("message", "수강바구니에 추가되었습니다.");
                 mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
-
             } else {
+
                 rttr.addFlashAttribute("message", "이미 추가되어있습니다.");
                 mv.setViewName("redirect:/lecture/detail?lectureNo=" + lectureNo);
-
             }
         }
 
@@ -114,17 +111,21 @@ public class BasketController {
         return mv;
     }
 
-    @GetMapping("/lectureSuccess")
-    public ModelAndView successBasketPay(ModelAndView mv,HttpServletRequest request,@AuthenticationPrincipal CustomUser customUser, RedirectAttributes rttr){
+    @PostMapping("/lectureSuccess")
+
+    public ModelAndView successBasketPay(ModelAndView mv,HttpServletRequest request,@AuthenticationPrincipal CustomUser customUser
+            , RedirectAttributes rttr){
+
 
         int memberNo = customUser.getNo();
-        int lectureNo = Integer.parseInt(request.getParameter("LectureNo"));
-        int couponNo = Integer.parseInt(request.getParameter("couponNo"));
+        int lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
+        String couponNo = request.getParameter("couponNoinput");
 
 
+        System.out.println("gg");
         basketService.lectureSuccessBasket(lectureNo,memberNo,couponNo);
 
-        rttr.addFlashAttribute("message", "해당 강의이 결제 되었습니다..");
+        rttr.addFlashAttribute("message", "해당 강의가 결제 되었습니다..");
 
         mv.setViewName("redirect:/basket/list");
 
