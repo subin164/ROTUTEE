@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="https://thymeleaf.org">
+<html xmlns:th="https://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
@@ -49,10 +51,9 @@
                 <div><h4>카테고리</h4></div>
                 <input id="categoryNo-input" type="hidden" name="categoryNo" th:value="${boardList.freeBoardCategory.boardCategoryNo}"/>
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                    <th:block sec:authorize="hasRole('ADMIN')">
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1"  autocomplete="off" >
-                        <label class="btn btn-outline-primary" for="btnradio1">공지사항</label>
-                    </th:block>
+
+                        <input sec:authorize="hasRole('ADMIN')"  type="radio" class="btn-check" name="btnradio" id="btnradio1"  autocomplete="off" >
+                        <label sec:authorize="hasRole('ADMIN')" class="btn btn-outline-primary" for="btnradio1">공지사항</label>
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" >
                     <label class="btn btn-outline-primary" for="btnradio2">질물&답변</label>
 
@@ -118,9 +119,11 @@
 
         const url = window.location.href;
 
+        console.log(url);
         boardNo = url.split("=");
         boardNo= boardNo[1];
         categoryNo = $categoryNo.value;
+        console.log(categoryNo);
 
         switch (categoryNo){
             case '6': $btnradio1.checked = true;
@@ -143,19 +146,24 @@
         $modifyform.submit();
     });
 
-    $btnradio1.addEventListener("click", function (){
-        categoryNo =6;
-        $categoryNo.value=categoryNo;
-    });
+    if( !$("#btnradio1") ) {
+        $("#btnradio1").click(function () {
+            categoryNo = 6;
+            $categoryNo.value = categoryNo;
+            console.log("notice" + $categoryNo);
+        });
+    }
 
     $btnradio2.addEventListener("click", function (){
         categoryNo =5;
         $categoryNo.value=categoryNo;
+        console.log("2"+ $categoryNo);
     });
 
     $btnradio3.addEventListener("click", function (){
         categoryNo =4;
         $categoryNo.value=categoryNo;
+        console.log("3S"+ $categoryNo);
     });
 
 </script>

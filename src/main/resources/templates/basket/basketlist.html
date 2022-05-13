@@ -171,7 +171,7 @@
                 </div>
                 <div id="modalBody" class="modal-body" >
                     <div class="modal-body-coupon" th:each="coupons : ${coupons}" th:value="${ coupons.coupon.couponNo }">
-                        <img class='modal-img' src="../../static/common/image/coupon.png">
+                        <img class='modal-img' th:src="@{/common/image/coupon.png}">
                         <hr class='modal-coupon-hr'>
                         <input id="couponNo"  type="hidden" th:attrappend="id=${ coupons.coupon.couponNo }" />
                         <p id="couponNamValue" th:attrappend="id=${ coupons.coupon.couponNo }" th:text="'['+${coupons.coupon.couponName}+ ']'"></p>
