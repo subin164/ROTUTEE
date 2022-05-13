@@ -11,6 +11,8 @@ import com.greedy.rotutee.member.member.dto.MemberDTO;
 import com.greedy.rotutee.member.member.entity.Member;
 import com.greedy.rotutee.member.member.repository.MemberRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,7 +51,7 @@ public class CouponService {
         pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
                 pageable.getPageSize());
 
-        return couponRepository.findByCouponStatus("N ", pageable).map(coupon -> modelMapper.map(coupon, CouponDTO.class));
+        return couponRepository.findByPublishCouponStatus("N ", pageable).map(coupon -> modelMapper.map(coupon, CouponDTO.class));
     }
 
     @Transactional
@@ -61,7 +63,7 @@ public class CouponService {
             ;
             Coupon coupon = couponRepository.getById(Integer.valueOf(couponArray.get(i)));
 
-            coupon.setCouponStatus("Y");
+            coupon.setPublishCouponStatus("Y");
 
             couponRepository.save(coupon);
         }
@@ -69,12 +71,12 @@ public class CouponService {
 
     @Transactional
     public void couponModify(CouponDTO couponDTO) {
-        Coupon modifyCoupon = couponRepository.getById(couponDTO.getCouponNo());
+        Coupon modifyCoupon = couponRepository.getById(couponDTO.getPublishCouponNo());
 
         modelMapper.map(modifyCoupon, CouponDTO.class);
 
-        modifyCoupon.setCouponName(couponDTO.getCouponName());
-        modifyCoupon.setCouponContent(couponDTO.getCouponContent());
+        modifyCoupon.setPublishCouponName(couponDTO.getPublishCouponName());
+        modifyCoupon.setPublishCouponContent(couponDTO.getPublishCouponContent());
         modifyCoupon.setDiscountRate(couponDTO.getDiscountRate());
         modifyCoupon.setExpirationDate(couponDTO.getExpirationDate());
 
@@ -91,16 +93,15 @@ public class CouponService {
 
             MemberCouponBoxDTO memberCouponBoxDTO = new MemberCouponBoxDTO();
 
-
-
             System.out.println("coupon : " + coupon);
 
             for(int j = 0; j<memberList.size(); j++){
 
                 memberCouponBoxDTO.setExpirationDate(new Date(System.currentTimeMillis()));
                 memberCouponBoxDTO.setReceivingDate(new Date(System.currentTimeMillis()));
-                memberCouponBoxDTO.setCouponNo(modelMapper.map(coupon, CouponDTO.class));
+                memberCouponBoxDTO.setCoupon(modelMapper.map(coupon, CouponDTO.class));
                 memberCouponBoxDTO.setMemberNo(modelMapper.map(memberList.get(i), MemberDTO.class));
+                memberCouponBoxDTO.setCouponStatus("미사용");
 
                 memberCouponBoxRepository.save(modelMapper.map(memberCouponBoxDTO, MemberCouponBox.class));
             }

@@ -14,7 +14,7 @@ public class MemberCouponBoxDTO {
     private int couponBoxNo;
     private java.sql.Date expirationDate;
     private java.sql.Date receivingDate;
-    private CouponDTO couponNo;
+    private CouponDTO coupon;
     private MemberDTO memberNo;
     private String couponStatus;
 }
