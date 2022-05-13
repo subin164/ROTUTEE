@@ -1,9 +1,11 @@
 package com.greedy.rotutee.dashboard.lms.service;
 
 import com.greedy.rotutee.dashboard.lms.dto.*;
+import com.greedy.rotutee.dashboard.lms.entity.LMSAttachment;
 import com.greedy.rotutee.dashboard.lms.entity.LMSBoard;
 import com.greedy.rotutee.dashboard.lms.entity.LMSLatelyViewClass;
 import com.greedy.rotutee.dashboard.lms.entity.ToDo;
+import com.greedy.rotutee.dashboard.lms.repository.LMSAttachmentRepository;
 import com.greedy.rotutee.dashboard.lms.repository.LMSBoardRepository;
 import com.greedy.rotutee.dashboard.lms.repository.LMSLatelyViewRepository;
 import com.greedy.rotutee.dashboard.lms.repository.ToDoRepository;
@@ -39,15 +41,17 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
     private DashboardMemberRepository memberRepository;
     private MypageMemberLectureRepository mypageMemberLectureRepository;
     private LMSLatelyViewRepository lmsLatelyViewRepository;
+    private LMSAttachmentRepository lmsAttachmentRepository;
     private ModelMapper modelMapper;
 
     @Autowired
-    public LMSDashboardServiceImpl(ToDoRepository toDoRepository, LMSBoardRepository boardRepository, DashboardMemberRepository memberRepository, MypageMemberLectureRepository mypageMemberLectureRepository, LMSLatelyViewRepository lmsLatelyViewRepository, ModelMapper modelMapper) {
+    public LMSDashboardServiceImpl(ToDoRepository toDoRepository, LMSBoardRepository boardRepository, DashboardMemberRepository memberRepository, MypageMemberLectureRepository mypageMemberLectureRepository, LMSLatelyViewRepository lmsLatelyViewRepository, LMSAttachmentRepository lmsAttachmentRepository, ModelMapper modelMapper) {
         this.toDoRepository = toDoRepository;
         this.boardRepository = boardRepository;
         this.memberRepository = memberRepository;
         this.mypageMemberLectureRepository = mypageMemberLectureRepository;
         this.lmsLatelyViewRepository = lmsLatelyViewRepository;
+        this.lmsAttachmentRepository = lmsAttachmentRepository;
 
 
         this.modelMapper = modelMapper;
@@ -93,6 +97,16 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
 
         return dashboard;
 
+    }
+
+    @Override
+    public LMSAttachmentDTO findProfilePath(int memberNo) {
+
+        String division = "프로필";
+        String deletionStatus = "N ";
+        LMSAttachment lmsAttachment = lmsAttachmentRepository.findByMemberNoAndDivisionAndFileDeletionYN(memberNo, division, deletionStatus);
+        LMSAttachmentDTO attachment = modelMapper.map(lmsAttachment, LMSAttachmentDTO.class);
+        return attachment;
     }
 
     /**

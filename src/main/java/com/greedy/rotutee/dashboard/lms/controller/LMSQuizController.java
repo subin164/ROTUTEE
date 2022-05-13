@@ -29,7 +29,7 @@ import java.util.List;
  * fileName : LMSQuizController
  * author : SeoYoung
  * date : 2022-04-28
- * description :
+ * description : LMS 퀴즈 컨트롤러
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
@@ -47,6 +47,14 @@ public class LMSQuizController {
     }
 
 
+    /**
+     * methodName : findQuizList
+     * author : SeoYoung Kim
+     * description : 퀴즈 목록 조회
+     *
+     * @param request 퀴즈번호를 받아옴
+     * @return string
+     */
     @ResponseBody
     @GetMapping(value = "/list", produces = "application/json; charset=UTF-8")
     public String findQuizList(HttpServletRequest request) {
@@ -68,6 +76,15 @@ public class LMSQuizController {
 
     }
 
+    /**
+     * methodName : confirmQuiz
+     * author : SeoYoung Kim
+     * description : 퀴즈를 풀어서 제출했는지 확인
+     *
+     * @param request 퀴즈번호를 받아옴
+     * @param customUser 세션에 로그인 정보
+     * @return string
+     */
     @GetMapping(value = "/confirm", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String confirmQuiz(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
@@ -85,6 +102,15 @@ public class LMSQuizController {
         return gson.toJson(confirmResult);
     }
 
+    /**
+     * methodName : gradingQuiz
+     * author : SeoYoung Kim
+     * description : 퀴즈 채점
+     *
+     * @param request 문제풀때 제출한 정보
+     * @param customUser 세션 로그인 정보
+     * @return string
+     */
     @PostMapping(value = "/grading", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String gradingQuiz(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
@@ -116,6 +142,16 @@ public class LMSQuizController {
 
     }
 
+    /**
+     * methodName : findQuizStatus
+     * author : SeoYoung Kim
+     * description : 퀴즈 상태 정보
+     *
+     * @param mv 상태 결과를 담을 객체
+     * @param request 강의번호를 담음
+     * @param customUser 세션 로그인 정보
+     * @return modelandview
+     */
     @GetMapping("/status")
     public ModelAndView findQuizStatus(ModelAndView mv, HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
         int memberNo = customUser.getNo();

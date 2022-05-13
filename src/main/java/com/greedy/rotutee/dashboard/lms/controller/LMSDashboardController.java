@@ -2,8 +2,10 @@ package com.greedy.rotutee.dashboard.lms.controller;
 
 import com.greedy.rotutee.Authentication.dto.CustomUser;
 import com.greedy.rotutee.dashboard.lms.dto.*;
+import com.greedy.rotutee.dashboard.lms.entity.LMSAttachment;
 import com.greedy.rotutee.dashboard.lms.service.LMSDashboardService;
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.DashboardLectureWatchDTO;
+import com.greedy.rotutee.dashboard.mypage.repository.DashboardMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -65,7 +67,9 @@ public class LMSDashboardController {
         todo.setLectureNo(lectureNo);
 
         LMSDashboardDTO dashboard = lmsDashboardService.findLMSDashboard(todo);
+        LMSAttachmentDTO attachment = lmsDashboardService.findProfilePath(memberNo);
 
+        mv.addObject("attachment", attachment);
         mv.addObject("lectureNo", lectureNo);
         mv.addObject("dashboard", dashboard);
         mv.setViewName("dashboard/lms/dashboard");

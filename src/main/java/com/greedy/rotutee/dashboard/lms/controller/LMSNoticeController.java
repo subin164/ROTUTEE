@@ -28,7 +28,7 @@ import java.util.Map;
  * fileName : LMSNoticeController
  * author : SeoYoung
  * date : 2022-05-09
- * description :
+ * description : LMS 공지사항 게시판 Controller
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
@@ -45,6 +45,16 @@ public class LMSNoticeController {
         this.lmsNoticeBoardService = lmsNoticeBoardService;
     }
 
+    /**
+     * methodName : findNoticeList
+     * author : SeoYoung Kim
+     * description : LMS 공지사항 리스트 조회
+     *
+     * @param request : lectureNo 받아옴
+     * @param mv : 버튼 paging 정보와, 공지사항 정보 담아줄 객체
+     * @param pageable paging 정보
+     * @return modelandview
+     */
     @GetMapping("/list")
     public ModelAndView findNoticeList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
 
@@ -77,6 +87,15 @@ public class LMSNoticeController {
         return mv;
     }
 
+    /**
+     * methodName : findNoticeDetail
+     * author : SeoYoung Kim
+     * description : LMS 공지사항 상세조회
+     *
+     * @param mv : 상세정보를 담아줄 객체
+     * @param request 상세정보를 조회하기 위해 noticeNo을 받아옴
+     * @return modelandview : 공지사항 상세정보
+     */
     @GetMapping("/detail")
     public ModelAndView findNoticeDetail(ModelAndView mv, HttpServletRequest request) {
 
@@ -90,6 +109,16 @@ public class LMSNoticeController {
         return mv;
 
     }
+
+    /**
+     * methodName : registNotice
+     * author : SeoYoung Kim
+     * description : 공지사항 등록 페이지로 이등
+     *
+     * @param mv lectureNo을 담아줄 객체
+     * @param request lectureNo를 받아온다
+     * @return modelandview
+     */
     @GetMapping("/regist")
     public ModelAndView registNotice(ModelAndView mv, HttpServletRequest request) {
 
@@ -101,6 +130,18 @@ public class LMSNoticeController {
 
         return mv;
     }
+
+    /**
+     * methodName : registNotice
+     * author : SeoYoung Kim
+     * description : 공지사항 등록
+     *
+     * @param notice 등록할 공지사항 정보
+     * @param rttr redirect 메세지
+     * @param request lecutureNo 정보를 담아온다
+     * @param customUser 세션정보
+     * @return string
+     */
     @PostMapping("/regist")
     public String registNotice(@ModelAttribute LMSNoticeBoardDTO notice, RedirectAttributes rttr, HttpServletRequest request
     , @AuthenticationPrincipal CustomUser customUser) {
@@ -127,6 +168,15 @@ public class LMSNoticeController {
         return "redirect:/lecturenotice/list";
     }
 
+    /**
+     * methodName : modifyNotice
+     * author : SeoYoung Kim
+     * description : 공지사항 수정 페이지 이동
+     *
+     * @param mv : 수정 전 내용 담을 객체
+     * @param request boardNo을 받아옴
+     * @return modelandview
+     */
     @GetMapping("/modify")
     public ModelAndView modifyNotice(ModelAndView mv, HttpServletRequest request) {
 
@@ -140,6 +190,17 @@ public class LMSNoticeController {
         return mv;
 
     }
+
+    /**
+     * methodName : modifyNotice
+     * author : SeoYoung Kim
+     * description : 공지사항 수정
+     *
+     * @param notice 수정할 공지사항 내용
+     * @param rttr 리다이렉트할 메세지
+     * @param customUser 세션에 로그인 된 정보
+     * @return string
+     */
     @PostMapping("/modify")
     public String modifyNotice(@ModelAttribute LMSNoticeBoardDTO notice, RedirectAttributes rttr, @AuthenticationPrincipal CustomUser customUser) {
 
@@ -153,6 +214,15 @@ public class LMSNoticeController {
 
     }
 
+    /**
+     * methodName : removeNotice
+     * author : SeoYoung Kim
+     * description : 공지사항 삭제
+     *
+     * @param request boardNo을 받아옴
+     * @param rttr 삭제메세지 리다이렉트
+     * @return string
+     */
     @GetMapping("/remove")
     public String removeNotice(HttpServletRequest request, RedirectAttributes rttr) {
 

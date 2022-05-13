@@ -1,7 +1,9 @@
 package com.greedy.rotutee.dashboard.lms.service;
 
+import com.greedy.rotutee.dashboard.lms.dto.LMSAttachmentDTO;
 import com.greedy.rotutee.dashboard.lms.dto.LMSDashboardDTO;
 import com.greedy.rotutee.dashboard.lms.dto.ToDoDTO;
+import com.greedy.rotutee.dashboard.lms.entity.LMSAttachment;
 
 /**
  * packageName : com.greedy.rotutee.dashboard.lms.service
@@ -16,7 +18,5 @@ import com.greedy.rotutee.dashboard.lms.dto.ToDoDTO;
  */
 public interface LMSDashboardService {
     LMSDashboardDTO findLMSDashboard(ToDoDTO todo);
-
-
-
+    LMSAttachmentDTO findProfilePath(int memberNo);
 }

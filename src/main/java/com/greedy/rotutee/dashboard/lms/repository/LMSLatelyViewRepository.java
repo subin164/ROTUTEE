@@ -19,4 +19,8 @@ import java.util.List;
 public interface LMSLatelyViewRepository extends JpaRepository<LMSLatelyViewClass, Integer> {
 
     List<LMSLatelyViewClass> findByMemberLectureNoOrderByTimeNoDesc(int lectureNo);
+
+    List<LMSLatelyViewClass> findByMemberLectureNoOrderByTimeNoAsc(int memberLectureNo);
+
+    LMSLatelyViewClass findByLmsClassClassNo(int classNo);
 }
