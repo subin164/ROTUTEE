@@ -68,6 +68,14 @@ public class LMSLearningController {
 
     }
 
+    /**
+     * methodName : modifyVideoWatchingStatus
+     * author : SeoYoung Kim
+     * description : video 진행률을 위하여 시청기록 Y로변경
+     *
+     * @param request : timeNo(TBL_CUMULATIVE 식별자),
+     * @return string Gson(true)
+     */
     @GetMapping("/videostatus")
     @ResponseBody
     public String modifyVideoWatchingStatus(HttpServletRequest request) {
