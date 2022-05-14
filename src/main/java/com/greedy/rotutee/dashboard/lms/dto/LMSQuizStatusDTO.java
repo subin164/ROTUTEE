@@ -1,9 +1,6 @@
 package com.greedy.rotutee.dashboard.lms.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -22,9 +19,11 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class LMSQuizStatusDTO {
 
     private int submissionCount;
     private int correctCount;
     private List<LMSChapterDTO> chapters;
+    private int quizSize;
 }
