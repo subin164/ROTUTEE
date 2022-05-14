@@ -136,21 +136,23 @@
             </ul>
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="display: contents;">
-                <li class="pe-4 text-light opacity-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                         class="bi bi-cart-fill" viewBox="0 0 16 16">
-                        <path
-                                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                    </svg>
-                </li>
-
-                <li class="pe-5 text-light opacity-50">
-                    <a href="/notice/list">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                             class="bi bi-bell-fill" viewBox="0 0 16 16">
-                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
-                        </svg></a>
-                </li>
+                <th:block sec:authorize="hasAnyRole('TUTEE','TUTOR')">
+                    <li class="pe-4 text-light opacity-50">
+                        <a href="/basket/list">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                 class="bi bi-cart-fill" viewBox="0 0 16 16" id="cart">
+                                <path
+                                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                            </svg></a>
+                    </li>
+                    <li class="pe-5 text-light opacity-50">
+                        <a href="/notice/list">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                 class="bi bi-bell-fill" viewBox="0 0 16 16">
+                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
+                            </svg></a>
+                    </li>
+                </th:block>
                 <th:block sec:authorize="isAuthenticated()">
                     <li class="nav-item dropdown">
                         <div class="d-flex">
@@ -165,7 +167,7 @@
                             <span sec:authentication="principal.nickname"></span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                            <li><a class="dropdown-item" href="#">
+                            <li><a class="dropdown-item" href="/coupon/list">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                      fill="currentColor" class="bi bi-ticket-perforated" viewBox="0 0 16 16">
                                     <path
@@ -270,35 +272,32 @@
                     </button>
                     <ul class="dropdown-menu" id="demoAcc2" aria-labelledby="dropdownMenu2">
                         <div>
-                            <a href="/request/lecturelist" class="dropdown-item">강의신청목록</a>
-                        </div>
-                        <div>
-                            <a href="#" class="dropdown-item">전체강의목록</a>
+                            <a href="/request/lecturelist" class="dropdown-item">전체강의목록</a>
                         </div>
                     </ul>
                 </div>
 
-                <div class="dropdown sidebar-menu">
-                    <button class="btn dropdown-toggle category" type="button" id="dropdownMenu3"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                             class="bi bi-coin mb-md-1"
-                             viewBox="0 0 16 16">
-                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
-                        </svg>
-                        매출관리
-                    </button>
-                    <ul class="dropdown-menu" id="demoAcc3" aria-labelledby="dropdownMenu3">
-                        <div>
-                            <a href="#" class="dropdown-item">정산내역</a>
-                        </div>
-                        <div>
-                            <a href="#" class="dropdown-item">BootPay</a>
-                        </div>
-                    </ul>
-                </div>
+<!--                <div class="dropdown sidebar-menu">-->
+<!--                    <button class="btn dropdown-toggle category" type="button" id="dropdownMenu3"-->
+<!--                            data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"-->
+<!--                             class="bi bi-coin mb-md-1"-->
+<!--                             viewBox="0 0 16 16">-->
+<!--                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>-->
+<!--                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>-->
+<!--                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>-->
+<!--                        </svg>-->
+<!--                        매출관리-->
+<!--                    </button>-->
+<!--                    <ul class="dropdown-menu" id="demoAcc3" aria-labelledby="dropdownMenu3">-->
+<!--                        <div>-->
+<!--                            <a href="#" class="dropdown-item">정산내역</a>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <a href="#" class="dropdown-item">BootPay</a>-->
+<!--                        </div>-->
+<!--                    </ul>-->
+<!--                </div>-->
 
                 <div class="dropdown sidebar-menu">
                     <button class="btn dropdown-toggle category" type="button" id="dropdownMenu4"
@@ -313,9 +312,9 @@
                         <div>
                             <a href="/coupon/list" class="dropdown-item">쿠폰</a>
                         </div>
-                        <div>
-                            <a href="#" class="dropdown-item">발행내역</a>
-                        </div>
+<!--                        <div>-->
+<!--                            <a href="#" class="dropdown-item">발행내역</a>-->
+<!--                        </div>-->
                     </ul>
                 </div>
 
@@ -350,99 +349,15 @@
                     </button>
                     <ul class="dropdown-menu" id="demoAcc5" aria-labelledby="dropdownMenu5">
                         <div>
-                            <a href="#" class="dropdown-item">관리자계정</a>
-                        </div>
-                        <div>
-                            <a href="#" class="dropdown-item">프로필</a>
+                            <a href="/profile/profile" class="dropdown-item">프로필</a>
                         </div>
                     </ul>
                 </div>
-
-
-                <!--                <div class="sidebar-menu">-->
-                <!--                    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">-->
-                <!--                        강의 <i class="fa fa-caret-down"></i>-->
-                <!--                    </button>-->
-                <!--                    <div id="demoAcc" class="w3-hide w3-white w3-card">-->
-                <!--                        <div>-->
-                <!--                            <a href="/learning/play" class="dropdown-item">강의시청</a>-->
-                <!--                        </div>-->
-                <!--                        <div>-->
-                <!--                            <a href="#" class="w3-bar-item w3-button">다시보기</a>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-
-                <!--                <div class="sidebar-menu">-->
-                <!--                    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc2()">-->
-                <!--                        게시판 <i class="fa fa-caret-down"></i>-->
-                <!--                    </button>-->
-                <!--                    <div id="demoAcc2" class="w3-hide w3-white w3-card">-->
-                <!--                        <div>-->
-                <!--                            <a href="#" class="w3-bar-item w3-button">공지사항</a>-->
-                <!--                        </div>-->
-                <!--                        <div>-->
-                <!--                            <a href="/learning/play/" class="w3-bar-item w3-button">일반</a>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-
-                <!--                <div class="sidebar-menu">-->
-                <!--                    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc3()">-->
-                <!--                        내 학습관리 <i class="fa fa-caret-down"></i>-->
-                <!--                    </button>-->
-                <!--                    <div id="demoAcc3" class="w3-hide w3-white w3-card">-->
-                <!--                        <div>-->
-                <!--                            <a href="/quiz/status" class="w3-bar-item w3-button">퀴즈현황</a>-->
-                <!--                        </div>-->
-                <!--                        <div>-->
-                <!--                            <a href="#" class="w3-bar-item w3-button">출석 진행율</a>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-
             </li>
         </ul>
     </div>
 </div>
 <script>
-
-    // function myAccFunc() {
-    //     var x = document.getElementById("demoAcc");
-    //     if (x.className.indexOf("w3-show") == -1) {
-    //         x.className += " w3-show";
-    //         x.previousElementSibling.className += " group1";
-    //     } else {
-    //         x.className = x.className.replace(" w3-show", "");
-    //         x.previousElementSibling.className =
-    //             x.previousElementSibling.className.replace(" group1", "");
-    //     }
-    //
-    // }
-    //
-    // function myAccFunc2() {
-    //     var x = document.getElementById("demoAcc2");
-    //     if (x.className.indexOf("w3-show") == -1) {
-    //         x.className += " w3-show";
-    //         x.previousElementSibling.className += " group1";
-    //     } else {
-    //         x.className = x.className.replace(" w3-show", "");
-    //         x.previousElementSibling.className =
-    //             x.previousElementSibling.className.replace(" group1", "");
-    //     }
-    // }
-    //
-    // function myAccFunc3() {
-    //     var x = document.getElementById("demoAcc3");
-    //     if (x.className.indexOf("w3-show") == -1) {
-    //         x.className += " w3-show";
-    //         x.previousElementSibling.className += " group1";
-    //     } else {
-    //         x.className = x.className.replace(" w3-show", "");
-    //         x.previousElementSibling.className =
-    //             x.previousElementSibling.className.replace(" group1", "");
-    //     }
-    // }
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

@@ -1,5 +1,6 @@
 package com.greedy.rotutee.dashboard.mypage.dto.tutor;
 
+import com.greedy.rotutee.dashboard.lms.dto.LMSAttachmentDTO;
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.*;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardBoard;
 import lombok.*;
@@ -30,5 +31,6 @@ public class MypageTutorDTO {
  private List<DashboardBoardDTO> boardList;
  private List<DashboardLectureDTO> lectureList;
  private List<DashboardNoticeDTO> noticeList;
+ private LMSAttachmentDTO attachment;
 
 }

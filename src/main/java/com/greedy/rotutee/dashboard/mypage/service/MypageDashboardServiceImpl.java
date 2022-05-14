@@ -422,10 +422,19 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
             noticeList = entityNoticeList.stream().map(dashboardNotice -> modelMapper.map(dashboardNotice, DashboardNoticeDTO.class)).collect(Collectors.toList());
         }
 
+        String division = "프로필";
+        String deletionStatus = "N ";
+        LMSAttachment lmsAttachment = lmsAttachmentRepository.findByMemberNoAndDivisionAndFileDeletionYN(memberNo, division, deletionStatus);
+        LMSAttachmentDTO attachment = new LMSAttachmentDTO();
+        if(lmsAttachment != null) {
+            attachment  = modelMapper.map(lmsAttachment, LMSAttachmentDTO.class);
+        }
+
         dashboard.setMember(member);
         dashboard.setBoardList(boardList);
         dashboard.setLectureList(lectureList);
         dashboard.setNoticeList(noticeList);
+        dashboard.setAttachment(attachment);
 
         return dashboard;
     }
