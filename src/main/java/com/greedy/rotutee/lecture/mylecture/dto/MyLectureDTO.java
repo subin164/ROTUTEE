@@ -38,4 +38,5 @@ public class MyLectureDTO {
     private Date applicationDate;
     private String applicationDivision;
     private int lectureCategoryNo;
+    private String savedFileName;
 }

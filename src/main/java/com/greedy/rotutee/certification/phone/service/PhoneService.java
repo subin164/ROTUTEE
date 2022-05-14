@@ -24,7 +24,7 @@ public class PhoneService {
         params.put("to", phoneNum);
         params.put("from", "01032828120");
         params.put("type", "SMS");
-        params.put("text", "휴대폰 인증 : 인증번호는" + "[" + cerNum + "]" + "입니다.");
+        params.put("text", "안녕하세요 ROTUTEE입니다.\n 인증번호는" + "[" + cerNum + "]" + "입니다.");
         params.put("app_version", "test app 1.2");
 
         try {

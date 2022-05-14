@@ -131,7 +131,7 @@
         <div class="posting box col-4">
             <div class="head-title" style="margin-bottom: 10px;">&#128172;최근 작성글
                 <div class="btn-holder">
-                    <button class="btn float total" style="float: right; margin-right: 15px;">전체보기</button>
+                    <button class="btn float total" style="float: right; margin-right: 15px;" onclick="location.href='/dashboard/mypost'">전체보기</button>
                 </div>
             </div>
             <div class="whitebox">
@@ -163,7 +163,7 @@
         <div class="alram box col-4">
             <div class="head-title" style="margin-bottom: 10px;">&#128161;알림
                 <div class="btn-holder">
-                    <button class="btn float total" style="float: right; margin-right: 15px;">전체보기</button>
+                    <button class="btn float total" style="float: right; margin-right: 15px;" onclick="location.href='/notice/list'">전체보기</button>
                 </div>
             </div>
             <div class="whitebox">
@@ -343,8 +343,8 @@
         const $tr = $("<tr id='tr " + careerCount + "'>");
         const $td1 = $("<td><input style='width: 115px' type='date' name='careerList[" + careerCount + "].startDate' required></td>");
         const $td2 = $("<td><input style='width: 115px' type='date' name='careerList[" + careerCount + "].endDate' required></td>");
-        const $td3 = $("<td><input style='width: 150px'type='text' name='careerList[" + careerCount + "]company.' required></td>");
-        const $td4 = $("<td><input style='width: 90px' type='text' name='careerList[" + careerCount + "]position.' required></td>");
+        const $td3 = $("<td><input style='width: 150px'type='text' name='careerList[" + careerCount + "].company' required></td>");
+        const $td4 = $("<td><input style='width: 90px' type='text' name='careerList[" + careerCount + "].position' required></td>");
         const $td5 = $("<td><input style='width: 150px'type='text' name='careerList[" + careerCount + "].responsibilities' required></td>");
 
         $tr.append($td1);
