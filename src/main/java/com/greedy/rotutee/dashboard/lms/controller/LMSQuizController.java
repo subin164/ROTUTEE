@@ -158,6 +158,8 @@ public class LMSQuizController {
         HttpSession session = request.getSession();
         int lectureNo = Integer.parseInt(String.valueOf(session.getAttribute("lectureNo")));
         LMSQuizStatusDTO quizStatus = lmsQuizService.findQuizStatus(memberNo, lectureNo);
+        int quizSize = quizStatus.getChapters().size();
+        quizStatus.setQuizSize(quizSize);
         /* 퀴즈만 따로 담아줌 */
         List<LMSQuizDTO> quizList = new ArrayList<>();
         for(int i = 0; i < quizStatus.getChapters().size(); i++){

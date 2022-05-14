@@ -126,6 +126,9 @@
                         <img th:src="@{/sg/image/} + ${dashboard.attachment.saveAttachedFileName}"
                              style=" width:100px; height: 100px; border-radius: 100%;">
                         </th:block>
+                        <th:block th:if="${ dashboard.attachment.saveAttachedFileName == null }">
+                            <p>프로필을</p><p>등록하세요</p>
+                        </th:block>
                     </div>
                     <div class="col-7">
                         <h5 th:text="${dashboard.member.nickname}"></h5>
