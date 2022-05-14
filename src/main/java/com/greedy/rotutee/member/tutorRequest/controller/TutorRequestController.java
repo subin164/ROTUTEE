@@ -122,7 +122,6 @@ public class TutorRequestController {
         return tutorApply;
     }
 
-
     @GetMapping("/request")
     public ModelAndView tutorRequestPage(ModelAndView mv, @AuthenticationPrincipal CustomUser loginMember) {
 

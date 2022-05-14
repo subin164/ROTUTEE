@@ -436,9 +436,6 @@ public class ReportServiceImpl implements ReportService{
         reportAnswerRepository.save(reportBoardAnswerEntity);
 
         /*댓글신고 insert*/
-        Report reportEntity = modelMapper.map(report, Report.class);
-        reportRepository.save(reportEntity);
-
         Report reportAnswerEntity = modelMapper.map(report, Report.class);
         reportRepository.save(reportAnswerEntity);
 

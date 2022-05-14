@@ -102,8 +102,14 @@
         }
 
     </style>
+    <script th:inline="javascript">
+        /* 비지니스 로직 성공 alert 메시지 처리 */
+        const message = [[${message}]];
+        if(message != null && message != '') {
+            alert(message);
+        }
+    </script>
 </head>
-
 <body>
 <div sec:authorize="hasRole('TUTOR')" th:include="common/tutormypagemenubar.html"></div>
 <div sec:authorize="hasRole('TUTEE')" th:include="common/mypagemenubar.html"></div>
@@ -284,7 +290,7 @@
         </div>
     </div>
 </div>
-
+<div th:include="/common/footer.html"></div>
 </body>
 <script>
     $("#request-tutor-btn").click(function () {

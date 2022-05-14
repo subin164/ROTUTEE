@@ -167,13 +167,13 @@
                     </div>
                     <th:block id="if" th:if="${categoryNo == 6}">
                         <th:block sec:authorize="hasRole('ADMIN')">
-                            <button type="button" id="noticewriteBoard" class="btn btn-primary">작성하기</button>
+                            <button type="button" id="noticewriteBoard" class="btn btn-primary" style="float: right">작성하기</button>
                         </th:block>
                     </th:block>
 
                     <th:block id="if" th:if="${categoryNo == 5} or ${categoryNo == 4}">
                         <th:block sec:authorize="isAuthenticated()">
-                            <button type="button" id="writeBoard" class="btn btn-primary">작성하기</button>
+                            <button type="button" id="writeBoard" class="btn btn-primary" style="float: right">작성하기</button>
                         </th:block>
                     </th:block>
                 </div>
@@ -216,7 +216,7 @@
 </div>
 </div>
 
-<!--<div th:include="/common/footer.html"></div>-->
+<div th:include="/common/footer.html"></div>
 
 <script>
     const $noticeTab = document.getElementById("notice-tab");

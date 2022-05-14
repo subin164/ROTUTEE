@@ -46,6 +46,13 @@
             width: 90%;
         }
     </style>
+    <script th:inline="javascript">
+        /* 비지니스 로직 성공 alert 메시지 처리 */
+        const message = [[${message}]];
+        if(message != null && message != '') {
+            alert(message);
+        }
+    </script>
 </head>
 <body>
 <div th:include="/common/topMenubar.html"></div>

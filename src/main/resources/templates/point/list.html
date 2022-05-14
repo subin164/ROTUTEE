@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="https://thymeleaf.org">
+<html xmlns:th="https://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,6 +49,13 @@
     }
 
 </style>
+<script th:inline="javascript">
+    /* 비지니스 로직 성공 alert 메시지 처리 */
+    const message = [[${message}]];
+    if(message != null && message != '') {
+        alert(message);
+    }
+</script>
 </head>
 <body>
 <div th:include="/common/topMenubar.html"></div>
@@ -160,6 +168,7 @@
             </div>
         </div>
         <div class="col" style="margin-top: 30px;">
+            <th:block  sec:authorize="hasAnyRole('ADMIN', 'SUBADMIN')">
             <div class="card" style="width: 14rem; height: 300px;">
                 <img th:src="@{/sg/image/plus.png}" class="card-img-top" alt="..." th:width="200px"
                      th:height="300px" id="registImg">
@@ -191,6 +200,7 @@
                     </form>
                 </div>
             </div>
+            </th:block>
             <!--    </th:block>-->
             <!--                    <th: sec:authorize="hasAnyRole('ADMIN', 'SUBADMIN')">-->
             <!--                        <div class="col" style="margin-top: 30px;">-->
@@ -203,7 +213,6 @@
 </div>
 <br><br>
 <div th:include="/common/footer.html"></div>
-
 <script>
 
     $(".resetModify").click(function () {

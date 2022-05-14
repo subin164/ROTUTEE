@@ -119,11 +119,13 @@
         document.getElementById("regist-form").submit();
     });
 
-    $noticeradio1.addEventListener("click", function (){
-        categoryNo =6;
-        $categoryNo.value=categoryNo;
-        console.log("notice categoryNo : "+$categoryNo.value);
-    });
+    if($noticeradio1 != null){
+        $noticeradio1.addEventListener("click", function (){
+            categoryNo =6;
+            $categoryNo.value=categoryNo;
+            console.log("notice categoryNo : "+$categoryNo.value);
+        });
+    }
 
     $askfadio2.addEventListener("click", function (){
         categoryNo =5;

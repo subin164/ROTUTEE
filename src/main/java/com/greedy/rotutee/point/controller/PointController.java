@@ -19,6 +19,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -93,9 +94,11 @@ public class PointController {
     }
 
     @GetMapping("/product/{productNo}")
-    public String productExchange(@AuthenticationPrincipal CustomUser longinMember, @PathVariable int productNo) {
+    public String productExchange(@AuthenticationPrincipal CustomUser longinMember, @PathVariable int productNo, RedirectAttributes rttr) {
 
         pointService.productExchange(longinMember.getNo(), productNo);
+
+        rttr.addFlashAttribute("message", "상품 교환에 성공하셨습니다.");
 
         return "redirect:/point/list";
     }
@@ -108,30 +111,37 @@ public class PointController {
     }
 
     @PostMapping("/regist")
-    public String registPointProduct(@ModelAttribute PointProductDTO pointProduct, @RequestParam("couponNo") int couponNo) {
+    public String registPointProduct(@ModelAttribute PointProductDTO pointProduct, @RequestParam("couponNo") int couponNo
+                                                                                 , RedirectAttributes rttr) {
 
         pointProduct.setRemainingNumber(pointProduct.getTotalSalesCount());
         pointProduct.setProductStatus("Y");
 
         pointService.registPointProduct(pointProduct, couponNo);
 
+        rttr.addFlashAttribute("message", "상품이 등록되었습니다.");
+
         return "redirect:/point/list";
     }
 
     @GetMapping("/remove/{productNo}")
-    public String removePointProduct(@PathVariable("productNo") int productNo) {
+    public String removePointProduct(@PathVariable("productNo") int productNo, RedirectAttributes rttr) {
 
         pointService.removePointProduct(productNo);
+
+        rttr.addFlashAttribute("message", "상품이 삭제되었습니다.");
 
         return "redirect:/point/list";
     }
 
     @PostMapping("/modify")
-    public String modifyPointProduct(@ModelAttribute PointProductDTO pointProduct) {
+    public String modifyPointProduct(@ModelAttribute PointProductDTO pointProduct, RedirectAttributes rttr) {
 
         System.out.println("pointProduct = " + pointProduct);
 
         pointService.modifyPointProduct(pointProduct);
+
+        rttr.addFlashAttribute("message", "상품 정보가 수정되었습니다.");
 
         return "redirect:/point/list";
     }

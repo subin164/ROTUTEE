@@ -110,9 +110,9 @@
                 type: "post",
                 success: function (data) {
 
-                    $("#result").html(data);
+                    alert("축하합니다. " + data +"P 획득하셨습니다.");
 
-                    document.querySelector('.상품추가모달').style.display = 'block';
+                    location.href = "/point/roulette";
                 }
             });
         } else {

@@ -170,6 +170,7 @@ public class LMSQuizController {
         /* 퀴즈 채점 상태 */
         List<LMSSubmissionQuizDTO> submissionQuizList = lmsQuizService.findSubmissionQuiz(memberNo, lectureNo);
 
+        mv.addObject("no", lectureNo);
         mv.addObject("submissionQuizList", submissionQuizList);
         mv.addObject("quizList", quizList);
         mv.addObject("quizStatus", quizStatus);

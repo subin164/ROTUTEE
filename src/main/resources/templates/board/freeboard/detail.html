@@ -6,10 +6,6 @@
 
     <meta charset="UTF-8">
 
-    <script>
-        const message = "[[${successMessage}]]"
-        message && alert(message);
-    </script>
     <style>
 
         .box {
@@ -177,7 +173,7 @@
                            data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
                 </th:block>
                 <th:block th:if="${ board.freeBoardMember.memberNo } != ${ #authentication.principal.no }">
-                    <input id="BoardBtn" type="button" th:value="신고" class="btn btn-primary" data-bs-toggle="modal"
+                    <input id="BoardBtn" type="button" th:value="신고" class="btn btn-danger" data-bs-toggle="modal"
                            data-bs-target="#staticBackdrop1"/>
                 </th:block>
             </div>
@@ -211,16 +207,16 @@
                             <div class="answer-content-btn">
                                 <th:block
                                         th:if="${ answer.freeBoardMember.memberNo } == ${#authentication.principal.no }">
-                                    <button class="modifyanswer" id="modifyAnswer" name="수정" type="button"
+                                    <button class="modifyanswer btn btn-success" id="modifyAnswer" name="수정" type="button"
                                             th:value="${answer.answerNo}">수정
                                     </button>
-                                    <button id="deleteAnswer" th:value="${answer.answerNo}" class="deleteAnswer">삭제
+                                    <button id="deleteAnswer" th:value="${answer.answerNo}" class="deleteAnswer btn btn-danger btn-sm">삭제
                                     </button>
                                 </th:block>
                                 <th:block
                                         th:if="${ answer.freeBoardMember.memberNo } != ${ #authentication.principal.no }">
                                     <button id="declarationAnswer" th:value="${answer.answerNo}"
-                                            class="declarationAnswer" data-bs-toggle="modal"
+                                            class="declarationAnswer btn btn-danger btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#staticBackdrop2">신고
                                     </button>
                                 </th:block>
@@ -250,7 +246,7 @@
         </div>
     </div>
 </div>
-
+<div th:include="/common/footer.html"></div>
 <!-- delete modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -304,7 +300,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="declaration-ok" type="button" class="btn btn-primary">Submit</button>
+                <button id="declaration-ok" type="button" class="btn btn-danger">신고하기</button>
             </div>
         </div>
     </div>
@@ -343,7 +339,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="answer-declaration-ok" type="button" class="btn btn-primary">Submit</button>
+                <button id="answer-declaration-ok" type="button" class="btn btn-danger">신고하기</button>
             </div>
         </div>
     </div>
@@ -563,6 +559,5 @@
 <!--===============================================================================================-->
 <!-- <script src="../../static/sb/js/main.js"></script>-->
 <!--===============================================================================================-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

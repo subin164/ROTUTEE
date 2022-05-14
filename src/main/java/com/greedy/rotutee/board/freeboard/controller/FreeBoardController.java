@@ -235,7 +235,7 @@ public class FreeBoardController {
         freeBoard.setBoardDeleteYN('N');
         freeBoardService.registNewFreeBoard(freeBoard);
 
-        rttr.addFlashAttribute("successMessage", "생성 완료");
+        rttr.addFlashAttribute("message", "게시물 등록에 성공하였습니다.");
         mv.setViewName("redirect:/freeboard/list?categoryNo=" +categoryNo);
         return mv;
     }
@@ -273,7 +273,6 @@ public class FreeBoardController {
 
         freeBoardService.insertAnswer(registAnswer);
 
-        rttr.addFlashAttribute("successMessage", "댓글 생성 완료");
         mv.setViewName("redirect:/freeboard/detail?boardNo="+ boardNo);
 
         return mv;

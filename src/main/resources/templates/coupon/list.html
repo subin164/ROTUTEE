@@ -11,7 +11,13 @@
 
     <link rel="stylesheet" th:href="@{../common/css/common.css}">
     <link rel="stylesheet" th:href="@{../hg/css/coupon.css}">
-
+    <script th:inline="javascript">
+        /* 비지니스 로직 성공 alert 메시지 처리 */
+        const message = [[${message}]];
+        if(message != null && message != '') {
+            alert(message);
+        }
+    </script>
 </head>
 
 <body>

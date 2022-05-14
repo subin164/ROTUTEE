@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -67,7 +68,7 @@ public class ServiceBoardController {
     }
 
     @PostMapping("/regist")
-    public String registServiceBoard(@ModelAttribute BoardDTO board, @AuthenticationPrincipal CustomUser loginMember, @RequestParam("categoryNo") int categoryNo) {
+    public String registServiceBoard(@ModelAttribute BoardDTO board, @AuthenticationPrincipal CustomUser loginMember, @RequestParam("categoryNo") int categoryNo, RedirectAttributes rttr) {
 
         board.setCreationDate(new Date(System.currentTimeMillis()));
         board.setDeleteYN('N');
@@ -84,6 +85,8 @@ public class ServiceBoardController {
         System.out.println("board = " + board.getBoardCategory());
 
         serviceBoardService.registServiceBoard(board);
+
+        rttr.addFlashAttribute("message", "게시글 등록이 완료되었습니다.");
 
         return "redirect:/serviceBoard/list";
     }

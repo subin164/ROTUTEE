@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Date;
 import java.util.List;
@@ -72,7 +73,7 @@ public class CouponController {
      * @return string
      */
     @PostMapping("/regist")
-    public String couponRegist(CouponDTO couponDTO) {
+    public String couponRegist(CouponDTO couponDTO, RedirectAttributes rttr) {
 
         couponDTO.setPublishCouponStatus("N");
 
@@ -80,6 +81,7 @@ public class CouponController {
 
         couponService.couponRegist(couponDTO);
 
+        rttr.addFlashAttribute("message", "쿠폰이 생성되었습니다.");
 
         return "redirect:/coupon/list";
     }
@@ -128,18 +130,21 @@ public class CouponController {
     @PostMapping("/publish")
     public String publishCoupon(@RequestParam(value = "publishCouponNo") List<String> couponNoList,
                                 @RequestParam(value = "publishSelect") int publishSelect,
-                                @RequestParam(value = "publishToPersonalMember") String publishToPersonalMember) {
+                                @RequestParam(value = "publishToPersonalMember") String publishToPersonalMember,
+                                RedirectAttributes rttr) {
 
         System.out.println("퍼블리싱ㅋ ㅜ폰 욫어옴 : " + couponNoList);
 
         System.out.println("publishSelect : " + publishSelect);
         if(publishSelect  == 1){
             System.out.println("전체쿠폰 발행");
+            rttr.addFlashAttribute("message", "회원 전체에 쿠폰을 발행하였습니다.");
         couponService.couponPublishAll(couponNoList);
 
         }else if(publishSelect == 2){
             System.out.println("개인회원에게 발행");
             System.out.println("개인회원 아이디 : " + publishToPersonalMember);
+            rttr.addFlashAttribute("message", "쿠폰을 발행하였습니다.");
             couponService.couponSelectPersonal(couponNoList, publishToPersonalMember);
         }
 
