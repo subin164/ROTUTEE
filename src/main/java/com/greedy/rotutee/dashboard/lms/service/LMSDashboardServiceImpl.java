@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * fileName : LMSDashboardServiceImpl
  * author : SeoYoung
  * date : 2022-04-19
- * description :
+ * description : LMS 대시보드 서비스 로직
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
@@ -99,6 +99,14 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
 
     }
 
+    /**
+     * methodName : findProfilePath
+     * author : SeoYoung Kim
+     * description : 프로필사진 경로 조회
+     *
+     * @param memberNo LMS 대시보드 조회를 원하는 로그인되어있는 회원번호
+     * @return lms attachment dto
+     */
     @Override
     public LMSAttachmentDTO findProfilePath(int memberNo) {
 
@@ -250,6 +258,14 @@ public class LMSDashboardServiceImpl implements LMSDashboardService{
         return normals;
     }
 
+    /**
+     * Gets profile.
+     * author : SeoYoung Kim
+     * description : 멤버 정보 조회
+     *
+     * @param memberNo 회원번호
+     * @return MemberDTO
+     */
     private DashboardMemberDTO getProfile(int memberNo) {
         DashboardMember memberEntity = memberRepository.findById(memberNo).get();
         DashboardMemberDTO member = modelMapper.map(memberEntity, DashboardMemberDTO.class);

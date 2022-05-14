@@ -17,4 +17,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface LMSAttachmentRepository extends JpaRepository<LMSAttachment, Integer> {
 
     LMSAttachment findByMemberNoAndDivisionAndFileDeletionYN(int memberNo, String division, String deletionStatus);
+
+    LMSAttachment findByLectureNoAndDivisionAndFileDeletionYN(int lectureNo, String division, String deletionStatus);
 }

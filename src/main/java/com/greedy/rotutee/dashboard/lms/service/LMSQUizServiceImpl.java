@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * fileName : LMSQUizServiceImpl
  * author : SeoYoung
  * date : 2022-04-29
- * description :
+ * description : LMS 퀴즈 로직
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
@@ -55,6 +55,14 @@ public class LMSQUizServiceImpl implements LMSQuizService{
     }
 
 
+    /**
+     * methodName : findQuizDetail
+     * author : SeoYoung Kim
+     * description : 퀴즈 상세조회
+     *
+     * @param quizNo 상세조회할 퀴즈번호
+     * @return lms quiz dto
+     */
     @Override
     public LMSQuizDTO findQuizDetail(int quizNo) {
 
@@ -63,6 +71,15 @@ public class LMSQUizServiceImpl implements LMSQuizService{
 
         return quizDetail;
     }
+
+    /**
+     * methodName : confirmQuiz
+     * author : SeoYoung Kim
+     * description : 퀴즈 풀이 여부 확인
+     *
+     * @param quizNo 풀이여부 확인할 퀴즈번호
+     * @return boolean 퀴즈 풀었을 시 : true, 퀴즈 풀지 않았을 시 : false
+     */
     @Override
     public boolean confirmQuiz(int quizNo) {
 
@@ -74,6 +91,17 @@ public class LMSQUizServiceImpl implements LMSQuizService{
 
     }
 
+    /**
+     * methodName : gradingQuiz
+     * author : SeoYoung Kim
+     * description : 제출한 답으로 퀴즈 채점
+     *
+     * @param answer 제출한 답
+     * @param memberNo 퀴즈를 제출한 회원번호
+     * @param quizNo 퀴즈 번호
+     * @param lectureNo 강의번호
+     * @return boolean
+     */
     @Override
     @Transactional
     public boolean gradingQuiz(int answer, int memberNo, int quizNo, int lectureNo) {
@@ -103,10 +131,10 @@ public class LMSQUizServiceImpl implements LMSQuizService{
     /**
      * methodName : findQuizStatus
      * author : SeoYoung Kim
-     * description :
+     * description : 퀴즈 제출 상태 조회
      *
-     * @param memberNo
-     * @param lectureNo
+     * @param memberNo 퀴즈 제출 여부를 확인할 회원번호
+     * @param lectureNo 강의번호
      * @return lmsQuizStatusDTO
      */
     @Override
@@ -184,6 +212,15 @@ public class LMSQUizServiceImpl implements LMSQuizService{
         return quizStatusDTO;
     }
 
+    /**
+     * methodName : findSubmissionQuiz
+     * author : SeoYoung Kim
+     * description : 제출한 퀴즈 목록 조회
+     *
+     * @param memberNo 튜티 회원번호
+     * @param lectureNo 강의번호
+     * @return list
+     */
     @Override
     public List<LMSSubmissionQuizDTO> findSubmissionQuiz(int memberNo, int lectureNo) {
 

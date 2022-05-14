@@ -2,6 +2,7 @@ package com.greedy.rotutee.dashboard.mypage.dto.tutee;
 
 
 
+import com.greedy.rotutee.dashboard.lms.dto.LMSAttachmentDTO;
 import lombok.*;
 
 import java.util.List;
@@ -30,5 +31,6 @@ public class MypageDashboardDTO {
     private List<DashboardNoticeDTO> noticeList;
     private List<DashboardLectureWatchDTO> watchList;
     private List<DashboardLectureDTO> completedLectureInfoList;
+    private LMSAttachmentDTO attachment;
 
 }

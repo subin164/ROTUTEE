@@ -131,16 +131,22 @@
                                             <th:block th:if="${report.boardAnswer == null}">
                                                 <td class="cell100 column2">
                                                     [[${report.board.boardTitle}]]
-                                                    <th:block th:if="${report.processStatus == '승인' or report.processStatus == '거절'}">
-                                                        <span class="badge text-light" style="background-color: #f3c3c3">처리완료</span>
+                                                    <th:block th:if="${report.processStatus == '승인'}">
+                                                        <span class="badge text-light" style="background-color: #f3c3c3">승인</span>
+                                                    </th:block>
+                                                    <th:block th:if="${report.processStatus == '거절'}">
+                                                        <span class="badge text-light" style="background-color: #f3c3c3">거절</span>
                                                     </th:block>
                                                 </td>
                                             </th:block>
                                             <th:block th:if="${report.boardAnswer != null}">
                                                 <td class="cell100 column2">
                                                     [[${report.boardAnswer.answerContent}]]
-                                                    <th:block th:if="${report.processStatus == '승인' or report.processStatus == '거절' }">
-                                                        <span class="badge text-light" style="background-color: #f3c3c3">처리완료</span>
+                                                    <th:block th:if="${report.processStatus == '승인'}">
+                                                        <span class="badge text-light" style="background-color: #f3c3c3">승인</span>
+                                                    </th:block>
+                                                    <th:block th:if="${report.processStatus == '거절'}">
+                                                        <span class="badge text-light" style="background-color: #f3c3c3">거절</span>
                                                     </th:block>
                                                 </td>
                                             </th:block>

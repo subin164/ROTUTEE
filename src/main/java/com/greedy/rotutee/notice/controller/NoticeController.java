@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
  * fileName : NoticeController
  * author : SeoYoung
  * date : 2022-05-11
- * description :
+ * description : 알림 컨트롤러
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------

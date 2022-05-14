@@ -29,7 +29,7 @@ import java.util.Map;
  * fileName : ReportController
  * author : SeoYoung
  * date : 2022-05-05
- * description :
+ * description : 신고 Controller
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
@@ -46,6 +46,16 @@ public class ReportController {
         this.reportService = reportService;
     }
 
+    /**
+     * methodName : findReportList
+     * author : SeoYoung Kim
+     * description : 신고 목록 조회
+     *
+     * @param request
+     * @param mv
+     * @param pageable
+     * @return model and view
+     */
     @GetMapping("/list")
     public ModelAndView findReportList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
 
@@ -69,6 +79,15 @@ public class ReportController {
         return mv;
     }
 
+    /**
+     * methodName : findReportDetail
+     * author : SeoYoung Kim
+     * description : 신고 상세조회
+     *
+     * @param request
+     * @param customUser
+     * @return string
+     */
     @GetMapping(value = "/detail", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String findReportDetail(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
@@ -86,6 +105,15 @@ public class ReportController {
         return gson.toJson(reports);
 
     }
+
+    /**
+     * methodName : findReportAnswerDetail
+     * author : SeoYoung Kim
+     * description : 답변 신고 상세조회
+     *
+     * @param request
+     * @return string
+     */
     @GetMapping(value = "/answerdetail", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String findReportAnswerDetail(HttpServletRequest request) {
@@ -104,6 +132,16 @@ public class ReportController {
         return gson.toJson(reports);
 
     }
+
+    /**
+     * methodName : modifyBoardReport
+     * author : SeoYoung Kim
+     * description : 게시판 신고 승인/거절/철회
+     *
+     * @param request
+     * @param customUser
+     * @return string
+     */
     @GetMapping(value = "/modifyboard", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String modifyBoardReport(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
@@ -131,6 +169,15 @@ public class ReportController {
         return gson.toJson(result);
     }
 
+    /**
+     * methodName : modifyAnswerReport
+     * author : SeoYoung Kim
+     * description : 댓글 신고 승인/거절/철회
+     *
+     * @param request
+     * @param customUser
+     * @return string
+     */
     @GetMapping(value = "/modifyanswer", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String modifyAnswerReport(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser) {
@@ -159,6 +206,15 @@ public class ReportController {
         return gson.toJson(result);
     }
 
+    /**
+     * methodName : registBoardReport
+     * author : SeoYoung Kim
+     * description : 게시판 신고 등록
+     *
+     * @param request
+     * @param customUser
+     * @return string
+     */
     @GetMapping(value = "/board", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String registBoardReport(HttpServletRequest request, @AuthenticationPrincipal CustomUser customUser){

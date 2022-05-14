@@ -133,7 +133,9 @@
         <th:block th:each="lecture : ${ lectures }">
             <div class="lecture-wrap" id="lecture-div">
                 <div class="thumbnail-box">
-                    <img src="sy/images/thumbnail.PNG" style="max-width:100%; height:100%;">
+                    <th:block th:if="${ attachment.saveAttachedFileName != null }">
+                        <img th:src="@{/image/thumbnail/} + ${attachment.saveAttachedFileName}" style="max-width:100%; height:100%;">
+                    </th:block>
                 </div>
                 <div class="info-box">
                     <p th:text="${ lecture.lectureName }"></p>

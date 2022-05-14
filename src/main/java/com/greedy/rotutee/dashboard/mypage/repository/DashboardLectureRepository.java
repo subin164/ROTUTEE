@@ -3,6 +3,8 @@ package com.greedy.rotutee.dashboard.mypage.repository;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardLecture;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * packageName : com.greedy.rotutee.dashboard.mypage.repository
  * fileName : LectureRepository
@@ -20,4 +22,5 @@ public interface DashboardLectureRepository extends JpaRepository<DashboardLectu
     DashboardLecture findBymemberNo(int memberNo);
 
     DashboardLecture findByLectureNo(int lectureNo);
+
 }

@@ -60,7 +60,7 @@ public class LMSAttachment {
     private String fileDeletionYN;
 
     @Column(name = "MEMBER_NO")
-    private int memberNo;
+    private Integer memberNo;
 
     @Column(name = "LECTURE_NO")
     private Integer lectureNo;
