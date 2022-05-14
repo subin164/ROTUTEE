@@ -191,15 +191,13 @@
                                  th:text="${ answer.content }">
                             </div>
                         </div>
+                        <br>
                         <div class="answer-content-btn">
                             <th: sec:authorize="isAuthenticated()">
                                 <th:block th:if="${ answer.member.no } == ${ #authentication.principal.no }">
                                     <button class="btn btn-primary btn-modify" type="button" th:value="${ answer.no }">수정</button>
-                                    <button class="btn btn-primary btn-delete" type="button" th:value="${ answer.no }">삭제</button>
+                                    <button class="btn btn-danger btn-delete" type="button" th:value="${ answer.no }">삭제</button>
                                 </th:block>
-                                <th th:if="${ answer.member.no } != ${ #authentication.principal.no }">
-                                    <button id="declarationAnswer" type="button" class="btn btn-danger">신고</button>
-                                </th>
                             </th:>
                         </div>
                     </div>
@@ -234,16 +232,16 @@
 <script>
 
     const boardNo = "[[${ detailBoard.no }]]";
+    const memberNo = "[[${ detailBoard.member.no }]]";
+    const title = "[[${ detailBoard.title }]]";
 
     $("#registAnswerBtn").click(function () {
 
         let answerContent = $("#answer-textarea").val();
 
-        alert(answerContent);
-
         $.ajax({
             url: "/serviceBoard/registAnswer",
-            data: {"answerContent": answerContent, "boardNo": boardNo},
+            data: {"answerContent": answerContent, "boardNo": boardNo, "memberNo" : memberNo, "title" : title },
             success: function (data) {
 
                 location.href = "/serviceBoard/detail/" + boardNo;
@@ -270,7 +268,7 @@
             data: {"answerNo": answerNo},
             success: function (data) {
 
-                alert("즉시삭제");
+                alert("삭제가 완료되었습니다.");
 
                 location.href = "/serviceBoard/detail/" + boardNo;
             }
@@ -290,20 +288,18 @@
         let answerNo = $(this).val();
         let modifyContent = $("#modifyAnswerContent" + answerNo).val();
 
-        alert(modifyContent + boardNo);
-
         $.ajax({
             url: "/serviceBoard/modifyAnswer",
             type: "post",
             data: {"boardNo": boardNo, "answerNo": answerNo, "modifyContent": modifyContent},
             success: function (data) {
 
+                alert("수정이 완료되었습니다.");
+
                 $("#answer" + answerNo).show();
                 $("#inputanswer" + answerNo).hide();
 
                 $("#answer-content" + answerNo).text(modifyContent);
-
-                alert("수정했ㄷ ㅏ이녀석아~!");
             }
         });
     });

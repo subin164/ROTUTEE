@@ -59,14 +59,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        System.out.println("여기 오괴 1");
+
         Member member = memberRepository.findMemberByEmail(username);
 
         if(member == null) {
             throw new UsernameNotFoundException("회원정보가 존재하지 않습니다.");
         }
 
+        checkLogin(member);
         setLogin(member);
-        
+
         MemberStatusHistory memberStatusHistory = memberStatusHistoryRepositoryQuery.findMemberStatus(entityManager, member.getNo());
 
         System.out.println("memberStatusHistory.getStatus() = " + memberStatusHistory.getStatus());
@@ -74,7 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if(memberStatusHistory.getStatus().equals("정지")) {
             checkStatus(member, memberStatusHistory);
         } else if(memberStatusHistory.getStatus().equals("탈퇴")) {
-            throw new UsernameNotFoundException("회원정보가 존재하지 않습니다.");
+            throw new LockedException("회원정보가 존재하지 않습니다.");
         }
 
         MemberDTO loginMember = modelMapper.map(member, MemberDTO.class);
@@ -110,33 +113,38 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     
     @Transactional
-    public void setLogin(Member member) {
+    public void checkLogin(Member member) {
 
-        LoginHistory newLogin = new LoginHistory();
         Date today = new Date(System.currentTimeMillis());
-        newLogin.setLoginDate(today);
-        newLogin.setMember(member);
-        newLogin.setLoginIp("123");
-
-        loginHistoryRepository.save(newLogin);
-
         LoginHistory loginHistory = loginHistoryRepositoryQuery.findMemberLoginHistory(entityManager, member.getNo());
-
-        boolean isLoginCheck = true;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
         String todayDate = simpleDateFormat.format(today);
         String loginDate = simpleDateFormat.format(loginHistory.getLoginDate());
 
+        System.out.println("todayDate = " + todayDate);
+        System.out.println("loginDate = " + loginDate);
+
         if(todayDate.equals(loginDate) || todayDate == loginDate) {
-            isLoginCheck = false;
-        }
-        if(isLoginCheck) {
+            System.out.println("여기1");
+        } else {
             member.setRouletteChance(member.getRouletteChance() + 1);
             System.out.println(member.getRouletteChance());
+            System.out.println("여기2");
 
             memberRepository.save(member);
         }
+    }
+
+    @Transactional
+    public void setLogin(Member member) {
+
+        LoginHistory newLogin = new LoginHistory();
+        newLogin.setLoginDate(new Date(System.currentTimeMillis()));
+        newLogin.setMember(member);
+        newLogin.setLoginIp("123");
+
+        loginHistoryRepository.save(newLogin);
     }
 
     @Override

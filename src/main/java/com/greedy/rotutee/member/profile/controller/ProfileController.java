@@ -54,21 +54,29 @@ public class ProfileController {
 
         int memberNo = customUser.getNo();
 
-        MemberDTO memeber = profileService.memberProfile(memberNo);
+        //회원 정보 조회
+        MemberDTO member = profileService.memberProfile(memberNo);
+        //회원 프로필사진 정보 조회
         AttachedFileDTO attachedFile = profileService.findMemberProfile(memberNo);
-//        AchievementDTO achievement = profileService.findMemberAchievement(memberNo);
 
-        if(customUser.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
-           TutorInfoDTO tutorInfo = profileService.findTutorInfo(memberNo);
+        //조회된 회원이 튜터일 경우 튜터 정보도 같이 반환해줌
+        if(member.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
+            TutorInfoDTO tutorInfo = profileService.findTutorInfo(memberNo);
 
-           tutorInfo.setAddress(tutorInfo.getAddress().replace("&", " "));
-
+            //정보를 아직 입력하지 않은 튜터라면 비어있는 값을 반환 (NPT 방지)
+            if(tutorInfo != null) {
+                tutorInfo.setAddress(tutorInfo.getAddress().replace("&", " "));
+            } else {
+                tutorInfo = new TutorInfoDTO();
+                tutorInfo.setAddress("미입력");
+                tutorInfo.setAccountNumber("미입력");
+                tutorInfo.setBankName("미입력");
+            }
            mv.addObject("tutorInfo", tutorInfo);
         }
 
-//        mv.addObject("achievement", achievement);
         mv.addObject("attachedFile", attachedFile);
-        mv.addObject("member", memeber);
+        mv.addObject("member", member);
         mv.setViewName("/profile/profile");
 
         return mv;
@@ -80,27 +88,28 @@ public class ProfileController {
 
         int memberNo = customUser.getNo();
 
+        //회원 정보 조회
         MemberDTO memeber = profileService.memberProfile(memberNo);
+        //회원 프로필사진 정보 조회
         AttachedFileDTO attachedFile = profileService.findMemberProfile(memberNo);
-//        AchievementDTO achievement = profileService.findMemberAchievement(memberNo);
 
+        //조회된 회원이 튜터일 경우
         if(customUser.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
             TutorInfoDTO tutorInfo = profileService.findTutorInfo(memberNo);
             AddressDTO address = new AddressDTO();
 
+            //'&' 기준으로 나뉘어 저장된 정보를 배열로 읽어옴
             String[] addresss = tutorInfo.getAddress().split("&");
 
+            //배열로 나뉘어 주소를 상세히 저장 가능
             address.setZipCode(addresss[0]);
             address.setAddress1(addresss[1]);
             address.setAddress2(addresss[2]);
 
-            System.out.println("addresss = " + addresss);
-            
             mv.addObject("address", address);
             mv.addObject("tutorInfo", tutorInfo);
         }
 
-//        mv.addObject("achievement", achievement);
         mv.addObject("attachedFile", attachedFile);
         mv.addObject("member", memeber);
         mv.setViewName("/profile/modify");
@@ -120,6 +129,7 @@ public class ProfileController {
                                  @ModelAttribute TutorInfoDTO tutorInfo, @ModelAttribute AddressDTO address,
                                 RedirectAttributes rttr) {
 
+        //주소를 상세히 나뉘어 저장
         tutorInfo.setAddress(address.getZipCode() + "&" + address.getAddress1() + "&" + address.getAddress2());
 
         profileService.modifyProfile(loginMember, member, tutorInfo);
@@ -136,27 +146,13 @@ public class ProfileController {
     public String modifyProfileImg(@RequestParam("uploadFile") MultipartFile uploadFile, RedirectAttributes rttr,
                                    @AuthenticationPrincipal CustomUser loginMember) throws Exception {
 
+        //사진 업로드 핸들러 메소드를 이용해 사진 업로드
         profileService.profileUpload(profileFileHandler.profileFileUpload(uploadFile, loginMember.getNo()));
-
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginMember.getName(), loginMember.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         rttr.addFlashAttribute("message", "사진 변경에 성공하셨습니다.");
 
         return "redirect:/profile/modify";
     }
 
-    @GetMapping("/img")
-    public ModelAndView imgTest(ModelAndView mv) {
-
-        AttachedFileDTO attachedFile = profileService.imgTest(5);
-
-        System.out.println("attachedFile = " + attachedFile);
-
-        mv.addObject("attachedFile", attachedFile);
-        mv.setViewName("/profile/test");
-
-        return mv;
-    }
 
 }

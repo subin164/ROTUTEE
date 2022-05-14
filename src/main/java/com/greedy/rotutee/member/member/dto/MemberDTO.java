@@ -23,7 +23,7 @@ public class MemberDTO {
     private Date registrationDate;
     private Date withdrawalDate;
     private String leaveStatusYn;
-    private String rouletteChance;
+    private Integer rouletteChance;
 
     @JsonIgnoreProperties(value = "member")
     private List<MemberRoleDTO> memberRoleList;

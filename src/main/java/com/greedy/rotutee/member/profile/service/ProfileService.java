@@ -76,16 +76,11 @@ public class ProfileService {
 
     /* 프로필 사진 업로드용 메서드 */
     @Transactional
-    public void profileUpload(AttachedFile attachedFiles) throws Exception {
+    public void profileUpload(AttachedFile attachedFiles) {
 
         attachedFileRepository.save(attachedFiles);
     }
 
-    /*  */
-    public AttachedFileDTO imgTest(int no) {
-
-        return modelMapper.map(attachedFileRepository.findById(no), AttachedFileDTO.class);
-    }
 
     /* 튜터 개인정보 조회용 메서드 */
     public TutorInfoDTO findTutorInfo(int memberNo) {
@@ -96,9 +91,7 @@ public class ProfileService {
     /* 전체 칭호 카테고리 정보 조회용 메서드 */
     public List<AchievementDTO> findAllAchievementCategory() {
 
-        System.out.println("카테고리조회");
         List<Achievement> achievementList = achievementRepository.findAll();
-        System.out.println("카테고리조회");
 
         return achievementList.stream().map(achievement ->
                 modelMapper.map(achievement, AchievementDTO.class)).collect(Collectors.toList());
@@ -113,6 +106,7 @@ public class ProfileService {
         foundMember.setNickname(member.getNickname());
         foundMember.setName(member.getName());
 
+        //프로필 수정할 회원이 튜터일 경우
         if(loginMember.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")) {
             TutorInfo foundTutorInfo = tutorInfoRepository.findById(loginMember.getNo()).get();
             foundTutorInfo.setAddress(tutorInfo.getAddress());
@@ -141,12 +135,17 @@ public class ProfileService {
 
         String division = "프로필";
 
+        //첨부 파일중 회원의 프로필을 조회
         AttachedFile attachedFile = attachedFileRepository.findByMemberNoAndDivision(memeberNo, division);
 
+        //조회 결과가 null이 아닐 경우 매핑해주며 반환
         if(attachedFile != null) {
             return modelMapper.map(attachedFile, AttachedFileDTO.class);
         }
+        //조회 결과가 null일 경우 빈 프로필정보 반환
+        else {
+            return new AttachedFileDTO();
+        }
 
-        return new AttachedFileDTO();
     }
 }
