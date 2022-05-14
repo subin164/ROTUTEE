@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Rottutee</title>
     <script src="https://cdn.bootpay.co.kr/js/bootpay-3.3.3.min.js" type="application/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -47,6 +47,7 @@
             border: 2px solid;
             border-radius: 10px;
             display:inline-block;
+            text-align: center;
         }
         .modal-body-coupon:hover{
             background: #6c757d;
@@ -59,29 +60,23 @@
         }
 
         .modal-img{
-            width: 90%;
-            height: 40%;
+            width: 80%;
+            height: 45%;
             margin-top: 10px;
             display: block;
             margin-left: auto;
             margin-right: auto;
         }
-       /* .close {
-            cursor: pointer;
+        .close {
             display:inline-block;
             *display:inline;
-            width:20px;
-            height:20px;
-            text-align:center;
-            margin-right:20px;
+            cursor: pointer;
         }
-
-        .close1:after {
+        .close:after {
+            cursor: pointer;
+            display: inline-block;
             content: "\00d7";
-            font-size:15pt;
-            line-height:20px;
-        }*/
-
+            font-size:15pt;}
 
     </style>
 </head>
@@ -104,7 +99,7 @@
                     <div>
                         <p style="margin-left: 20px; margin-top: 5px; margin-bottom: 5px;width: 50%"># 쿠폰 : </p>
                         <p id="couponName" th:attrappend="id=${ cart.lecture.lectureNo }" style="width: 100px"></p>
-                        <div style="width: 10%; float: left"></div>
+                        <div class="close close1"></div>
                     </div>
                     <div class="row g-0">
                         <div class="col-md-1">
@@ -137,12 +132,10 @@
             <div class="col-4">
                 <div style="width: 300px; height: 500px; text-align: center; border: 1px solid black;">
                     <div style="margin: 20px">
-
                         <input type="hidden" id="paymentAmountValue">
                         <span style="margin-top:10px;">결제금액 </span> <p id="paymentAmount" th:text="${0}" > </p>
                         <br>
                         <input type="hidden" id="paymentDiscountValue">
-
                         <span style="margin-left:10px;">할인금액 </span> <p id="paymentDiscount" th:text="${0}"> </p>
                     </div>
                     <br>
@@ -154,7 +147,7 @@
                     <br>
                     <div>
                         <input id ="check" class="form-check-input" type="checkbox"><span>구매 조건 및 개인정보 수집 및 이용에 대한 안내에 동의합니다.(필수)</span>
-                            <button id="paymentBtn">결제하기</button>
+                        <button id="paymentBtn">결제하기</button>
                     </div>
                 </div>
             </div>
@@ -184,6 +177,7 @@
                         <input id="couponDiscountRateinput" th:attrappend="id=${ coupons.coupon.couponNo }" type="hidden"  th:value="${coupons.coupon.couponDiscountRate}">
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary modal-cancel-btn" data-bs-dismiss="modal">취소</button>
                     <button type="button" class="btn btn-primary modal-ok-btn" data-bs-dismiss="modal">확인</button>
@@ -192,87 +186,89 @@
         </div>
     </div>
 </main>
+<script>
+    $(".remove").click(function() {
+        let lectureNo = $(".lectureNo").val();
+        console.log(lectureNo);
+        location.href = "/basket/remove/" + lectureNo;
+    })
+</script>
 
 <script>
     let lectureNo;
     let $selectCoupon ;
     let $selectCouponName;
     let $discountRate;
-    //let $lectureName;
     let couponNo;
-    let checklectureName;
 
-    $(".remove").click(function() {
-        let lectureNo = $(".lectureNo").val();
-
-        console.log(lectureNo);
-        location.href = "/basket/remove/" + lectureNo;
-    })
-
+    //쿠폰 체크박스 클릭 시
     function oneCheckbox(checked){
+
         let obj = document.getElementsByName("checkbox");
         let lectureNo =$(checked).siblings(".lectureNo").val();
+
         checklectureName = $(checked).siblings('.ChecklectureName').val();
         console.log(" lectureNo + " + checklectureName);
+
         for(var i=0; i<obj.length; i++){
             if(obj[i] != checked){
                 obj[i].checked = false;
             }
         }
-        $("#paymentDiscount").text = "0"
+
+        $("#paymentDiscountValue").val(0);
+        $("#paymentDiscount").text("0");
+
         $("#paymentAmountValue").val($("#lecturePriceValue"+lectureNo).val());
         $("#paymentAmount").text($("#lecturePriceValue"+lectureNo).val());
+
         $("#totalAmountValue").val($("#lecturePriceValue"+lectureNo).val());
         $("#totalAmount").text($("#lecturePriceValue"+lectureNo).val());
-
     }
-
 
     //쿠폰 클릭
     $(".modal-body-coupon").click(function () {
-        $selectCoupon =$(this);
-        console.log("$selectCoupon :" + $selectCoupon);
-        console.log("$selectCoupon :" + $selectCoupon.attr("value"));
-        $selectCouponName = $("#couponNameinput"+ $selectCoupon.attr("value")).val();
-        console.log($selectCouponName + "$selectCouponName");
+        $selectCoupon = $(this);
+        $selectCouponName = $("#couponNameinput"+ $selectCoupon.attr("value"));
     });
 
-    //쿠폰함
+    //쿠폰 취소 버튼 클릭 시
+    $(".close1").click(function (){
+        $("#couponName" + lectureNo).text("");
+        $selectCoupon.show();
+        $("#paymentDiscount").text(0);
+        $("#paymentDiscountValue").val(0);
+        console.log("close" + $("#couponNameValue" + lectureNo).val());
+    })
+
+    //쿠폰함 버튼 클릭 시
     $(".couponBtn").click(function () {
         lectureNo = $(this).attr('value');
-
     });
 
-
+    //쿠폰 적용 확인 버튼
     $(".modal-ok-btn").click(function () {
+        $('#staticBackdrop').modal('show');
         if ($selectCoupon != null) {
-            console.log("lectureNo"+lectureNo);
-            couponNo = $selectCoupon.attr("value");
-            console.log("couponNo"+couponNo);
 
             $selectCoupon.hide();
+            couponNo = $selectCoupon.attr("value");
+            console.log("$selectCouponName "+ $selectCouponName);
+
+            $(this).attr
+
             $("#couponName" + lectureNo).text($selectCouponName);
-            console.log("lecturePriceValue"+$("#lecturePriceValue" + lectureNo).val());
-            console.log("couponDiscount"+$("#couponDiscountRateinput" + couponNo).val());
-            console.log("couponDiscountRateinput"+($("#couponDiscountRateinput" + couponNo).val() / 100));
             $discountRate = ($("#lecturePriceValue" + lectureNo).val() * $("#couponDiscountRateinput" + couponNo).val() / 100);
-            console.log("discountRate : " + $discountRate);
-            console.log("discountRate1 : " + $("#couponDiscountRateinput" + couponNo).val() / 100);
-            console.log("discountRate22 : " + $("#lecturePriceValue" + lectureNo).val());
-            $("#lecturePrice" + lectureNo).text($("#lecturePriceValue" + lectureNo).val() - $discountRate);
+
+            let totalPrice = ($("#lecturePriceValue" + lectureNo).val() - $discountRate);
+            $("#lecturePrice" + lectureNo).text(totalPrice);
 
             $("#paymentDiscount").text($discountRate);
             $("#paymentDiscountValue").val($discountRate);
-            $("#totalAmountValue").val($("#lecturePriceValue" + lectureNo).val() - $("#paymentDiscountValue").val());
+
             $("#totalAmount").text($("#totalAmountValue").val());
+            $("#totalAmountValue").val($("#lecturePriceValue" + lectureNo).val() - $("#paymentDiscountValue").val());
         }
-        else{
-            console.log("letureno"+lectureNo);
-            $("#paymentDiscount").text= 0;
-            $("#paymentAmount").text= $("#lecturePriceValue"+lectureNo).val();
-            $("#totalAmount").text = $("#lecturePriceValue"+lectureNo).val();
-        }
-        $('#staticBackdrop').modal('show');
     });
 
 
