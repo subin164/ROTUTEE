@@ -23,6 +23,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,30 +45,26 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public String memberLoginPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void memberLoginPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String referer = (String)request.getHeader("REFERER");
-        System.out.println("referer = " + referer);
-        Cookie[] afterUrl = request.getCookies();
-        if(afterUrl != null) {
-            afterUrl[0].setMaxAge(0);
-        }
-        if("http://127.0.0.1:8001/member/login".equals(referer)) {
-            referer = "http://127.0.0.1:8001/";
-        }
-        Cookie url = new Cookie("url", referer);
-        response.addCookie(url);
+//        String referer = (String)request.getHeader("REFERER");
+//        System.out.println("referer = " + referer);
+//        Cookie[] url = request.getCookies();
+//        if(afterUrl != null) {
+//            afterUrl[0].setMaxAge(0);
+//        }
+//        if("http://127.0.0.1:8001/member/login".equals(referer)) {
+//            referer = "http://127.0.0.1:8001/";
+//        }
+//        System.out.println("get" + request.getRequestURI());
+//        Cookie url = new Cookie("url", request.getRequestURI());
+//        response.addCookie(url);
 
-        return "/member/login";
+//        return "/member/login";
     }
 
     @GetMapping("/logoutSuccess")
     public void memberLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        String referer = (String)request.getHeader("REFERER");
-        System.out.println("referer 라구아웃 = " + referer);
-        System.out.println("request = " + request.getRequestURI());
-        System.out.println("request = " + request.getRequestURL());
 
         response.sendRedirect("/error/logout");
     }
@@ -86,6 +83,11 @@ public class MemberController {
 
     @PostMapping("/regist")
     public String registMember(@ModelAttribute MemberDTO member, @RequestParam("categoryNo") int[] categoryNo, RedirectAttributes rttr) {
+
+        //기본값 초기화
+        member.setRouletteChance(0);
+        member.setRegistrationDate(new Date(System.currentTimeMillis()));
+        member.setLeaveStatusYn("N");
 
         memberService.registMember(member, categoryNo);
 
@@ -146,7 +148,6 @@ public class MemberController {
     public ModelAndView findMemberList(ModelAndView mv, @PageableDefault Pageable pageable) {
 
         Page<MemberDTO> memberList = memberService.findAllMember(pageable);
-
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(memberList);
 
         mv.addObject("memberList", memberList);
@@ -162,7 +163,6 @@ public class MemberController {
                                          @RequestParam("searchValue") String searchValue, @PageableDefault Pageable pageable) {
 
         Page<MemberDTO> memberList = memberService.findSearchMemberList(searchCondition, searchValue, pageable);
-
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(memberList);
 
         mv.addObject("memberList", memberList);
@@ -187,10 +187,12 @@ public class MemberController {
         memberDetailMap.put("memberStatus", memberStatus);
         memberDetailMap.put("memberRole", member.getMemberRoleList().get(0).getRole().getName());
 
+        //조회된 회원이 튜터일 경우 튜터 정보도 같이 반환해줌
         if(member.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
 
             TutorInfoDTO tutorInfo = profileService.findTutorInfo(memberNo);
 
+            //정보를 아직 입력하지 않은 튜터라면 비어있는 값을 반환 (NPT 방지)
             if(tutorInfo != null) {
                 tutorInfo.setAddress(tutorInfo.getAddress().replace("&", " "));
             } else {
@@ -210,10 +212,6 @@ public class MemberController {
                                    @RequestParam("stopReasons") String stopReasons, @RequestParam("stopDate") String stopDate) {
 
         memberService.memberStatusStop(Integer.parseInt(memberNo), Integer.parseInt(stopReasons), Integer.parseInt(stopDate));
-
-        System.out.println("memberNo = " + memberNo);
-        System.out.println("stopReasons = " + stopReasons);
-        System.out.println("stopDate = " + stopDate);
 
         return "redirect:/member/list";
     }

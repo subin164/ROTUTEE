@@ -22,7 +22,7 @@ public class CustomUser extends User {
     private Date registrationDate;
     private Date withdrawalDate;
     private String leaveStatusYn;
-    private String rouletteChance;
+    private Integer rouletteChance;
     private List<MemberRoleDTO> memberRoleList;
 
     public CustomUser(MemberDTO member, Collection<? extends GrantedAuthority> authorities) {
@@ -126,11 +126,11 @@ public class CustomUser extends User {
         this.leaveStatusYn = leaveStatusYn;
     }
 
-    public String getRouletteChance() {
+    public Integer getRouletteChance() {
         return rouletteChance;
     }
 
-    public void setRouletteChance(String rouletteChance) {
+    public void setRouletteChance(Integer rouletteChance) {
         this.rouletteChance = rouletteChance;
     }
 

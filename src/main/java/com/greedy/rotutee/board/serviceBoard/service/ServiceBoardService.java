@@ -6,10 +6,8 @@ import com.greedy.rotutee.board.serviceBoard.dto.BoardDTO;
 import com.greedy.rotutee.board.serviceBoard.dto.MemberDTO;
 import com.greedy.rotutee.board.serviceBoard.entity.Board;
 import com.greedy.rotutee.board.serviceBoard.entity.BoardAnswer;
-import com.greedy.rotutee.board.serviceBoard.repository.BoardAnswerRepository;
-import com.greedy.rotutee.board.serviceBoard.repository.BoardCategoryRepository;
-import com.greedy.rotutee.board.serviceBoard.repository.BoardRepository;
-import com.greedy.rotutee.board.serviceBoard.repository.MemberRepository;
+import com.greedy.rotutee.board.serviceBoard.entity.Notice;
+import com.greedy.rotutee.board.serviceBoard.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,14 +41,18 @@ public class ServiceBoardService {
     private final BoardAnswerRepository boardAnswerRepository;
     private final ModelMapper modelMapper;
     private final MemberRepository memberRepository;
+    private final NoticeRepository noticeRepository;
+    private final NoticeCategoryRepository noticeCategoryRepository;
 
     @Autowired
-    public ServiceBoardService(BoardRepository boardRepository, BoardCategoryRepository boardCategoryRepositroy, BoardAnswerRepository boardAnswerRepository, ModelMapper modelMapper, MemberRepository memberRepository) {
+    public ServiceBoardService(BoardRepository boardRepository, BoardCategoryRepository boardCategoryRepositroy, BoardAnswerRepository boardAnswerRepository, ModelMapper modelMapper, MemberRepository memberRepository, NoticeRepository noticeRepository, NoticeCategoryRepository noticeCategoryRepository) {
         this.boardRepository = boardRepository;
         this.boardCategoryRepositroy = boardCategoryRepositroy;
         this.boardAnswerRepository = boardAnswerRepository;
         this.modelMapper = modelMapper;
         this.memberRepository = memberRepository;
+        this.noticeRepository = noticeRepository;
+        this.noticeCategoryRepository = noticeCategoryRepository;
     }
 
     public Page<BoardDTO> findServiceBoardList(Pageable pageable) {
@@ -102,9 +105,18 @@ public class ServiceBoardService {
         return modelMapper.map(detailBoard, BoardDTO.class);
     }
 
-    public void registAnswer(BoardAnswerDTO boardAnswer) {
+    @Transactional
+    public void registAnswer(BoardAnswerDTO boardAnswer, int memberNo, String title) {
 
         boardAnswerRepository.save(modelMapper.map(boardAnswer, BoardAnswer.class));
+
+        Notice notice = new Notice();
+        notice.setTime(new Date(System.currentTimeMillis()));
+        notice.setNoticeCategory(noticeCategoryRepository.findById(1).get());
+        notice.setContent("["+ title +"] 문의글에 답변이 달렸습니다.");
+        notice.setMember(memberRepository.findById(memberNo).get());
+
+        noticeRepository.save(notice);
     }
 
     public BoardAnswerDTO findAnswerByAnswerNo(int answerNo) {

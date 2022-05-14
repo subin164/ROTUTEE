@@ -31,8 +31,9 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
                                         HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
 
-        Cookie[] url = request.getCookies();
-        System.out.println("url[0].getValue() = " + url[0].getValue());
-        response.sendRedirect(url[0].getValue());
+        System.out.println("request = " + request.getRequestURI());
+        System.out.println("이전 " + request.getHeader("REFERER"));
+
+        response.sendRedirect(request.getHeader("REFERER"));
     }
 }

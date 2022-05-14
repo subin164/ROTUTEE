@@ -39,7 +39,6 @@ public class AdminController {
     public ModelAndView findAdminList(ModelAndView mv, @PageableDefault Pageable pageable) {
 
         Page<MemberDTO> adminList = adminService.findAllAdmin(pageable);
-
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(adminList);
 
         mv.addObject("adminList", adminList);

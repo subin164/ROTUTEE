@@ -243,11 +243,11 @@
                     </h3>
                     <table id="career" style="width: 600px">
                         <thead>
-                        <tr>
-                            <th colspan="2" width="30%">근무 기간</th>
-                            <th width="30%">근무처</th>
-                            <th width="15%">직급</th>
-                            <th width="25">담당업무</th>
+                        <tr style="width: 600px">
+                            <th colspan="2" >근무 기간</th>
+                            <th>근무처</th>
+                            <th>직급</th>
+                            <th>담당업무</th>
                         </tr>
                         </thead>
                         <tbody></tbody>
@@ -339,11 +339,11 @@
 
         const $table = $("#career");
         const $tr = $("<tr id='tr " + careerCount + "'>");
-        const $td1 = $("<td><input type='date' name='careerList[" + careerCount + "].startDate' required></td>");
-        const $td2 = $("<td><input type='date' name='careerList[" + careerCount + "].endDate' required></td>");
-        const $td3 = $("<td><input type='text' name='careerList[" + careerCount + "].position' required></td>");
-        const $td4 = $("<td><input type='text' name='careerList[" + careerCount + "].company' required></td>");
-        const $td5 = $("<td><input type='text' name='careerList[" + careerCount + "].responsibilities' required></td>");
+        const $td1 = $("<td><input style='width: 115px' type='date' name='careerList[" + careerCount + "].startDate' required></td>");
+        const $td2 = $("<td><input style='width: 115px' type='date' name='careerList[" + careerCount + "].endDate' required></td>");
+        const $td3 = $("<td><input style='width: 150px'type='text' name='careerList[" + careerCount + "]company.' required></td>");
+        const $td4 = $("<td><input style='width: 90px' type='text' name='careerList[" + careerCount + "]position.' required></td>");
+        const $td5 = $("<td><input style='width: 150px'type='text' name='careerList[" + careerCount + "].responsibilities' required></td>");
 
         $tr.append($td1);
         $tr.append($td2);

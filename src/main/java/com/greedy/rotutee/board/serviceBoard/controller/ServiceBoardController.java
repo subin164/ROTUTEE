@@ -85,7 +85,7 @@ public class ServiceBoardController {
 
         serviceBoardService.registServiceBoard(board);
 
-        return "/board/serviceBoard/list";
+        return "redirect:/serviceBoard/list";
     }
 
     @GetMapping("/detail/{boardNo}")
@@ -162,7 +162,7 @@ public class ServiceBoardController {
 
     @GetMapping("/registAnswer")
     public ModelAndView registAnswer(@RequestParam("boardNo") int boardNo, @RequestParam("answerContent") String answerContent,
-                                     @AuthenticationPrincipal CustomUser loginMember, ModelAndView mv) {
+                                     @AuthenticationPrincipal CustomUser loginMember,int memberNo, String title, ModelAndView mv) {
 
         BoardAnswerDTO boardAnswer = new BoardAnswerDTO();
         boardAnswer.setAnswerYn('N');
@@ -172,7 +172,7 @@ public class ServiceBoardController {
         boardAnswer.setReportCount(0);
         boardAnswer.setBoard(serviceBoardService.findBoardByBoardNo(boardNo));
 
-        serviceBoardService.registAnswer(boardAnswer);
+        serviceBoardService.registAnswer(boardAnswer, memberNo, title);
 
         mv.setViewName("jsonView");
 

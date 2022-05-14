@@ -91,19 +91,19 @@ public class MemberService {
     @Transactional
     public void registMember(MemberDTO member, int[] categoryNo) {
 
+        //비밀번호 암호화
         String encodePwd = passwordEncoder.encode(member.getPwd());
         member.setPwd(encodePwd);
-        long miliseconds = System.currentTimeMillis();
-        Date date = new Date(miliseconds);
-        member.setRegistrationDate(date);
-        member.setLeaveStatusYn("N");
 
         memberRepository.save(modelMapper.map(member, Member.class));
 
+        //등록시 포인트 지급
         setMemberPointHistory(member);
+        //카테고리별 관심도 등록
         setMemberInterest(member, categoryNo);
+        //활동상태 등록
         setMemberStatus(member);
-//        setMemberAchievement(member);
+        //권한 등록
         setMemberRole(member);
     }
 
@@ -135,6 +135,7 @@ public class MemberService {
             memberInterestPart.setMember(foundMember);
             memberInterestPart.setLectureCategory(lectureCategory);
             memberInterestPart.setInterestDegree(0);
+            //회원가입시 선택한 강의 카테고리를 만날 시 별도로 관심도 등록
             for (int i = 0; i < categoryNo.length; i++) {
                 if (categoryNo[i] == memberInterestPart.getLectureCategory().getNo()) {
                     memberInterestPart.setInterestDegree(10);
@@ -152,11 +153,8 @@ public class MemberService {
         MemberStatusHistory memberStatusHistory = new MemberStatusHistory();
         memberStatusHistory.setMember(foundMember);
         memberStatusHistory.setStatus("활동");
-        long miliseconds = System.currentTimeMillis();
-        Date date = new Date(miliseconds);
-        memberStatusHistory.setHistoryDate(date);
+        memberStatusHistory.setHistoryDate(new Date(System.currentTimeMillis()));
 
-        //when
         memberStatusHistoryRepository.save(memberStatusHistory);
     }
 
@@ -185,6 +183,7 @@ public class MemberService {
 
         MemberRole memberRole = new MemberRole();
         memberRole.setMember(memberRepository.findMemberByEmail(member.getEmail()));
+        //기본으로 튜티권한으로 등록
         memberRole.setRole(roleRepository.findRoleByNo(3));
         memberRoleRepository.save(memberRole);
     }
@@ -192,6 +191,7 @@ public class MemberService {
     /* 이메일 중복 확인용 메서드 */
     public boolean duplicateEmail(String checkEmail) {
 
+        //확인할 이메일이 DB에 없다면 ture 반환
         return memberRepository.findMemberByEmail(checkEmail) == null ? true : false;
     }
 
@@ -199,8 +199,9 @@ public class MemberService {
     @Transactional
     public void findMemberPwd(MemberDTO member) {
 
+        //변경할 비밀번호 암호화
         String encodePwd = passwordEncoder.encode(member.getPwd());
-
+        //비밀번호 변경할 회원 조회
         Member findMember = memberRepository.findMemberByEmail(member.getEmail());
         findMember.setPwd(encodePwd);
     }
@@ -209,13 +210,11 @@ public class MemberService {
     @Transactional
     public void modifyPassword(CustomUser loginMember, String modifyPassword) {
 
+        //변경할 비밀번호 암호화
         String encodePwd = passwordEncoder.encode(modifyPassword);
-
+        //비밀번호 변경할 회원 조회
         Member findMember = memberRepository.findById(loginMember.getNo()).get();
-
         findMember.setPwd(encodePwd);
-        System.out.println("encodePwd = " + encodePwd);
-        System.out.println("findMember = " + findMember);
     }
 
 
@@ -225,30 +224,14 @@ public class MemberService {
                 pageable.getPageSize(),
                 Sort.by("registrationDate").descending());
 
+        //모든 회원 목록 조회
         return memberRepository.findAll(pageable).map(member -> modelMapper.map(member, MemberDTO.class));
-    }
-
-    public Page<MemberDTO> findAllTutee(Pageable pageable) {
-
-        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
-                pageable.getPageSize(),
-                Sort.by("no").descending());
-
-        return memberRepository.findByMemberRoleListRoleNo(3, pageable).map(member -> modelMapper.map(member, MemberDTO.class));
-    }
-
-    public Page<MemberDTO> findAllTutor(Pageable pageable) {
-
-        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
-                pageable.getPageSize(),
-                Sort.by("no").descending());
-
-        return memberRepository.findByMemberRoleListRoleNo(4, pageable).map(member -> modelMapper.map(member, MemberDTO.class));
     }
 
 
     public MemberStatusHistoryDTO findMemberStatus(int memberNo) {
 
+        //회원의 마지막 활동 내역 조회 (=회원의 현재 활동상태)
         return modelMapper.map(memberStatusHistoryRepositoryQuery.findMemberStatus(entityManager, memberNo), MemberStatusHistoryDTO.class);
     }
 
@@ -257,19 +240,20 @@ public class MemberService {
 
         long miliseconds = System.currentTimeMillis();
         Date date = new Date(miliseconds);
+        //정지일 계산 (오늘 + (하루 x 정지일 될 일수))
         Date endDate = new Date(miliseconds + (long)( ( 1000 * 60 * 60 * 24 ) * stopDate ));
 
+        //정지 내역 등록
         SuspensionHitory suspensionHitory = new SuspensionHitory();
         suspensionHitory.setStartDate(date);
         suspensionHitory.setEndDate(endDate);
         suspensionHitory.setReasons(reasonsRepository.findById(stopReasons).get());
-
+        //회원 활동상태 내역 등록
         MemberStatusHistory memberStatusHistory = new MemberStatusHistory();
         memberStatusHistory.setStatus("정지");
         memberStatusHistory.setMember(memberRepository.findById(memberNo).get());
         memberStatusHistory.setSuspensionHitory(suspensionHitory);
         memberStatusHistory.setHistoryDate(date);
-
         suspensionHitory.setMemberStatusHistory(memberStatusHistory);
 
         memberStatusHistoryRepository.save(memberStatusHistory);
@@ -285,8 +269,8 @@ public class MemberService {
     @Transactional
     public void memberStatusPlay(int memberNo) {
 
-        long miliseconds = System.currentTimeMillis();
-        Date date = new Date(miliseconds);
+        //회원 활동상태 내역 등록
+        Date date = new Date(System.currentTimeMillis());
         MemberStatusHistory memberStatusHistory = new MemberStatusHistory();
         memberStatusHistory.setStatus("활동");
         memberStatusHistory.setMember(memberRepository.findById(memberNo).get());
@@ -301,8 +285,8 @@ public class MemberService {
                 pageable.getPageSize(),
                 Sort.by("attachedFileNo").descending());
 
+        //첨부파일중 본인 회원번호의 서류만 조회
         String division = "서류";
-
         Page<AttachedFile> attachedFilesList = attachedFileRepository.findByMemberNoAndDivisionAndFileDeletionYn(memberNo, division, "N ", pageable);
 
         return attachedFilesList.map(attachedFile -> modelMapper.map(attachedFile, AttachedFileDTO.class));
@@ -311,8 +295,8 @@ public class MemberService {
     @Transactional
     public void removeMemberFiles(int filesNo) {
 
+        //삭제할 회원 파일 조회
         AttachedFile attachedFile = attachedFileRepository.findById(filesNo).get();
-
         attachedFile.setFileDeletionYn("Y");
     }
 
@@ -324,17 +308,18 @@ public class MemberService {
 
         Page<Member> memberList = null;
 
+        //검색 조건별 회원 목록 조회
         if("name".equals(searchCondition)) {
-
+            //이름으로 검색할 경우
             memberList = memberRepository.findByNameContaining(searchValue, pageable);
         } else if("email".equals(searchCondition)) {
-
+            //이메일로 검색할 경우
             memberList = memberRepository.findByEmailContaining(searchValue, pageable);
         } else if("category".equals(searchCondition) && "튜터".equals(searchValue)) {
-
+            //카테고리(튜터)로 검색할 경우
             memberList = memberRepository.findByMemberRoleListRoleNo(4, pageable);
         } else if("category".equals(searchCondition) && "튜티".equals(searchValue)) {
-
+            //카테고리(튜티)로 검색할 경우
             memberList = memberRepository.findByMemberRoleListRoleNo(3, pageable);
         }
 
@@ -344,11 +329,12 @@ public class MemberService {
     @Transactional
     public void secessionMember(int memberNo, int reasonNo, String content) {
 
+        //회원 활동상태 내역 등록
         MemberStatusHistory memberStatusHistory = new MemberStatusHistory();
         memberStatusHistory.setMember(memberRepository.findById(memberNo).get());
         memberStatusHistory.setStatus("탈퇴");
         memberStatusHistory.setHistoryDate(new Date(System.currentTimeMillis()));
-
+        //회원 탈퇴 내역 등록
         MemberSecessionHistory memberSecessionHistory = new MemberSecessionHistory();
         memberSecessionHistory.setSecessionDate(new Date(System.currentTimeMillis()));
         memberSecessionHistory.setSecessionReason(secessionReasonRepository.findById(reasonNo).get());
@@ -360,8 +346,10 @@ public class MemberService {
 
     public List<SecessionReasonDTO> findAllSecessionCategory() {
 
+        //모든 탈퇴사유 조회
         List<SecessionReason> secessionReasonList = secessionReasonRepository.findAll();
 
         return secessionReasonList.stream().map(secessionReason -> modelMapper.map(secessionReason, SecessionReasonDTO.class)).collect(Collectors.toList());
     }
+
 }

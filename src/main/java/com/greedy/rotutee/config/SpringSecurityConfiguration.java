@@ -84,9 +84,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 */
                 .formLogin()  // form 이용한 로그인을 하겠다 활성화
                 .loginPage("/member/login")// 이 url 로그인 form을 쓰겠다
-
-//                .successForwardUrl("/")  // 성공시 이곳으로 가겠다
-                .successHandler(userLoginSuccessHandler)
+                .successForwardUrl("/")  // 성공시 이곳으로 가겠다
+//                .successHandler(userLoginSuccessHandler)
                 .failureHandler(userLoginFailHandler)
 //                .failureForwardUrl("/error/login")  // 실패시 이곳으로 가겠다
                 .and()
@@ -95,8 +94,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))  // 이 요청이 들어오면 로그아웃을 하겠다
                 .deleteCookies("JSESSIONID")  // 성공하게 되면 JSESSIONID 라는 쿠키를 삭제 시킬 것
                 .invalidateHttpSession(true)  // 세션정보를 무효화시키겠다
-//                .logoutSuccessUrl("/member/login")  // 성공시 이곳으로 가겠다
-                .logoutSuccessHandler(userLogoutSuccessHandler)
+                .logoutSuccessUrl("/")  // 성공시 이곳으로 가겠다
+//                .logoutSuccessHandler(userLogoutSuccessHandler)
                 .and()
                 .exceptionHandling().accessDeniedHandler(webAccessDeniedHandler);
 //                and().
