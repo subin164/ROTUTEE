@@ -126,10 +126,10 @@
                                     <tr id="board-tr" class="row100 body" th:each="board : ${ boardList }">
                                         <td class="cell100 column1" style="width: 10%;" th:text="${ board.no}"></td>
                                         <th:block th:if="${ board.bulletinBoardSecretYN.toString().equals('Y') }">
-                                            <td class="cell100 column2" style="width: 30%;" >비밀글</td>
+                                            <td class="cell100 column2">비밀글</td>
                                         </th:block>
                                         <th:block th:if="${ board.bulletinBoardSecretYN.toString().equals('N') }">
-                                            <td class="cell100 column2" style="width: 30%;" th:text="${ board.title}"></td>
+                                            <td class="cell100 column2" th:text="${ board.title}"></td>
                                         </th:block>
                                         <td class="cell100 column3" th:text="${ board.boardCategory.name}"></td>
                                         <td class="cell100 column4" th:text="${ board.creationDate}"> </td>

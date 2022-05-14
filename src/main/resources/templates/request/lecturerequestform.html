@@ -119,10 +119,10 @@
                     <div class="info2-area">
                         <p style="margin-left: 30px; margin-top: 50px; font-size: x-large;">상세 소개</p>
                         <p style="margin-left: 30px; margin-top: 30px;">강의 요약(강의 상단에 보여집니다.)</p>
-                        <textarea cols="130" rows="10" name="lectureSummary" style="margin-left: 30px; margin-top: 10px;"></textarea>
+                        <textarea cols="130" rows="10" name="lectureSummary" style="margin-left: 30px; margin-top: 10px;" required></textarea>
                         <p style="margin-left: 30px; margin-top: 30px;">강의 상세 내용(강의 상세 내용에 보입니다.)</p>
                         <div id="editor">
-                            <textarea cols="130" rows="30" name="lectureDetails" style="margin-left: 30px; margin-top: 10px;"></textarea>
+                            <textarea cols="130" rows="30" name="lectureDetails" style="margin-left: 30px; margin-top: 10px;" required></textarea>
                         </div>
                     </div>
                 </div>
@@ -146,114 +146,114 @@
     $("#chapter-plus").click(function() {
         $(".chapter-area").append('<div class="chapter" style="border: 1px solid; width: 95%; height: 50px; margin-top: 20px; margin-left: 30px;">\
                                           <div class="chapter-name">\
-                                            <input type="text" placeholder="챕터명을 입력하세요" class="chapter-name" name="chapterList['+ index +'].chapterName">\
+                                            <input type="text" placeholder="챕터명을 입력하세요" class="chapter-name" name="chapterList['+ index +'].chapterName" required>\
                                           </div>\
                                         </div>\
                                         <div class="video-quiz">\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[0].className">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[0].className" required>\
                                             </div>\
-                                            <input type="file" class="video" name="chapterList['+ index +'].classList[0].fileList[0]" accept="video/*">\
+                                            <input type="file" class="video" name="chapterList['+ index +'].classList[0].fileList[0]" accept="video/*" required>\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[0].quizList[0].quizProblem"">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[0].quizList[0].quizProblem" required>\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" class="answer" name="chapterList['+ index +'].classList[0].quizList[0].quizAnswer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" class="answer" name="chapterList['+ index +'].classList[0].quizList[0].quizAnswer" required>\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" class="example1" name="chapterList['+ index +'].classList[0].quizList[0].quizOption1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" class="example1" name="chapterList['+ index +'].classList[0].quizList[0].quizOption1" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" class="example2" name="chapterList['+ index +'].classList[0].quizList[0].quizOption2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" class="example2" name="chapterList['+ index +'].classList[0].quizList[0].quizOption2" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" class="example3" name="chapterList['+ index +'].classList[0].quizList[0].quizOption3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" class="example3" name="chapterList['+ index +'].classList[0].quizList[0].quizOption3" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" class="example4" name="chapterList['+ index +'].classList[0].quizList[0].quizOption4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" class="example4" name="chapterList['+ index +'].classList[0].quizList[0].quizOption4" required>\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" class="explain" name="chapterList['+ index +'].classList[0].quizList[0].quizAnswerExplain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" class="explain" name="chapterList['+ index +'].classList[0].quizList[0].quizAnswerExplain" required>\
                                               </div>\
                                             </div>\
                                           </div>\
                                           <br>\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[1].className">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[1].className" required>\
                                             </div>\
-                                            <input type="file" class="video" name="chapterList['+ index +'].classList[1].fileList[0]" accept="video/*">\
+                                            <input type="file" class="video" name="chapterList['+ index +'].classList[1].fileList[0]" accept="video/*" required>\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[1].quizList[0].quizProblem">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[1].quizList[0].quizProblem" required>\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" class="answer" name="chapterList['+ index +'].classList[1].quizList[0].quizAnswer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" class="answer" name="chapterList['+ index +'].classList[1].quizList[0].quizAnswer" required>\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" class="example1" name="chapterList['+ index +'].classList[1].quizList[0].quizOption1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" class="example1" name="chapterList['+ index +'].classList[1].quizList[0].quizOption1" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" class="example2" name="chapterList['+ index +'].classList[1].quizList[0].quizOption2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" class="example2" name="chapterList['+ index +'].classList[1].quizList[0].quizOption2" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" class="example3" name="chapterList['+ index +'].classList[1].quizList[0].quizOption3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" class="example3" name="chapterList['+ index +'].classList[1].quizList[0].quizOption3" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" class="example4" name="chapterList['+ index +'].classList[1].quizList[0].quizOption4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" class="example4" name="chapterList['+ index +'].classList[1].quizList[0].quizOption4" required>\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" class="explain" name="chapterList['+ index +'].classList[1].quizList[0].quizAnswerExplain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" class="explain" name="chapterList['+ index +'].classList[1].quizList[0].quizAnswerExplain" required>\
                                               </div>\
                                             </div>\
                                           </div>\
                                           <br>\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[2].className">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[2].className required">\
                                             </div>\
-                                            <input type="file" class="video" name="chapterList['+ index +'].classList[2].fileList[0]" accept="video/*">\
+                                            <input type="file" class="video" name="chapterList['+ index +'].classList[2].fileList[0]" accept="video/*" required>\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[2].quizList[0].quizProblem"">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[2].quizList[0].quizProblem" required>\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" class="answer" name="chapterList['+ index +'].classList[2].quizList[0].quizAnswer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" class="answer" name="chapterList['+ index +'].classList[2].quizList[0].quizAnswer" required>\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" class="example1" name="chapterList['+ index +'].classList[2].quizList[0].quizOption1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" class="example1" name="chapterList['+ index +'].classList[2].quizList[0].quizOption1" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" class="example2" name="chapterList['+ index +'].classList[2].quizList[0].quizOption2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" class="example2" name="chapterList['+ index +'].classList[2].quizList[0].quizOption2" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" class="example3" name="chapterList['+ index +'].classList[2].quizList[0].quizOption3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" class="example3" name="chapterList['+ index +'].classList[2].quizList[0].quizOption3" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" class="example4" name="chapterList['+ index +'].classList[2].quizList[0].quizOption4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" class="example4" name="chapterList['+ index +'].classList[2].quizList[0].quizOption4" required>\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" class="explain" name="chapterList['+ index +'].classList[2].quizList[0].quizAnswerExplain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" class="explain" name="chapterList['+ index +'].classList[2].quizList[0].quizAnswerExplain" required>\
                                               </div>\
                                             </div>\
                                           </div>\
                                           <br>\
                                           <div class="video-area">\
                                             <div class="class-name-area">\
-                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[3].className">\
+                                              <input type="text" placeholder="수업명을 입력하세요" class="class-name" name="chapterList['+ index +'].classList[3].className" required>\
                                             </div>\
-                                            <input type="file" class="video" name="chapterList['+ index +'].classList[3].fileList[0]" accept="video/*">\
+                                            <input type="file" class="video" name="chapterList['+ index +'].classList[3].fileList[0]" accept="video/*" required>\
                                             <div class="quiz-area">\
                                               <div class="quiz-title">\
-                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[3].quizList[0].quizProblem"">\
+                                                <label style="font-size: x-large;">퀴즈 제목</label><input type="text" class="quiztitle" name="chapterList['+ index +'].classList[3].quizList[0].quizProblem" required>\
                                               </div>\
                                               <div class="quiz-answer">\
-                                                <label style="font-size: x-large;">정답</label><input type="text" class="answer" name="chapterList['+ index +'].classList[3].quizList[0].quizAnswer">\
+                                                <label style="font-size: x-large;">정답</label><input type="text" class="answer" name="chapterList['+ index +'].classList[3].quizList[0].quizAnswer" required>\
                                               </div>\
                                               <div class="example-list">\
-                                                <label style="font-size: x-large;">보기1</label><input type="text" class="example1" name="chapterList['+ index +'].classList[3].quizList[0].quizOption1">\
+                                                <label style="font-size: x-large;">보기1</label><input type="text" class="example1" name="chapterList['+ index +'].classList[3].quizList[0].quizOption1" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기2</label><input type="text" class="example2" name="chapterList['+ index +'].classList[3].quizList[0].quizOption2">\
+                                                <label style="font-size: x-large;">보기2</label><input type="text" class="example2" name="chapterList['+ index +'].classList[3].quizList[0].quizOption2" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기3</label><input type="text" class="example3" name="chapterList['+ index +'].classList[3].quizList[0].quizOption3">\
+                                                <label style="font-size: x-large;">보기3</label><input type="text" class="example3" name="chapterList['+ index +'].classList[3].quizList[0].quizOption3" required>\
                                                 <br>\
-                                                <label style="font-size: x-large;">보기4</label><input type="text" class="example4" name="chapterList['+ index +'].classList[3].quizList[0].quizOption4">\
+                                                <label style="font-size: x-large;">보기4</label><input type="text" class="example4" name="chapterList['+ index +'].classList[3].quizList[0].quizOption4" required>\
                                               </div>\
                                               <div class="explaination">\
-                                                <label style="font-size: x-large;">해설</label><input type="text" class="explain" name="chapterList['+ index +'].classList[3].quizList[0].quizAnswerExplain">\
+                                                <label style="font-size: x-large;">해설</label><input type="text" class="explain" name="chapterList['+ index +'].classList[3].quizList[0].quizAnswerExplain" required>\
                                               </div>\
                                             </div>\
                                           </div>\

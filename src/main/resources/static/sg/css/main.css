@@ -192,6 +192,9 @@ th, td {
 .column5 {
   width: 13%;
 }
+.column6 {
+  width: 10%;
+}
 
 .table100-head th {
   padding-top: 18px;

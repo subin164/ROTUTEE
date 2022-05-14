@@ -117,9 +117,8 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-8" style="height: auto;">
-                <p>
-                이메일 <input type="text" id="searchValue"> <button class="btn btn-danger" id="searchBtn">검색</button>
-                </p>
+                <p>이메일</p>
+                <input type="text" id="searchValue"> <button class="btn btn-primary" id="searchBtn" style="display: inline-block; float: right; margin-top: -20px;">검색</button>
                 <hr>
                   회원번호 <span id="no"></span>
                 <hr>
@@ -130,7 +129,7 @@
               </div>
             </div>
         <div class="modal-footer">
-          <button class="btn btn-danger" id="registAdminBtn" style="display: none">관리자 등록</button>
+          <button class="btn btn-primary" id="registAdminBtn" style="display: none">관리자 등록</button>
           <button class="btn btn-danger" id="removeAdminBtn" style="display: none">관리자 해임</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
         </div>
@@ -180,10 +179,10 @@
                 <table id="before-table">
                   <tbody>
                   <tr class="row100 body" th:each="admin : ${ adminList }">
-                    <td th:text="${ admin.no }"></td>
-                    <td th:text="${ admin.name }"></td>
-                    <td th:text="${ admin.email }"></td>
-                    <td th:text="${ admin.registrationDate }"></td>
+                    <td class="cell100 column1" th:text="${ admin.no }"></td>
+                    <td class="cell100 column2" th:text="${ admin.name }"></td>
+                    <td class="cell100 column3" th:text="${ admin.email }"></td>
+                    <td class="cell100 column4" th:text="${ admin.registrationDate }"></td>
                   </tbody>
                 </table>
               </div>

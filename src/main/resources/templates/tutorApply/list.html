@@ -84,7 +84,7 @@
     </style>
 </head>
 <body>
-<div th:include="/common/topMenubar.html"></div>
+<div th:include="/common/adminsidebar.html"></div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -97,7 +97,8 @@
             </div>
             <div class="modal-body">
                 <table id="memberInfo" style="width: 600px">
-                    <h3>인적사항</h3>
+                    <h2 style="font-size: x-large">인적사항</h2>
+                    <br>
                     <thead>
                     <tr>
                         <th>이름</th>
@@ -109,7 +110,8 @@
                 </table>
                 <br>
                 <hr align="left" width="600px">
-                <h3>경력사항</h3>
+                <h2 style="font-size: x-large">경력사항</h2>
+                <br>
                 <table id="career" style="width: 600px">
                     <thead>
                     <tr>
@@ -123,7 +125,8 @@
                 </table>
                 <br>
                 <hr align="left" width="600px">
-                <h3>자격사항</h3>
+                <h2 style="font-size: x-large">자격사항</h2>
+                <br>
                 <table id="qualification" style="width: 600px">
                     <thead>
                     <tr>
@@ -177,10 +180,10 @@
                                 <table id="before-table">
                                     <tbody>
                                     <tr class="row100 body" th:each="tutorApply : ${ tutorApplyList }">
-                                        <td th:text="${ tutorApply.applyHistoryNo }">
-                                        <td th:text="${ tutorApply.member.name }">
-                                        <td th:text="${ tutorApply.applyDate }">
-                                        <td th:text="${ tutorApply.applyYn }">
+                                        <td class="cell100 column1" th:text="${ tutorApply.applyHistoryNo }">
+                                        <td class="cell100 column2" th:text="${ tutorApply.member.name }">
+                                        <td class="cell100 column3" th:text="${ tutorApply.applyDate }">
+                                        <td class="cell100 column4" th:text="${ tutorApply.applyYn }">
                                     </tr>
                                     </tbody>
                                 </table>
@@ -311,8 +314,8 @@
                     const $tr = $("<tr>");
                     const $td1 = $("<td>").text(careerList[i].startDate);
                     const $td2 = $("<td>").text(careerList[i].endDate);
-                    const $td3 = $("<td>").text(careerList[i].position);
-                    const $td4 = $("<td>").text(careerList[i].company);
+                    const $td3 = $("<td>").text(careerList[i].company);
+                    const $td4 = $("<td>").text(careerList[i].position);
                     const $td5 = $("<td>").text(careerList[i].responsibilities);
 
                     $tr.append($td1);

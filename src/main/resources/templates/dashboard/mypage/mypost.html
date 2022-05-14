@@ -122,12 +122,12 @@
                                 <table id="serviceBoard-table">
                                     <tbody>
                                     <tr id="board-tr" class="row100 body" th:each="board : ${ boardList }">
-                                        <td class="cell100 column1" style="width: 10%;" th:text="${ board.no}"></td>
-                                        <td class="cell100 column2" style="width: 30%;" th:text="${ board.title}"></td>
+                                        <td class="cell100 column1" th:text="${ board.no}"></td>
+                                        <td class="cell100 column2" th:text="${ board.title}"></td>
                                         <td class="cell100 column3" th:text="${ board.boardCategory.boardCategory.name }"></td>
-                                        <td class="cell100 column3" th:text="${ board.boardCategory.name }"></td>
-                                        <td class="cell100 column4" th:text="${ board.creationDate}"> </td>
-                                        <td class="cell100 column5" th:text="${ board.member.name}"> </td>
+                                        <td class="cell100 column4" th:text="${ board.boardCategory.name }"></td>
+                                        <td class="cell100 column5" th:text="${ board.creationDate}"> </td>
+                                        <td class="cell100 column6" th:text="${ board.member.name}"> </td>
                                         <input id="upperCategoryNo" th:attrappend="id=${ board.no }" type="hidden" th:value="${ board.boardCategory.boardCategory.no }">
                                         <input id="categoryNo" th:attrappend="id=${ board.no }" type="hidden" th:value="${ board.boardCategory.no }">
                                     </tbody>

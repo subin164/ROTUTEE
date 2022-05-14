@@ -61,7 +61,7 @@
 <div class="container" style="margin-top: 50px; min-height: 700px">
     <div class="header">
         자주 묻는 질문
-        <button id="fqa-regist-btn" style="font-size: small; background-color: white; border: 0px">추가</button>
+        <button sec:authorize="hasRole('ADMIN')" id="fqa-regist-btn" style="font-size: small; background-color: white; border: 0px">추가</button>
     </div>
     <hr>
     <div class="wrap">

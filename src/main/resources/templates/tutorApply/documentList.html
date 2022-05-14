@@ -77,7 +77,7 @@
     </style>
 </head>
 <body>
-<div th:include="/common/topMenubar.html"></div>
+<div th:include="/common/adminsidebar.html"></div>
 
 <div class="box">
     <label class="head">제출 서류</label>
@@ -107,10 +107,10 @@
                                     <tr class="row100 body" th:each="attachedFile : ${ attachedFileList }">
                                         <input type="hidden" id="originalName" th:value="${ attachedFile.originalAttachedFileName }">
                                         <input type="hidden" id="fileNo" th:value="${ attachedFile.attachedFileNo }">
-                                        <td th:text="${ attachedFile.attachedFileNo }"></td>
-                                        <td th:text="${ attachedFile.originalAttachedFileName }"></td>
-                                        <td th:text="${ attachedFile.member.name }"></td>
-                                        <td th:text="${ attachedFile.division }"></td>
+                                        <td class="cell100 column1" th:text="${ attachedFile.attachedFileNo }"></td>
+                                        <td class="cell100 column2" th:text="${ attachedFile.originalAttachedFileName }"></td>
+                                        <td class="cell100 column3" th:text="${ attachedFile.member.name }"></td>
+                                        <td class="cell100 column4" th:text="${ attachedFile.division }"></td>
                                         <td><button class="download-btn" th:value="${ attachedFile.saveAttachedFileName }">다운로드</button></td>
                                     </tbody>
                                 </table>

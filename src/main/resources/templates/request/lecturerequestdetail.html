@@ -12,7 +12,7 @@
 <body>
 <div th:include="common/adminsidebar.html"></div>
 <main>
-    <form action="/request/approve" method="post">
+    <form action="/request/approve" method="post" onsubmit="return confirm('정말 승인하시겠습니까?');">
         <input type="hidden" th:value="${lecture.lectureNo}" name="lectureNo" id="lectureNo">
         <div class="container">
             <p style="margin-top: 30px; font-size: x-large;">강의 신청 상세 정보</p>
@@ -40,8 +40,10 @@
                 <div class="col-8">
                     <div class="btn-group" role="group" aria-label="Basic mixed styles example" style="float: right;">
                         <button type="button" class="btn btn-secondary">돌아가기</button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">거절</button>
-                        <button type="submit" class="btn btn-success">승인</button>
+                        <th:block th:if="${lecture.lectureApprovalStatus} == '대기'">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">거절</button>
+                            <input type="submit" class="btn btn-success" onclick="handleOnClick()" value="승인">
+                        </th:block>
                     </div>
                 </div>
             </div>
