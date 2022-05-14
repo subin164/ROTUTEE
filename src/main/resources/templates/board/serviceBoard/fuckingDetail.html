@@ -187,9 +187,9 @@
                                 <span th:text="${ answer.createdDate }" style="font-size: small"></span>
                             </div>
                             <hr>
-                            <div id="answer-content" th:attrappend="id=${ answer.no }" class="answer-column"
-                                 th:text="${ answer.content }">
-                            </div>
+                            <textarea id="answer-content" th:attrappend="id=${ answer.no }" class="answer-column"
+                                 th:text="${ answer.content }" style="border: none; width: 900px; height: 70px; resize: none">
+                            </textarea>
                         </div>
                         <br>
                         <div class="answer-content-btn">

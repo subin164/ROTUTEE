@@ -165,14 +165,7 @@
                 </th:block>
 
                 <th:block sec:authorize="isAnonymous()">
-                    <div style="display:inline-block">
-                        <form action="/member/login" method="post">
-                            <input type="text" name="username" placeholder="ID" style="width: 170px; height: 25px; border-radius: 5px">
-                            <input type="password" name="password" placeholder="PASSWORD"
-                                   style="width: 170px; height: 25px; border-radius: 5px">
-                            <input class="btn-primary"  type="submit" style="color: white; border-radius: 5px" value="로그인">
-                        </form>
-                    </div>
+                    <a href="/member/login">로그인</a>
                 </th:block>
             </ul>
         </div>

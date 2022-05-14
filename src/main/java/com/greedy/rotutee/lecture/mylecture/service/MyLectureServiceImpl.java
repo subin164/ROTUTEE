@@ -151,6 +151,18 @@ public class MyLectureServiceImpl implements MyLectureService {
         List<MyLecture> lectureEntities = myLectureRepository.findByMemberMemberNo(memberNo);
         List<MyLectureDTO> lectures = lectureEntities.stream().map(My_Lecture -> modelMapper.map(My_Lecture, MyLectureDTO.class)).collect(Collectors.toList());
 
+        /*강의 썸네일 구하기*/
+        String division = "강의";
+        String deletionStatus = "N ";
+        for (int i = 0; i < lectures.size(); i++) {
+            int lectureNo = lectures.get(i).getLectureNo();
+            LMSAttachment attachmentEntity = lmsAttachmentRepository.findByLectureNoAndDivisionAndFileDeletionYN(lectureNo, division, deletionStatus);
+            if (attachmentEntity != null) {
+                LMSAttachmentDTO attachment = modelMapper.map(attachmentEntity, LMSAttachmentDTO.class);
+                lectures.get(i).setSavedFileName(attachment.getSaveAttachedFileName());
+            }
+        }
+
         return lectures;
     }
 

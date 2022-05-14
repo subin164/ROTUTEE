@@ -44,7 +44,7 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public void memberLoginPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String memberLoginPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 //        String referer = (String)request.getHeader("REFERER");
 //        System.out.println("referer = " + referer);
@@ -59,7 +59,7 @@ public class MemberController {
 //        Cookie url = new Cookie("url", request.getRequestURI());
 //        response.addCookie(url);
 
-//        return "/member/login";
+        return "/member/login";
     }
 
     @GetMapping("/logoutSuccess")

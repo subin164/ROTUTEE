@@ -14,8 +14,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/sg/vendor/select2/select2.min.css}">
 
     <!--===============================================================================================-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/sg/css/util.css}">-->
-<!--    <link rel="stylesheet" type="text/css" th:href="@{/sg/css/main.css}">-->
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/sg/css/util.css}">-->
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/sg/css/main.css}">-->
     <link rel="stylesheet" type="text/css" th:href="@{/sy/css/util.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/sy/css/main.css}">
     <!--===============================================================================================-->
@@ -30,7 +30,7 @@
     <script th:inline="javascript">
         /* 비지니스 로직 성공 alert 메시지 처리 */
         const message = [[${message}]];
-        if(message != null && message != '') {
+        if (message != null && message != '') {
             alert(message);
         }
     </script>
@@ -44,48 +44,58 @@
             font-size: 12px !important;
             padding: 0 !important;
         }
+
         tr:hover {
             background-color: #F5F5F5;
         }
-        .pagebtn{
+
+        .pagebtn {
 
             background-color: #D1E4FA;
         }
-        .pagebtn:focus{
+
+        .pagebtn:focus {
             background-color: #8397D7;
         }
-        .categorybtn{
+
+        .categorybtn {
             background-color: #F0F2FF;
         }
-        .categorybtn:focus{
+
+        .categorybtn:focus {
             background-color: #8397D7;
         }
-        .container{
+
+        .container {
             padding-top: 60px;
         }
-        .box{
+
+        .box {
 
             width: 80%;
             margin-top: 100px;
             margin-left: 180px;
 
         }
-        .head{
+
+        .head {
             font-family: 'Noto Sans KR', sans-serif;
             font-size: 20px;
         }
-        #myTab{
+
+        #myTab {
             font-family: 'Noto Sans KR', sans-serif;
             margin-left: 175px;
             width: 77%;
 
         }
+
         .memberDetail_wrap {
             display: none;
             width: auto;
             height: auto;
             position: absolute;
-            background:#fff;
+            background: #fff;
             margin-top: 0%;
             margin-left: 25%;
             margin-right: auto;
@@ -108,7 +118,7 @@
                     <div class="wrap-table100">
                         <div class="table100 ver1 m-b-110">
                             <div class="table100-head">
-                                <table >
+                                <table>
                                     <thead>
                                     <tr class="row100 head">
                                         <th class="cell100 column1">No</th>
@@ -125,15 +135,31 @@
                                     <tbody>
                                     <tr id="board-tr" class="row100 body" th:each="board : ${ boardList }">
                                         <td class="cell100 column1" style="width: 10%;" th:text="${ board.no}"></td>
-                                        <th:block th:if="${ board.bulletinBoardSecretYN.toString().equals('Y') }">
-                                            <td class="cell100 column2" style="width: 30%;" >비밀글</td>
+                                        <th:block sec:authorize="isAnonymous()">
+                                            <th:block th:if="${ board.bulletinBoardSecretYN.toString().equals('Y') }">
+                                                <td class="cell100 column2" style="width: 30%;">비밀글</td>
+                                            </th:block>
+                                            <th:block th:if="${ board.bulletinBoardSecretYN.toString().equals('N') }">
+                                                <td class="cell100 column2" style="width: 30%;"
+                                                    th:text="${ board.title}"></td>
+                                            </th:block>
                                         </th:block>
-                                        <th:block th:if="${ board.bulletinBoardSecretYN.toString().equals('N') }">
-                                            <td class="cell100 column2" style="width: 30%;" th:text="${ board.title}"></td>
+                                        <th:block sec:authorize="hasAnyRole('MEMBER','TUTOR','TUTEE')">
+                                            <th:block th:if="${ board.bulletinBoardSecretYN.toString().equals('Y') }">
+                                                <td class="cell100 column2" style="width: 30%;">비밀글</td>
+                                            </th:block>
+                                            <th:block th:if="${ board.bulletinBoardSecretYN.toString().equals('N') }">
+                                                <td class="cell100 column2" style="width: 30%;"
+                                                    th:text="${ board.title}"></td>
+                                            </th:block>
+                                        </th:block>
+                                        <th:block sec:authorize="hasAnyRole('ADMIN','SUBADMIN')">
+                                            <td class="cell100 column2" style="width: 30%;"
+                                                th:text="${ board.title}"></td>
                                         </th:block>
                                         <td class="cell100 column3" th:text="${ board.boardCategory.name}"></td>
-                                        <td class="cell100 column4" th:text="${ board.creationDate}"> </td>
-                                        <td class="cell100 column5" th:text="${ board.member.name}"> </td>
+                                        <td class="cell100 column4" th:text="${ board.creationDate}"></td>
+                                        <td class="cell100 column5" th:text="${ board.member.name}"></td>
                                     </tbody>
                                 </table>
                             </div>
@@ -200,13 +226,13 @@
 
 <script>
 
-    $("#closeDetail").click(function() {
+    $("#closeDetail").click(function () {
 
-        document.querySelector('.memberDetail_wrap').style.display ='none';
+        document.querySelector('.memberDetail_wrap').style.display = 'none';
     });
 
     // 테이블의 Row 클릭시 값 가져오기
-    $("#serviceBoard-table tr").click(function() {
+    $("#serviceBoard-table tr").click(function () {
 
         let tr = $(this);
         let td = tr.children();
@@ -216,10 +242,10 @@
 
         $.ajax({
             url: "/serviceBoard/secret",
-            data: { "boardNo" : boardNo },
+            data: {"boardNo": boardNo},
             success: function (data) {
-                if(data) {
-                    location.href="/serviceBoard/detail/" + boardNo;
+                if (data) {
+                    location.href = "/serviceBoard/detail/" + boardNo;
                 } else {
                     alert("비밀글입니다.");
                 }
