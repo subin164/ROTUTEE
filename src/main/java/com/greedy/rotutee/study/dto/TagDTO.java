@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * The type TagDTO.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,7 +15,13 @@ import java.util.List;
 @Builder
 public class TagDTO {
 
+    /**
+     * The Tag no.
+     */
     private int tagNo;
+    /**
+     * The Tag name.
+     */
     private String tagName;
 
 

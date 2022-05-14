@@ -23,14 +23,37 @@ import javax.transaction.Transactional;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * The type CouponService.
+ */
 @Service
 public class CouponService {
 
+    /**
+     * The Coupon repository.
+     */
     private final CouponRepository couponRepository;
+    /**
+     * The Member repository.
+     */
     private final MemberRepository memberRepository;
+    /**
+     * The Member coupon box repository.
+     */
     private final MemberCouponBoxRepository memberCouponBoxRepository;
+    /**
+     * The Model mapper.
+     */
     private final ModelMapper modelMapper;
 
+    /**
+     * Instantiates a new Coupon service.
+     *
+     * @param couponRepository          the coupon repository
+     * @param memberRepository          the member repository
+     * @param memberCouponBoxRepository the member coupon box repository
+     * @param modelMapper               the model mapper
+     */
     @Autowired
     public CouponService(CouponRepository couponRepository, MemberRepository memberRepository, MemberCouponBoxRepository memberCouponBoxRepository, ModelMapper modelMapper) {
         this.couponRepository = couponRepository;
@@ -39,6 +62,13 @@ public class CouponService {
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * methodName : couponRegist
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param coupon dto
+     */
     @Transactional
     public void couponRegist(CouponDTO couponDTO) {
 
@@ -46,6 +76,15 @@ public class CouponService {
     }
 
 
+    /**
+     * methodName : findCouponList
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param coupon   dto
+     * @param pageable
+     * @return page
+     */
     public Page findCouponList(CouponDTO couponDTO, Pageable pageable) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
@@ -54,6 +93,13 @@ public class CouponService {
         return couponRepository.findByPublishCouponStatus("N ", pageable).map(coupon -> modelMapper.map(coupon, CouponDTO.class));
     }
 
+    /**
+     * methodName : findRemoveList
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param coupon array
+     */
     @Transactional
     public void findRemoveList(List<String> couponArray) {
 
@@ -69,6 +115,13 @@ public class CouponService {
         }
     }
 
+    /**
+     * methodName : couponModify
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param coupon dto
+     */
     @Transactional
     public void couponModify(CouponDTO couponDTO) {
         Coupon modifyCoupon = couponRepository.getById(couponDTO.getPublishCouponNo());
@@ -83,6 +136,13 @@ public class CouponService {
         couponRepository.save(modelMapper.map(modifyCoupon, Coupon.class));
     }
 
+    /**
+     * methodName : couponPublish
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param coupon no list
+     */
     @Transactional
     public void couponPublish(List<String> couponNoList) {
 

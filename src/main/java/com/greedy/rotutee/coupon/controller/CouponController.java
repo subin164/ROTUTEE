@@ -1,5 +1,7 @@
 package com.greedy.rotutee.coupon.controller;
 
+import com.greedy.rotutee.common.paging.Pagenation;
+import com.greedy.rotutee.common.paging.PagingButtonInfo;
 import com.greedy.rotutee.coupon.dto.CouponDTO;
 import com.greedy.rotutee.coupon.service.CouponService;
 
@@ -13,31 +15,62 @@ import org.springframework.web.servlet.ModelAndView;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * The type CouponController.
+ */
 @Controller
 @RequestMapping("/coupon")
 public class CouponController {
 
+    /**
+     * The Coupon service.
+     */
     private final CouponService couponService;
 
+    /**
+     * Instantiates a new Coupon controller.
+     *
+     * @param couponService the coupon service
+     */
     @Autowired
     public CouponController(CouponService couponService) {
         this.couponService = couponService;
     }
 
 
+    /**
+     * methodName : couponList
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param mv
+     * @param coupon   dto
+     * @param pageable
+     * @return model and view
+     */
     @GetMapping("/list")
     public ModelAndView couponList(ModelAndView mv, CouponDTO couponDTO, Pageable pageable) {
 
 
         Page<CouponDTO> couponList = couponService.findCouponList(couponDTO, pageable);
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(couponList);
 
 
         mv.addObject("couponList", couponList);
+        mv.addObject("paging", paging);
         mv.setViewName("/coupon/list");
 
         return mv;
     }
 
+    /**
+     * methodName : couponRegist
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param coupon dto
+     * @return string
+     */
     @PostMapping("/regist")
     public String couponRegist(CouponDTO couponDTO) {
 
@@ -51,6 +84,13 @@ public class CouponController {
         return "redirect:/coupon/list";
     }
 
+    /**
+     * methodName : couponRemove
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param coupon array
+     */
     @PostMapping(value = "/remove")
     @ResponseBody
     public void couponRemove(
@@ -59,6 +99,14 @@ public class CouponController {
         couponService.findRemoveList(couponArray);
     }
 
+    /**
+     * methodName : couponModify
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param coupon dto
+     * @return string
+     */
     @PostMapping("/modify")
     public String couponModify(CouponDTO couponDTO) {
 
@@ -69,6 +117,14 @@ public class CouponController {
         return "redirect:/coupon/list";
     }
 
+    /**
+     * methodName : publishCoupon
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param coupon no list
+     * @return string
+     */
     @PostMapping("/publish")
     public String publishCoupon(@RequestParam(value = "publishCouponNo") List<String> couponNoList) {
 
