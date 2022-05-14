@@ -5,15 +5,12 @@ import com.greedy.rotutee.member.member.dto.MemberDTO;
 import com.greedy.rotutee.member.member.dto.AchievementDTO;
 import com.greedy.rotutee.member.member.dto.AddressDTO;
 import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
-import com.greedy.rotutee.member.profile.entity.TutorInfoDTO;
+import com.greedy.rotutee.member.profile.dto.TutorInfoDTO;
 import com.greedy.rotutee.member.profile.service.ProfileFileHandler;
 import com.greedy.rotutee.member.profile.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -96,18 +93,37 @@ public class ProfileController {
         //조회된 회원이 튜터일 경우
         if(customUser.getMemberRoleList().get(0).getRole().getName().equals("ROLE_TUTOR")){
             TutorInfoDTO tutorInfo = profileService.findTutorInfo(memberNo);
-            AddressDTO address = new AddressDTO();
 
-            //'&' 기준으로 나뉘어 저장된 정보를 배열로 읽어옴
-            String[] addresss = tutorInfo.getAddress().split("&");
+            //튜터 정보가 null이 아닐경우
+            if(tutorInfo != null) {
+                AddressDTO address = new AddressDTO();
+                //'&' 기준으로 나뉘어 저장된 정보를 배열로 읽어옴
+                String[] addresss = tutorInfo.getAddress().split("&");
 
-            //배열로 나뉘어 주소를 상세히 저장 가능
-            address.setZipCode(addresss[0]);
-            address.setAddress1(addresss[1]);
-            address.setAddress2(addresss[2]);
+                //배열로 나뉘어 주소를 상세히 저장 가능
+                address.setZipCode(addresss[0]);
+                address.setAddress1(addresss[1]);
+                address.setAddress2(addresss[2]);
 
-            mv.addObject("address", address);
-            mv.addObject("tutorInfo", tutorInfo);
+                mv.addObject("address", address);
+                mv.addObject("tutorInfo", tutorInfo);
+            }
+            //튜터 정보가 null일 경우 미입력 출력
+            else {
+                tutorInfo = new TutorInfoDTO();
+                AddressDTO address = new AddressDTO();
+
+                address.setZipCode("미입력");
+                address.setAddress1("미입력");
+                address.setAddress2("미입력");
+
+                tutorInfo.setBankName("미입력");
+                tutorInfo.setAccountNumber("미입력");
+
+                mv.addObject("address", address);
+                mv.addObject("tutorInfo", tutorInfo);
+            }
+
         }
 
         mv.addObject("attachedFile", attachedFile);

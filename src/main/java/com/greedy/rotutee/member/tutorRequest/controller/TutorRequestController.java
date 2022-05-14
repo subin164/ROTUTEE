@@ -169,7 +169,6 @@ public class TutorRequestController {
     public String rejectTutorApply(@PathVariable int historyNo, RedirectAttributes rttr) {
 
         tutorRequestService.rejectTutorApply(historyNo);
-
         rttr.addFlashAttribute("message", "튜터신청을 거절하셨습니다.");
 
         return "redirect:/tutorApply/list";
@@ -179,6 +178,7 @@ public class TutorRequestController {
     public String approvedTutorApply(@PathVariable int historyNo,  RedirectAttributes rttr) {
 
         tutorRequestService.approvedTutorApply(historyNo);
+//        tutorRequestService.setTutorInfo(historyNo);
 
         rttr.addFlashAttribute("message", "튜터신청을 승인하셨습니다.");
 

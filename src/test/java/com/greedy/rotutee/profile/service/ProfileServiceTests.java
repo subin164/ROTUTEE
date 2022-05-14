@@ -6,7 +6,7 @@ import com.greedy.rotutee.config.RotuteeApplication;
 import com.greedy.rotutee.member.member.repository.MemberRepository;
 import com.greedy.rotutee.member.member.dto.AchievementDTO;
 import com.greedy.rotutee.member.member.dto.MemberDTO;
-import com.greedy.rotutee.member.profile.entity.TutorInfoDTO;
+import com.greedy.rotutee.member.profile.dto.TutorInfoDTO;
 import com.greedy.rotutee.member.profile.entity.AttachedFile;
 import com.greedy.rotutee.member.profile.repository.AchievementHistoryRepository;
 import com.greedy.rotutee.member.profile.repository.AchievementRepository;
