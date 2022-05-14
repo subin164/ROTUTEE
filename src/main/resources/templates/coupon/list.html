@@ -10,7 +10,7 @@
     <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css}">
 
     <link rel="stylesheet" th:href="@{../common/css/common.css}">
-    <link rel="stylesheet" th:href="@{../hg/css/study.css}">
+    <link rel="stylesheet" th:href="@{../hg/css/coupon.css}">
 
 </head>
 
@@ -36,9 +36,10 @@
                 </tr>
                 </thead>
                 <tbody>
+
                 <tr th:each="coupons:${couponList}" class="coupon-tbody text-center" id="couponList">
                     <td>
-                        <input id="publishCouponNo" name="publishCouponNo" type="checkbox"
+                        <input th:id="publishCouponNo" name="publishCouponNo" type="checkbox"
                                th:value="${coupons.getPublishCouponNo()}"
                                style="margin: auto; transform: scale(1.5);">
                     </td>
@@ -52,7 +53,9 @@
                                 data-bs-target="#couponModifyModal" name="couponModifyButton">쿠폰변경
                         </button>
                     </td>
+
                 </tr>
+
 
                 </tbody>
             </table>
@@ -215,10 +218,22 @@
 
             <div class="modal-body">
                 <form action="/coupon/publish" method="post" id="couponPublishForm">
-                    <div>
-                        <button>회원전체 발행</button>
+                    <div class="my-md-3">
+                        <label><input type="radio" id="publishAll" name="publishSelect" value="1">전체회원 발행</label>
+                        <label><input type="radio" id="publishPersonal" name="publishSelect" value="2">개인회원</label>
+                        <input type="text" name="publishToPersonalMember">
+
                     </div>
-                    <ul id="publishCouponList"></ul>
+                    <div class="card">
+                        <div class="card-header">
+                            <span>발행쿠폰 목록</span>
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                                <ul id="publishCouponList"></ul>
+                            </blockquote>
+                        </div>
+                    </div>
                 </form>
             </div>
 
@@ -268,14 +283,14 @@
 </div>
 
 <!-- Search bar -->
-<div class="container my-md-3">
-    <form th:action="@{/coupon/search}" method="get">
-        <select class="searchForm-select" name="searchCondition">
+<div class="container mt-md-3">
+    <form class="d-flex justify-content-center" th:action="@{/coupon/search}" method="get">
+        <select class="searchForm-select me-md-3" name="searchCondition">
             <option selected value="1">강의명</option>
             <option value="2">강사이름</option>
         </select>
         <div class="searchbar">
-            <input type="search" class="searchForm-input" name="searchValue" placeholder="Search...">
+            <input type="search" name="searchValue" placeholder="Search...">
             <button class="searchBtn-icon" type="submit">
                 <i class="bi bi-search"></i>
             </button>

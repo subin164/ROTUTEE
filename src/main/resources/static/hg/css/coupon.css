@@ -28,3 +28,23 @@
 .publish-coupon-item {
     padding: 5px 10px;
 }
+
+
+/* searchBar */
+
+.searchForm-select{
+}
+
+.searchbar{
+    position: relative;
+
+}
+
+.searchBtn-icon{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(-5px, -50%);
+    border: none;
+    background-color: transparent;
+}

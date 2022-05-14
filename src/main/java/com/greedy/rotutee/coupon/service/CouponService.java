@@ -11,8 +11,6 @@ import com.greedy.rotutee.member.member.dto.MemberDTO;
 import com.greedy.rotutee.member.member.entity.Member;
 import com.greedy.rotutee.member.member.repository.MemberRepository;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
-import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -144,7 +142,7 @@ public class CouponService {
      * @param coupon no list
      */
     @Transactional
-    public void couponPublish(List<String> couponNoList) {
+    public void couponPublishAll(List<String> couponNoList) {
 
         List<Member> memberList = memberRepository.findAll();
 
@@ -167,5 +165,29 @@ public class CouponService {
             }
         }
 
+    }
+
+    public void couponSelectPersonal(List<String> couponNoList, String publishToPersonalMember) {
+
+        List<Member> memberList = memberRepository.getByNickname(publishToPersonalMember);
+
+        for (int i = 0; i < couponNoList.size(); i++) {
+            Coupon coupon = couponRepository.getById(Integer.valueOf(couponNoList.get(i)));
+
+            MemberCouponBoxDTO memberCouponBoxDTO = new MemberCouponBoxDTO();
+
+            System.out.println("coupon : " + coupon);
+
+            for(int j = 0; j<memberList.size(); j++){
+
+                memberCouponBoxDTO.setExpirationDate(new Date(System.currentTimeMillis()));
+                memberCouponBoxDTO.setReceivingDate(new Date(System.currentTimeMillis()));
+                memberCouponBoxDTO.setCoupon(modelMapper.map(coupon, CouponDTO.class));
+                memberCouponBoxDTO.setMemberNo(modelMapper.map(memberList.get(i), MemberDTO.class));
+                memberCouponBoxDTO.setCouponStatus("미사용");
+
+                memberCouponBoxRepository.save(modelMapper.map(memberCouponBoxDTO, MemberCouponBox.class));
+            }
+        }
     }
 }

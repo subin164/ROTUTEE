@@ -20,4 +20,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     Page<Member> findByNameContaining(String searchValue, Pageable pageable);
 
     Page<Member> findByEmailContaining(String searchValue, Pageable pageable);
+
+    List<Member> getByNickname(String publishToPersonalMember);
 }
