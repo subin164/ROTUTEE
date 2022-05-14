@@ -207,18 +207,22 @@ public class MemberController {
     }
 
     @PostMapping("/stop")
-    public String registLimitedMember(@RequestParam("memberNo") String memberNo,
+    public String registLimitedMember(@RequestParam("memberNo") String memberNo, RedirectAttributes rttr,
                                    @RequestParam("stopReasons") String stopReasons, @RequestParam("stopDate") String stopDate) {
 
         memberService.memberStatusStop(Integer.parseInt(memberNo), Integer.parseInt(stopReasons), Integer.parseInt(stopDate));
+
+        rttr.addFlashAttribute("message", "회원정지가 완료되었습니다.");
 
         return "redirect:/member/list";
     }
 
     @GetMapping("/play/{memberNo}")
-    public String modifyLimitedMember(@PathVariable("memberNo") int memberNo) {
+    public String modifyLimitedMember(@PathVariable("memberNo") int memberNo, RedirectAttributes rttr) {
 
         memberService.memberStatusPlay(memberNo);
+
+        rttr.addFlashAttribute("message", "정지철회가 완료되었습니다.");
 
         return "redirect:/member/list";
     }
@@ -254,9 +258,12 @@ public class MemberController {
     }
 
     @PostMapping("/secession")
-    public String secessionMember(@AuthenticationPrincipal CustomUser loginMember, @RequestParam("reasonNo") int reasonNo, @RequestParam("content") String content) {
+    public String secessionMember(@AuthenticationPrincipal CustomUser loginMember, @RequestParam("reasonNo") int reasonNo,
+                                  @RequestParam("content") String content, RedirectAttributes rttr) {
 
         memberService.secessionMember(loginMember.getNo(), reasonNo, content);
+
+        rttr.addFlashAttribute("message", "그동안 서비스를 이용해주셔서 감사합니다.");
 
         return "redirect:/member/logout";
     }
