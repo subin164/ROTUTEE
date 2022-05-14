@@ -14,7 +14,7 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 50MB
+      max-file-size: 500MB
       max-request-size: 500MB
 
   #자동 재시작 사용여부

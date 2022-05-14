@@ -171,7 +171,7 @@ public class LectureMainServiceImpl implements  LectureMainService{
         List<LectureReviewDTO> lectureReviewList = lectureReviewEntityList.stream().map(lectureReview -> modelMapper.map(lectureReview, LectureReviewDTO.class)).collect(Collectors.toList());
         for(LectureReviewDTO review : lectureReviewList) {
             String division = "프로필";
-            String deletion = "N";
+            String deletion = "N ";
 
             AttachedFile image = lectureAttachedFileRepository.findByMemberNoAndDivisionAndFileDeletionYN(review.getWriter().getNo(), division, deletion);
             if(image != null) {
