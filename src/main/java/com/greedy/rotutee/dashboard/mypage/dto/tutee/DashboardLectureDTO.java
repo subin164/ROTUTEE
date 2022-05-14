@@ -29,5 +29,6 @@ public class DashboardLectureDTO {
     private Date appliedDate;
     private int categoryNo;
     private int progress;
+    private String savedFileName;
 
 }

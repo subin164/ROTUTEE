@@ -1,8 +1,12 @@
 package com.greedy.rotutee.lecture.mylecture.service;
 
+import com.greedy.rotutee.dashboard.lms.dto.LMSAttachmentDTO;
+import com.greedy.rotutee.dashboard.lms.entity.LMSAttachment;
+import com.greedy.rotutee.dashboard.lms.repository.LMSAttachmentRepository;
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.DashboardLectureDTO;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardCompletedLecture;
 import com.greedy.rotutee.dashboard.mypage.entity.DashboardLecture;
+import com.greedy.rotutee.dashboard.mypage.repository.DashboardLectureRepository;
 import com.greedy.rotutee.dashboard.mypage.repository.MypageMemberLectureRepository;
 import com.greedy.rotutee.lecture.mylecture.dto.MyLectureDTO;
 import com.greedy.rotutee.lecture.mylecture.entity.MyLecture;
@@ -30,19 +34,23 @@ import java.util.stream.Collectors;
  * 2022-04-24 SeoYoung 최초 생성
  */
 @Service
-public class MyLectureServiceImpl implements MyLectureService{
+public class MyLectureServiceImpl implements MyLectureService {
 
     private MypageMemberLectureRepository memberLectureRepository;
     private MyLectureRepository myLectureRepository;
+    private LMSAttachmentRepository lmsAttachmentRepository;
+    private DashboardLectureRepository lectureRepository;
     private ModelMapper modelMapper;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public MyLectureServiceImpl(MypageMemberLectureRepository memberLectureRepository, MyLectureRepository myLectureRepository, ModelMapper modelMapper) {
+    public MyLectureServiceImpl(MypageMemberLectureRepository memberLectureRepository, MyLectureRepository myLectureRepository, LMSAttachmentRepository lmsAttachmentRepository, DashboardLectureRepository lectureRepository, ModelMapper modelMapper) {
         this.memberLectureRepository = memberLectureRepository;
         this.myLectureRepository = myLectureRepository;
+        this.lmsAttachmentRepository = lmsAttachmentRepository;
+        this.lectureRepository = lectureRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -74,6 +82,18 @@ public class MyLectureServiceImpl implements MyLectureService{
         List<DashboardLecture> learningEntities = nativeQuery.setParameter(1, memberNo).getResultList();
         List<DashboardLectureDTO> learning = learningEntities.stream().map(dashboardLecture -> modelMapper.map(dashboardLecture, DashboardLectureDTO.class)).collect(Collectors.toList());
 
+        /*강의 썸네일 구하기*/
+        String division = "강의";
+        String deletionStatus = "N ";
+        for (int i = 0; i < learning.size(); i++) {
+            int lectureNo = learning.get(i).getLectureNo();
+            LMSAttachment attachmentEntity = lmsAttachmentRepository.findByLectureNoAndDivisionAndFileDeletionYN(lectureNo, division, deletionStatus);
+            if (attachmentEntity != null) {
+                LMSAttachmentDTO attachment = modelMapper.map(attachmentEntity, LMSAttachmentDTO.class);
+                learning.get(i).setSavedFileName(attachment.getSaveAttachedFileName());
+            }
+        }
+
         /* 듣고있는 강의 수강번호 */
         String jpql1 = "SELECT memberLecture.memberLectureNo FROM Mypage_MemberLecture memberLecture " +
                 "WHERE memberLecture.member.memberNo = :memberNo " +
@@ -85,7 +105,7 @@ public class MyLectureServiceImpl implements MyLectureService{
 
         /* 회원별 수강번호에 따른 클래스리스트가 담겨있는 리스트*/
         List<List> completedLectureCategoryEntityList = new ArrayList<>();
-        for(int i = 0; i < memberLectureNums.size(); i++){
+        for (int i = 0; i < memberLectureNums.size(); i++) {
 
             int memberLectureNo = memberLectureNums.get(i);
             /* 수강번호로 누적시간 테이블에서 회원이 듣고있는 강의의 모든 클래스 상태 읽어옴 */
@@ -102,7 +122,7 @@ public class MyLectureServiceImpl implements MyLectureService{
 
         /* 한 멤버가 듣고있는 강의의 수만큼 반복문 */
         List<DashboardLectureDTO> completedLectureInfoList = new ArrayList<>();
-        for(int i = 0; i <completedLectureCategoryEntityList.size(); i++){
+        for (int i = 0; i < completedLectureCategoryEntityList.size(); i++) {
             /* 한 강의의 클래스 리스트*/
             List<DashboardCompletedLecture> completedLectureList = completedLectureCategoryEntityList.get(i);
             /* 한 강의당 총 클래스 수 */
@@ -110,14 +130,14 @@ public class MyLectureServiceImpl implements MyLectureService{
             System.out.println("totalClassCountOfLecture = " + totalClassCountOfLecture);
             /* 한 강의당 완료된 클래스 개수(completedStatus : Y의 총 개수) */
             double CompletedClassCount = 0;
-            for(int j = 0; j < completedLectureList.size(); j++){
-                if(completedLectureList.get(j).getWatchedStatus().equals("Y ")){
+            for (int j = 0; j < completedLectureList.size(); j++) {
+                if (completedLectureList.get(j).getWatchedStatus().equals("Y ")) {
                     CompletedClassCount += 1;
                 }
             }
             System.out.println("CompletedClassCount = " + CompletedClassCount);
             /* 진행률 계산 */
-            int progress = (int)(Math.round(CompletedClassCount/totalClassCountOfLecture * 100));
+            int progress = (int) (Math.round(CompletedClassCount / totalClassCountOfLecture * 100));
             System.out.println("progress = " + progress);
             learning.get(i).setProgress(progress);
         }
@@ -133,6 +153,7 @@ public class MyLectureServiceImpl implements MyLectureService{
 
         return lectures;
     }
+
 
 
 }

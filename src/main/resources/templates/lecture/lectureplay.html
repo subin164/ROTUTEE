@@ -154,7 +154,7 @@
                 <div th:each="chapter, stat : ${ lecturePlay.chapters }" class="class-title">
                     <th:block th:text="${ chapter.chapterName }"></th:block>
                     <progress class="progressbar" value="100" min="0" max="100"></progress>
-                    <span class="time">06:44</span>
+                    <span class="time"></span>
                     <div class="menu">
                         <div class="openmenu"
                              th:each="lectureClass, status : ${lecturePlay.chapters[stat.index].classesList}">
@@ -250,7 +250,7 @@
     })
 
     $('.openmenu').click(function() {
-        $('source').remove();
+        $('#lecture-video').remove();
         $('.videoValue').remove();
         const videoPath = $(this).children('input').eq(0).val();
         const videoStatus = $(this).children('input').eq(1).val();
@@ -258,12 +258,12 @@
         console.log(videoPath);
         console.log(videoStatus);
         console.log(videoTimeNo);
-        const totalPath = `<source src= /video/`+ videoPath + `>`;
+        const totalPath = `<video id="lecture-video" className="videoPlay" controls controlsList="nodownload" style="width: 35vw; height: 35vh;"><source src= /video/`+ videoPath + `></video>`;
         console.log(totalPath);
         const videoStatusInputTag = '<input type="hidden" class="videoValue" value="' + videoStatus + '">'
         const videoTimeNoTag = '<input type="hidden" class="videoValue" value="' + videoTimeNo + '">'
         console.log(videoStatusInputTag);
-        $("#lecture-video").append(totalPath);
+        $(".lecturevideo").append(totalPath);
         $("#lecture-video").append(videoStatusInputTag);
         $("#lecture-video").append(videoTimeNoTag);
     })

@@ -19,7 +19,7 @@ import java.sql.Date;
  * fileName : LMSTodoController
  * author : SeoYoung
  * date : 2022-05-11
- * description :
+ * description : LMS 대시보드 투두리스트 Controller
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
@@ -36,6 +36,15 @@ public class LMSTodoController {
         this.lmsTodoService = lmsTodoService;
     }
 
+    /**
+     * methodName : registTodo
+     * author : SeoYoung Kim
+     * description : 대시보드 투두 등록
+     *
+     * @param todo
+     * @param customUser
+     * @return string
+     */
     @PostMapping("/regist")
     public String registTodo(@ModelAttribute ToDoDTO todo, @AuthenticationPrincipal CustomUser customUser){
 
@@ -51,6 +60,14 @@ public class LMSTodoController {
 
     }
 
+    /**
+     * methodName : modifyTodo
+     * author : SeoYoung Kim
+     * description : 대시보드 Todo 수정
+     *
+     * @param request
+     * @return string
+     */
     @PostMapping("/modify")
     @ResponseBody
     public String modifyTodo(HttpServletRequest request) {
@@ -71,6 +88,14 @@ public class LMSTodoController {
 
     }
 
+    /**
+     * methodName : removeTodo
+     * author : SeoYoung Kim
+     * description : Todo 삭제
+     *
+     * @param request
+     * @return string
+     */
     @GetMapping("/remove")
     @ResponseBody
     public String removeTodo(HttpServletRequest request){
@@ -89,6 +114,14 @@ public class LMSTodoController {
         return gson.toJson(result);
     }
 
+    /**
+     * methodName : modifyStatus
+     * author : SeoYoung Kim
+     * description : Todo 상태 변경(완료, 미완료)
+     *
+     * @param request
+     * @return string
+     */
     @GetMapping("/status")
     @ResponseBody
     public String modifyStatus(HttpServletRequest request) {

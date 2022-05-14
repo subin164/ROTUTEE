@@ -2,6 +2,9 @@ package com.greedy.rotutee.dashboard.mypage.service;
 
 import com.greedy.rotutee.board.serviceBoard.dto.BoardDTO;
 import com.greedy.rotutee.board.serviceBoard.entity.Board;
+import com.greedy.rotutee.dashboard.lms.dto.LMSAttachmentDTO;
+import com.greedy.rotutee.dashboard.lms.entity.LMSAttachment;
+import com.greedy.rotutee.dashboard.lms.repository.LMSAttachmentRepository;
 import com.greedy.rotutee.dashboard.mypage.dto.tutee.*;
 import com.greedy.rotutee.dashboard.mypage.dto.tutor.MypageTutorDTO;
 import com.greedy.rotutee.dashboard.mypage.entity.*;
@@ -42,13 +45,14 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     private DashboardNoticeRepository noticeRepository;
     private DashboardLectureWatchRepository lectureWatchRepository;
     private DashboardPostRepository dashboardPostRepository;
+    private LMSAttachmentRepository lmsAttachmentRepository;
     private ModelMapper modelMapper;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    public MypageDashboardServiceImpl(DashboardMemberRepository memberRepository, DashboardBasketRepository basketRepository, DashboardBoardRepository boardRepository, DashboardLectureRepository lectureRepository, DashboardNoticeRepository noticeRepository, DashboardLectureWatchRepository lectureWatchRepository, DashboardPostRepository dashboardPostRepository, ModelMapper modelMapper) {
+    public MypageDashboardServiceImpl(DashboardMemberRepository memberRepository, DashboardBasketRepository basketRepository, DashboardBoardRepository boardRepository, DashboardLectureRepository lectureRepository, DashboardNoticeRepository noticeRepository, DashboardLectureWatchRepository lectureWatchRepository, DashboardPostRepository dashboardPostRepository, LMSAttachmentRepository lmsAttachmentRepository, ModelMapper modelMapper) {
         this.memberRepository = memberRepository;
         this.basketRepository = basketRepository;
         this.boardRepository = boardRepository;
@@ -56,9 +60,18 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
         this.noticeRepository = noticeRepository;
         this.lectureWatchRepository = lectureWatchRepository;
         this.dashboardPostRepository = dashboardPostRepository;
+        this.lmsAttachmentRepository = lmsAttachmentRepository;
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * methodName : findTuteeDashboard
+     * author : SeoYoung Kim
+     * description : 튜티 대시보드 조회시 필요한 정보조회
+     *
+     * @param memberNo 회원번호
+     * @return mypage dashboard dto 대시보드 정보
+     */
     @Override
     public MypageDashboardDTO findTuteeDashboard(int memberNo) {
 
@@ -76,6 +89,8 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
 
         List<DashboardLectureDTO> completedLectures = getcompletedLectures(memberNo);
 
+        LMSAttachmentDTO attachment = getAttachment(memberNo);
+
 
         dashboard.setMember(member);
         dashboard.setBoardList(boards);
@@ -83,15 +98,36 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
         dashboard.setNoticeList(notices);
         dashboard.setWatchList(watchList);
         dashboard.setCompletedLectureInfoList(completedLectures);
+        dashboard.setAttachment(attachment);
         return dashboard;
+    }
+
+    /**
+     * Gets attachment.
+     * author : SeoYoung Kim
+     * description : 프로필 사진 조회
+     *
+     * @param memberNo 회원번호
+     * @return the attachment
+     */
+    private LMSAttachmentDTO getAttachment(int memberNo) {
+
+        String division = "프로필";
+        String deletionStatus = "N ";
+        LMSAttachment lmsAttachment = lmsAttachmentRepository.findByMemberNoAndDivisionAndFileDeletionYN(memberNo, division, deletionStatus);
+        LMSAttachmentDTO attachment = new LMSAttachmentDTO();
+        if(lmsAttachment != null) {
+            attachment  = modelMapper.map(lmsAttachment, LMSAttachmentDTO.class);
+        }
+        return attachment;
     }
 
     /**
      * Gets profile.
      * author : SeoYoung Kim
-     * description :
+     * description : 회원정보조회
      *
-     * @param memberNo the member no
+     * @param memberNo memberNo 회원번호
      * @return the profile
      */
     private DashboardMemberDTO getProfile(int memberNo) {
@@ -104,9 +140,9 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     /**
      * Gets boards.
      * author : SeoYoung Kim
-     * description :
+     * description : 최근작성글 조회
      *
-     * @param memberNo the member no
+     * @param memberNo
      * @return the boards
      */
     /* 작성게시물 조회용 */
@@ -140,9 +176,9 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     /**
      * Gets baskets.
      * author : SeoYoung Kim
-     * description :
+     * description : 장바구니 조회
      *
-     * @param memberNo the member no
+     * @param memberNo
      * @return the baskets
      */
     /* 수강바구니 조회용 */
@@ -172,7 +208,7 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     /**
      * Gets notices.
      * author : SeoYoung Kim
-     * description :
+     * description : 알림 조회
      *
      * @param memberNo the member no
      * @return the notices
@@ -206,9 +242,9 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     /**
      * Gets watch list.
      * author : SeoYoung Kim
-     * description :
+     * description : 최근 시청한 강의 조회
      *
-     * @param memberNo the member no
+     * @param memberNo
      * @return the watch list
      */
     /* 최근 시청강의 조회용 */
@@ -233,7 +269,7 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     /**
      * Gets lectures.
      * author : SeoYoung Kim
-     * description :
+     * description : 시청완료한 강의 조회
      *
      * @param memberNo the member no
      * @return the lectures
@@ -308,7 +344,7 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     /**
      * methodName : findTutorDashboard
      * author : SeoYoung Kim
-     * description :
+     * description : 튜터 대시보드 조회
      *
      * @param memberNo
      * @return mypage tutor dto

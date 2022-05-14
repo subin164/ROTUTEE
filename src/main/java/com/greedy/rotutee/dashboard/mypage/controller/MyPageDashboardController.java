@@ -43,6 +43,15 @@ public class MyPageDashboardController {
         this.mypageDashboardService = mypageDashboardService;
     }
 
+    /**
+     * methodName : findTuteeDashboard
+     * author : SeoYoung Kim
+     * description : 마이페이지 튜티 대시보드
+     *
+     * @param mv
+     * @param customUser
+     * @return model and view
+     */
     @GetMapping("/tuteedashboard")
     public ModelAndView findTuteeDashboard(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
 
@@ -57,6 +66,15 @@ public class MyPageDashboardController {
     }
 
 
+    /**
+     * methodName : findTutorDashboard
+     * author : SeoYoung Kim
+     * description : 마이페이지 튜터대시보드
+     *
+     * @param mv
+     * @param customUser
+     * @return model and view
+     */
     @GetMapping("/tutordashboard")
     public ModelAndView findTutorDashboard(ModelAndView mv, @AuthenticationPrincipal CustomUser customUser) {
 

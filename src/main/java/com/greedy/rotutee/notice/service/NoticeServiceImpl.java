@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * fileName : NoticeServiceImpl
  * author : SeoYoung
  * date : 2022-05-11
- * description :
+ * description : 알림 비즈니스 로직
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
@@ -37,6 +37,15 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
 
+    /**
+     * methodName : findNoticeList
+     * author : SeoYoung Kim
+     * description : 알림 조회
+     *
+     * @param memberNo
+     * @param pageable 알림 페이징 처리
+     * @return page
+     */
     @Override
     public Page<NoticeDTO> findNoticeList(int memberNo, Pageable pageable) {
 

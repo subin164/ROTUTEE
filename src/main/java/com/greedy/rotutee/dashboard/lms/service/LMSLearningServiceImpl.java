@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * fileName : LMSServiceImpl
  * author : SeoYoung
  * date : 2022-04-27
- * description :
+ * description : LMS 강의 목록 조회 서비스 로직
  * ===========================================================
  * DATE AUTHOR NOTE
  * -----------------------------------------------------------
@@ -55,6 +55,15 @@ public class LMSLearningServiceImpl implements LMSLearningService {
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * methodName : findLecturePlay
+     * author : SeoYoung Kim
+     * description : 강의 시청 시 필요한 정보 조회
+     *
+     * @param lectureNo 강의번호
+     * @param memberNo 회원번호
+     * @return lecturePlayDTO
+     */
     @Override
     public LecturePlayDTO findLecturePlay(int lectureNo, int memberNo) {
 
@@ -62,9 +71,9 @@ public class LMSLearningServiceImpl implements LMSLearningService {
         DashboardLecture lectureEntity = lectureRepository.findByLectureNo(lectureNo);
         String lectureSummary = lectureEntity.getSummary();
 
-        /*memberLectureNo 정보*/
-        MyPageMemberLecture memberLectureEntity = memberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
-        int memberLectureNo = memberLectureEntity.getMemberLectureNo();
+        /*수강신청 정보*/
+//        MyPageMemberLecture memberLectureEntity = memberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
+//        int memberLectureNo = memberLectureEntity.getMemberLectureNo();
 
         /*강의의 챕터 정보*/
         List<LMSChapter> chaptersEntity = lmsChapterRepository.findByLectureNoOrderByChapterNoAsc(lectureNo);
@@ -86,7 +95,9 @@ public class LMSLearningServiceImpl implements LMSLearningService {
                 LMSQuiz quizEntity = lmsQuizRepository.findByClassNoOrderByQuizNo(classNo);
                 LMSQuizDTO quiz = modelMapper.map(quizEntity, LMSQuizDTO.class);
 
+                /*시청완료여부*/
                 lectureClasses.get(j).setWhatcingStatus(completedStatus);
+                /*강의 시청 번호*/
                 lectureClasses.get(j).setTimeNo(timeNo);
 
                 String quizSubmissionStatus = "";
@@ -101,9 +112,6 @@ public class LMSLearningServiceImpl implements LMSLearningService {
                 lectureClasses.get(j).setQuiz(quiz);
             }
         }
-        for (LMSChapterDTO chapter : chapters) {
-            System.out.println("chapter = " + chapter);
-        }
 
         LecturePlayDTO lecturePlay = new LecturePlayDTO();
         lecturePlay.setLectureSummary(lectureSummary);
@@ -112,6 +120,14 @@ public class LMSLearningServiceImpl implements LMSLearningService {
         return lecturePlay;
     }
 
+    /**
+     * methodName : modifyVideoWatchingStatus
+     * author : SeoYoung Kim
+     * description : 강의 시청 완료 여부 수정
+     *
+     * @param timeNo
+     * @param status
+     */
     @Override
     @Transactional
     public void modifyVideoWatchingStatus(int timeNo, String status) {
