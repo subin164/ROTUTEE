@@ -126,11 +126,22 @@ public class CouponController {
      * @return string
      */
     @PostMapping("/publish")
-    public String publishCoupon(@RequestParam(value = "publishCouponNo") List<String> couponNoList) {
+    public String publishCoupon(@RequestParam(value = "publishCouponNo") List<String> couponNoList,
+                                @RequestParam(value = "publishSelect") int publishSelect,
+                                @RequestParam(value = "publishToPersonalMember") String publishToPersonalMember) {
 
         System.out.println("퍼블리싱ㅋ ㅜ폰 욫어옴 : " + couponNoList);
 
-        couponService.couponPublish(couponNoList);
+        System.out.println("publishSelect : " + publishSelect);
+        if(publishSelect  == 1){
+            System.out.println("전체쿠폰 발행");
+        couponService.couponPublishAll(couponNoList);
+
+        }else if(publishSelect == 2){
+            System.out.println("개인회원에게 발행");
+            System.out.println("개인회원 아이디 : " + publishToPersonalMember);
+            couponService.couponSelectPersonal(couponNoList, publishToPersonalMember);
+        }
 
         return "redirect:/coupon/list";
     }
