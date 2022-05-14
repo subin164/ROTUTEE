@@ -112,15 +112,12 @@ public class BasketController {
     }
 
     @PostMapping("/lectureSuccess")
-
     public ModelAndView successBasketPay(ModelAndView mv,HttpServletRequest request,@AuthenticationPrincipal CustomUser customUser
             , RedirectAttributes rttr){
-
 
         int memberNo = customUser.getNo();
         int lectureNo = Integer.parseInt(request.getParameter("lectureNo"));
         String couponNo = request.getParameter("couponNoinput");
-
 
         System.out.println("gg");
         basketService.lectureSuccessBasket(lectureNo,memberNo,couponNo);
@@ -131,7 +128,6 @@ public class BasketController {
 
         return mv;
     }
-
 
 
 }
