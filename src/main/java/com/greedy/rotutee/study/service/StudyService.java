@@ -34,16 +34,47 @@ import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type StudyService.
+ */
 @Service
 public class StudyService {
 
+    /**
+     * The Study repository.
+     */
     private final StudyRepository studyRepository;
+    /**
+     * The Study tag repository.
+     */
     private final StudyTagRepository studyTagRepository;
+    /**
+     * The Study by tag repository.
+     */
     private final StudyByTagRepository studyByTagRepository;
+    /**
+     * The Study reply repository.
+     */
     private final StudyReplyRepository studyReplyRepository;
+    /**
+     * The Member repository.
+     */
     private final MemberRepository memberRepository;
+    /**
+     * The Model mapper.
+     */
     private final ModelMapper modelMapper;
 
+    /**
+     * Instantiates a new Study service.
+     *
+     * @param studyRepository      the study repository
+     * @param studyTagRepository   the study tag repository
+     * @param studyByTagRepository the study by tag repository
+     * @param studyReplyRepository the study reply repository
+     * @param memberRepository     the member repository
+     * @param modelMapper          the model mapper
+     */
     @Autowired
     public StudyService(StudyRepository studyRepository, StudyTagRepository studyTagRepository, StudyByTagRepository studyByTagRepository, StudyReplyRepository studyReplyRepository, MemberRepository memberRepository, ModelMapper modelMapper) {
         this.studyRepository = studyRepository;
@@ -61,6 +92,16 @@ public class StudyService {
      * content : 스터디 모집 조회 서비스 처리 하여 DB에서 조회 결과를 반환
      * */
 
+    /**
+     * methodName : findByStudyList
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param search   condition
+     * @param search   tag
+     * @param pageable
+     * @return page
+     */
     public Page<StudyDTO> findByStudyList(String searchCondition, String searchTag, Pageable pageable) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
@@ -80,6 +121,13 @@ public class StudyService {
     }
 
 
+    /**
+     * methodName : finByStudyTagList
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @return list
+     */
     public List<StudyByTagDTO> finByStudyTagList() {
         List<StudyByTag> studyByTag = studyByTagRepository.findAll();
 
@@ -87,6 +135,14 @@ public class StudyService {
     }
 
 
+    /**
+     * methodName : studyRegist
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param study dto
+     * @param tag   list
+     */
     /*
      * writer : 김형경
      * writerDate : 22/04/18 ~ 22/04/26
@@ -138,6 +194,14 @@ public class StudyService {
 
     }
 
+    /**
+     * methodName : findStudyDetail
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param study no
+     * @return study dto
+     */
     /*
      * writer : 김형경
      * writerDate : 22/04/28 ~ 22/04/28
@@ -152,6 +216,14 @@ public class StudyService {
         return modelMapper.map(study, StudyDTO.class);
     }
 
+    /**
+     * methodName : modifyStudyDetailTagList
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param study no
+     * @return list
+     */
     public List<StudyByTagDTO> modifyStudyDetailTagList(int studyNo) {
 
         List<StudyByTag> studyByTag = studyByTagRepository.findByStudyStudyNo(studyNo);
@@ -161,6 +233,14 @@ public class StudyService {
         return studyByTag.stream().map(studyByTag1 -> modelMapper.map(studyByTag1, StudyByTagDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * methodName : findStudyReply
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param study no
+     * @return list
+     */
     public List<StudyReplyDTO> findStudyReply(int studyNo) {
 
         List<StudyReply> studyReply = studyReplyRepository.findByStudyNoAndReplyStatus(studyNo, "N ");
@@ -169,6 +249,13 @@ public class StudyService {
         return studyReply.stream().map(studyReply1 -> modelMapper.map(studyReply1, StudyReplyDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * methodName : removeStudy
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param no
+     */
     /*
      * writer : 김형경
      * writerDate : 22/04/28 ~ 22/04/28
@@ -184,6 +271,14 @@ public class StudyService {
         study.setRemoveDate(new Date(System.currentTimeMillis()));
     }
 
+    /**
+     * methodName : studyReplyRegist
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param reply dto
+     * @return study reply dto
+     */
     /*
      * writer : 김형경
      * writerDate : 22/05/01 ~ 22/05/01
@@ -203,6 +298,13 @@ public class StudyService {
 
     }
 
+    /**
+     * methodName : studyReplyRemove
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param reply dto
+     */
     @Transactional
     public void studyReplyRemove(StudyReplyDTO replyDTO) {
         StudyReply studyReply = studyReplyRepository.getById(replyDTO.getReplyNo());
@@ -214,6 +316,14 @@ public class StudyService {
         studyReplyRepository.save(modelMapper.map(studyReply, StudyReply.class));
     }
 
+    /**
+     * methodName : studyDetailModify
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param study  dto
+     * @param modify tag list
+     */
     /*
      * writer : 김형경
      * writerDate : 22/04/29 ~ 22/05/10
@@ -275,6 +385,13 @@ public class StudyService {
 
     }
 
+    /**
+     * methodName : studyReplyModify
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param reply dto
+     */
     @Transactional
     public void studyReplyModify(StudyReplyDTO replyDTO) {
 

@@ -212,7 +212,12 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 <script>
-    <!-- 스터디 디테일 조회요청-->
+
+
+    let contents = document.querySelector("textarea");
+    contents = contents.value.replaceAll("\r\n", "<br>")
+
+    <!-- 상세페이지 모집글번로 요청-->
     if (document.querySelectorAll("#detailList ul")) {
         const $tds = document.querySelectorAll("#detailList ul");
         for (let i = 0; i < $tds.length; i++) {

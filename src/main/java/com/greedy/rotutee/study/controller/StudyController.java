@@ -26,20 +26,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * The type StudyController.
+ */
 @Controller
 @RequestMapping("/study")
 public class StudyController {
 
+    /**
+     * The Study service.
+     */
     private final StudyService studyService;
+    /**
+     * The Authentication service.
+     */
     private final AuthenticationService authenticationService;
 
 
+    /**
+     * Instantiates a new Study controller.
+     *
+     * @param studyService          the study service
+     * @param authenticationService the authentication service
+     */
     @Autowired
     public StudyController(StudyService studyService, AuthenticationService authenticationService) {
         this.studyService = studyService;
         this.authenticationService = authenticationService;
     }
 
+    /**
+     * methodName : StudyList
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param mv
+     * @param request
+     * @param pageable
+     * @return model and view
+     */
     /*
      * writer : 김형경
      * writeDate : 22/04/18 ~ 22/04/26
@@ -68,6 +93,17 @@ public class StudyController {
         return mv;
     }
 
+    /**
+     * methodName : studyRegist
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param mv
+     * @param study  dto
+     * @param input  tag
+     * @param custom user
+     * @return model and view
+     */
     /*
      * writer : 김형경
      * writeDate : 22/04/18 ~ 22/04/26
@@ -117,6 +153,15 @@ public class StudyController {
         return mv;
     }
 
+    /**
+     * methodName : studyDetail
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param mv
+     * @param request
+     * @return model and view
+     */
     /*
      * writer : 김형경
      * writeDate : 22/04/28 ~ 22/04/28
@@ -140,6 +185,16 @@ public class StudyController {
         return mv;
     }
 
+    /**
+     * methodName : studyMddify
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param modify  tag list
+     * @param request
+     * @param study   dto
+     * @return string
+     */
     /*
      * writer : 김형경
      * writeDate : 22/04/29 ~ 22/05/01
@@ -166,6 +221,14 @@ public class StudyController {
 
     }
 
+    /**
+     * methodName : studyRemove
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param request
+     * @return string
+     */
     /*
      * writer : 김형경
      * writeDate : 22/04/28 ~ 22/04/28
@@ -183,6 +246,15 @@ public class StudyController {
     }
 
 
+    /**
+     * methodName : studyReplyRegist
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param reply  dto
+     * @param custom user
+     * @return study reply dto
+     */
     @PostMapping("/replyRegist")
     @ResponseBody
     public StudyReplyDTO studyReplyRegist(StudyReplyDTO replyDTO, @AuthenticationPrincipal CustomUser customUser) {
@@ -207,6 +279,13 @@ public class StudyController {
 
     }
 
+    /**
+     * methodName : studyReplyRemove
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param reply dto
+     */
     @PostMapping("/replyRemove")
     @ResponseBody
     public void studyReplyRemove(StudyReplyDTO replyDTO) {
@@ -214,6 +293,15 @@ public class StudyController {
         studyService.studyReplyRemove(replyDTO);
     }
 
+    /**
+     * methodName : studyReplyModify
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @param reply   dto
+     * @param request
+     * @return string
+     */
     @PostMapping("/replyModify")
     public String studyReplyModify(StudyReplyDTO replyDTO, HttpServletRequest request){
         replyDTO.setReplyNo(Integer.parseInt(request.getParameter("replyNo")));
@@ -229,12 +317,26 @@ public class StudyController {
     }
 
 
+    /**
+     * methodName : studyListBack
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @return string
+     */
     @GetMapping("/listBack")
     public String studyListBack(){
 
         return "redirect:/study/list";
     }
 
+    /**
+     * methodName : recruitStatus
+     * author : SeoYoung Kim
+     * description :
+     *
+     * @return string
+     */
     @GetMapping("/recruitStatus")
     public  String recruitStatus(){
         System.out.println("해치웠나?");

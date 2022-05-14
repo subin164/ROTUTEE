@@ -19,10 +19,11 @@
 <main>
     <div th:include="/common/adminsidebar.html"></div>
     <section>
-        <span>쿠폰발행</span>
-        <hr>
+
         <div class="container">
-            <table class="table">
+            <div class="mt-md-5">쿠폰발행</div>
+            <hr>
+            <table class="table table-hover align-self-center text-center my-md-5">
                 <thead>
                 <tr>
                     <th>쿠폰선택</th>
@@ -55,17 +56,17 @@
 
                 </tbody>
             </table>
-            <ul class="d-flex">
+            <ul class="d-flex justify-content-md-end">
                 <li>
-                    <button class="btn" data-bs-toggle="modal"
+                    <button class="btn btn-outline-success me-md-3" data-bs-toggle="modal"
                             data-bs-target="#couponRegistModal">쿠폰등록
                     </button>
                 </li>
                 <li>
-                    <button class="btn" type="button" onclick="couponRemove()">쿠폰삭제</button>
+                    <button class="btn btn-outline-danger me-md-3" type="button" onclick="couponRemove()">쿠폰삭제</button>
                 </li>
                 <li>
-                    <button class="btn" data-bs-toggle="modal"
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal"
                             data-bs-target="#couponPublishModal" onclick="publishCouponList()">쿠폰발행
                     </button>
                 </li>
@@ -157,7 +158,8 @@
                             <label class="fw-bold">쿠폰명</label>
                             <div class="d-flex">
                                 <input type="hidden" id="modifyCouponNo" val="" name="publishCouponNo">
-                                <input class="tag-input w-100" type="text" id="modifyCouponName" name="publishCouponName">
+                                <input class="tag-input w-100" type="text" id="modifyCouponName"
+                                       name="publishCouponName">
                             </div>
                         </div>
 
@@ -235,6 +237,52 @@
         </div>
     </div>
 </div>
+
+<!--paging button-->
+<div class="d-flex justify-content-center">
+    <div class="justify-content-evenly mt-lg-5">
+        <button class="btn pagebtn" type="button"
+                th:onclick="'location.href=\'/coupon/list?page=' + @{${paging.startPage}}  + '\''"
+                th:disabled="${ couponList.first }"><<
+        </button>
+        <button class="btn pagebtn" type="button"
+                th:onclick="'location.href=\'/coupon/list?page=' + @{${paging.currentPage - 1}}  + '\''"
+                th:disabled="${ couponList.first }"><
+        </button>
+        <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+            <button class="btn pagebtn" type="button"
+                    th:onclick="'location.href=\'/coupon/list?page=' + @{${page}}  + '\''"
+                    th:text="${ page }"
+                    th:disabled="${ paging.currentPage eq page }">
+            </button>
+        </th:block>
+        <button class="btn pagebtn" type="button"
+                th:onclick="'location.href=\'/coupon/list?page=' + @{${paging.currentPage + 1}}  + '\''"
+                th:disabled="${ couponList.last }">>
+        </button>
+        <button class="btn pagebtn" type="button"
+                th:onclick="'location.href=\'/coupon/list?page=' + @{${paging.endPage}}  + '\''"
+                th:disabled="${ couponList.last }">>>
+        </button>
+    </div>
+</div>
+
+<!-- Search bar -->
+<div class="container my-md-3">
+    <form th:action="@{/coupon/search}" method="get">
+        <select class="searchForm-select" name="searchCondition">
+            <option selected value="1">강의명</option>
+            <option value="2">강사이름</option>
+        </select>
+        <div class="searchbar">
+            <input type="search" class="searchForm-input" name="searchValue" placeholder="Search...">
+            <button class="searchBtn-icon" type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
 
 <div th:include="/common/footer.html"></div>
 
