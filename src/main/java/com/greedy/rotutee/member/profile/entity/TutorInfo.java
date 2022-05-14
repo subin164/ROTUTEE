@@ -1,4 +1,4 @@
-package com.greedy.rotutee.member.profile.repository;
+package com.greedy.rotutee.member.profile.entity;
 
 import com.greedy.rotutee.member.member.entity.Member;
 

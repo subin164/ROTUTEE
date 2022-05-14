@@ -7,7 +7,9 @@ import com.greedy.rotutee.member.member.repository.MemberRepository;
 import com.greedy.rotutee.member.member.repository.RoleRepository;
 import com.greedy.rotutee.member.profile.dto.AttachedFileDTO;
 import com.greedy.rotutee.member.profile.entity.AttachedFile;
+import com.greedy.rotutee.member.profile.entity.TutorInfo;
 import com.greedy.rotutee.member.profile.repository.AttachedFileRepository;
+import com.greedy.rotutee.member.profile.repository.TutorInfoRepository;
 import com.greedy.rotutee.member.tutorRequest.dto.CareerDTO;
 import com.greedy.rotutee.member.tutorRequest.entity.Career;
 import com.greedy.rotutee.member.tutorRequest.dto.QualificationDTO;
@@ -53,10 +55,11 @@ public class TutorRequestService {
     private final RoleRepository roleRepository;
     private final NoticeRepository noticeRepository;
     private final NoticeCategoryRepository noticeCategoryRepository;
+    private final TutorInfoRepository tutorInfoRepository;
 
 
     @Autowired
-    public TutorRequestService(AttachedFileRepository attachedFileRepository, CareerRepository careerRepository, QualificationRepository qualificationRepository, TutorApplyRepository tutorApplyRepository, MemberRepository memberRepository, ModelMapper modelMapper, RoleRepository roleRepository, NoticeRepository noticeRepository, NoticeCategoryRepository noticeCategoryRepository) {
+    public TutorRequestService(AttachedFileRepository attachedFileRepository, CareerRepository careerRepository, QualificationRepository qualificationRepository, TutorApplyRepository tutorApplyRepository, MemberRepository memberRepository, ModelMapper modelMapper, RoleRepository roleRepository, NoticeRepository noticeRepository, NoticeCategoryRepository noticeCategoryRepository, TutorInfoRepository tutorInfoRepository) {
         this.attachedFileRepository = attachedFileRepository;
         this.careerRepository = careerRepository;
         this.qualificationRepository = qualificationRepository;
@@ -66,6 +69,7 @@ public class TutorRequestService {
         this.roleRepository = roleRepository;
         this.noticeRepository = noticeRepository;
         this.noticeCategoryRepository = noticeCategoryRepository;
+        this.tutorInfoRepository = tutorInfoRepository;
     }
 
     @Transactional
@@ -202,6 +206,11 @@ public class TutorRequestService {
         member.getMemberRoleList().get(0).setRole(role);
         tutorApply.setApplyYn("승인");
 
+        setNotice(member);
+    }
+
+    @Transactional
+    public void setNotice(Member member) {
         //승인시 해당 회원에게 승인 알림 발송
         Notice notice = new Notice();
         notice.setTime(new Date(System.currentTimeMillis()));
@@ -211,6 +220,22 @@ public class TutorRequestService {
 
         noticeRepository.save(notice);
     }
+
+//    @Transactional
+//    public void setTutorInfo(int  historyNo) {
+//
+//        TutorApply tutorApply = tutorApplyRepository.findById(historyNo).get();
+//        Member member = memberRepository.findById(tutorApply.getMember().getNo()).get();
+//
+//        //승인시 튜터정보 초기화
+//        TutorInfo tutorInfo = new TutorInfo();
+//        tutorInfo.setAddress("미입력&미입력&미입력");
+//        tutorInfo.setBankName("미입력");
+//        tutorInfo.setAccountNumber("미입력");
+//        tutorInfo.setMember(member);
+//        tutorInfo.setMemberNo(member.getNo());
+//        tutorInfoRepository.save(tutorInfo);
+//    }
 
 
     public Page<AttachedFileDTO> findAllAttachedFileList(Pageable pageable) {

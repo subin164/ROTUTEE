@@ -116,11 +116,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void checkLogin(Member member) {
 
         Date today = new Date(System.currentTimeMillis());
-        LoginHistory loginHistory = loginHistoryRepositoryQuery.findMemberLoginHistory(entityManager, member.getNo());
+        List<LoginHistory> loginHistory = loginHistoryRepositoryQuery.findMemberLoginHistory(entityManager, member.getNo());
+
+        if(loginHistory.size() == 0) {
+            member.setRouletteChance(member.getRouletteChance() + 1);
+            memberRepository.save(member);
+
+            return;
+        }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
         String todayDate = simpleDateFormat.format(today);
-        String loginDate = simpleDateFormat.format(loginHistory.getLoginDate());
+        String loginDate = simpleDateFormat.format(loginHistory.get(0).getLoginDate());
 
         System.out.println("todayDate = " + todayDate);
         System.out.println("loginDate = " + loginDate);
