@@ -122,7 +122,7 @@ public class BasketController {
         System.out.println("gg");
         basketService.lectureSuccessBasket(lectureNo,memberNo,couponNo);
 
-        rttr.addFlashAttribute("message", "해당 강의가 결제 되었습니다..");
+        rttr.addFlashAttribute("message", "해당 강의가 결제 되었습니다.");
 
         mv.setViewName("redirect:/basket/list");
 
