@@ -22,7 +22,7 @@
                     <br>
                     <p style="margin-left: 75px; font-size: xx-large;" th:text="${lecture.lectureName}"></p>
                     <br>
-                    <img th:src="@{/images/thumbnail/} + ${lecture.saveFileName}" style="width: 800px; margin-left: 75px;">
+                    <img th:src="@{/images/thumbnail/} + ${lecture.saveFileName}" style="width: 800px; margin-left: 75px;" height="500px;">
                     <div class="lecture-intro">
                         <p style="margin-top: 10px; margin-left: 10px;" th:text="${lecture.lectureSummary}"></p>
                     </div>
@@ -105,7 +105,7 @@
                                     <th:block th:if="${lectureReview.lectureGrade == 5}">
                                         <p style="margin-left: 10px;"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></p>
                                     </th:block>
-                                    <p style="margin-left: 10px;" th:text="${lectureReview.writer.name}"></p>
+                                    <p style="margin-left: 10px; width: 140px; margin-top: 10px;" th:text="${lectureReview.writer.nickname}"></p>
                                 </div>
                                 <div class="col-4"></div>
                                 <div class="col-4 button-area" style="margin-top: 10px" sec:authorize="isAuthenticated()">
