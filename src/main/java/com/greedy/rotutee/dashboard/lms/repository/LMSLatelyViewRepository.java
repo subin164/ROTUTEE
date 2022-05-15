@@ -23,4 +23,6 @@ public interface LMSLatelyViewRepository extends JpaRepository<LMSLatelyViewClas
     List<LMSLatelyViewClass> findByMemberLectureNoOrderByTimeNoAsc(int memberLectureNo);
 
     LMSLatelyViewClass findByLmsClassClassNo(int classNo);
+
+    LMSLatelyViewClass findByLmsClassClassNoAndMemberLectureNo(int classNo, int memberLectureNo);
 }

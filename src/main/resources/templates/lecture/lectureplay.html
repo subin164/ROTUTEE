@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <link rel="short icon" href="#">
     <!-- font tamily -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -134,7 +135,7 @@
 <div class="container">
     <div class="wrap">
         <div class="header">
-            <div>신나는 자바</div>
+            <div class="lectureClassName"></div>
         </div>
         <div class="lecturevideo">
             <video id="lecture-video" class="videoPlay" controls controlsList="nodownload" style="width: 35vw; height: 35vh;">
@@ -162,6 +163,7 @@
                             <input id="videoPath" type="hidden" th:value="${lectureClass.videoPath}">
                             <input class="videoStatus" type="hidden" th:value="${lectureClass.whatcingStatus}">
                             <input class="videoTimeNo" type="hidden" th:value="${lectureClass.timeNo}">
+                            <input class="className" type="hidden" th:value="${lectureClass.className}">
                             <th:block th:if="${lectureClass.quiz.submissionStatus.toString().equals('Y')}">
                                 <span class="badge text-light" style="background-color: #f3c3c3">완료</span>
                             </th:block>
@@ -255,6 +257,7 @@
         const videoPath = $(this).children('input').eq(0).val();
         const videoStatus = $(this).children('input').eq(1).val();
         const videoTimeNo = $(this).children('input').eq(2).val();
+        const className = $(this).children('input').eq(3).val();
         console.log(videoPath);
         console.log(videoStatus);
         console.log(videoTimeNo);
@@ -266,6 +269,7 @@
         $(".lecturevideo").append(totalPath);
         $("#lecture-video").append(videoStatusInputTag);
         $("#lecture-video").append(videoTimeNoTag);
+        $(".lectureClassName").html(className);
     })
 
     $(".quiz").click(function () {
@@ -346,9 +350,9 @@
         })
 
     })
-    $('video.videoPlay').on('click', function (e) {
+    $('#lecture-video').click(function(e) {
         console.log($(this).children('input').eq(0).val());
-        console.log($(this).children('input').eq(1).val())
+        console.log($(this).children('input').eq(1).val());
         let timeNo = $(this).children('input').eq(1).val();
         if ($(this).children('input').eq(0).val() == "N "){
             $.ajax({

@@ -72,8 +72,8 @@ public class LMSLearningServiceImpl implements LMSLearningService {
         String lectureSummary = lectureEntity.getSummary();
 
         /*수강신청 정보*/
-//        MyPageMemberLecture memberLectureEntity = memberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
-//        int memberLectureNo = memberLectureEntity.getMemberLectureNo();
+        MyPageMemberLecture memberLectureEntity = memberLectureRepository.findByLectureLectureNoAndMemberMemberNo(lectureNo, memberNo);
+        int memberLectureNo = memberLectureEntity.getMemberLectureNo();
 
         /*강의의 챕터 정보*/
         List<LMSChapter> chaptersEntity = lmsChapterRepository.findByLectureNoOrderByChapterNoAsc(lectureNo);
@@ -89,7 +89,7 @@ public class LMSLearningServiceImpl implements LMSLearningService {
 
             for (int j = 0; j < lectureClassesEntity.size(); j++) {
                 int classNo = lectureClassesEntity.get(j).getClassNo();
-                LMSLatelyViewClass latelyViewClassEntity = lmsLatelyViewRepository.findByLmsClassClassNo(classNo);
+                LMSLatelyViewClass latelyViewClassEntity = lmsLatelyViewRepository.findByLmsClassClassNoAndMemberLectureNo(classNo, memberLectureNo);
                 String completedStatus = latelyViewClassEntity.getCompletedStatus();
                 int timeNo = latelyViewClassEntity.getTimeNo();
                 LMSQuiz quizEntity = lmsQuizRepository.findByClassNoOrderByQuizNo(classNo);
