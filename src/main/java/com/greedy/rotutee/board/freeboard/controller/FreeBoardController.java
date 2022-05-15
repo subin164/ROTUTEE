@@ -48,9 +48,6 @@ public class FreeBoardController {
                                AuthenticationService authenticationService) {
         this.freeBoardService = freeBoardService;
     }
-
-
-
     /**
      * methodName : CategoryFreeBoardList
      * author : Soo Been Park

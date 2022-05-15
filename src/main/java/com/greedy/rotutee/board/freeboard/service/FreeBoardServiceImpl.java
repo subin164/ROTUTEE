@@ -54,7 +54,18 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         this.answerRepository = answerRepository;
         this.modelMapper = modelMapper;
     }
-    //검색용
+
+    /**
+     * packageName : com.greedy.rotutee.dashboard.lms.service
+     * fileName : findSearchBoardList
+     * author : SOO BEEN PARK
+     * date : 2022-04-19
+     * description :
+     * ===========================================================
+     * DATE AUTHOR NOTE
+     * -----------------------------------------------------------
+     * 2022-04-19 SeoYoung 최초 생성
+     */
     @Override
     public Page<FreeBoardDTO> findSearchBoardList(Pageable pageable, int categoryNo, String searchValue, String searchCondition) {
 
@@ -75,7 +86,18 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
         return freeBoards.map(FreeBoard -> modelMapper.map(FreeBoard, FreeBoardDTO.class));
     }
-    // 카테고리 포함 조회용
+
+    /**
+     * packageName : com.greedy.rotutee.dashboard.lms.service
+     * fileName : LMSDashboardService
+     * author : SeoYoung
+     * date : 2022-04-19
+     * description :
+     * ===========================================================
+     * DATE AUTHOR NOTE
+     * -----------------------------------------------------------
+     * 2022-04-19 SeoYoung 최초 생성
+     */
     @Override
     public Page<FreeBoardDTO> findCategoryBoardList(@PageableDefault Pageable pageable, int categoryNo) {
 
@@ -89,6 +111,17 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         return pageFreeBoards;
     }
 
+    /**
+     * packageName : com.greedy.rotutee.dashboard.lms.service
+     * fileName : LMSDashboardService
+     * author : SeoYoung
+     * date : 2022-04-19
+     * description :
+     * ===========================================================
+     * DATE AUTHOR NOTE
+     * -----------------------------------------------------------
+     * 2022-04-19 SeoYoung 최초 생성
+     */
     @Override
     @Transactional
     public FreeBoardDTO selectBoardDetail(int boardNo){
@@ -106,6 +139,17 @@ public class FreeBoardServiceImpl implements FreeBoardService{
     }
 
 
+    /**
+     * packageName : com.greedy.rotutee.dashboard.lms.service
+     * fileName : LMSDashboardService
+     * author : SeoYoung
+     * date : 2022-04-19
+     * description :
+     * ===========================================================
+     * DATE AUTHOR NOTE
+     * -----------------------------------------------------------
+     * 2022-04-19 SeoYoung 최초 생성
+     */
     @Override
     @Transactional
     public void deleteFreeBoard(int boardNo) {
@@ -116,6 +160,17 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         deleteBoard.setBoardDeletionDate(sqlDate);
     }
 
+    /**
+     * packageName : com.greedy.rotutee.dashboard.lms.service
+     * fileName : LMSDashboardService
+     * author : SeoYoung
+     * date : 2022-04-19
+     * description :
+     * ===========================================================
+     * DATE AUTHOR NOTE
+     * -----------------------------------------------------------
+     * 2022-04-19 SeoYoung 최초 생성
+     */
     @Override
     public FreeBoardDTO selectBoardModify(int boardNo) {
         FreeBoard freeBoard = freeBoardRepository.findById(boardNo).get();
@@ -123,6 +178,17 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         return boardDTO;
     }
 
+    /**
+     * packageName : com.greedy.rotutee.dashboard.lms.service
+     * fileName : LMSDashboardService
+     * author : SeoYoung
+     * date : 2022-04-19
+     * description :
+     * ===========================================================
+     * DATE AUTHOR NOTE
+     * -----------------------------------------------------------
+     * 2022-04-19 SeoYoung 최초 생성
+     */
     @Override
     @Transactional
     public void modifyBoard(FreeBoardDTO freeBoard) {
@@ -146,6 +212,17 @@ public class FreeBoardServiceImpl implements FreeBoardService{
     }
     //        modifyBoard.setBulletinBoardSecretYN('N');비밀글 기능 다시만들어야함
 
+    /**
+     * packageName : com.greedy.rotutee.dashboard.lms.service
+     * fileName : LMSDashboardService
+     * author : SeoYoung
+     * date : 2022-04-19
+     * description :
+     * ===========================================================
+     * DATE AUTHOR NOTE
+     * -----------------------------------------------------------
+     * 2022-04-19 SeoYoung 최초 생성
+     */
     @Override
     @Transactional
     public void registNewFreeBoard(FreeBoardDTO freeBoard) {
@@ -172,6 +249,17 @@ public class FreeBoardServiceImpl implements FreeBoardService{
     }
 
 
+    /**
+     * packageName : com.greedy.rotutee.dashboard.lms.service
+     * fileName : LMSDashboardService
+     * author : SeoYoung
+     * date : 2022-04-19
+     * description :
+     * ===========================================================
+     * DATE AUTHOR NOTE
+     * -----------------------------------------------------------
+     * 2022-04-19 SeoYoung 최초 생성
+     */
     @Override
     @Transactional
     public void insertAnswer(FreeBoardAnswerDTO registAnswer) {
@@ -192,6 +280,17 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         answerRepository.save(newRegistAnswer);
     }
 
+    /**
+     * packageName : com.greedy.rotutee.dashboard.lms.service
+     * fileName : LMSDashboardService
+     * author : SeoYoung
+     * date : 2022-04-19
+     * description :
+     * ===========================================================
+     * DATE AUTHOR NOTE
+     * -----------------------------------------------------------
+     * 2022-04-19 SeoYoung 최초 생성
+     */
     @Override
     @Transactional
     public void deleteAnswer(int answerNo) {
@@ -203,6 +302,17 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         answerRepository.save(deleteAnswer);
     }
 
+    /**
+     * packageName : com.greedy.rotutee.dashboard.lms.service
+     * fileName : LMSDashboardService
+     * author : SeoYoung
+     * date : 2022-04-19
+     * description :
+     * ===========================================================
+     * DATE AUTHOR NOTE
+     * -----------------------------------------------------------
+     * 2022-04-19 SeoYoung 최초 생성
+     */
     @Override
     @Transactional
     public void updateAnswer(FreeBoardAnswerDTO modifyAnswer) {
