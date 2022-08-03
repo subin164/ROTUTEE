@@ -3,6 +3,6 @@
 
 
 기술 스택
-HTML, CSS, JQuery, Thymeleaf
-java, spring boot, spring data JPA, JPA, spring Security
+HTML, CSS, JQuery, Thymeleaf <br>
+java, Spring boot, Spring data JPA, JPA, Spring Security <br>
 Oracle
