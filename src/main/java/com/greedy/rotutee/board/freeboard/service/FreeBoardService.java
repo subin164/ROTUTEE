@@ -41,4 +41,7 @@ public interface FreeBoardService {
    void updateAnswer(FreeBoardAnswerDTO modifyAnswer);
 
 
+   Page<FreeBoardDTO> getSearchBaordInfo(Pageable pageable, int categoryNo, String searchValue, String searchCondition);
+
+   Page<FreeBoardDTO> getBoardInfo(Pageable pageable, int categoryNo);
 }

@@ -133,7 +133,6 @@ public class MypageDashboardServiceImpl implements MypageDashboardService{
     private DashboardMemberDTO getProfile(int memberNo) {
         DashboardMember memberEntity = memberRepository.findById(memberNo).get();
         DashboardMemberDTO member = modelMapper.map(memberEntity, DashboardMemberDTO.class);
-
         return member;
     }
 

@@ -88,7 +88,8 @@ public class BasketServiceImpl implements BasketService{
     @Override
     public List<BasketMemberCouponBoxDTO> selectCouponList(int memberNo) {
 
-        List<BasketMemberCouponBox> basketMemberCouponBox = classBasketMemberCouponBoxRepository.findByMemberNoAndCouponStatus(memberNo, "미사용");
+        List<BasketMemberCouponBox> basketMemberCouponBox = classBasketMemberCouponBoxRepository
+                .findByMemberNoAndCouponStatus(memberNo, "미사용");
 
         basketMemberCouponBox.forEach(System.out::println);
         List<BasketMemberCouponBoxDTO> basketMemberCouponBoxDTO = new ArrayList<>();

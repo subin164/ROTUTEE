@@ -55,16 +55,17 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         this.modelMapper = modelMapper;
     }
 
+
     /**
-     * packageName : com.greedy.rotutee.dashboard.lms.service
-     * fileName : findSearchBoardList
-     * author : SOO BEEN PARK
-     * date : 2022-04-19
-     * description :
-     * ===========================================================
-     * DATE AUTHOR NOTE
-     * -----------------------------------------------------------
-     * 2022-04-19 SeoYoung 최초 생성
+     * methodName : findSearchBoardList
+     * author : SooBeen Park
+     * description : 커뮤니티 게시판 검색 조회 시 또는 게시판 조회 시 필요한 정보
+     *
+     * @param pageable 페이지 정보
+     * @param categoryNo 카테고리 번호 정보
+     * @param searchValue 검색 키워드 정보
+     * @param searchCondition 검색 카테고리
+     * @return Page<FreeBoardDTO> 페징으로 매핑된 커뮤니티 게시판 정보
      */
     @Override
     public Page<FreeBoardDTO> findSearchBoardList(Pageable pageable, int categoryNo, String searchValue, String searchCondition) {
@@ -76,52 +77,38 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
         Page<FreeBoard> freeBoards = null;
         if(searchCondition.equals("title")){
-            freeBoards = freeBoardRepository.findByBoardTitleContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'N',pageable);
+            freeBoards = freeBoardRepository.findByBoardTitleContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue
+                    , freeBoardCategory, 'N',pageable);
         }else if (searchCondition.equals("writer")){
-            freeBoards = freeBoardRepository.findByFreeBoardMemberMemberNameContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'N',pageable);
+            freeBoards = freeBoardRepository.findByFreeBoardMemberMemberNameContainingAndFreeBoardCategoryAndBoardDeleteYN(
+                    searchValue, freeBoardCategory, 'N',pageable);
 
         }else if(searchCondition.equals("content")){
-            freeBoards = freeBoardRepository.findByBoardContentContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue, freeBoardCategory, 'N',pageable);
+            freeBoards = freeBoardRepository.findByBoardContentContainingAndFreeBoardCategoryAndBoardDeleteYN(searchValue
+                    , freeBoardCategory, 'N',pageable);
         }
 
         return freeBoards.map(FreeBoard -> modelMapper.map(FreeBoard, FreeBoardDTO.class));
     }
 
-    /**
-     * packageName : com.greedy.rotutee.dashboard.lms.service
-     * fileName : LMSDashboardService
-     * author : SeoYoung
-     * date : 2022-04-19
-     * description :
-     * ===========================================================
-     * DATE AUTHOR NOTE
-     * -----------------------------------------------------------
-     * 2022-04-19 SeoYoung 최초 생성
-     */
+
+
     @Override
     public Page<FreeBoardDTO> findCategoryBoardList(@PageableDefault Pageable pageable, int categoryNo) {
 
-        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,                        // pageing 정보들을 담아
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
                 pageable.getPageSize(),
                 Sort.by("boardNo").descending());
         FreeBoardCategory freeBoardCategory = categoryRepository.findById(categoryNo).get();
 
-        Page<FreeBoardDTO> pageFreeBoards =freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(freeBoardCategory,'N',pageable).map(FreeBoard -> modelMapper.map(FreeBoard,FreeBoardDTO.class));
+        Page<FreeBoardDTO> pageFreeBoards =freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(freeBoardCategory
+                ,'N',pageable).map(FreeBoard -> modelMapper.map(FreeBoard,FreeBoardDTO.class));
 
         return pageFreeBoards;
     }
 
-    /**
-     * packageName : com.greedy.rotutee.dashboard.lms.service
-     * fileName : LMSDashboardService
-     * author : SeoYoung
-     * date : 2022-04-19
-     * description :
-     * ===========================================================
-     * DATE AUTHOR NOTE
-     * -----------------------------------------------------------
-     * 2022-04-19 SeoYoung 최초 생성
-     */
+
+
     @Override
     @Transactional
     public FreeBoardDTO selectBoardDetail(int boardNo){
@@ -139,17 +126,8 @@ public class FreeBoardServiceImpl implements FreeBoardService{
     }
 
 
-    /**
-     * packageName : com.greedy.rotutee.dashboard.lms.service
-     * fileName : LMSDashboardService
-     * author : SeoYoung
-     * date : 2022-04-19
-     * description :
-     * ===========================================================
-     * DATE AUTHOR NOTE
-     * -----------------------------------------------------------
-     * 2022-04-19 SeoYoung 최초 생성
-     */
+
+
     @Override
     @Transactional
     public void deleteFreeBoard(int boardNo) {
@@ -160,17 +138,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         deleteBoard.setBoardDeletionDate(sqlDate);
     }
 
-    /**
-     * packageName : com.greedy.rotutee.dashboard.lms.service
-     * fileName : LMSDashboardService
-     * author : SeoYoung
-     * date : 2022-04-19
-     * description :
-     * ===========================================================
-     * DATE AUTHOR NOTE
-     * -----------------------------------------------------------
-     * 2022-04-19 SeoYoung 최초 생성
-     */
+
     @Override
     public FreeBoardDTO selectBoardModify(int boardNo) {
         FreeBoard freeBoard = freeBoardRepository.findById(boardNo).get();
@@ -178,17 +146,8 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         return boardDTO;
     }
 
-    /**
-     * packageName : com.greedy.rotutee.dashboard.lms.service
-     * fileName : LMSDashboardService
-     * author : SeoYoung
-     * date : 2022-04-19
-     * description :
-     * ===========================================================
-     * DATE AUTHOR NOTE
-     * -----------------------------------------------------------
-     * 2022-04-19 SeoYoung 최초 생성
-     */
+
+
     @Override
     @Transactional
     public void modifyBoard(FreeBoardDTO freeBoard) {
@@ -210,19 +169,9 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         modifyBoard.setBulletinBoardSecretYN('N');
         freeBoardRepository.save(modifyBoard);
     }
-    //        modifyBoard.setBulletinBoardSecretYN('N');비밀글 기능 다시만들어야함
 
-    /**
-     * packageName : com.greedy.rotutee.dashboard.lms.service
-     * fileName : LMSDashboardService
-     * author : SeoYoung
-     * date : 2022-04-19
-     * description :
-     * ===========================================================
-     * DATE AUTHOR NOTE
-     * -----------------------------------------------------------
-     * 2022-04-19 SeoYoung 최초 생성
-     */
+
+
     @Override
     @Transactional
     public void registNewFreeBoard(FreeBoardDTO freeBoard) {
@@ -249,17 +198,8 @@ public class FreeBoardServiceImpl implements FreeBoardService{
     }
 
 
-    /**
-     * packageName : com.greedy.rotutee.dashboard.lms.service
-     * fileName : LMSDashboardService
-     * author : SeoYoung
-     * date : 2022-04-19
-     * description :
-     * ===========================================================
-     * DATE AUTHOR NOTE
-     * -----------------------------------------------------------
-     * 2022-04-19 SeoYoung 최초 생성
-     */
+
+
     @Override
     @Transactional
     public void insertAnswer(FreeBoardAnswerDTO registAnswer) {
@@ -280,17 +220,8 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         answerRepository.save(newRegistAnswer);
     }
 
-    /**
-     * packageName : com.greedy.rotutee.dashboard.lms.service
-     * fileName : LMSDashboardService
-     * author : SeoYoung
-     * date : 2022-04-19
-     * description :
-     * ===========================================================
-     * DATE AUTHOR NOTE
-     * -----------------------------------------------------------
-     * 2022-04-19 SeoYoung 최초 생성
-     */
+
+
     @Override
     @Transactional
     public void deleteAnswer(int answerNo) {
@@ -302,17 +233,8 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         answerRepository.save(deleteAnswer);
     }
 
-    /**
-     * packageName : com.greedy.rotutee.dashboard.lms.service
-     * fileName : LMSDashboardService
-     * author : SeoYoung
-     * date : 2022-04-19
-     * description :
-     * ===========================================================
-     * DATE AUTHOR NOTE
-     * -----------------------------------------------------------
-     * 2022-04-19 SeoYoung 최초 생성
-     */
+
+
     @Override
     @Transactional
     public void updateAnswer(FreeBoardAnswerDTO modifyAnswer) {
@@ -331,5 +253,42 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         freeBoardAnswer.setFreeBoard(freeBoard);
 
         answerRepository.save(freeBoardAnswer);
+    }
+
+    @Override
+    public Page<FreeBoardDTO> getSearchBaordInfo(Pageable pageable, int categoryNo, String searchValue, String searchCondition) {
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(), Sort.by("boardNo").descending());
+
+        FreeBoardCategory freeBoardCategory = categoryRepository.findById(categoryNo).get();
+
+        Page<FreeBoard> freeBoards = null;
+        if(searchCondition.equals("title")){
+            freeBoards = freeBoardRepository.findByBoardTitleContainingAndFreeBoardCategoryAndBoardDeleteYN(
+                    searchValue, freeBoardCategory, 'N',pageable);
+
+        }else if (searchCondition.equals("writer")){
+            freeBoards = freeBoardRepository.findByFreeBoardMemberMemberNameContainingAndFreeBoardCategoryAndBoardDeleteYN(
+                    searchValue, freeBoardCategory, 'N',pageable);
+
+        }else if(searchCondition.equals("content")){
+            freeBoards = freeBoardRepository.findByBoardContentContainingAndFreeBoardCategoryAndBoardDeleteYN(
+                    searchValue, freeBoardCategory, 'N',pageable);
+        }
+
+        return freeBoards.map(FreeBoard -> modelMapper.map(FreeBoard, FreeBoardDTO.class));
+    }
+
+    @Override
+    public Page<FreeBoardDTO> getBoardInfo(@PageableDefault Pageable pageable, int categoryNo) {
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0: pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("boardNo").descending());
+        FreeBoardCategory freeBoardCategory = categoryRepository.findById(categoryNo).get();
+
+        Page<FreeBoardDTO> pageFreeBoards =freeBoardRepository.findByFreeBoardCategoryAndBoardDeleteYN(freeBoardCategory
+                ,'N',pageable).map(FreeBoard -> modelMapper.map(FreeBoard,FreeBoardDTO.class));
+
+        return pageFreeBoards;
     }
 }

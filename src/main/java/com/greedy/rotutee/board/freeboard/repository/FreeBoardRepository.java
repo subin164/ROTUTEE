@@ -25,11 +25,14 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Integer> {
 
     Page<FreeBoard> findByFreeBoardCategoryAndBoardDeleteYN(FreeBoardCategory freeBoardCategory, char boardDeleteYN, Pageable pageable);
 
-    Page<FreeBoard> findByBoardTitleContainingAndFreeBoardCategoryAndBoardDeleteYN(String searchValue, FreeBoardCategory freeBoardCategory, char boardDeleteYN, Pageable pageable);
+    Page<FreeBoard> findByBoardTitleContainingAndFreeBoardCategoryAndBoardDeleteYN(String searchValue, FreeBoardCategory freeBoardCategory
+            , char boardDeleteYN, Pageable pageable);
 
-    Page<FreeBoard> findByBoardContentContainingAndFreeBoardCategoryAndBoardDeleteYN(String searchValue, FreeBoardCategory freeBoardCategory, char boardDeleteYN, Pageable pageable);
+    Page<FreeBoard> findByBoardContentContainingAndFreeBoardCategoryAndBoardDeleteYN(String searchValue, FreeBoardCategory freeBoardCategory
+            , char boardDeleteYN, Pageable pageable);
 
-    Page<FreeBoard> findByFreeBoardMemberMemberNameContainingAndFreeBoardCategoryAndBoardDeleteYN(String searchValue, FreeBoardCategory freeBoardCategory, char boardDeleteYN, Pageable pageable);
+    Page<FreeBoard> findByFreeBoardMemberMemberNameContainingAndFreeBoardCategoryAndBoardDeleteYN(String searchValue, FreeBoardCategory freeBoardCategory
+            , char boardDeleteYN, Pageable pageable);
 
     Page<FreeBoard> findByBoardDeleteYN(char boardDeleteYN, Pageable pageable);
 }

@@ -16,8 +16,7 @@ public class FreeBoard {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "BOARD_SEQ_GENERATOR"
-    )
+            generator = "BOARD_SEQ_GENERATOR"    )
     @Column(name = "BOARD_NO")
     private int boardNo;
 
@@ -55,7 +54,6 @@ public class FreeBoard {
 
     @Column(name = "BULLETIN_BOARD_SECRET_YN")
     private char bulletinBoardSecretYN;
-
 
     @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.PERSIST)
     private List<FreeBoardAnswer> freeBoardAnswerList;

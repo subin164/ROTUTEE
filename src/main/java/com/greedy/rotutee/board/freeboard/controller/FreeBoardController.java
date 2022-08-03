@@ -48,11 +48,11 @@ public class FreeBoardController {
                                AuthenticationService authenticationService) {
         this.freeBoardService = freeBoardService;
     }
+
     /**
      * methodName : CategoryFreeBoardList
      * author : Soo Been Park
      * description : 뷰에서 커뮤니티 게시판 에서 보여주는 정보를 넘겨주는 메소드
-     *
      * @param request 현재 카테고리 정보 , 검색카테고리 정보, 검색 정보 값을 받습니다..
      * @param mv : 패이징정보 ,검색 카테고리 , 검색 정보 ,카테고리 번호 ,게시판 정보 커뮤니티 게시판 에서 보여지는 정보를 담는 객체
      * @param pageable  페이지 정보를 담고있음
@@ -60,7 +60,6 @@ public class FreeBoardController {
      */
     @GetMapping(value = "/list")
     public ModelAndView CategoryFreeBoardList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable)  {
-
         int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
         String searchCondition = request.getParameter("searchCondition");
         String searchValue = request.getParameter("searchValue");
@@ -69,9 +68,9 @@ public class FreeBoardController {
 
         /* 검색 유 무의 조회 페이징 처리 요청 */
         if(searchCondition != null && !"".equals(searchCondition)) {
-            boardList = freeBoardService.findSearchBoardList(pageable, categoryNo,searchValue, searchCondition);
+            boardList = freeBoardService.getSearchBaordInfo(pageable, categoryNo,searchValue, searchCondition);
         }else {
-            boardList = freeBoardService.findCategoryBoardList(pageable, categoryNo);
+            boardList = freeBoardService.getBoardInfo(pageable, categoryNo);
         }
 
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(boardList);
